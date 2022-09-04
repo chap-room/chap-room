@@ -1,0 +1,75 @@
+.Container {
+  background-color: #efeeee;
+  background-clip: border-box;
+  min-height: 100vh;
+  padding: 50px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 20px;
+
+  .Sidebar {
+    min-height: calc(100vh - 100px);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    background-color: #efeeee;
+    box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
+    border-radius: 20px;
+
+    .NavLink {
+      display: flex;
+      height: 40px;
+      flex-direction: row;
+      gap: 10px;
+      align-items: center;
+      padding: 0 8px;
+      border-radius: 20px;
+      text-decoration: none;
+      color: #5e5e5e;
+      fill: #5e5e5e;
+
+      &:global(.active) {
+        color: #0077b5;
+        fill: #0077b5;
+        box-shadow: inset -3px -3px 6px #ffffffdb, inset 3px 3px 6px #00000029;
+      }
+    }
+
+    .Spacer {
+      flex: 1;
+    }
+
+    .Bottom {
+      margin-top: 10px;
+      border-top: 1px solid #cccccc;
+      padding-top: 10px;
+
+      .User {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        gap: 10px;
+        padding: 10px;
+
+        .Avatar {
+          width: 50px;
+          height: 50px;
+          border-radius: 25px;
+        }
+
+        .Meta {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+
+          .PhoneNumber {
+            font-size: 10px;
+            color: #9c9c9c;
+          }
+        }
+      }
+    }
+  }
+}

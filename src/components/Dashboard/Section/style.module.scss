@@ -1,0 +1,49 @@
+.Container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+
+  .TitleContainer {
+    display: flex;
+
+    .Title {
+      margin: 0;
+      color: #5e5e5e;
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    .Spacer {
+      flex: 1;
+      min-width: 10px;
+    }
+
+    .BackToSiteButton {
+      display: flex;
+      height: 40px;
+      flex-direction: row;
+      gap: 10px;
+      align-items: center;
+      padding: 0 8px;
+      border-radius: 20px;
+      color: #5e5e5e;
+      text-decoration: none;
+      box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
+    }
+  }
+
+  .Description {
+    margin: 0;
+    color: #9c9c9c;
+  }
+
+  .ContentContainer {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    flex: 1;
+    box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
+    padding: 15px 25px 25px;
+    border-radius: 20px;
+  }
+}
