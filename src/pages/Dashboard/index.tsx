@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { Outlet } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 import styles from "./style.module.scss";
