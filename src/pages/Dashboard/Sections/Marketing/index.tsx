@@ -3,6 +3,7 @@ import Section from "../../../../components/Dashboard/Section";
 import { ReactComponent as LinkIcon } from "../../../../assets/svg/link.svg";
 import { ReactComponent as PercentIcon } from "../../../../assets/svg/percent.svg";
 import CopyableText from "../../../../components/CopyableText";
+import { FormattedNumber } from "react-intl";
 
 export default function DashboardMarketing() {
   return (
@@ -29,22 +30,30 @@ export default function DashboardMarketing() {
             <div className={styles.Status}>
               <div>
                 <div>تعداد کلیک</div>
-                <div>8451</div>
+                <div>
+                  <FormattedNumber value={8451} />
+                </div>
               </div>
               <div className={styles.Separator} />
               <div>
                 <div>تعداد فروش</div>
-                <div>451</div>
+                <div>
+                  <FormattedNumber value={451} />
+                </div>
               </div>
               <div className={styles.Separator} />
               <div>
                 <div>کل فروش</div>
-                <div>20,000,000 تومان</div>
+                <div>
+                  <FormattedNumber value={20000000} /> تومان
+                </div>
               </div>
               <div className={styles.Separator} />
               <div>
                 <div>سهم کاربر</div>
-                <div>2,000,000 تومان</div>
+                <div>
+                  <FormattedNumber value={2000000} /> تومان
+                </div>
               </div>
             </div>
           </div>
@@ -63,28 +72,38 @@ export default function DashboardMarketing() {
             <div className={styles.Title}>کدهای تخفیف اختصاصی شما</div>
             <div className={styles.DiscountCodes}>
               <div>
-                <span>کد تخفیف 10%</span>
+                <span>
+                  {/* eslint-disable-next-line react/style-prop-object */}
+                  کد تخفیف <FormattedNumber value={0.1} style="percent" />
+                </span>
                 <CopyableText text="HGVFCD" />
               </div>
               <div>
-                <span>کد تخفیف 5%</span>
+                  {/* eslint-disable-next-line react/style-prop-object */}
+                  کد تخفیف <FormattedNumber value={0.05} style="percent" />
                 <CopyableText text="NC5WFh" />
               </div>
             </div>
             <div className={styles.Status}>
               <div>
                 <div>دفعات استفاده</div>
-                <div>451</div>
+                <div>
+                  <FormattedNumber value={451} />
+                </div>
               </div>
               <div className={styles.Separator} />
               <div>
                 <div>کل فروش</div>
-                <div>20,000,000 تومان</div>
+                <div>
+                  <FormattedNumber value={20000000} /> تومان
+                </div>
               </div>
               <div className={styles.Separator} />
               <div>
                 <div>سهم کاربر</div>
-                <div>2,000,000 تومان</div>
+                <div>
+                  <FormattedNumber value={2000000} /> تومان
+                </div>
               </div>
             </div>
           </div>

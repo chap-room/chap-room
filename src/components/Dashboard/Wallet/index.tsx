@@ -4,10 +4,7 @@ import { DataContext } from "../../../dataContext";
 import { ReactComponent as ExpandMoreIcon } from "../../../assets/svg/expandMore.svg";
 import IncreasBalanceDialog from "../IncreasBalanceDialog";
 import WithdrawBalanceDialog from "../WithdrawBalanceDialog";
-
-const currencyFormatter = new Intl.NumberFormat("fa-IR", {
-  currency: "IRR",
-});
+import { FormattedNumber } from "react-intl";
 
 export default function Wallet() {
   const data = useContext(DataContext);
@@ -33,9 +30,9 @@ export default function Wallet() {
         }}
       >
         موجودی:{" "}
-        {currencyFormatter.format(
-          data.wallet.balance + data.wallet.marketingSales
-        )}{" "}
+        <FormattedNumber
+          value={data.wallet.balance + data.wallet.marketingSales}
+        />{" "}
         تومان
         <div className={styles.Spacer} />
         <ExpandMoreIcon className={styles.ExpandMoreIcon} />
@@ -44,12 +41,12 @@ export default function Wallet() {
         <div>
           موجودی کیف پول:
           <div className={styles.Spacer} />
-          {currencyFormatter.format(data.wallet.balance)} تومان
+          <FormattedNumber value={data.wallet.balance} /> تومان
         </div>
         <div>
           موجودی فروش بازاریابی:
           <div className={styles.Spacer} />
-          {currencyFormatter.format(data.wallet.marketingSales)} تومان
+          <FormattedNumber value={data.wallet.marketingSales} /> تومان
         </div>
         <button
           className={styles.IncreasBalance}

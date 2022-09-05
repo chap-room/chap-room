@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import AddressList from "../../../../../components/Dashboard/AddressList";
-import ContentHeader from "../../../../../components/Dashboard/ContentHeader";
-import { DataContext } from "../../../../../dataContext";
+import AddressList from "../../../../components/Dashboard/AddressList";
+import ContentHeader from "../../../../components/Dashboard/ContentHeader";
+import { DataContext } from "../../../../dataContext";
 
 export default function DashboardAddresseList() {
   const data = useContext(DataContext);

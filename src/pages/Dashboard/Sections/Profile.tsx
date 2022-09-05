@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
-import Section from "../../../../components/Dashboard/Section";
-import ContentHeader from "../../../../components/Dashboard/ContentHeader";
-import BottomActions from "../../../../components/Dashboard/BottomActions";
-import { DataContext } from "../../../../dataContext";
-import TextInput from "../../../../components/TextInput";
-import FormTable from "../../../../components/Dashboard/FormTable";
+import Section from "../../../components/Dashboard/Section";
+import ContentHeader from "../../../components/Dashboard/ContentHeader";
+import BottomActions from "../../../components/Dashboard/BottomActions";
+import { DataContext } from "../../../dataContext";
+import TextInput from "../../../components/TextInput";
+import FormTable from "../../../components/Dashboard/FormTable";
 
 export default function DashboardProfile() {
   const data = useContext(DataContext);

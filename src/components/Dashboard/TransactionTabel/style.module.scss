@@ -1,0 +1,38 @@
+.TransactionTabel {
+  border-spacing: 0;
+
+  > thead {
+    background-color: #f5f5f5;
+    color: #464646;
+  }
+
+  > tbody {
+    color: #9c9c9c;
+    font-size: 12px;
+
+    > tr {
+      > td {
+        text-align: center;
+        padding: 16px;
+
+        > .Date {
+          color: #464646;
+        }
+
+        > .Successful {
+          color: #14cc9c;
+        }
+
+        > .Unsuccessful {
+          color: #f20f4b;
+        }
+      }
+
+      &:not(:first-child) {
+        > td {
+          border-top: 1px solid #cccccc;
+        }
+      }
+    }
+  }
+}

@@ -7,7 +7,7 @@ export default function Dashboard() {
   return (
     <div className={styles.Container}>
       <div className={styles.SidebarContainer}>
-        <StickyBox>
+        <StickyBox offsetTop={50} offsetBottom={50}>
           <Sidebar />
         </StickyBox>
       </div>

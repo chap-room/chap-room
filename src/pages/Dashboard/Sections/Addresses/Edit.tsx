@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { DataContext } from "../../../../../dataContext";
-import { ReactComponent as ArrowBackIcon } from "../../../../../assets/svg/arrowBack.svg";
-import ContentHeader from "../../../../../components/Dashboard/ContentHeader";
-import BottomActions from "../../../../../components/Dashboard/BottomActions";
-import AddressForm from "../../../../../components/Dashboard/AddressForm";
+import { DataContext } from "../../../../dataContext";
+import { ReactComponent as ArrowBackIcon } from "../../../../assets/svg/arrowBack.svg";
+import ContentHeader from "../../../../components/Dashboard/ContentHeader";
+import BottomActions from "../../../../components/Dashboard/BottomActions";
+import AddressForm from "../../../../components/Dashboard/AddressForm";
 
 export default function DashboardEditAddresse() {
   const data = useContext(DataContext);

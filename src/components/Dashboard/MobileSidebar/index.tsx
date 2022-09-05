@@ -1,6 +1,6 @@
 import styles from "./style.module.scss";
 import { useContext } from "react";
-import { Link, } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { DataContext } from "../../../dataContext";
 import userAvatarSrc from "../../../assets/img/avatar.png";
 import Wallet from "../Wallet";
@@ -40,33 +40,33 @@ export default function MobileSidebar({onClose}: MobileSidebarProps) {
       </div>
       <div className={styles.Welcome}>!خوش‌آمدی</div>
       <Wallet />
-      <Link to="/dashboard" className={styles.Link}>
+      <NavLink to="/dashboard" className={styles.NavLink}>
         <DashboardIcon />
         داشبورد
-      </Link>
-      <Link to="/dashboard/orders" className={styles.Link}>
+      </NavLink>
+      <NavLink to="/dashboard/orders" className={styles.NavLink}>
         <OrdersIcon />
         سفارش ها
-      </Link>
-      <Link to="/dashboard/addresses" className={styles.Link}>
+      </NavLink>
+      <NavLink to="/dashboard/addresses" className={styles.NavLink}>
         <AddressesIcon />
         آدرس ها
-      </Link>
-      <Link to="/dashboard/transactions" className={styles.Link}>
+      </NavLink>
+      <NavLink to="/dashboard/transactions" className={styles.NavLink}>
         <TransactionsIcon />
         تراکنش ها
-      </Link>
-      <Link to="/dashboard/marketing" className={styles.Link}>
+      </NavLink>
+      <NavLink to="/dashboard/marketing" className={styles.NavLink}>
         <MarketingIcon />
         بازاریابی
-      </Link>
+      </NavLink>
       <div className={styles.Spacer} />
       <div className={styles.Bottom}>
-        <Link to="/dashboard/profile" className={styles.Link}>
+        <NavLink to="/dashboard/profile" className={styles.NavLink}>
           <ProfileIcon />
           پروفایل
-        </Link>
-        <div className={styles.Link}>
+        </NavLink>
+        <div className={styles.NavLink}>
           <LogoutIcon />
           خروج
         </div>

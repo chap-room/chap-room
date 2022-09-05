@@ -4,6 +4,8 @@ import {
   OrederStatus,
   PostageMethod,
   Address,
+  Transaction,
+  TransactionStatus,
 } from "./types";
 
 function timeout(ms: number) {
@@ -80,5 +82,57 @@ export const addresses: Address[] = [
     recipientDeliveryState: "اصفهان",
     recipientDeliveryCity: "اصفهان",
     recipientDeliveryAddress: "خیابان 1 / خیابان 2 / کوچه 1 / پلاک 1 / طبقه 1",
+  },
+];
+
+export const transactions: Transaction[] = [
+  {
+    id: "1",
+    data: new Date('2022-05-06T07:24'),
+    amount: 14500000,
+    details: '',
+    status: TransactionStatus.successful,
+  },
+  {
+    id: "2",
+    data: new Date('2022-05-06T07:24'),
+    amount: 14500000,
+    details: 'پکیج دانشجویی',
+    status: TransactionStatus.successful,
+  },
+  {
+    id: "3",
+    data: new Date('2022-05-06T07:24'),
+    amount: 14500000,
+    details: 'بازگشت وجه به کیف پول بابت لغو سفارش',
+    status: TransactionStatus.successful,
+  },
+  {
+    id: "4",
+    data: new Date('2022-05-06T07:24'),
+    amount: 14500000,
+    details: '',
+    status: TransactionStatus.unsuccessful,
+  },
+  {
+    id: "5",
+    data: new Date('2022-05-06T07:24'),
+    amount: 14500000,
+    details: 'افزایش موجودی کیف پول',
+    status: TransactionStatus.unsuccessful,
+  },
+  {
+    id: "6",
+    data: new Date('2022-05-06T07:24'),
+    amount: 14500000,
+    details: 'واریز به حساب کاربر بابت برداشت موجودی کد پیگیری :1542552',
+    status: TransactionStatus.successful,
+  },
+  {
+    id: "7",
+    data: new Date('2022-05-06T07:24'),
+    amount: 14500000,
+    details: '5 درصد پورسانت بازاریابی با کد تخفیف',
+    status: TransactionStatus.successful,
   },
 ];

@@ -46,3 +46,16 @@ export interface Address {
   recipientDeliveryCity: string;
   recipientDeliveryAddress: string;
 }
+
+export interface Transaction {
+  id: string;
+  data: Date;
+  amount: number;
+  details: string;
+  status: TransactionStatus;
+}
+
+export enum TransactionStatus {
+  successful,
+  unsuccessful,
+}

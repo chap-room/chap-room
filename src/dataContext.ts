@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { addresses, currentUser, wallet } from './dummyData';
+import { addresses, currentUser, transactions, wallet } from './dummyData';
 
 export const DataContext = createContext({
   currentUser,
@@ -8,4 +8,6 @@ export const DataContext = createContext({
   setWallet: (value: typeof wallet) => {},
   addresses,
   setAddresses: (value: typeof addresses) => {},
+  transactions,
+  setTransactions: (value: typeof transactions) => {},
 })

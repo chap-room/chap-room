@@ -3,7 +3,6 @@
   border-radius: 20px;
   box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
   transition: height, 0.3s;
-  overflow: hidden;
 
   .WalletOverview {
     display: flex;
@@ -72,12 +71,15 @@
   }
 
   &:not(.WalletExpanded) {
-    height: 40px;
+    background: linear-gradient(180deg, #27ddf8 0%, #0077b5 100%);
 
     .WalletOverview {
-      background: linear-gradient(180deg, #27ddf8 0%, #0077b5 100%);
       color: #ffffff;
       fill: #ffffff;
+    }
+
+    .WalletDetails {
+      display: none;
     }
   }
 
