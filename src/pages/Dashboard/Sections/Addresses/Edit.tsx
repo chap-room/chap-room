@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { DataContext } from "../../../../dataContext";
-import { ReactComponent as ArrowBackIcon } from "../../../../assets/svg/arrowBack.svg";
+import { DataContext } from "../../../../context/data";
+import { ReactComponent as ArrowBackIcon } from "../../../../assets/icons/arrowBack.svg";
 import ContentHeader from "../../../../components/Dashboard/ContentHeader";
 import BottomActions from "../../../../components/Dashboard/BottomActions";
 import AddressForm from "../../../../components/Dashboard/AddressForm";
@@ -9,9 +9,7 @@ import AddressForm from "../../../../components/Dashboard/AddressForm";
 export default function DashboardEditAddresse() {
   const data = useContext(DataContext);
   const { addressId } = useParams();
-  const address = data.addresses.filter(
-    (address) => address.id === addressId
-  )[0];
+  const address = data.state.addresses.get(addressId!)!;
 
   const [label, setLabel] = useState(address.label);
   const [recipientName, setRecipientName] = useState(address.recipientName);
@@ -73,22 +71,19 @@ export default function DashboardEditAddresse() {
             label: "ذخیره",
             variant: "filled",
             onClick: () => {
-              data.setAddresses([
-                ...data.addresses.map((item) =>
-                  item.id === addressId
-                    ? {
-                        id: addressId,
-                        label,
-                        recipientName,
-                        recipientPhoneNumber,
-                        recipientPostalCode,
-                        recipientDeliveryState,
-                        recipientDeliveryCity,
-                        recipientDeliveryAddress,
-                      }
-                    : item
-                ),
-              ]);
+              data.dispatch({
+                type: "ADDRESSES:SET",
+                payload: {
+                  id: addressId!,
+                  label,
+                  recipientName,
+                  recipientPhoneNumber,
+                  recipientPostalCode,
+                  recipientDeliveryState,
+                  recipientDeliveryCity,
+                  recipientDeliveryAddress,
+                },
+              });
               navigate("/dashboard/addresses");
             },
           },

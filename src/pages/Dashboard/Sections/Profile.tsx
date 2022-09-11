@@ -2,13 +2,13 @@ import { useContext, useState } from "react";
 import Section from "../../../components/Dashboard/Section";
 import ContentHeader from "../../../components/Dashboard/ContentHeader";
 import BottomActions from "../../../components/Dashboard/BottomActions";
-import { DataContext } from "../../../dataContext";
+import { DataContext } from "../../../context/data";
 import TextInput from "../../../components/TextInput";
 import FormTable from "../../../components/Dashboard/FormTable";
 
 export default function DashboardProfile() {
   const data = useContext(DataContext);
-  const [fullName, setFullName] = useState(data.currentUser.name);
+  const [fullName, setFullName] = useState(data.state.currentUser.name);
   const [password, setPassword] = useState("");
   const [retryPassword, setRetryPassword] = useState("");
 
@@ -23,7 +23,7 @@ export default function DashboardProfile() {
           {
             key: "phoneNumber",
             label: "شماره موبایل:",
-            component: data.currentUser.phoneNumber,
+            component: data.state.currentUser.phoneNumber,
           },
           {
             key: "fullName",

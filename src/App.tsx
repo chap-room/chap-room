@@ -1,29 +1,14 @@
-import { useState } from "react";
+import { useReducer } from "react";
 import { IntlProvider } from "react-intl";
-import AppRoutes from "./components/AppRoutes";
-import { DataContext } from "./dataContext";
-import * as dummyData from "./dummyData";
+import AppRoutes from "./AppRoutes";
+import { DataContext, dataReducer, initialState } from "./context/data";
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(dummyData.currentUser);
-  const [wallet, setWallet] = useState(dummyData.wallet);
-  const [addresses, setAddresses] = useState(dummyData.addresses);
-  const [transactions, setTransactions] = useState(dummyData.transactions);
+  const [state, dispatch] = useReducer(dataReducer, initialState);
 
   return (
     <IntlProvider locale="fa">
-      <DataContext.Provider
-        value={{
-          currentUser,
-          setCurrentUser,
-          wallet,
-          setWallet,
-          addresses,
-          setAddresses,
-          transactions,
-          setTransactions,
-        }}
-      >
+      <DataContext.Provider value={{ state, dispatch }}>
         <AppRoutes />
       </DataContext.Provider>
     </IntlProvider>

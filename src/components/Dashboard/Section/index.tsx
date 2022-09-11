@@ -1,9 +1,8 @@
 import styles from "./style.module.scss";
 import { Link } from "react-router-dom";
-import { ReactComponent as MenuIcon } from "../../../assets/svg/menu.svg";
-import { ReactComponent as Logo } from "../../../assets/svg/logo.svg";
-import { PropsWithChildren, useEffect, useState } from "react";
-import MobileSidebar from "../MobileSidebar";
+import { ReactComponent as ArrowForwardIcon } from "../../../assets/icons/arrowForward.svg";
+import { ReactComponent as Logo } from "../../../assets/icons/logo.svg";
+import { PropsWithChildren, useEffect } from "react";
 
 interface SectionProps {
   title: string;
@@ -19,22 +18,12 @@ export default function Section({
     document.title = title;
   }, [title]);
 
-  const [showMobileSidebar, setShowMobileSidebar] = useState(false);
-
   return (
     <div className={styles.Container}>
       <div className={styles.TitleContainer}>
-        <div
-          className={styles.MobileSidebarButton}
-          onClick={() => setShowMobileSidebar(true)}
-        >
-          <MenuIcon />
-        </div>
-        <div className={styles.MobileSidebar} hidden={!showMobileSidebar}>
-          <MobileSidebar onClose={() => {
-            setShowMobileSidebar(false)
-          }} />
-        </div>
+        <Link to="/dashboard" className={styles.MobileBackButton}>
+          <ArrowForwardIcon />
+        </Link>
         <p className={styles.Title}>{title}</p>
         <div className={styles.Spacer} />
         <Link to="/" className={styles.BackToSiteButton}>

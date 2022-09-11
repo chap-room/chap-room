@@ -1,7 +1,7 @@
 import styles from "./style.module.scss";
 import { useContext, useState } from "react";
-import { DataContext } from "../../../dataContext";
-import { ReactComponent as ExpandMoreIcon } from "../../../assets/svg/expandMore.svg";
+import { DataContext } from "../../../context/data";
+import { ReactComponent as ExpandMoreIcon } from "../../../assets/icons/expandMore.svg";
 import IncreasBalanceDialog from "../IncreasBalanceDialog";
 import WithdrawBalanceDialog from "../WithdrawBalanceDialog";
 import { FormattedNumber } from "react-intl";
@@ -31,7 +31,7 @@ export default function Wallet() {
       >
         موجودی:{" "}
         <FormattedNumber
-          value={data.wallet.balance + data.wallet.marketingSales}
+          value={data.state.wallet.balance + data.state.wallet.marketingSales}
         />{" "}
         تومان
         <div className={styles.Spacer} />
@@ -41,12 +41,12 @@ export default function Wallet() {
         <div>
           موجودی کیف پول:
           <div className={styles.Spacer} />
-          <FormattedNumber value={data.wallet.balance} /> تومان
+          <FormattedNumber value={data.state.wallet.balance} /> تومان
         </div>
         <div>
           موجودی فروش بازاریابی:
           <div className={styles.Spacer} />
-          <FormattedNumber value={data.wallet.marketingSales} /> تومان
+          <FormattedNumber value={data.state.wallet.marketingSales} /> تومان
         </div>
         <button
           className={styles.IncreasBalance}

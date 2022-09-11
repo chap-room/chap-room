@@ -1,18 +1,18 @@
 import { Routes, Route } from "react-router-dom";
-import Home from "../pages/Home";
-import Dashboard from "../pages/Dashboard";
-import DashboardIndex from "../pages/Dashboard/Sections/Index";
-import DashboardOrders from "../pages/Dashboard/Sections/Orders";
-import DashboardOrderList from "../pages/Dashboard/Sections/Orders/List";
-import DashboardNewOrder from "../pages/Dashboard/Sections/Orders/New";
-import DashboardAddresses from "../pages/Dashboard/Sections/Addresses";
-import DashboardAddresseList from "../pages/Dashboard/Sections/Addresses/List";
-import DashboardNewAddresse from "../pages/Dashboard/Sections/Addresses/New"; 
-import DashboardEditAddresse from "../pages/Dashboard/Sections/Addresses/Edit";
-import DashboardTransactions from "../pages/Dashboard/Sections/Transactions";
-import DashboardMarketing from "../pages/Dashboard/Sections/Marketing";
-import DashboardProfile from "../pages/Dashboard/Sections/Profile";
-import NotFound from "../pages/NotFound";
+import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
+import DashboardIndex from "./pages/Dashboard/Sections/Index";
+import DashboardOrders from "./pages/Dashboard/Sections/Orders";
+import DashboardOrderList from "./pages/Dashboard/Sections/Orders/List";
+import DashboardNewOrder from "./pages/Dashboard/Sections/Orders/New";
+import DashboardAddresses from "./pages/Dashboard/Sections/Addresses";
+import DashboardAddresseList from "./pages/Dashboard/Sections/Addresses/List";
+import DashboardNewAddresse from "./pages/Dashboard/Sections/Addresses/New"; 
+import DashboardEditAddresse from "./pages/Dashboard/Sections/Addresses/Edit";
+import DashboardTransactions from "./pages/Dashboard/Sections/Transactions";
+import DashboardMarketing from "./pages/Dashboard/Sections/Marketing";
+import DashboardProfile from "./pages/Dashboard/Sections/Profile";
+import NotFound from "./pages/NotFound";
 
 export default function AppRoutes() {
   return (

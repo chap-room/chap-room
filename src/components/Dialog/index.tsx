@@ -1,6 +1,6 @@
 import styles from "./style.module.scss";
 import { PropsWithChildren, useEffect, useRef } from "react";
-import { ReactComponent as CloseIcon } from "../../assets/svg/close.svg";
+import { ReactComponent as CloseIcon } from "../../assets/icons/close.svg";
 
 interface DialogProps {
   open: boolean;

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import ContentHeader from "../../../../../components/Dashboard/ContentHeader";
 import BottomActions from "../../../../../components/Dashboard/BottomActions";
-import { ReactComponent as ArrowBackIcon } from "../../../../../assets/svg/arrowBack.svg";
+import { ReactComponent as ArrowBackIcon } from "../../../../../assets/icons/arrowBack.svg";
 
 export default function DashboardNewOrder() {
   const navigate = useNavigate();

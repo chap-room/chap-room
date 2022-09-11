@@ -1,5 +1,5 @@
 import styles from "./style.module.scss";
-import { ReactComponent as CopyIcon } from "../../assets/svg/copy.svg";
+import { ReactComponent as CopyIcon } from "../../assets/icons/copy.svg";
 
 interface CopyableTextProps {
   text: string;

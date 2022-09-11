@@ -1,2 +1,103 @@
 .Container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+
+  .TitleContainer {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    @media (max-width: 896px) {
+      display: none;
+    }
+
+    .Title {
+      margin: 0;
+      color: #5e5e5e;
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    .Spacer {
+      flex: 1;
+    }
+
+    .BackToSiteButton {
+      display: flex;
+      height: 40px;
+      flex-direction: row;
+      gap: 10px;
+      align-items: center;
+      padding: 0 8px;
+      border-radius: 20px;
+      color: #5e5e5e;
+      text-decoration: none;
+      box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
+    }
+  }
+
+  .ContentContainer {
+    margin-top: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    > div:first-child {
+      display: flex;
+      flex-direction: row;
+      gap: 15px;
+
+      > div {
+        flex: 1;
+        box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
+        border-radius: 20px;
+        padding: 15px;
+
+        &:first-child {
+          .WelcomeUser {
+            color: #464646;
+            font-size: 28px;
+            font-weight: 500; // Medium
+          }
+
+          .DashboardDescription {
+            color: #464646;
+          }
+        }
+
+        &:last-child {
+          table {
+            width: 100%;
+            border-spacing: 0;
+
+            > thead > tr > th {
+              background-color: #f5f5f5;
+              color: #464646;
+              font-weight: normal;
+              padding: 5px 15px;  
+            }
+
+            > tbody > tr > td {
+              color: #9c9c9c;
+              font-size: 12px;
+              text-align: center;
+              padding: 8px 15px;
+
+              &:first-child {
+                color: #464646;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    > div:last-child {
+      box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
+      border-radius: 20px;
+      padding: 15px;
+    }
+  }
 }

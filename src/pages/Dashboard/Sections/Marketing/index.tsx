@@ -1,7 +1,7 @@
 import styles from "./style.module.scss";
 import Section from "../../../../components/Dashboard/Section";
-import { ReactComponent as LinkIcon } from "../../../../assets/svg/link.svg";
-import { ReactComponent as PercentIcon } from "../../../../assets/svg/percent.svg";
+import { ReactComponent as LinkIcon } from "../../../../assets/icons/link.svg";
+import { ReactComponent as PercentIcon } from "../../../../assets/icons/percent.svg";
 import CopyableText from "../../../../components/CopyableText";
 import { FormattedNumber } from "react-intl";
 

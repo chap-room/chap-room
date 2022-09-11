@@ -1,0 +1,140 @@
+.NotFound {
+  background-repeat: no-repeat;
+  background-image: url("../../assets/images/notFoundBackgroundBottom.svg"),
+    url("../../assets/images/notFoundBackgroundTop.svg");
+  background-position: bottom left, top left;
+  box-sizing: border-box;
+  max-width: 1260px;
+  min-height: 100vh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  background-size: auto 400px, 425px auto;
+  padding-bottom: 200px;
+
+  @media (max-width: 1148px) {
+    background-size: auto 350px, 375px auto;
+    padding-bottom: 200px;
+  }
+
+  @media (max-width: 1088px) {
+    background-size: auto 300px, 325px auto;
+    padding-bottom: 150px;
+  }
+
+  @media (max-width: 1024px) {
+    background-size: auto 275px, 300px auto;
+    padding-bottom: 125px;
+  }
+
+  @media (max-width: 896px) {
+    background-position: bottom center, top left;
+    background-size: auto 330px, 350px auto;
+    padding-bottom: 330px;
+  }
+
+  @media (max-width: 768px) {
+    background-size: auto 270px, 300px auto;
+    padding-bottom: 270px;
+  }
+
+  @media (max-width: 640px) {
+    background-size: auto 220px, 260px auto;
+    padding-bottom: 220px;
+  }
+
+  @media (max-width: 576px) {
+    background-size: auto 170px, 220px auto;
+    padding-bottom: 170px;
+  }
+
+  @media (max-width: 512px) {
+    background-size: auto 150px, 180px auto;
+    padding-bottom: 150px;
+  }
+
+  @media (max-width: 448px) {
+    background-size: auto 130px, 150px auto;
+    padding-bottom: 130px;
+  }
+
+  .Content {
+    padding: 0 140px;
+
+    @media (max-width: 896px) {
+      margin: 40px auto;
+      padding: 0 40px;
+      max-width: 400px;
+    }
+
+    .ErrorNumber {
+      font-size: 72px;
+      font-weight: bold;
+      color: #5800b3;
+
+      @media (max-width: 896px) {
+        font-size: 64px;
+      }
+    }
+
+    h1 {
+      margin-top: 0;
+      margin-bottom: 30px;
+      font-size: 40px;
+      font-weight: bold;
+      color: #5800b3;
+
+      @media (max-width: 896px) {
+        font-size: 30px;
+      }
+    }
+
+    p {
+      font-size: 16px;
+      margin: 0;
+
+      @media (max-width: 896px) {
+        font-size: 14px;
+      }
+    }
+
+    .Buttons {
+      margin-top: 30px;
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+
+      @media (max-width: 896px) {
+        flex-direction: column;
+      }
+
+      .BackButtons,
+      .ContactUsButtons {
+        display: flex;
+        height: 40px;
+        border-radius: 20px;
+        padding: 0 15px;
+        justify-content: center;
+        align-items: center;
+        box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
+        text-decoration: none;
+        min-width: 170px;
+        font-size: 16px;
+
+        @media (max-width: 896px) {
+          font-size: 14px;
+        }
+      }
+
+      .BackButtons {
+        color: #ffffff;
+        background: linear-gradient(260deg, #26e0fa 0%, #5869e8 100%);
+      }
+
+      .ContactUsButtons {
+        color: #2578fa;
+        background-color: #efeeee;
+      }
+    }
+  }
+}

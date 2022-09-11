@@ -37,9 +37,9 @@ export default function TransactionTabel({
             <td>{transaction.details}</td>
             <td>
               {transaction.status === TransactionStatus.successful ? (
-                <span className={styles.Successful}>موفق</span>
+                <span className={styles.Successful}>{transaction.status}</span>
               ) : (
-                <span className={styles.Unsuccessful}>نا موفق</span>
+                <span className={styles.Unsuccessful}>{transaction.status}</span>
               )}
             </td>
           </tr>

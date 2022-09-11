@@ -1,7 +1,7 @@
 import Section from "../../../components/Dashboard/Section";
 import ContentHeader from "../../../components/Dashboard/ContentHeader";
 import { useContext } from "react";
-import { DataContext } from "../../../dataContext";
+import { DataContext } from "../../../context/data";
 import TransactionTabel from "../../../components/Dashboard/TransactionTabel";
 
 export default function DashboardTransactions() {
@@ -14,7 +14,7 @@ export default function DashboardTransactions() {
     >
       <ContentHeader title="همه سوابق مالی" />
       <TransactionTabel
-        transactions={data.transactions}
+        transactions={data.state.transactions}
         onSeeDetails={(transactionId) => {
           console.log(transactionId);
         }}

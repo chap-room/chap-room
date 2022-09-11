@@ -1,12 +1,18 @@
+import { useMemo } from "react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import AddressList from "../../../../components/Dashboard/AddressList";
 import ContentHeader from "../../../../components/Dashboard/ContentHeader";
-import { DataContext } from "../../../../dataContext";
+import { DataContext } from "../../../../context/data";
 
 export default function DashboardAddresseList() {
   const data = useContext(DataContext);
   const navigate = useNavigate();
+
+  const addresses = useMemo(
+    () => Array.from(data.state.addresses.values()),
+    [data.state.addresses]
+  );
 
   return (
     <>
@@ -22,14 +28,15 @@ export default function DashboardAddresseList() {
         ]}
       />
       <AddressList
-        addresses={data.addresses}
+        addresses={addresses}
         onEditAddress={(addressId) =>
           navigate(`/dashboard/addresses/edit/${addressId}`)
         }
         onDeleteAddress={(addressId) => {
-          data.setAddresses(
-            data.addresses.filter((address) => address.id !== addressId)
-          );
+          data.dispatch({
+            type: "ADDRESSES:DELETE",
+            payload: addressId,
+          });
         }}
       />
     </>

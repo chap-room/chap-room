@@ -1,5 +1,5 @@
 import styles from "./style.module.scss";
-import { ReactComponent as ExpandMoreIcon } from "../../assets/svg/expandMore.svg";
+import { ReactComponent as ExpandMoreIcon } from "../../assets/icons/expandMore.svg";
 
 interface SelectProps {
   options: Record<string, string>;

@@ -3,17 +3,17 @@ import styles from "./style.module.scss";
 import { ReactComponent as EditIcon } from "../../../assets/icons/edit.svg";
 import { ReactComponent as DeletetIcon } from "../../../assets/icons/delete.svg";
 
-interface AddressListProps {
+interface PrintFolderListProps {
   addresses: Address[];
   onEditAddress: (addressId: string) => void;
   onDeleteAddress: (addressId: string) => void;
 }
 
-export default function AddressList({
+export default function PrintFolderList({
   addresses,
   onEditAddress,
   onDeleteAddress,
-}: AddressListProps) {
+}: PrintFolderListProps) {
   return (
     <div className={styles.AddressList}>
       {addresses.map((address) => (

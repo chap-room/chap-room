@@ -12,28 +12,62 @@ export interface Order {
   discountAmount: number;
   discountCode: string;
   paymentMethod: Record<PaymentMethod, number>;
-  status: OrederStatus;
+  status: OrderStatus;
   lastStatusChange: Date;
   trackingCode: string | null;
   postageDate: Date | null;
   postageMethod: PostageMethod;
 }
 
-export enum OrederStatus {
-  UserCancel,
-  paperCountMismatch,
-  pending,
-  preparing,
-  sent,
+export interface PrintFolder {
+  files: PrintFile[];
+  colors: PrintColors;
+  paperSize: PrintPaperSize;
+  type: PrintType;
+}
+
+export interface PrintFile {
+}
+
+export enum PrintColors {
+  blackAndWhite = 'سیاه و سفید',
+  normalColor = 'رنگی معمولی',
+  fullColor = 'تمام رنگی',
+}
+
+export enum PrintPaperSize {
+  a3 = 'A3',
+  a4 = 'A4',
+  a5 = 'A5',
+}
+  
+export enum PrintType {
+  singleSided = 'یک رو',
+  doubleSided = 'دو رو',
+}
+
+export enum OrderStatus {
+  canceled = 'لغو شده',
+  pending = 'در حال بررسی',
+  preparing = 'در حال آماده سازی',
+  sent = 'ارسال شده',
+}
+
+export enum OrderCancelReason {
+  userCancel = 'لغو شخصی',
+  paperCountMismatch = 'تعداد برگ با سفارش همخوانی ندارد',
+  pending = 'در حال بررسی',
+  preparing = 'در حال آماده سازی',
+  sent = 'ارسال شده',
 }
 
 export enum PaymentMethod {
-  wallet = 'wallet',
-  zarinPalGate = 'zarinPalGate',
+  wallet = 'کیف پول',
+  zarinPalGate = 'زرین پال',
 }
 
 export enum PostageMethod {
-  expressMail,
+  expressMail = 'پست پیشتاز',
 }
 
 export interface Address {
@@ -56,6 +90,6 @@ export interface Transaction {
 }
 
 export enum TransactionStatus {
-  successful,
-  unsuccessful,
+  successful = 'موفق',
+  unsuccessful = 'نا موفق',
 }

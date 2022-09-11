@@ -1,0 +1,22 @@
+.Header {
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 20px 60px;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 896px) {
+    padding: 20px 30px;
+  }
+
+  .Logo > svg {
+    width: auto;
+    height: 50px;
+
+    @media (max-width: 448px) {
+      height: 40px;
+    }
+  }
+}
