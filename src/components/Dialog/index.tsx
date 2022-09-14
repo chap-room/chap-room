@@ -5,7 +5,7 @@ import { ReactComponent as CloseIcon } from "../../assets/icons/close.svg";
 interface DialogProps {
   open: boolean;
   onClose: () => void;
-  title: string;
+  title?: string;
 }
 
 export default function Dialog({
@@ -38,17 +38,19 @@ export default function Dialog({
       ref={dialogWrapperRef}
     >
       <div className={styles.Dialog}>
-        <div className={styles.Header}>
-          <div className={styles.Start} />
-          <div className={styles.Center}>
-            <div className={styles.Title}>{title}</div>
+        {title && (
+          <div className={styles.Header}>
+            <div className={styles.Start} />
+            <div className={styles.Center}>
+              <div className={styles.Title}>{title}</div>
+            </div>
+            <div className={styles.End}>
+              <button className={styles.CloseButton} onClick={() => onClose()}>
+                <CloseIcon />
+              </button>
+            </div>
           </div>
-          <div className={styles.End}>
-            <button className={styles.CloseButton} onClick={() => onClose()}>
-              <CloseIcon />
-            </button>
-          </div>
-        </div>
+        )}
         <div className={styles.Content}>{children}</div>
       </div>
     </div>

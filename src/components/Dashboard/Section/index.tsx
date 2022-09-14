@@ -1,7 +1,7 @@
 import styles from "./style.module.scss";
 import { Link } from "react-router-dom";
 import { ReactComponent as ArrowForwardIcon } from "../../../assets/icons/arrowForward.svg";
-import { ReactComponent as Logo } from "../../../assets/icons/logo.svg";
+import { ReactComponent as Logo } from "../../../assets/images/logo.svg";
 import { PropsWithChildren, useEffect } from "react";
 
 interface SectionProps {

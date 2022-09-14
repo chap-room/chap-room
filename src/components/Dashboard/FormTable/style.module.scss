@@ -1,6 +1,9 @@
 .FormTable {
+  width: 100%;
+
   td {
     padding: 10px 10px;
+    box-sizing: border-box;
 
     &:first-child {
       display: inline-block;
@@ -12,6 +15,16 @@
     &:nth-child(2) {
       & > * {
         width: 300px;
+      }
+    }
+  }
+
+  &[data-full-width="true"] {
+    td {
+      &:nth-child(2) {
+        & > * {
+          width: 100%;
+        }
       }
     }
   }

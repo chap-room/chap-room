@@ -1,24 +1,199 @@
 import styles from "./style.module.scss";
 import { ReactComponent as ExpandMoreIcon } from "../../assets/icons/expandMore.svg";
 
-interface SelectProps {
+import React, { useRef, useState, useLayoutEffect } from "react";
+import {
+  useFloating,
+  offset,
+  flip,
+  useListNavigation,
+  useTypeahead,
+  useInteractions,
+  useRole,
+  useClick,
+  useDismiss,
+  FloatingFocusManager,
+  autoUpdate,
+  size,
+  FloatingOverlay,
+} from "@floating-ui/react-dom-interactions";
+
+type SelectProps = {
+  placeholder?: undefined;
   options: Record<string, string>;
-  placeholder?: string;
-  value?: string;
-  onChange?: (newValue: string) => void;
+  value: string;
+  onChange: (value: string) => void;
+} | {
+  placeholder: string;
+  options: Record<string, string>;
+  value: string | null;
+  onChange: (value: string | null) => void;
 }
 
 export default function Select({
-  options,
   placeholder,
-  value,
+  options,
   onChange,
+  value = null,
 }: SelectProps) {
+  const listItemsRef = useRef<Array<HTMLLIElement | null>>([]);
+  const listValueRef = useRef<(string | null)[]>([
+    ...Object.keys(options),
+    ...(placeholder ? [null] : []),
+  ]);
+  const listLabelRef =useRef<string[]>([
+    ...Object.values(options),
+    ...(placeholder ? [placeholder] : []),
+  ]);
+
+  const [open, setOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState(
+    Math.max(0, listValueRef.current.indexOf(value))
+  );
+  const [pointer, setPointer] = useState(false);
+
+  if (!open && pointer) {
+    setPointer(false);
+  }
+
+  const { x, y, reference, floating, strategy, context } = useFloating({
+    open,
+    onOpenChange: setOpen,
+    whileElementsMounted: autoUpdate,
+    middleware: [
+      offset(5),
+      flip({ padding: 8 }),
+      size({
+        apply({ rects, availableHeight, elements }) {
+          Object.assign(elements.floating.style, {
+            width: `${rects.reference.width}px`,
+            maxHeight: `${availableHeight}px`,
+          });
+        },
+        padding: 8,
+      }),
+    ],
+  });
+
+  const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
+    [
+      useClick(context),
+      useRole(context, { role: "listbox" }),
+      useDismiss(context),
+      useListNavigation(context, {
+        listRef: listItemsRef,
+        activeIndex,
+        selectedIndex,
+        onNavigate: setActiveIndex,
+      }),
+      useTypeahead(context, {
+        listRef: listLabelRef,
+        onMatch: open ? setActiveIndex : setSelectedIndex,
+        activeIndex,
+        selectedIndex,
+      }),
+    ]
+  );
+
+  useLayoutEffect(() => {
+    if (open && activeIndex != null && !pointer) {
+      requestAnimationFrame(() => {
+        listItemsRef.current[activeIndex]?.scrollIntoView({
+          block: "nearest",
+        });
+      });
+    }
+  }, [open, activeIndex, pointer]);
+
+  function handleSelect(index: number) {
+    setSelectedIndex(index);
+    if (placeholder) {
+      onChange(listValueRef.current[index]);
+    } else {
+      onChange(listValueRef.current[index]!);
+    }
+    setOpen(false);
+    setActiveIndex(null);
+  }
+
+  function handleKeyDown(index: number, event: React.KeyboardEvent) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleSelect.apply(null, [index]);
+    }
+
+    if (event.key === " ") {
+      event.preventDefault();
+    }
+  }
+
+  function handleKeyUp(index: number, event: React.KeyboardEvent) {
+    if (event.key === " " && !context.dataRef.current.typing) {
+      handleSelect.apply(null, [index]);
+    }
+  }
+
   return (
-    <div className={styles.Select}>
-      <span>{options[value || ""] || placeholder}</span>
-      <div className={styles.Spacer} />
-      <ExpandMoreIcon className={styles.ExpandMore} />
-    </div>
+    <>
+      <div
+        {...getReferenceProps({
+          ref: reference,
+          className: styles.Select,
+        })}
+      >
+        <span>{listLabelRef.current[selectedIndex]}</span>
+        <div className={styles.Spacer} />
+        <ExpandMoreIcon className={styles.ExpandMore} />
+      </div>
+      {open && (
+        <FloatingOverlay>
+          <FloatingFocusManager context={context} preventTabbing>
+            <div
+              {...getFloatingProps({
+                ref: floating,
+                className: styles.Dropdown,
+                style: {
+                  position: strategy,
+                  top: y ?? 0,
+                  left: x ?? 0,
+                  overflow: "auto",
+                },
+                onPointerMove() {
+                  setPointer(true);
+                },
+                onKeyDown(event) {
+                  setPointer(false);
+
+                  if (event.key === "Tab") {
+                    setOpen(false);
+                  }
+                },
+              })}
+            >
+              {Object.entries(listLabelRef.current).map(
+                (label, index) => (
+                  <div
+                    key={listValueRef.current[index]}
+                    role="option"
+                    ref={(node) => (listItemsRef.current[index] = node)}
+                    tabIndex={activeIndex === index ? 0 : 1}
+                    aria-selected={activeIndex === index}
+                    data-selected={selectedIndex === index}
+                    {...getItemProps({
+                      onClick: handleSelect.bind(null, index),
+                      onKeyDown: handleKeyDown.bind(null, index),
+                      onKeyUp: handleKeyUp.bind(null, index),
+                    })}
+                  >
+                    {label}
+                  </ی>
+                )
+              )}
+            </div>
+          </FloatingFocusManager>
+        </FloatingOverlay>
+      )}
+    </>
   );
 }

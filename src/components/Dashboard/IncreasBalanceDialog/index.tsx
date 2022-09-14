@@ -21,6 +21,7 @@ export default function IncreasBalanceDialog({
   return (
     <Dialog title="افزایش موجودی" open={open} onClose={onClose}>
       <FormTable
+        fullWidth
         fields={[
           {
             key: "amount",

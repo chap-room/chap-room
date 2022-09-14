@@ -1,8 +1,9 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import AddressList from "../../../../components/Dashboard/AddressList";
 import ContentHeader from "../../../../components/Dashboard/ContentHeader";
+import Dialog from "../../../../components/Dialog";
 import { DataContext } from "../../../../context/data";
 
 export default function DashboardAddresseList() {

@@ -2,6 +2,8 @@ import { Outlet } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 import styles from "./style.module.scss";
 import Sidebar from "../../components/Dashboard/Sidebar";
+import { Suspense } from "react";
+import DashboardSuspense from "./Suspense";
 
 export default function Dashboard() {
   return (
@@ -12,7 +14,9 @@ export default function Dashboard() {
         </StickyBox>
       </div>
       <div className={styles.ContentContainer}>
-        <Outlet />
+        <Suspense fallback={<DashboardSuspense />}>
+          <Outlet />
+        </Suspense>
       </div>
     </div>
   );

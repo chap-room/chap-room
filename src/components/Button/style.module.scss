@@ -1,0 +1,27 @@
+.Button {
+  display: flex;
+  height: 40px;
+  border-radius: 20px;
+  padding: 0 15px;
+  justify-content: center;
+  align-items: center;
+  box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
+  text-decoration: none;
+  font-size: 16px;
+  user-select: none;
+  border: none;
+  
+  &:not(:disabled) {
+    cursor: pointer;
+  }
+
+  &.Filled {
+    color: #ffffff;
+    background: linear-gradient(260deg, #26e0fa 0%, #5869e8 100%);
+  }
+
+  &.Outlined {
+    color: #2578fa;
+    background-color: #efeeee;
+  }
+}

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Dialog from "../../Dialog";
-import FormTable from "../FormTable";
 import TextInput from "../../TextInput";
 import BottomActions from "../BottomActions";
 
@@ -18,31 +17,25 @@ export default function WithdrawBalanceDialog({
 
   return (
     <Dialog title="برداشت موجودی" open={open} onClose={onClose}>
-      <FormTable
-        fields={[
-          {
-            key: "shabaNumber",
-            label: "شماره شبا:",
-            component: (
-              <TextInput
-                type="number"
-                value={shabaNumber}
-                onTextChange={(newValue) => setShabaNumber(newValue)}
-              />
-            ),
-          },
-          {
-            key: "accountHolderName",
-            label: "نام صاحب حساب:",
-            component: (
-              <TextInput
-                value={accountHolderName}
-                onTextChange={(newValue) => setAccountHolder(newValue)}
-              />
-            ),
-          },
-        ]}
-      />
+      <div>
+        <div>شماره شبا:</div>
+        <div>
+          <TextInput
+            type="number"
+            value={shabaNumber}
+            onTextChange={(newValue) => setShabaNumber(newValue)}
+          />
+        </div>
+      </div>
+      <div>
+        <div>نام صاحب حساب:</div>
+        <div>
+          <TextInput
+            value={accountHolderName}
+            onTextChange={(newValue) => setAccountHolder(newValue)}
+          />
+        </div>
+      </div>
       <BottomActions
         actions={[
           {

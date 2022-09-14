@@ -12,10 +12,10 @@ interface AddressFormProps {
   setRecipientPhoneNumber: (value: string) => void;
   recipientPostalCode: string;
   setRecipientPostalCode: (value: string) => void;
-  recipientDeliveryState: string;
-  setRecipientDeliveryState: (value: string) => void;
-  recipientDeliveryCity: string;
-  setRecipientDeliveryCity: (value: string) => void;
+  recipientDeliveryState: string | null;
+  setRecipientDeliveryState: (value: string | null) => void;
+  recipientDeliveryCity: string | null;
+  setRecipientDeliveryCity: (value: string | null) => void;
   recipientDeliveryAddress: string;
   setRecipientDeliveryAddress: (value: string) => void;
 }
@@ -45,6 +45,7 @@ export default function AddressForm(props: AddressFormProps) {
       />
       <div>
         <Select
+          placeholder="استان"
           options={{
             test1: "Test 1",
             test2: "Test 2",
@@ -55,6 +56,7 @@ export default function AddressForm(props: AddressFormProps) {
           onChange={(newValue) => props.setRecipientDeliveryState(newValue)}
         />
         <Select
+          placeholder="شهر"
           options={{
             test1: "Test 1",
             test2: "Test 2",

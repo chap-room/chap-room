@@ -10,11 +10,11 @@
   display: flex;
   flex-direction: column;
   background-size: auto 400px, 425px auto;
-  padding-bottom: 200px;
+  padding-bottom: 180px;
 
   @media (max-width: 1148px) {
     background-size: auto 350px, 375px auto;
-    padding-bottom: 200px;
+    padding-bottom: 180px;
   }
 
   @media (max-width: 1088px) {
@@ -56,6 +56,49 @@
   @media (max-width: 448px) {
     background-size: auto 130px, 150px auto;
     padding-bottom: 130px;
+  }
+
+  .Header {
+    width: 100%;
+    max-width: 1360px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 20px 60px;
+    display: flex;
+    flex-direction: column;
+
+    @media (max-width: 896px) {
+      padding: 20px 30px;
+    }
+
+    .Logo {
+      display: inline-flex;
+      
+      > svg {
+        width: auto;
+        height: 70px;
+
+        @media (max-width: 768px) {
+          height: 65px;
+        }
+
+        @media (max-width: 640px) {
+          height: 60px;
+        }
+
+        @media (max-width: 576px) {
+          height: 50px;
+        }
+
+        @media (max-width: 512px) {
+          height: 45px;
+        }
+
+        @media (max-width: 448px) {
+          height: 40px;
+        }
+      }
+    }
   }
 
   .Content {
@@ -106,34 +149,22 @@
 
       @media (max-width: 896px) {
         flex-direction: column;
-      }
-
-      .BackButtons,
-      .ContactUsButtons {
-        display: flex;
-        height: 40px;
-        border-radius: 20px;
-        padding: 0 15px;
-        justify-content: center;
         align-items: center;
-        box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
-        text-decoration: none;
-        min-width: 170px;
-        font-size: 16px;
 
-        @media (max-width: 896px) {
-          font-size: 14px;
+        > a {
+          min-width: unset;
+          width: 100%;
+          max-width: 300px;
         }
       }
 
-      .BackButtons {
-        color: #ffffff;
-        background: linear-gradient(260deg, #26e0fa 0%, #5869e8 100%);
-      }
+      > a {
+        text-decoration: none;
+        min-width: 170px;
 
-      .ContactUsButtons {
-        color: #2578fa;
-        background-color: #efeeee;
+        > button {
+            width: 100%;
+        }
       }
     }
   }

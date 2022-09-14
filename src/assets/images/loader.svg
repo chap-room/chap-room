@@ -1,0 +1,170 @@
+<svg id="e3y27wamrteq1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  viewBox="0 0 268.500000 295.830000" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
+  <!-- <style>
+    <![CDATA[
+    #e3y27wamrteq3_to {
+      animation: e3y27wamrteq3_to__to 2400ms linear infinite normal forwards
+    }
+
+    @keyframes e3y27wamrteq3_to__to {
+      0% {
+        transform: translate(-0px, 0.045561px)
+      }
+
+      16.666667% {
+        transform: translate(-0px, 0.045561px)
+      }
+
+      25% {
+        transform: translate(0.100000px, 51.270000px)
+      }
+
+      41.666667% {
+        transform: translate(0.100000px, 51.270000px)
+      }
+
+      50% {
+        transform: translate(43.608471px, 27.113231px)
+      }
+
+      66.666667% {
+        transform: translate(43.608471px, 27.113231px)
+      }
+
+      75% {
+        transform: translate(43.760612px, -24.310533px)
+      }
+
+      91.666667% {
+        transform: translate(43.760612px, -24.310533px)
+      }
+
+      100% {
+        transform: translate(-0.010157px, 0.067936px)
+      }
+    }
+
+    #e3y27wamrteq4_to {
+      animation: e3y27wamrteq4_to__to 2400ms linear infinite normal forwards
+    }
+
+    @keyframes e3y27wamrteq4_to__to {
+      0% {
+        transform: translate(0.100000px, 0.176454px)
+      }
+
+      8.333333% {
+        transform: translate(0.100000px, 0.176454px)
+      }
+
+      16.666667% {
+        transform: translate(44.181884px, -24.450981px)
+      }
+
+      33.333333% {
+        transform: translate(44.181884px, -24.450981px)
+      }
+
+      41.666667% {
+        transform: translate(43.508471px, -75.405865px)
+      }
+
+      58.333333% {
+        transform: translate(43.508471px, -75.405865px)
+      }
+
+      66.666667% {
+        transform: translate(0.100000px, -51.270000px)
+      }
+
+      83.333333% {
+        transform: translate(0.100000px, -51.270000px)
+      }
+
+      91.666667% {
+        transform: translate(-0.010157px, 0.054702px)
+      }
+
+      100% {
+        transform: translate(-0.010157px, 0.054702px)
+      }
+    }
+
+    #e3y27wamrteq5_to {
+      animation: e3y27wamrteq5_to__to 2400ms linear infinite normal forwards
+    }
+
+    @keyframes e3y27wamrteq5_to__to {
+      0% {
+        transform: translate(0.006884px, 0.169019px)
+      }
+
+      8.333333% {
+        transform: translate(0.006884px, -50.708481px)
+      }
+
+      25% {
+        transform: translate(0.006884px, -50.708481px)
+      }
+
+      33.333333% {
+        transform: translate(-44.075000px, -27px)
+      }
+
+      50% {
+        transform: translate(-44.075000px, -27px)
+      }
+
+      58.333333% {
+        transform: translate(-44.075000px, 24.939739px)
+      }
+
+      75% {
+        transform: translate(-44.075000px, 24.939739px)
+      }
+
+      83.333333% {
+        transform: translate(-0.029388px, 0.169019px)
+      }
+
+      100% {
+        transform: translate(-0.029388px, 0.169019px)
+      }
+    }
+    ]]>
+  </style> -->
+  <g id="e3y27wamrteq2">
+    <g id="e3y27wamrteq3_to" transform="translate(-0,0.045561)">
+      <polygon id="e3y27wamrteq3"
+        points="147.090000,152.130000 147.260000,191.830000 181.770000,171.740000 181.770000,132.130000 147.090000,152.130000"
+        transform="translate(0,0)" fill="rgb(224,0,126)" stroke="none" stroke-width="1" />
+    </g>
+    <g id="e3y27wamrteq4_to" transform="translate(0.100000,0.176454)">
+      <polygon id="e3y27wamrteq4"
+        points="147.190000,203.630000 147.360000,243.100000 181.670000,223.130000 181.670000,183.750000 147.190000,203.630000"
+        transform="translate(0,0)" fill="rgb(255,234,45)" stroke="none" stroke-width="1" />
+    </g>
+    <g id="e3y27wamrteq5_to" transform="translate(0.006884,0.169019)">
+      <polygon id="e3y27wamrteq5"
+        points="191.650000,178.680000 191.810000,217.480000 225.560000,197.850000 225.560000,159.130000 191.650000,178.680000"
+        transform="translate(0,0)" fill="rgb(0,168,222)" stroke="none" stroke-width="1" />
+    </g>
+    <polygon id="e3y27wamrteq6" display="none"
+      points="147.090000,152.130000 147.260000,191.830000 181.770000,171.740000 181.770000,132.130000 147.090000,152.130000"
+      fill="rgb(224,0,126)" stroke="none" stroke-width="1" />
+    <polygon id="e3y27wamrteq7" display="none"
+      points="147.190000,203.630000 147.360000,243.100000 181.670000,223.130000 181.670000,183.750000 147.190000,203.630000"
+      fill="rgb(255,234,45)" stroke="none" stroke-width="1" />
+    <polygon id="e3y27wamrteq8" display="none"
+      points="191.650000,178.680000 191.810000,217.480000 225.560000,197.850000 225.560000,159.130000 191.650000,178.680000"
+      fill="rgb(0,168,222)" stroke="none" stroke-width="1" />
+    <path id="e3y27wamrteq9"
+      d="M241.540000,533.590000L241.540000,411.810000C241.543852,391.875729,252.015566,373.407848,269.120000,363.170000L322.090285,332.507544L292.137021,314.628038L238.600000,345.510000C221.151393,355.660006,210.417719,374.323953,210.420000,394.510000L210.420000,482.880000C210.423510,502.988808,221.077519,521.591467,238.420000,531.770000Z"
+      transform="matrix(1 0 0 1 -161.27000000000001 -264.81000000000000)" fill="rgb(36,41,43)" stroke="none"
+      stroke-width="1" />
+    <path id="e3y27wamrteq10"
+      d="M398.650000,410.730000L398.650000,461.310000C398.657869,466.346745,395.993345,471.009662,391.650000,473.560000L300.250000,526.750000C299.373621,527.263173,298.289460,527.267407,297.409099,526.761097C296.528739,526.254786,295.987174,525.315568,295.990000,524.300000L295.990000,419.350000C295.979138,414.304614,298.648139,409.632910,303,407.080000L417,341C419.628723,339.481304,421.247895,336.675889,421.247895,333.640000C421.247895,330.604111,419.628723,327.798696,417,326.280000L323.400000,272.420000C305.809607,262.298038,284.150273,262.351433,266.610000,272.560000L189.440000,317.470000C171.991393,327.620006,161.257719,346.283953,161.260000,366.470000L161.260000,454.560000C161.259238,474.816211,172.066575,493.533681,189.610000,503.660000L192.380000,505.260000L192.380000,384.260000C192.381815,364.075046,203.114398,345.412996,220.560000,335.260000L295.090000,291.890000L367.500000,333.690000L293,377C275.556743,387.154029,264.827696,405.816553,264.830000,426L264.830000,530.650000C264.827556,540.777350,270.229457,550.136325,279,555.200000L281.850000,556.850000C290.651468,561.930709,301.500055,561.907813,310.280000,556.790000L401.610000,503.650000C419.050254,493.492984,429.778212,474.832354,429.780000,454.650000L429.780000,392.650000Z"
+      transform="matrix(1 0 0 1 -161.27000000000001 -264.81000000000000)" fill="rgb(36,41,43)" stroke="none"
+      stroke-width="1" />
+  </g>
+</svg>

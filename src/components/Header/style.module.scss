@@ -3,7 +3,7 @@
   max-width: 1360px;
   margin: 0 auto;
   box-sizing: border-box;
-  padding: 20px 60px;
+  padding: 20px 140px;
   display: flex;
   flex-direction: column;
 
@@ -11,12 +11,38 @@
     padding: 20px 30px;
   }
 
-  .Logo > svg {
-    width: auto;
-    height: 50px;
+  .Logo {
+    display: inline-flex;
+    
+    > svg {
+      width: auto;
+      height: 55px;
 
-    @media (max-width: 448px) {
-      height: 40px;
+      @media (max-width: 448px) {
+        height: 40px;
+      }
+    }
+
+    &.HideLogoInMobile {
+      @media (max-width: 896px) {
+        display: none;
+      }
+    }
+  }
+  
+  .MobileBackButton {
+    background-color: #f5f5f5;
+    width: 54px;
+    height: 54px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    fill: #9c9c9c;
+    border-radius: 50%;
+    box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
+
+    @media (min-width: 897px) {
+      display: none;
     }
   }
 }

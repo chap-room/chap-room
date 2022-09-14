@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import styles from "./style.module.scss";
 
 interface FormTableProps {
+  fullWidth?: boolean;
   fields: {
     key: string;
     label: string;
@@ -9,9 +10,9 @@ interface FormTableProps {
   }[];
 }
 
-export default function FormTable({ fields }: FormTableProps) {
+export default function FormTable({ fullWidth, fields }: FormTableProps) {
   return (
-    <table className={styles.FormTable}>
+    <table className={styles.FormTable} data-full-width={fullWidth}>
       <tbody>
         {fields.map((field) => (
           <tr key={field.key}>

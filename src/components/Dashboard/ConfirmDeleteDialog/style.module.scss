@@ -1,0 +1,31 @@
+.Container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+
+  .WarningIcon {
+    fill: #9c9c9c;
+
+    > svg {
+      width: 72px;
+      height: 72px;
+    }
+  }
+
+  .Message {
+    font-size: 18px;
+    font-weight: 500; // Medium
+    color: #9c9c9c;
+  }
+
+  .Buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+
+    > button {
+      min-width: 150px;
+    }
+  }
+}

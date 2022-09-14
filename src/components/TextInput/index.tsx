@@ -7,19 +7,18 @@ interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
   ({ onTextChange, ...props }: TextInputProps, ref) => (
-    <input
-      ref={ref}
-      {...props}
-      className={
-        props.className ? props.className + " " + styles.Input : styles.Input
-      }
-      onChange={(event) => {
-        onTextChange && onTextChange(event.target.value);
-        if (typeof props?.onChange === "function") {
-          return props.onChange.apply(this, [event]);
-        }
-      }}
-    />
+    <div className={styles.InputBox}>
+      <input
+        ref={ref}
+        {...props}
+        onChange={(event) => {
+          onTextChange && onTextChange(event.target.value);
+          if (typeof props?.onChange === "function") {
+            return props.onChange.apply(this, [event]);
+          }
+        }}
+      />
+    </div>
   )
 );
 

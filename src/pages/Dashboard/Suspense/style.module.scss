@@ -1,0 +1,14 @@
+.Container {
+  min-height: 100%;
+  padding: 50px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  svg {
+    width: 100%;
+    max-width: 80px;
+    height: auto;
+  }
+}
