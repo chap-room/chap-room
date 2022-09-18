@@ -1,1 +1,29 @@
+.SemiCircleProgressBar {
+  width: 40px;
+  height: 40px;
+  position: relative;
 
+  .SemiCircleProgressBarPath {
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.5s ease 0s;
+    stroke: #0377a5;
+    transform: rotate(135deg);
+    transform-origin: center;
+  }
+
+  .SemiCircleProgressBarTrail {
+    stroke-linecap: round;
+    stroke: #d8d8d8;
+    transform: rotate(135deg);
+    transform-origin: center;
+  }
+
+  .SemiCircleProgressBarText {
+    color: #6c6c6c;
+    font-size: 12px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    transform: translate(-50%, -50%);
+  }
+}

@@ -8,17 +8,30 @@
   box-shadow: inset -3px -3px 6px #ffffffdb, inset 3px 3px 6px #00000029;
   display: flex;
   flex-direction: row;
+  gap: 5px;
   justify-content: center;
 
-  input {
+  > input {
     background: transparent;
     border: none;
     padding: 0;
     outline: none;
     flex: 1;
-    
+
     &::placeholder {
       color: #cccccc;
+    }
+
+    &[type="number"] {
+      /* Firefox */
+      -moz-appearance: textfield;
+
+      /* Chrome, Safari, Edge, Opera */
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
     }
   }
 }

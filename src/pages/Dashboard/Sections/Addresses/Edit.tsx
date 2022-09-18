@@ -1,15 +1,17 @@
 import { useContext, useState } from "react";
+import { Helmet } from "react-helmet";
 import { useNavigate, useParams } from "react-router-dom";
-import { DataContext } from "../../../../context/data";
+import { DashboardDataContext } from "../../../../context/DashboardData";
 import { ReactComponent as ArrowBackIcon } from "../../../../assets/icons/arrowBack.svg";
 import ContentHeader from "../../../../components/Dashboard/ContentHeader";
-import BottomActions from "../../../../components/Dashboard/BottomActions";
+import Button from "../../../../components/Button";
 import AddressForm from "../../../../components/Dashboard/AddressForm";
+import BottomActions from "../../../../components/Dashboard/BottomActions";
 
 export default function DashboardEditAddresse() {
-  const data = useContext(DataContext);
+  const data = useContext(DashboardDataContext);
   const { addressId } = useParams();
-  const address = data.state.addresses.get(addressId!)!;
+  const address = data.state.addresses[addressId!];
 
   const [label, setLabel] = useState(address.label);
   const [recipientName, setRecipientName] = useState(address.recipientName);
@@ -19,8 +21,8 @@ export default function DashboardEditAddresse() {
   const [recipientPostalCode, setRecipientPostalCode] = useState(
     address.recipientPostalCode
   );
-  const [recipientDeliveryState, setRecipientDeliveryState] = useState(
-    address.recipientDeliveryState
+  const [recipientDeliveryProvince, setRecipientDeliveryProvince] = useState(
+    address.recipientDeliveryProvince
   );
   const [recipientDeliveryCity, setRecipientDeliveryCity] = useState(
     address.recipientDeliveryCity
@@ -33,20 +35,14 @@ export default function DashboardEditAddresse() {
 
   return (
     <>
+      <Helmet title="داشبورد - ویرایش آدرس" />
       <ContentHeader
         title="ویرایش کردن آدرس"
-        actions={[
-          {
-            key: "back",
-            label: (
-              <>
-                انصراف و بازگشت <ArrowBackIcon />
-              </>
-            ),
-            variant: "none",
-            onClick: () => navigate("/dashboard/addresses"),
-          },
-        ]}
+        end={
+          <Button onClick={() => navigate("/dashboard/addresses")}>
+            انصراف و بازگشت <ArrowBackIcon />
+          </Button>
+        }
       />
       <AddressForm
         label={label}
@@ -57,38 +53,37 @@ export default function DashboardEditAddresse() {
         setRecipientPhoneNumber={setRecipientPhoneNumber}
         recipientPostalCode={recipientPostalCode}
         setRecipientPostalCode={setRecipientPostalCode}
-        recipientDeliveryState={recipientDeliveryState}
-        setRecipientDeliveryState={setRecipientDeliveryState}
+        recipientDeliveryProvince={recipientDeliveryProvince}
+        setRecipientDeliveryProvince={setRecipientDeliveryProvince}
         recipientDeliveryCity={recipientDeliveryCity}
         setRecipientDeliveryCity={setRecipientDeliveryCity}
         recipientDeliveryAddress={recipientDeliveryAddress}
         setRecipientDeliveryAddress={setRecipientDeliveryAddress}
       />
-      <BottomActions
-        actions={[
-          {
-            key: "save",
-            label: "ذخیره",
-            variant: "filled",
-            onClick: () => {
-              data.dispatch({
-                type: "ADDRESSES:SET",
-                payload: {
-                  id: addressId!,
-                  label,
-                  recipientName,
-                  recipientPhoneNumber,
-                  recipientPostalCode,
-                  recipientDeliveryState,
-                  recipientDeliveryCity,
-                  recipientDeliveryAddress,
-                },
-              });
-              navigate("/dashboard/addresses");
-            },
-          },
-        ]}
-      />
+      <BottomActions>
+        <Button
+          varient="filled"
+          style={{ minWidth: 100 }}
+          onClick={() => {
+            data.dispatch({
+              type: "ADDRESSES:SET",
+              payload: {
+                id: addressId!,
+                label,
+                recipientName,
+                recipientPhoneNumber,
+                recipientPostalCode,
+                recipientDeliveryProvince,
+                recipientDeliveryCity,
+                recipientDeliveryAddress,
+              },
+            });
+            navigate("/dashboard/addresses");
+          }}
+        >
+          ذخیره
+        </Button>
+      </BottomActions>
     </>
   );
 }

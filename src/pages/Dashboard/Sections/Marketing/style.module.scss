@@ -17,15 +17,31 @@
     gap: 20px;
     color: #5e5e5e;
 
+    @media (max-width: 896px) {
+      grid-template-columns: 1fr;
+    }
+
     .Title {
       font-weight: bold;
+      font-size: 16px;
+
+      @media (max-width: 576px) {
+        font-size: 14px;
+      }
+    }
+
+    .Description {
+      font-size: 14px;
+
+      @media (max-width: 576px) {
+        font-size: 12px;
+      }
     }
 
     > div:first-child {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      width: 300px;
 
       .LinkIcon,
       .PercentIcon {
@@ -83,13 +99,29 @@
           padding: 10px 20px;
           text-align: center;
 
+          @media (max-width: 896px) {
+            gap: 5px;
+          }
+
+          @media (max-width: 512px) {
+            padding: 5px 10px;
+          }
+
           > div:first-child {
             font-weight: 500; // Medium
+
+            @media (max-width: 576px) {
+              font-size: 10px;
+            }
           }
-          
+
           > div:last-child {
             font-size: 12px;
             font-weight: 300; // Light
+
+            @media (max-width: 576px) {
+              font-size: 9px;
+            }
           }
 
           &:last-child {

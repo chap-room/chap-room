@@ -15,36 +15,40 @@ import {
   FloatingFocusManager,
   autoUpdate,
   size,
-  FloatingOverlay,
 } from "@floating-ui/react-dom-interactions";
 
-type SelectProps = {
-  placeholder?: undefined;
-  options: Record<string, string>;
-  value: string;
-  onChange: (value: string) => void;
-} | {
-  placeholder: string;
-  options: Record<string, string>;
-  value: string | null;
-  onChange: (value: string | null) => void;
-}
+type SelectProps =
+  | {
+      placeholder?: undefined;
+      options: Record<string, string>;
+      value: string;
+      onChange: (value: string) => void;
+      readOnly?: boolean;
+    }
+  | {
+      placeholder: string;
+      options: Record<string, string>;
+      value: string | null;
+      onChange: (value: string | null) => void;
+      readOnly?: boolean;
+    };
 
 export default function Select({
   placeholder,
   options,
   onChange,
   value = null,
+  readOnly,
 }: SelectProps) {
-  const listItemsRef = useRef<Array<HTMLLIElement | null>>([]);
-  const listValueRef = useRef<(string | null)[]>([
-    ...Object.keys(options),
-    ...(placeholder ? [null] : []),
-  ]);
-  const listLabelRef =useRef<string[]>([
-    ...Object.values(options),
-    ...(placeholder ? [placeholder] : []),
-  ]);
+  const listItemsRef = useRef<Array<HTMLDivElement | null>>([]);
+  const listValueRef = useRef<(string | null)[]>(
+    placeholder ? [null, ...Object.keys(options)] : Object.keys(options)
+  );
+  const listLabelRef = useRef<string[]>(
+    placeholder
+      ? [placeholder, ...Object.values(options)]
+      : Object.values(options)
+  );
 
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -58,17 +62,16 @@ export default function Select({
   }
 
   const { x, y, reference, floating, strategy, context } = useFloating({
-    open,
+    open: !readOnly && open,
     onOpenChange: setOpen,
     whileElementsMounted: autoUpdate,
     middleware: [
       offset(5),
       flip({ padding: 8 }),
       size({
-        apply({ rects, availableHeight, elements }) {
+        apply({ rects, elements }) {
           Object.assign(elements.floating.style, {
             width: `${rects.reference.width}px`,
-            maxHeight: `${availableHeight}px`,
           });
         },
         padding: 8,
@@ -78,7 +81,9 @@ export default function Select({
 
   const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
     [
-      useClick(context),
+      useClick(context, {
+        enabled: !readOnly
+      }),
       useRole(context, { role: "listbox" }),
       useDismiss(context),
       useListNavigation(context, {
@@ -147,52 +152,48 @@ export default function Select({
         <ExpandMoreIcon className={styles.ExpandMore} />
       </div>
       {open && (
-        <FloatingOverlay>
-          <FloatingFocusManager context={context} preventTabbing>
-            <div
-              {...getFloatingProps({
-                ref: floating,
-                className: styles.Dropdown,
-                style: {
-                  position: strategy,
-                  top: y ?? 0,
-                  left: x ?? 0,
-                  overflow: "auto",
-                },
-                onPointerMove() {
-                  setPointer(true);
-                },
-                onKeyDown(event) {
-                  setPointer(false);
+        <FloatingFocusManager context={context} preventTabbing>
+          <div
+            {...getFloatingProps({
+              ref: floating,
+              className: styles.Dropdown,
+              style: {
+                position: strategy,
+                top: y ?? 0,
+                left: x ?? 0,
+                overflow: "auto",
+              },
+              onPointerMove() {
+                setPointer(true);
+              },
+              onKeyDown(event) {
+                setPointer(false);
 
-                  if (event.key === "Tab") {
-                    setOpen(false);
-                  }
-                },
-              })}
-            >
-              {Object.entries(listLabelRef.current).map(
-                (label, index) => (
-                  <div
-                    key={listValueRef.current[index]}
-                    role="option"
-                    ref={(node) => (listItemsRef.current[index] = node)}
-                    tabIndex={activeIndex === index ? 0 : 1}
-                    aria-selected={activeIndex === index}
-                    data-selected={selectedIndex === index}
-                    {...getItemProps({
-                      onClick: handleSelect.bind(null, index),
-                      onKeyDown: handleKeyDown.bind(null, index),
-                      onKeyUp: handleKeyUp.bind(null, index),
-                    })}
-                  >
-                    {label}
-                  </ی>
-                )
-              )}
-            </div>
-          </FloatingFocusManager>
-        </FloatingOverlay>
+                if (event.key === "Tab") {
+                  setOpen(false);
+                }
+              },
+            })}
+          >
+            {listLabelRef.current.map((label, index) => (
+              <div
+                key={listValueRef.current[index]}
+                role="option"
+                ref={(node) => (listItemsRef.current[index] = node)}
+                tabIndex={activeIndex === index ? 0 : 1}
+                aria-selected={activeIndex === index}
+                data-selected={selectedIndex === index}
+                {...getItemProps({
+                  onClick: handleSelect.bind(null, index),
+                  onKeyDown: handleKeyDown.bind(null, index),
+                  onKeyUp: handleKeyUp.bind(null, index),
+                })}
+              >
+                {label}
+              </div>
+            ))}
+          </div>
+        </FloatingFocusManager>
       )}
     </>
   );

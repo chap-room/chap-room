@@ -1,9 +1,10 @@
 import styles from "./style.module.scss";
+import { Helmet } from "react-helmet";
+import { FormattedNumber } from "react-intl";
 import Section from "../../../../components/Dashboard/Section";
 import { ReactComponent as LinkIcon } from "../../../../assets/icons/link.svg";
 import { ReactComponent as PercentIcon } from "../../../../assets/icons/percent.svg";
 import CopyableText from "../../../../components/CopyableText";
-import { FormattedNumber } from "react-intl";
 
 export default function DashboardMarketing() {
   return (
@@ -11,6 +12,7 @@ export default function DashboardMarketing() {
       title="بازاریابی"
       description="با استفاده از این سیستم می توانید به راحتی برای خود درآمدزایی کنید"
     >
+      <Helmet title="داشبورد - بازاریابی" />
       <div className={styles.Container}>
         <div className={styles.DedicatedLink}>
           <div>
@@ -79,8 +81,8 @@ export default function DashboardMarketing() {
                 <CopyableText text="HGVFCD" />
               </div>
               <div>
-                  {/* eslint-disable-next-line react/style-prop-object */}
-                  کد تخفیف <FormattedNumber value={0.05} style="percent" />
+                {/* eslint-disable-next-line react/style-prop-object */}
+                کد تخفیف <FormattedNumber value={0.05} style="percent" />
                 <CopyableText text="NC5WFh" />
               </div>
             </div>

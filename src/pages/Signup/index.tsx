@@ -1,6 +1,7 @@
 import styles from "./style.module.scss";
-import { Link } from "react-router-dom";
 import { useState } from "react";
+import { Helmet } from "react-helmet";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
 import TextInput from "../../components/TextInput";
 import Button from "../../components/Button";
@@ -12,8 +13,11 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
 
+  const navigation = useNavigate();
+
   return (
     <div className={styles.Signup}>
+      <Helmet title="ثبت نام" />
       <Header hideLogoInMobile showBackButtonInMobile />
       <div className={styles.Content}>
         <div className={styles.Form}>
@@ -21,7 +25,7 @@ export default function Signup() {
             <div className={styles.Title}>ثبت نام</div>
             <div className={styles.SubTitle}>
               برای ثبت نام اطلاعات خود را وارد کنید
-            </div>  
+            </div>
           </div>
           <TextInput
             value={fullName}
@@ -46,7 +50,9 @@ export default function Signup() {
             type="password"
           />
           <div>
-            <Button varient="filled">ثبت نام</Button>
+            <Button varient="gradient" onClick={() => navigation("/dashboard")}>
+              ثبت نام
+            </Button>
             <div className={styles.BottomNote}>
               حساب کاربری دارید؟ <Link to="/login">وارد شوید</Link>
             </div>

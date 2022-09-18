@@ -1,7 +1,9 @@
+import styles from "./style.module.scss";
 import { useState } from "react";
 import Dialog from "../../Dialog";
 import TextInput from "../../TextInput";
 import BottomActions from "../BottomActions";
+import Button from "../../Button";
 
 interface WithdrawBalanceDialogProps {
   open: boolean;
@@ -17,35 +19,34 @@ export default function WithdrawBalanceDialog({
 
   return (
     <Dialog title="برداشت موجودی" open={open} onClose={onClose}>
-      <div>
-        <div>شماره شبا:</div>
+      <div className={styles.DialogContent}>
         <div>
-          <TextInput
-            type="number"
-            value={shabaNumber}
-            onTextChange={(newValue) => setShabaNumber(newValue)}
-          />
+          <div>شماره شبا:</div>
+          <div>
+            <TextInput
+              dir="ltr"
+              type="number"
+              value={shabaNumber}
+              onTextChange={(newValue) =>
+                setShabaNumber(newValue.substring(0, 26))
+              }
+              prefix="IR"
+            />
+          </div>
+        </div>
+        <div>
+          <div>نام صاحب حساب:</div>
+          <div>
+            <TextInput
+              value={accountHolderName}
+              onTextChange={(newValue) => setAccountHolder(newValue)}
+            />
+          </div>
         </div>
       </div>
-      <div>
-        <div>نام صاحب حساب:</div>
-        <div>
-          <TextInput
-            value={accountHolderName}
-            onTextChange={(newValue) => setAccountHolder(newValue)}
-          />
-        </div>
-      </div>
-      <BottomActions
-        actions={[
-          {
-            key: "registerRequest",
-            label: "ثبت درخواست",
-            variant: "filled",
-            onClick: () => {},
-          },
-        ]}
-      />
+      <BottomActions>
+        <Button varient="filled" style={{ minWidth: 100 }}>ثبت درخواست</Button>
+      </BottomActions>
     </Dialog>
   );
 }

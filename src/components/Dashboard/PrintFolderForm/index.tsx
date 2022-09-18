@@ -10,8 +10,8 @@ interface PrintFolderFormProps {
   setRecipientPhoneNumber: (value: string) => void;
   recipientPostalCode: string;
   setRecipientPostalCode: (value: string) => void;
-  recipientDeliveryState: string;
-  setRecipientDeliveryState: (value: string) => void;
+  recipientDeliveryProvince: string;
+  setRecipientDeliveryProvince: (value: string) => void;
   recipientDeliveryCity: string;
   setRecipientDeliveryCity: (value: string) => void;
   recipientDeliveryAddress: string;
@@ -49,8 +49,8 @@ export default function PrintFolderForm(props: PrintFolderFormProps) {
             test3: "Test 3",
             test4: "Test 4",
           }}
-          value={props.recipientDeliveryState}
-          onChange={(newValue) => props.setRecipientDeliveryState(newValue)}
+          value={props.recipientDeliveryProvince}
+          onChange={(newValue) => props.setRecipientDeliveryProvince(newValue)}
         />
         <Select
           options={{

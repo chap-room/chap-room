@@ -26,9 +26,9 @@ export default function TransactionTabel({
           <tr key={transaction.id}>
             <td>
               <span className={styles.Date}>
-                <FormattedDate value={transaction.data} dateStyle="medium" />
+                <FormattedDate value={transaction.date} dateStyle="medium" />
                 <br />
-                <FormattedTime value={transaction.data} hour12 />
+                <FormattedTime value={transaction.date} hour12 />
               </span> 
             </td>
             <td>

@@ -1,7 +1,11 @@
-import Select from "../../Select";
-import TextArea from "../../TextArea";
-import TextInput from "../../TextInput";
 import styles from "./style.module.scss";
+import TextArea from "../../TextArea";
+import ContentSelect from "../../ContentSelect";
+import TextInput from "../../TextInput";
+import iranProvincesAndCitiesJson from "../../../assets/json/iranProvincesAndCities.json";
+
+const iranProvincesAndCities: Record<string, string[]> =
+  iranProvincesAndCitiesJson;
 
 interface AddressFormProps {
   label: string;
@@ -12,10 +16,10 @@ interface AddressFormProps {
   setRecipientPhoneNumber: (value: string) => void;
   recipientPostalCode: string;
   setRecipientPostalCode: (value: string) => void;
-  recipientDeliveryState: string | null;
-  setRecipientDeliveryState: (value: string | null) => void;
-  recipientDeliveryCity: string | null;
-  setRecipientDeliveryCity: (value: string | null) => void;
+  recipientDeliveryProvince: string;
+  setRecipientDeliveryProvince: (value: string) => void;
+  recipientDeliveryCity: string;
+  setRecipientDeliveryCity: (value: string) => void;
   recipientDeliveryAddress: string;
   setRecipientDeliveryAddress: (value: string) => void;
 }
@@ -43,28 +47,24 @@ export default function AddressForm(props: AddressFormProps) {
         value={props.recipientPostalCode}
         onTextChange={(newText) => props.setRecipientPostalCode(newText)}
       />
-      <div>
-        <Select
+      <div className={styles.ProvinceAndCitySelects}>
+        <ContentSelect
           placeholder="استان"
-          options={{
-            test1: "Test 1",
-            test2: "Test 2",
-            test3: "Test 3",
-            test4: "Test 4",
+          options={Object.keys(iranProvincesAndCities)}
+          value={props.recipientDeliveryProvince}
+          onChange={(newValue) => {
+            props.setRecipientDeliveryProvince(newValue);
+            props.setRecipientDeliveryCity("شهر");
           }}
-          value={props.recipientDeliveryState}
-          onChange={(newValue) => props.setRecipientDeliveryState(newValue)}
         />
-        <Select
+        <ContentSelect
           placeholder="شهر"
-          options={{
-            test1: "Test 1",
-            test2: "Test 2",
-            test3: "Test 3",
-            test4: "Test 4",
-          }}
+          options={
+            iranProvincesAndCities[props.recipientDeliveryProvince] || []
+          }
           value={props.recipientDeliveryCity}
           onChange={(newValue) => props.setRecipientDeliveryCity(newValue)}
+          readOnly={!iranProvincesAndCities[props.recipientDeliveryProvince]}
         />
       </div>
       <TextArea

@@ -5,6 +5,7 @@
   align-items: center;
 
   .WarningIcon {
+    display: flex;
     fill: #9c9c9c;
 
     > svg {
@@ -17,15 +18,6 @@
     font-size: 18px;
     font-weight: 500; // Medium
     color: #9c9c9c;
-  }
-
-  .Buttons {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-
-    > button {
-      min-width: 150px;
-    }
+    margin-bottom: 10px;
   }
 }

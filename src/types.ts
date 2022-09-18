@@ -76,14 +76,14 @@ export interface Address {
   recipientName: string;
   recipientPhoneNumber: string;
   recipientPostalCode: string;
-  recipientDeliveryState: string;
+  recipientDeliveryProvince: string;
   recipientDeliveryCity: string;
   recipientDeliveryAddress: string;
 }
 
 export interface Transaction {
   id: string;
-  data: Date;
+  date: Date;
   amount: number;
   details: string;
   status: TransactionStatus;

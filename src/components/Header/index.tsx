@@ -2,6 +2,8 @@ import styles from "./style.module.scss";
 import { ReactComponent as LogoWithName } from "../../assets/images/logoWithName.svg";
 import { Link, NavLink } from "react-router-dom";
 import { ReactComponent as ArrowForwardIcon } from "../../assets/icons/arrowForward.svg";
+import ButtonList from "../ButtonList";
+import Button from "../Button";
 
 interface HeaderProps {
   showBackButtonInMobile?: boolean;
@@ -21,16 +23,18 @@ export default function Header({
 
   return (
     <div className={styles.Header}>
-      <Link to="/" className={logoClassName.join(" ")}>
-        <LogoWithName />
-      </Link>
-      {showBackButtonInMobile && (
-        <Link to="/" className={styles.MobileBackButton}>
-          <ArrowForwardIcon />
+      <div className={styles.Start}>
+        <Link to="/" className={logoClassName.join(" ")}>
+          <LogoWithName />
         </Link>
-      )}
-      {showNavMenuAndUser && (
-        <>
+        {showBackButtonInMobile && (
+          <Link to="/" className={styles.MobileBackButton}>
+            <ArrowForwardIcon />
+          </Link>
+        )}
+      </div>
+      <div className={styles.Center}>
+        {showNavMenuAndUser && (
           <div className={styles.NavLinks}>
             <NavLink to="/">خانه</NavLink>
             <NavLink to="/prices">تعرفه پرینت</NavLink>
@@ -38,12 +42,22 @@ export default function Header({
             <NavLink to="/blog">وبلاگ</NavLink>
             <NavLink to="/contact-us">تماس با ما</NavLink>
           </div>
-          <div className={styles.UserLogin}>
-            <Link to="/login">ورود</Link>
-            <Link to="/signup">ثبت نام</Link>
+        )}
+      </div>
+      <div className={styles.End}>
+        {showNavMenuAndUser && (
+          <div className={styles.UserAuth}>
+            <ButtonList>
+              <Link to="/login">
+                <Button>ورود</Button>
+              </Link>
+              <Link to="/signup">
+                <Button varient="filled">ثبت نام</Button>
+              </Link>
+            </ButtonList>
           </div>
-        </>
-      )}
+        )}
+      </div>
     </div>
   );
 }

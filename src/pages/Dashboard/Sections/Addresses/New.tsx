@@ -1,20 +1,23 @@
 import { useContext, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
-import { DataContext } from "../../../../context/data";
+import { v4 as uuidv4 } from "uuid";
+import { DashboardDataContext } from "../../../../context/DashboardData";
 import { ReactComponent as ArrowBackIcon } from "../../../../assets/icons/arrowBack.svg";
 import ContentHeader from "../../../../components/Dashboard/ContentHeader";
-import BottomActions from "../../../../components/Dashboard/BottomActions";
+import Button from "../../../../components/Button";
 import AddressForm from "../../../../components/Dashboard/AddressForm";
+import BottomActions from "../../../../components/Dashboard/BottomActions";
 
 export default function DashboardNewAddresse() {
-  const data = useContext(DataContext);
+  const data = useContext(DashboardDataContext);
 
   const [label, setLabel] = useState("");
   const [recipientName, setRecipientName] = useState("");
   const [recipientPhoneNumber, setRecipientPhoneNumber] = useState("");
   const [recipientPostalCode, setRecipientPostalCode] = useState("");
-  const [recipientDeliveryState, setRecipientDeliveryState] = useState("");
+  const [recipientDeliveryProvince, setRecipientDeliveryProvince] =
+    useState("");
   const [recipientDeliveryCity, setRecipientDeliveryCity] = useState("");
   const [recipientDeliveryAddress, setRecipientDeliveryAddress] = useState("");
 
@@ -22,20 +25,14 @@ export default function DashboardNewAddresse() {
 
   return (
     <>
+      <Helmet title="داشبورد - افزودن آدرس" />
       <ContentHeader
-        title="افزودن آدرس"
-        actions={[
-          {
-            key: "back",
-            label: (
-              <>
-                انصراف و بازگشت <ArrowBackIcon />
-              </>
-            ),
-            variant: "none",
-            onClick: () => navigate("/dashboard/addresses"),
-          },
-        ]}
+        title="افزودن آدرس جدید"
+        end={
+          <Button onClick={() => navigate("/dashboard/addresses")}>
+            انصراف و بازگشت <ArrowBackIcon />
+          </Button>
+        }
       />
       <AddressForm
         label={label}
@@ -46,38 +43,37 @@ export default function DashboardNewAddresse() {
         setRecipientPhoneNumber={setRecipientPhoneNumber}
         recipientPostalCode={recipientPostalCode}
         setRecipientPostalCode={setRecipientPostalCode}
-        recipientDeliveryState={recipientDeliveryState}
-        setRecipientDeliveryState={setRecipientDeliveryState}
+        recipientDeliveryProvince={recipientDeliveryProvince}
+        setRecipientDeliveryProvince={setRecipientDeliveryProvince}
         recipientDeliveryCity={recipientDeliveryCity}
         setRecipientDeliveryCity={setRecipientDeliveryCity}
         recipientDeliveryAddress={recipientDeliveryAddress}
         setRecipientDeliveryAddress={setRecipientDeliveryAddress}
       />
-      <BottomActions
-        actions={[
-          {
-            key: "save",
-            label: "ذخیره",
-            variant: "filled",
-            onClick: () => {
-              data.dispatch({
-                type: "ADDRESSES:SET",
-                payload: {
-                  id: uuidv4(),
-                  label,
-                  recipientName,
-                  recipientPhoneNumber,
-                  recipientPostalCode,
-                  recipientDeliveryState,
-                  recipientDeliveryCity,
-                  recipientDeliveryAddress,
-                },
-              });
-              navigate("/dashboard/addresses");
-            },
-          },
-        ]}
-      />
+      <BottomActions>
+        <Button
+          varient="filled"
+          style={{ minWidth: 100 }}
+          onClick={() => {
+            data.dispatch({
+              type: "ADDRESSES:SET",
+              payload: {
+                id: uuidv4(),
+                label,
+                recipientName,
+                recipientPhoneNumber,
+                recipientPostalCode,
+                recipientDeliveryProvince,
+                recipientDeliveryCity,
+                recipientDeliveryAddress,
+              },
+            });
+            navigate("/dashboard/addresses");
+          }}
+        >
+          ذخیره
+        </Button>
+      </BottomActions>
     </>
   );
 }

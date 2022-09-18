@@ -1,10 +1,11 @@
+import styles from "./style.module.scss";
 import { useState } from "react";
 import Dialog from "../../Dialog";
-import FormTable from "../FormTable";
 import TextInput from "../../TextInput";
 import Select from "../../Select";
 import BottomActions from "../BottomActions";
 import { PaymentMethod } from "../../../types";
+import Button from "../../Button";
 
 interface IncreasBalanceDialogProps {
   open: boolean;
@@ -20,45 +21,32 @@ export default function IncreasBalanceDialog({
 
   return (
     <Dialog title="افزایش موجودی" open={open} onClose={onClose}>
-      <FormTable
-        fullWidth
-        fields={[
-          {
-            key: "amount",
-            label: "مبلغ مورد نظر (تومان):",
-            component: (
-              <TextInput
-                type="number"
-                value={amount}
-                onTextChange={(newValue) => setAmount(newValue)}
-              />
-            ),
-          },
-          {
-            key: "gate",
-            label: "انتخاب درگاه:",
-            component: (
-              <Select
-                options={{
-                  [PaymentMethod.zarinPalGate]: "زرین پال",
-                }}
-                value={gate}
-                onChange={(newValue) => setGate(newValue)}
-              />
-            ),
-          },
-        ]}
-      />
-      <BottomActions
-        actions={[
-          {
-            key: "pay",
-            label: "پرداخت",
-            variant: "filled",
-            onClick: () => {},
-          },
-        ]}
-      />
+      <div className={styles.DialogContent}>
+        <div>
+          <div>مبلغ مورد نظر:</div>
+          <div>
+            <TextInput
+              type="number"
+              value={amount}
+              onTextChange={(newValue) => setAmount(newValue)}
+              suffix="تومان"
+            />
+          </div>
+          <div>انتخاب درگاه:</div>
+          <div>
+            <Select
+              options={{
+                [PaymentMethod.zarinPalGate]: "زرین پال",
+              }}
+              value={gate}
+              onChange={(newValue) => setGate(newValue)}
+            />
+          </div>
+        </div>
+      </div>
+      <BottomActions>
+        <Button varient="filled" style={{ minWidth: 100 }}>پرداخت</Button>
+      </BottomActions>
     </Dialog>
   );
 }

@@ -1,16 +1,24 @@
-@import 'vazirmatn/Vazirmatn-font-face.css';
+@import "vazirmatn/Vazirmatn-font-face.css";
 
 body {
   margin: 0;
   font-size: 14px;
   font-family: Vazirmatn, sans-serif;
   background-color: #efeeee;
-  
-  input, textarea, button {
+
+  input,
+  textarea,
+  button {
     font-family: Vazirmatn, sans-serif;
   }
 
   a {
     color: #0487d9;
+  }
+
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
 }

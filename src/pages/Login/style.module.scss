@@ -1,12 +1,7 @@
 .Login {
-  box-sizing: border-box;
-  min-height: 100vh;
+  flex: 1;
   display: flex;
   flex-direction: column;
-
-  @media (max-width: 896px) {
-    background-image: none;
-  }
 
   .Content {
     width: 100%;

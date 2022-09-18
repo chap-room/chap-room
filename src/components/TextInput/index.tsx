@@ -2,12 +2,15 @@ import React, { InputHTMLAttributes } from "react";
 import styles from "./style.module.scss";
 
 interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
+  prefix?: string;
+  suffix?: string;
   onTextChange?: (newValue: string) => void;
 }
 
 const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
-  ({ onTextChange, ...props }: TextInputProps, ref) => (
-    <div className={styles.InputBox}>
+  ({ prefix, suffix, onTextChange, ...props }: TextInputProps, ref) => (
+    <div className={styles.InputBox} dir={props.dir}>
+      {prefix}
       <input
         ref={ref}
         {...props}
@@ -18,6 +21,7 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
           }
         }}
       />
+      {suffix}
     </div>
   )
 );

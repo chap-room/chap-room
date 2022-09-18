@@ -1,13 +1,15 @@
 import { useContext, useState } from "react";
+import { Helmet } from "react-helmet";
+import { DashboardDataContext } from "../../../context/DashboardData";
 import Section from "../../../components/Dashboard/Section";
 import ContentHeader from "../../../components/Dashboard/ContentHeader";
-import BottomActions from "../../../components/Dashboard/BottomActions";
-import { DataContext } from "../../../context/data";
 import TextInput from "../../../components/TextInput";
 import FormTable from "../../../components/Dashboard/FormTable";
+import BottomActions from "../../../components/Dashboard/BottomActions";
+import Button from "../../../components/Button";
 
 export default function DashboardProfile() {
-  const data = useContext(DataContext);
+  const data = useContext(DashboardDataContext);
   const [fullName, setFullName] = useState(data.state.currentUser.name);
   const [password, setPassword] = useState("");
   const [retryPassword, setRetryPassword] = useState("");
@@ -17,6 +19,7 @@ export default function DashboardProfile() {
       title="پروفایل"
       description="تنظیمات پروفایل خود را از این بخش تغییر دهید"
     >
+      <Helmet title="داشبورد - پروفایل" />
       <ContentHeader title="اطلاعات من" />
       <FormTable
         fields={[
@@ -59,16 +62,9 @@ export default function DashboardProfile() {
           },
         ]}
       />
-      <BottomActions
-        actions={[
-          {
-            key: "save",
-            label: "ذخیره",
-            variant: "filled",
-            onClick: () => {},
-          },
-        ]}
-      />
+      <BottomActions>
+        <Button varient="filled" style={{ minWidth: 100 }}>ذخیره</Button>
+      </BottomActions>
     </Section>
   );
 }

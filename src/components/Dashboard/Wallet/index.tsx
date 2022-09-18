@@ -1,13 +1,13 @@
 import styles from "./style.module.scss";
 import { useContext, useState } from "react";
-import { DataContext } from "../../../context/data";
+import { DashboardDataContext } from "../../../context/DashboardData";
 import { ReactComponent as ExpandMoreIcon } from "../../../assets/icons/expandMore.svg";
 import IncreasBalanceDialog from "../IncreasBalanceDialog";
 import WithdrawBalanceDialog from "../WithdrawBalanceDialog";
 import { FormattedNumber } from "react-intl";
 
 export default function Wallet() {
-  const data = useContext(DataContext);
+  const data = useContext(DashboardDataContext);
 
   const [walletExpanded, setWalletExpanded] = useState(false);
   const [showIncreasBalanceDialog, setShowIncreasBalanceDialog] =

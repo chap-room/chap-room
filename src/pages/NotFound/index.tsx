@@ -1,4 +1,5 @@
 import styles from "./style.module.scss";
+import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { ReactComponent as LogoWithName } from "../../assets/images/logoWithName.svg";
 import Button from "../../components/Button";
@@ -6,6 +7,7 @@ import Button from "../../components/Button";
 export default function NotFound() {
   return (
     <div className={styles.NotFound}>
+      <Helmet title="صفحه مورد نظر شما وجود ندارد" />
       <div className={styles.Header}>
         <Link to="/" className={styles.Logo}>
           <LogoWithName />
@@ -21,7 +23,7 @@ export default function NotFound() {
         </p>
         <div className={styles.Buttons}>
           <Link to="/">
-            <Button varient="filled">بازگشت به چاپ روم</Button>
+            <Button varient="gradient">بازگشت به چاپ روم</Button>
           </Link>
           <Link to="/contact-us">
             <Button varient="outlined">تماس با ما</Button>

@@ -1,11 +1,16 @@
-import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
-// import styles from './style.module.scss';
+import styles from './style.module.scss';
+import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
+import Header from '../../components/Header';
 
 export default function Home() {
-  useEffect(() => {
-    document.title = "صفحه اصلی";
-  }, []);
-
-  return <Link to="/dashboard">Dashboard</Link>;
+  return (
+    <div className={styles.Home}>
+      <Helmet title="صفحه اصلی" />
+      <Header showNavMenuAndUser />
+      <div className={styles.Content}>
+        <Link to="/dashboard">Dashboard</Link>
+      </div>
+    </div>
+  );
 }

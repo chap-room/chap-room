@@ -1,60 +1,22 @@
 .ContentHeader {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  min-height: 40px;
+  padding-bottom: 5px;
   border-bottom: 1px solid #cccccc;
   margin-bottom: 15px;
+  gap: 10px;
 
   @media (max-width: 896px) {
     display: none;
   }
 
   .Title {
+    flex: 1;
     margin: 0;
-    font-size: 18px;
+    font-size: 16px;
     color: #5e5e5e;
     font-weight: bold;
-    margin-bottom: 10px;
-  }
-
-  .Spacer {
-    flex: 1;
-    min-width: 10px;
-  }
-
-  .Actions {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    gap: 10px;
-    
-    .Action,
-    .ActionFilled {
-      display: flex;
-      flex-direction: row;
-      gap: 10px;
-      align-items: center;
-      justify-content: center;
-      padding: 0 8px;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .Action {
-      color: #0077b5;
-      fill: #0077b5;
-      font-weight: bold;
-      font-size: 16px;
-      padding: 8px;
-    }
-
-    .ActionFilled {
-      height: 40px;
-      min-width: 100px;
-      background-color: #0077b5;
-      color: #ffffff;
-      fill: #ffffff;
-      border-radius: 20px;
-      box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
-    }
   }
 }

@@ -1,9 +1,8 @@
 import styles from "./style.module.scss";
 import { useContext } from "react";
-import { NavLink } from "react-router-dom";
-import { DataContext } from "../../../context/data";
+import { Link, NavLink } from "react-router-dom";
 import Wallet from "../Wallet";
-import { ReactComponent as Avatar } from "../../../assets/images/avatar.svg";
+import Avatar from "../Avatar";
 import { ReactComponent as DashboardIcon } from "../../../assets/icons/dashboard.svg";
 import { ReactComponent as OrdersIcon } from "../../../assets/icons/orders.svg";
 import { ReactComponent as AddressesIcon } from "../../../assets/icons/addresses.svg";
@@ -11,9 +10,10 @@ import { ReactComponent as TransactionsIcon } from "../../../assets/icons/transa
 import { ReactComponent as MarketingIcon } from "../../../assets/icons/marketing.svg";
 import { ReactComponent as ProfileIcon } from "../../../assets/icons/profile.svg";
 import { ReactComponent as LogoutIcon } from "../../../assets/icons/logout.svg";
+import { DashboardDataContext } from "../../../context/DashboardData";
 
 export default function Sidebar() {
-  const data = useContext(DataContext);
+  const data = useContext(DashboardDataContext);
 
   return (
     <div className={styles.Sidebar}>
@@ -44,18 +44,12 @@ export default function Sidebar() {
           <ProfileIcon />
           پروفایل
         </NavLink>
-        <div className={styles.NavLink}>
+        <Link to="/" className={styles.NavLink} onClick={() => {}}>
           <LogoutIcon />
           خروج
-        </div>
+        </Link>
         <div className={styles.User}>
-          <div className={styles.Avatar}>
-            {data.state.currentUser.avatar ? (
-              <img src={data.state.currentUser.avatar} alt="User Avatar" />
-            ) : (
-              <Avatar />
-            )}
-          </div>
+        <Avatar />
           <div className={styles.Meta}>
             <div>{data.state.currentUser.name}</div>
             <div className={styles.PhoneNumber}>

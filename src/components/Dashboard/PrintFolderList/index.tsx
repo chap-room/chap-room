@@ -1,23 +1,21 @@
-import { Address } from "../../../types";
+import { PrintFolder } from "../../../types";
 import styles from "./style.module.scss";
 import { ReactComponent as EditIcon } from "../../../assets/icons/edit.svg";
 import { ReactComponent as DeletetIcon } from "../../../assets/icons/delete.svg";
 
 interface PrintFolderListProps {
-  addresses: Address[];
-  onEditAddress: (addressId: string) => void;
-  onDeleteAddress: (addressId: string) => void;
+  printFolders: PrintFolder[];
+  setPrintFolders: (printFolders: PrintFolder[]) => void;
 }
 
 export default function PrintFolderList({
-  addresses,
-  onEditAddress,
-  onDeleteAddress,
+  printFolders,
+  setPrintFolders,
 }: PrintFolderListProps) {
   return (
-    <div className={styles.AddressList}>
-      {addresses.map((address) => (
-        <div className={styles.Address} key={address.id}>
+    <div className={styles.PrintFolderList}>
+      {printFolders.map((printFolder) => (
+        <div className={styles.PrintFolder} key={address.id}>
           <div className={styles.Header}>
             <div className={styles.Label}>{address.label}</div>
             <div className={styles.Spacer} />

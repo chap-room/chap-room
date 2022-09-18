@@ -1,35 +1,28 @@
-import { useMemo, useState } from "react";
 import { useContext } from "react";
+import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
-import AddressList from "../../../../components/Dashboard/AddressList";
+import { DashboardDataContext } from "../../../../context/DashboardData";
 import ContentHeader from "../../../../components/Dashboard/ContentHeader";
-import Dialog from "../../../../components/Dialog";
-import { DataContext } from "../../../../context/data";
+import Button from "../../../../components/Button";
+import AddressList from "../../../../components/Dashboard/AddressList";
 
 export default function DashboardAddresseList() {
-  const data = useContext(DataContext);
+  const data = useContext(DashboardDataContext);
   const navigate = useNavigate();
-
-  const addresses = useMemo(
-    () => Array.from(data.state.addresses.values()),
-    [data.state.addresses]
-  );
 
   return (
     <>
+      <Helmet title="داشبورد - آدرس ها" />
       <ContentHeader
-        title="همه آدرس های من"
-        actions={[
-          {
-            key: "add",
-            label: "افزودن آدرس",
-            variant: "none",
-            onClick: () => navigate("/dashboard/addresses/new"),
-          },
-        ]}
+        title="ویرایش کردن آدرس"
+        end={
+          <Button onClick={() => navigate("/dashboard/addresses/new")}>
+            افزودن آدرس
+          </Button>
+        }
       />
       <AddressList
-        addresses={addresses}
+        addresses={Object.values(data.state.addresses)}
         onEditAddress={(addressId) =>
           navigate(`/dashboard/addresses/edit/${addressId}`)
         }

@@ -1,5 +1,6 @@
 import styles from "./style.module.scss";
 import { ReactNode, useState } from "react";
+import ViewSwitch from "../../Switch";
 
 interface TabsProps {
   tabs: {
@@ -27,7 +28,13 @@ export default function Tabs({ tabs }: TabsProps) {
           )
         )}
       </div>
-      {tabs.filter((tab) => tab.id === currentTabId)[0]?.content}
+      <ViewSwitch
+        currentViewId={currentTabId}
+        views={tabs.map(({ id, content }) => ({
+          id,
+          content,
+        }))}
+      />
     </>
   );
 }

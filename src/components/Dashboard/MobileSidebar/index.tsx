@@ -1,9 +1,8 @@
 import styles from "./style.module.scss";
 import { useContext } from "react";
 import { NavLink } from "react-router-dom";
-import { DataContext } from "../../../context/data";
 import Wallet from "../Wallet";
-import { ReactComponent as Avatar } from "../../../assets/images/avatar.svg";
+import Avatar from "../Avatar";
 import { ReactComponent as CloseIcon } from "../../../assets/icons/close.svg";
 import { ReactComponent as DashboardIcon } from "../../../assets/icons/dashboard.svg";
 import { ReactComponent as OrdersIcon } from "../../../assets/icons/orders.svg";
@@ -12,24 +11,19 @@ import { ReactComponent as TransactionsIcon } from "../../../assets/icons/transa
 import { ReactComponent as MarketingIcon } from "../../../assets/icons/marketing.svg";
 import { ReactComponent as ProfileIcon } from "../../../assets/icons/profile.svg";
 import { ReactComponent as LogoutIcon } from "../../../assets/icons/logout.svg";
+import { DashboardDataContext } from "../../../context/DashboardData";
 
 interface MobileSidebarProps {
   onClose: () => void;
 }
 
 export default function MobileSidebar({onClose}: MobileSidebarProps) {
-  const data = useContext(DataContext);
+  const data = useContext(DashboardDataContext);
 
   return (
     <div className={styles.Sidebar}>
       <div className={styles.Top}>
-        <div className={styles.Avatar}>
-            {data.state.currentUser.avatar ? (
-              <img src={data.state.currentUser.avatar} alt="User Avatar" />
-            ) : (
-              <Avatar />
-            )}
-        </div>
+        <Avatar />
         <div className={styles.Meta}>
           <div className={styles.PhoneNumber}>
             {data.state.currentUser.phoneNumber}

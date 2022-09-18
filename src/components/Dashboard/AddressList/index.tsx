@@ -4,6 +4,7 @@ import { ReactComponent as EditIcon } from "../../../assets/icons/edit.svg";
 import { ReactComponent as DeletetIcon } from "../../../assets/icons/delete.svg";
 import ConfirmDeleteDialog from "../ConfirmDeleteDialog";
 import { useState } from "react";
+import ButtonList from "../../ButtonList";
 
 interface AddressListProps {
   addresses: Address[];
@@ -28,7 +29,7 @@ export default function AddressList({
             <div className={styles.Header}>
               <div className={styles.Label}>{address.label}</div>
               <div className={styles.Spacer} />
-              <div className={styles.Actions}>
+              <ButtonList gap={5}>
                 <button
                   className={styles.EditButton}
                   onClick={() => onEditAddress(address.id)}
@@ -41,7 +42,7 @@ export default function AddressList({
                 >
                   <DeletetIcon />
                 </button>
-              </div>
+              </ButtonList>
             </div>
             <div>نام گیرنده: {address.recipientName}</div>
             <div>شماره تلفن: {address.recipientPhoneNumber}</div>
