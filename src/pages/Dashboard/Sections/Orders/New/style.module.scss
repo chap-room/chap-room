@@ -34,7 +34,7 @@
   flex-direction: row;
   gap: 20px;
 
-  > div:first-child {
+  .OrderDetails {
     flex: 1;
   }
 
@@ -48,12 +48,48 @@
     padding: 20px;
     box-shadow: inset -3px -3px 6px #ffffffdb, inset 3px 3px 6px #00000029;
     align-items: center;
+    gap: 30px;
 
     .Title {
       color: #464646;
       font-size: 20px;
       font-weight: bold;
-      margin-bottom: 40px;
+    }
+
+    .List {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+
+      > div:not(.Separator) {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+
+        > div {
+          display: flex;
+          flex-direction: row;
+          gap: 10px;
+
+          &:first-child {
+            flex: 1;
+            user-select: none;
+          }
+
+          &:last-child {
+            > svg {
+              height: 100%;
+              width: auto;
+            }
+          }
+        }
+      }
+      
+
+      .Separator {
+        border-top: 1px solid #9c9c9c;
+      }
     }
   }
 }

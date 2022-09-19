@@ -54,7 +54,7 @@ export const orders: Record<number, Order> = {
     recipientName: "آرش زنگنه فر",
     recipientPhoneNumber: "0123456789",
     recipientPostalCode: "1234512345",
-    data: new Date("2022-07-11T07:24:52"),
+    date: new Date("2022-07-11T07:24:52"),
     recipientDeliveryAddress:
       "استان اصفهان / شهر اصفهان / خیابان 1 / خیابان 2 / کوچه 1 / پلاک 1 / طبقه 1",
     amount: 650000,

@@ -2,9 +2,11 @@ import styles from "./style.module.scss";
 import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 import { CircularProgressbar } from "react-circular-progressbar";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FormattedNumber } from "react-intl";
+import { ReactComponent as ZarinpalLogo } from "../../../../../assets/images/zarinpal.svg";
 import { ReactComponent as ArrowBackIcon } from "../../../../../assets/icons/arrowBack.svg";
+import { DashboardDataContext } from "../../../../../context/DashboardData";
 import Switch from "../../../../../components/Switch";
 import ContentHeader from "../../../../../components/Dashboard/ContentHeader";
 import Button from "../../../../../components/Button";
@@ -24,7 +26,7 @@ enum NewOrderStages {
 
 export default function DashboardNewOrder() {
   const [currentStage, setCurrentStage] = useState(NewOrderStages.folders);
-  const [printFolders, setPrintFolders] = useState<PrintFolder[]>([]);
+  const [printFolders, /* setPrintFolders */] = useState<PrintFolder[]>([]);
   const [useWallet, setUseWallet] = useState(false);
 
   const progress = {
@@ -34,6 +36,7 @@ export default function DashboardNewOrder() {
     [NewOrderStages.payment]: 3,
   }[currentStage];
 
+  const data = useContext(DashboardDataContext);
   const navigate = useNavigate();
 
   return (
@@ -143,16 +146,38 @@ export default function DashboardNewOrder() {
             content: (
               <>
                 <div className={styles.Payment}>
-                  <div></div>
+                  <div className={styles.OrderDetails}></div>
                   <div className={styles.PaymentMethod}>
                     <div className={styles.Title}>شیوه پرداخت</div>
                     <div className={styles.List}>
-                      <Radio
-                        name="PaymentMethod"
-                        checked={true}
-                        onChange={() => {}}
-                      />
-                      <CheckBox checked={useWallet} onChange={setUseWallet} />
+                      <div>
+                        <div>
+                          <Radio
+                            name="PaymentMethod"
+                            checked={true}
+                            onChange={() => {}}
+                          />
+                          درگاه پرداخت زرین پال
+                        </div>
+                        <div>
+                          <ZarinpalLogo />
+                        </div>
+                      </div>
+                      <div className={styles.Separator}></div>
+                      <div>
+                        <div>
+                          <CheckBox
+                            checked={useWallet}
+                            onChange={setUseWallet}
+                          />
+                          کیف پول
+                        </div>
+                        <div>
+                          موجودی:{" "}
+                          <FormattedNumber value={data.state.wallet.balance} />{" "}
+                          تومان
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

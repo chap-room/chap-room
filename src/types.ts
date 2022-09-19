@@ -1,12 +1,12 @@
 // all amounts in toman
 export interface Order {
   id: number;
+  date: Date;
   folders: PrintFolder[];
   recipientName: string;
   recipientPhoneNumber: string;
   recipientPostalCode: string;
   recipientDeliveryAddress: string;
-  data: Date;
   amount: number;
   postageAmount: number;
   discountAmount: number;
