@@ -19,6 +19,10 @@
     color: #ffffff;
     fill: #ffffff;
     background-color: #0077b5;
+
+    &:disabled {
+      background-color: #cccccc;
+    }
   }
 
   &.None {

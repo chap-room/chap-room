@@ -16,6 +16,7 @@ import { PrintFolder } from "../../../../../types";
 import AreaButton from "../../../../../components/Dashboard/AreaButton";
 import CheckBox from "../../../../../components/CheckBox";
 import Radio from "../../../../../components/Radio";
+import AddressView from "../../../../../components/Dashboard/AddressView";
 
 enum NewOrderStages {
   folders = "پوشه ها",
@@ -25,8 +26,14 @@ enum NewOrderStages {
 }
 
 export default function DashboardNewOrder() {
+  const data = useContext(DashboardDataContext);
+  const navigate = useNavigate();
+
   const [currentStage, setCurrentStage] = useState(NewOrderStages.folders);
-  const [printFolders, /* setPrintFolders */] = useState<PrintFolder[]>([]);
+  const [printFolders /* setPrintFolders */] = useState<PrintFolder[]>([]);
+  const [selectedAddressId, setSelectedAddressId] = useState<string | null>(
+    data.state.addresses[0]?.id
+  );
   const [useWallet, setUseWallet] = useState(false);
 
   const progress = {
@@ -35,9 +42,6 @@ export default function DashboardNewOrder() {
     [NewOrderStages.address]: 2,
     [NewOrderStages.payment]: 3,
   }[currentStage];
-
-  const data = useContext(DashboardDataContext);
-  const navigate = useNavigate();
 
   return (
     <>
@@ -124,6 +128,31 @@ export default function DashboardNewOrder() {
             id: NewOrderStages.address,
             content: (
               <>
+                <div className={styles.AddressSelect}>
+                  {data.state.addresses.map((address) => (
+                    <div key={address.id}>
+                      <Radio
+                        name="AddressSelect"
+                        value={address.id}
+                        checked={address.id === selectedAddressId}
+                        onChecked={() => setSelectedAddressId(address.id)}
+                      />
+                      <AddressView
+                        address={address}
+                        onEdit={function (): void {
+                          throw new Error("Function not implemented.");
+                        }}
+                        onDelete={function (): void {
+                          throw new Error("Function not implemented.");
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+                <AreaButton
+                  title="افزودن آدرس +"
+                  onClick={() => setCurrentStage(NewOrderStages.newFolder)}
+                />
                 <BottomActions>
                   <Button
                     onClick={() => setCurrentStage(NewOrderStages.folders)}
@@ -134,6 +163,11 @@ export default function DashboardNewOrder() {
                     varient="filled"
                     style={{ minWidth: 150 }}
                     onClick={() => setCurrentStage(NewOrderStages.payment)}
+                    disabled={
+                      !data.state.addresses
+                        .map((item) => item.id)
+                        .includes(selectedAddressId || "")
+                    }
                   >
                     مرحله بعد
                   </Button>
@@ -155,7 +189,8 @@ export default function DashboardNewOrder() {
                           <Radio
                             name="PaymentMethod"
                             checked={true}
-                            onChange={() => {}}
+                            onChecked={() => {}}
+                            value={""}
                           />
                           درگاه پرداخت زرین پال
                         </div>

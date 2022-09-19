@@ -3,22 +3,24 @@ import styles from "./style.module.scss";
 
 interface RadioProps {
   name: string;
+  value: string;
   checked: boolean;
-  onChange: (newValue: boolean) => void;
+  onChecked: () => void;
 }
 
-export default function Radio({ name, checked, onChange }: RadioProps) {
+export default function Radio({ name, value, checked, onChecked }: RadioProps) {
   const id = useId();
 
   return (
     <>
       <input
+        id={id}
         className={styles.Input}
         name={name}
-        id={id}
+        value={value}
         type="radio"
         checked={checked}
-        onChange={(event) => onChange(event.target.checked)}
+        onChange={(event) => event.target.checked && onChecked()}
       />
       <label htmlFor={id} className={styles.Radio} />
     </>
