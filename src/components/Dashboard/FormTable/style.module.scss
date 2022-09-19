@@ -1,29 +1,49 @@
 .FormTable {
   width: 100%;
 
-  td {
-    padding: 10px 10px;
-    box-sizing: border-box;
+  @media (max-width: 512px) {
+    display: flex;
+    flex-direction: column;
+  }
 
-    &:first-child {
-      display: inline-block;
-      color: #9c9c9c;
-      width: 100%;
-      max-width: 180px;
+  tr {
+    @media (max-width: 512px) {
+      display: flex;
+      flex-direction: column;
     }
 
-    &:nth-child(2) {
-      & > * {
-        width: 300px;
+    td {
+      padding: 10px 10px;
+      box-sizing: border-box;
+
+      &:first-child {
+        display: inline-block;
+        color: #9c9c9c;
+        min-width: 100px;
+        width: 100%;
+        max-width: 180px;
+      }
+
+      &:nth-child(2) {
+        & > * {
+          width: 100%;
+          max-width: 300px;
+          
+          @media (max-width: 512px) {
+            max-width: unset;
+          }
+        }
       }
     }
   }
 
   &[data-full-width="true"] {
-    td {
-      &:nth-child(2) {
-        & > * {
-          width: 100%;
+    tr {
+      td {
+        &:nth-child(2) {
+          & > * {
+            max-width: unset;
+          }
         }
       }
     }

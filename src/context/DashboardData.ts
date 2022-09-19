@@ -1,11 +1,12 @@
 import { Address } from "../types";
 import { createContext, Dispatch } from "react";
-import { addresses, currentUser, transactions, wallet } from "../dummyDashboardData";
+import { addresses, currentUser, orders, transactions, wallet } from "../dummyDashboardData";
 
 interface DashboardDataState {
   currentUser: typeof currentUser;
   wallet: typeof wallet;
   addresses: typeof addresses;
+  orders: typeof orders;
   transactions: typeof transactions;
 }
 
@@ -34,6 +35,7 @@ export const initialState: DashboardDataState = {
   currentUser,
   wallet,
   addresses,
+  orders,
   transactions,
 };
 

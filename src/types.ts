@@ -1,6 +1,6 @@
 // all amounts in toman
 export interface Order {
-  id: number;
+  id: string;
   date: Date;
   folders: PrintFolder[];
   recipientName: string;
@@ -13,6 +13,7 @@ export interface Order {
   discountCode: string;
   paymentMethod: Record<PaymentMethod, number>;
   status: OrderStatus;
+  cancelReason: OrderCancelReason | null;
   lastStatusChange: Date;
   trackingCode: string | null;
   postageDate: Date | null;
@@ -58,9 +59,6 @@ export enum OrderStatus {
 export enum OrderCancelReason {
   userCancel = 'لغو شخصی',
   paperCountMismatch = 'تعداد برگ با سفارش همخوانی ندارد',
-  pending = 'در حال بررسی',
-  preparing = 'در حال آماده سازی',
-  sent = 'ارسال شده',
 }
 
 export enum PaymentMethod {

@@ -1,6 +1,7 @@
 import styles from "./style.module.scss";
 import { Order, OrderStatus } from "../../../types";
 import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
+import { Link } from "react-router-dom";
 
 interface OrderTabelProps {
   orders: Order[];
@@ -38,13 +39,29 @@ export default function OrderTabel({ orders, onSeeDetails }: OrderTabelProps) {
               {(() => {
                 switch (order.status) {
                   case OrderStatus.pending:
-                    return <span className={styles.Pending}>{order.status}</span>;
+                    return (
+                      <span className={styles.Pending}>{order.status}</span>
+                    );
                   case OrderStatus.preparing:
-                    return <span className={styles.Preparing}>{order.status}</span>;
+                    return (
+                      <span className={styles.Preparing}>{order.status}</span>
+                    );
                   case OrderStatus.sent:
-                    return <span className={styles.Sent}>{order.status}</span>;
+                    return (
+                      <>
+                        <span className={styles.Sent}>{order.status}</span>
+                        <br />
+                        <Link to="" className={styles.TrackingLink}>
+                          رهگیری مرسوله
+                        </Link>
+                      </>
+                    );
                   case OrderStatus.canceled:
-                    return <span className={styles.Canceled}>{order.status}</span>;
+                    return (
+                      <span className={styles.Canceled}>
+                        {order.cancelReason}
+                      </span>
+                    );
                 }
               })()}
             </td>

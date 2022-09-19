@@ -17,15 +17,15 @@
         text-align: center;
         padding: 15px;
 
-        > .Date {
+        &:first-child {
           color: #464646;
         }
 
-        > .Successful {
+        > .Sent {
           color: #14cc9c;
         }
 
-        > .Unsuccessful {
+        > .Canceled {
           color: #f20f4b;
         }
       }

@@ -31,9 +31,11 @@ export const wallet = {
   marketingSales: 182000,
 };
 
-export const orders: Record<number, Order> = {
-  265454: {
-    id: 265454,
+export const orders: Record<string, Order> = {
+  "265454": {
+    id: "265454",
+    status: OrderStatus.sent,
+    cancelReason: null,
     folders: [
       {
         files: [
@@ -65,7 +67,6 @@ export const orders: Record<number, Order> = {
       [PaymentMethod.zarinPalGate]: 30000,
       [PaymentMethod.wallet]: 600000,
     },
-    status: OrderStatus.sent,
     lastStatusChange: new Date("2022-07-13T07:24:52"),
     trackingCode: "102489911100422150000114",
     postageDate: new Date("2022-07-13T07:24:52"),

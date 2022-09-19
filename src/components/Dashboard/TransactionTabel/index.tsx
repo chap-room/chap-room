@@ -25,11 +25,9 @@ export default function TransactionTabel({
         {transactions.map((transaction) => (
           <tr key={transaction.id}>
             <td>
-              <span className={styles.Date}>
-                <FormattedDate value={transaction.date} dateStyle="medium" />
-                <br />
-                <FormattedTime value={transaction.date} hour12 />
-              </span> 
+              <FormattedDate value={transaction.date} dateStyle="medium" />
+              <br />
+              <FormattedTime value={transaction.date} hour12 />
             </td>
             <td>
               <FormattedNumber value={transaction.amount} /> تومان
@@ -39,7 +37,9 @@ export default function TransactionTabel({
               {transaction.status === TransactionStatus.successful ? (
                 <span className={styles.Successful}>{transaction.status}</span>
               ) : (
-                <span className={styles.Unsuccessful}>{transaction.status}</span>
+                <span className={styles.Unsuccessful}>
+                  {transaction.status}
+                </span>
               )}
             </td>
           </tr>
