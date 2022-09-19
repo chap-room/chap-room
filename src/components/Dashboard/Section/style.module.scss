@@ -16,8 +16,10 @@
       justify-content: center;
       align-items: center;
       fill: #9c9c9c;
+      border: none;
       border-radius: 50%;
       box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
+      cursor: pointer;
 
       @media (min-width: 897px) {
         display: none;

@@ -16,7 +16,7 @@ export default function DashboardTransactions() {
       <Helmet title="داشبورد - تراکنش ها" />
       <ContentHeader title="همه سوابق مالی" />
       <TransactionTabel
-        transactions={Object.values(data.state.transactions)}
+        transactions={data.state.transactions}
         onSeeDetails={(transactionId) => {
           console.log(transactionId);
         }}

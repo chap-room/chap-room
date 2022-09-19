@@ -27,7 +27,7 @@ export default function DashboardAddresseList() {
         }
       />
       <AddressList
-        addresses={Object.values(data.state.addresses)}
+        addresses={data.state.addresses}
         onEditAddress={(addressId) =>
           navigate(`/dashboard/addresses/edit/${addressId}`)
         }

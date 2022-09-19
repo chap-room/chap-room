@@ -8,13 +8,6 @@ const Signup = lazy(() => import("./pages/Signup"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const DashboardMain = lazy(() => import("./pages/Dashboard/Sections/Main"));
-const DashboardOrders = lazy(() => import("./pages/Dashboard/Sections/Orders"));
-const DashboardOrderList = lazy(
-  () => import("./pages/Dashboard/Sections/Orders/List")
-);
-const DashboardNewOrder = lazy(
-  () => import("./pages/Dashboard/Sections/Orders/New")
-);
 const DashboardAddresses = lazy(
   () => import("./pages/Dashboard/Sections/Addresses")
 );
@@ -26,6 +19,16 @@ const DashboardNewAddresse = lazy(
 );
 const DashboardEditAddresse = lazy(
   () => import("./pages/Dashboard/Sections/Addresses/Edit")
+);
+const DashboardOrders = lazy(() => import("./pages/Dashboard/Sections/Orders"));
+const DashboardOrderList = lazy(
+  () => import("./pages/Dashboard/Sections/Orders/List")
+);
+const DashboardNewOrder = lazy(
+  () => import("./pages/Dashboard/Sections/Orders/New")
+);
+const DashboardOrderDetails = lazy(
+  () => import("./pages/Dashboard/Sections/Orders/Details")
 );
 const DashboardTransactions = lazy(
   () => import("./pages/Dashboard/Sections/Transactions")
@@ -65,6 +68,7 @@ export default function AppRoutes() {
           <Route path="orders" element={<DashboardOrders />}>
             <Route index element={<DashboardOrderList />} />
             <Route path="new" element={<DashboardNewOrder />} />
+            <Route path="details/:orderId" element={<DashboardOrderDetails />} />
           </Route>
           <Route path="addresses" element={<DashboardAddresses />}>
             <Route index element={<DashboardAddresseList />} />

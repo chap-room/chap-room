@@ -56,7 +56,7 @@ export default function DashboardNewAddresse() {
           style={{ minWidth: 100 }}
           onClick={() => {
             data.dispatch({
-              type: "ADDRESSES:SET",
+              type: "ADDRESSES:PUSH",
               payload: {
                 id: uuidv4(),
                 label,

@@ -2,17 +2,21 @@ import styles from "./style.module.scss";
 import { Order, OrderStatus } from "../../../types";
 import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
 
-interface OrderTabelProps {
+interface InProgressOrderTableProps {
   orders: Order[];
   onSeeOrderDetails: (orderId: string) => void;
   onCancelOrder: (orderId: string) => void;
 }
 
-export default function OrderTabel({
+export default function InProgressOrderTable({
   orders,
   onSeeOrderDetails,
   onCancelOrder,
-}: OrderTabelProps) {
+}: InProgressOrderTableProps) {
+  const inProgressOrders = orders.filter((item) =>
+    [OrderStatus.pending, OrderStatus.preparing].includes(item.status)
+  );
+
   return (
     <table className={styles.OrderTabel}>
       <thead>
@@ -26,30 +30,21 @@ export default function OrderTabel({
         </tr>
       </thead>
       <tbody>
-        {orders.map((order) => (
+        {inProgressOrders.map((order) => (
           <tr key={order.id}>
             <td>
               <span className={styles.MobileLabel}>شماره سفارش:</span>
               {order.id}
             </td>
             <td>
-              <span className={styles.MobileLabel}>زمان سفارش:</span>
-              <span>
-                <span>
-                  <FormattedDate value={order.date} dateStyle="medium" />
-                </span>
-                <br />
-                <span>
-                  <FormattedTime value={order.date} hour12 />
-                </span>
-              </span>
+              <FormattedDate value={order.date} dateStyle="medium" />
+              <br />
+              <FormattedTime value={order.date} hour12 />
             </td>
             <td>
-              <span className={styles.MobileLabel}>مبلغ سفارش:</span>
               <FormattedNumber value={order.amount} /> تومان
             </td>
             <td>
-              <span className={styles.MobileLabel}>وضعیت:</span>
               {(() => {
                 switch (order.status) {
                   case OrderStatus.pending:

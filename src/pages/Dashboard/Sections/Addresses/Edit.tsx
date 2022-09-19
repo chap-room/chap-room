@@ -11,7 +11,7 @@ import BottomActions from "../../../../components/Dashboard/BottomActions";
 export default function DashboardEditAddresse() {
   const data = useContext(DashboardDataContext);
   const { addressId } = useParams();
-  const address = data.state.addresses[addressId!];
+  const address = data.state.addresses.filter((item) => item.id === addressId)[0];
 
   const [label, setLabel] = useState(address.label);
   const [recipientName, setRecipientName] = useState(address.recipientName);
@@ -66,7 +66,7 @@ export default function DashboardEditAddresse() {
           style={{ minWidth: 100 }}
           onClick={() => {
             data.dispatch({
-              type: "ADDRESSES:SET",
+              type: "ADDRESSES:UPDATE",
               payload: {
                 id: addressId!,
                 label,

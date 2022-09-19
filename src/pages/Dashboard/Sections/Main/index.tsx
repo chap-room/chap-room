@@ -8,6 +8,7 @@ import ContentHeader from "../../../../components/Dashboard/ContentHeader";
 import Button from "../../../../components/Button";
 import Avatar from "../../../../components/Dashboard/Avatar";
 import Wallet from "../../../../components/Dashboard/Wallet";
+import InProgressOrderTable from "../../../../components/Dashboard/InProgressOrderTable";
 import { ReactComponent as NavigateBeforeIcon } from "../../../../assets/icons/navigateBefore.svg";
 import { ReactComponent as OrdersIcon } from "../../../../assets/icons/orders.svg";
 import { ReactComponent as AddressesIcon } from "../../../../assets/icons/addresses.svg";
@@ -174,7 +175,15 @@ export default function DashboardMain() {
                 </Button>
               }
             />
-            asd
+            <InProgressOrderTable
+              orders={data.state.orders}
+              onSeeOrderDetails={(orderId) =>
+                navigate(`/dashboard/orders/details/${orderId}`)
+              }
+              onCancelOrder={(orderId) =>
+                navigate(`/dashboard/orders/details/${orderId}`)
+              }
+            />
           </div>
         </div>
       </div>

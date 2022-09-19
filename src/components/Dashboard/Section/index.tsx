@@ -1,5 +1,5 @@
 import styles from "./style.module.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ReactComponent as ArrowForwardIcon } from "../../../assets/icons/arrowForward.svg";
 import { ReactComponent as Logo } from "../../../assets/images/logo.svg";
 import { PropsWithChildren } from "react";
@@ -14,12 +14,17 @@ export default function Section({
   description,
   children,
 }: PropsWithChildren<SectionProps>) {
+  const navigate = useNavigate();
+
   return (
     <div className={styles.Container}>
       <div className={styles.TitleContainer}>
-        <Link to="/dashboard" className={styles.MobileBackButton}>
+        <button
+          className={styles.MobileBackButton}
+          onClick={() => navigate(-1)}
+        >
           <ArrowForwardIcon />
-        </Link>
+        </button>
         <p className={styles.Title}>{title}</p>
         <Link to="/" className={styles.BackToSiteButton}>
           بازگشت به سایت

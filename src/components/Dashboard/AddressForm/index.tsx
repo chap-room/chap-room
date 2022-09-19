@@ -38,14 +38,16 @@ export default function AddressForm(props: AddressFormProps) {
         onTextChange={(newText) => props.setRecipientName(newText)}
       />
       <TextInput
+        type="number"
         placeholder="شماره موبایل تحویل گیرنده"
         value={props.recipientPhoneNumber}
-        onTextChange={(newText) => props.setRecipientPhoneNumber(newText)}
+        onTextChange={(newText) => props.setRecipientPhoneNumber(newText.substring(0, 11))}
       />
       <TextInput
+        type="number"
         placeholder="کد پستی"
         value={props.recipientPostalCode}
-        onTextChange={(newText) => props.setRecipientPostalCode(newText)}
+        onTextChange={(newText) => props.setRecipientPostalCode(newText.substring(0, 10))}
       />
       <div className={styles.ProvinceAndCitySelects}>
         <ContentSelect

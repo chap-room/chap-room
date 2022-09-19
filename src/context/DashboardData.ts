@@ -1,6 +1,13 @@
+import { Order } from "./../types";
 import { Address } from "../types";
 import { createContext, Dispatch } from "react";
-import { addresses, currentUser, orders, transactions, wallet } from "../dummyDashboardData";
+import {
+  addresses,
+  currentUser,
+  orders,
+  transactions,
+  wallet,
+} from "../dummyDashboardData";
 
 interface DashboardDataState {
   currentUser: typeof currentUser;
@@ -11,22 +18,42 @@ interface DashboardDataState {
 }
 
 type DashboardDataAction =
-  | { type: "ADDRESSES:SET"; payload: Address }
+  | DashboardDataAddressesAction
+  | DashboardDataOrdersAction;
+
+type DashboardDataAddressesAction =
+  | { type: "ADDRESSES:PUSH"; payload: Address }
+  | { type: "ADDRESSES:UPDATE"; payload: Address }
   | { type: "ADDRESSES:DELETE"; payload: string };
+type DashboardDataOrdersAction = { type: "ORDERS:PUSH"; payload: Order };
 
 export function dashboardDataReducer(
   state: DashboardDataState,
   action: DashboardDataAction
 ): DashboardDataState {
-  if (action.type === "ADDRESSES:SET") {
+  if (action.type === "ADDRESSES:PUSH") {
     const address = action.payload;
-    state.addresses[address.id] = address;
-    return { ...state };
+    return { ...state, addresses: [...state.addresses, { ...address }] };
+  }
+  if (action.type === "ADDRESSES:UPDATE") {
+    const address = action.payload;
+    return {
+      ...state,
+      addresses: state.addresses.map((item) =>
+        item.id === address.id ? { ...address } : { ...item }
+      ),
+    };
   }
   if (action.type === "ADDRESSES:DELETE") {
     const addressId = action.payload;
-    delete state.addresses[addressId];
-    return { ...state };
+    return {
+      ...state,
+      addresses: state.addresses.filter((item) => item.id !== addressId),
+    };
+  }
+  if (action.type === "ORDERS:PUSH") {
+    const order = action.payload;
+    return { ...state, orders: [...state.orders, { ...order }] };
   }
   return state;
 }

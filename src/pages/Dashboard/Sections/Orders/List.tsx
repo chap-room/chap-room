@@ -22,10 +22,13 @@ export default function DashboardOrderList() {
         }
       />
       <OrderTabel
-        orders={Object.values(data.state.orders)}
-        onSeeDetails={function (orderId: string): void {
-          // TODO
-        }}
+        orders={data.state.orders}
+        onSeeOrderDetails={(orderId) =>
+          navigate(`/dashboard/orders/details/${orderId}`)
+        }
+        onCancelOrder={(orderId) =>
+          navigate(`/dashboard/orders/details/${orderId}`)
+        }
       />
     </>
   );
