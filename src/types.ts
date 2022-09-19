@@ -1,7 +1,7 @@
 // all amounts in toman
 export interface Order {
   id: number;
-  description: string | null;
+  folders: PrintFolder[];
   recipientName: string;
   recipientPhoneNumber: string;
   recipientPostalCode: string;
@@ -24,9 +24,11 @@ export interface PrintFolder {
   colors: PrintColors;
   paperSize: PrintPaperSize;
   type: PrintType;
+  description: string | null;
 }
 
 export interface PrintFile {
+  name: string;
 }
 
 export enum PrintColors {

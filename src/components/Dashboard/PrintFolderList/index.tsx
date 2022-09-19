@@ -5,39 +5,47 @@ import { ReactComponent as DeletetIcon } from "../../../assets/icons/delete.svg"
 
 interface PrintFolderListProps {
   printFolders: PrintFolder[];
-  setPrintFolders: (printFolders: PrintFolder[]) => void;
+  onEditPrintFolder: (printFolderIndex: string) => void;
+  onDeletePrintFolder: (printFolderIndex: string) => void;
 }
 
 export default function PrintFolderList({
   printFolders,
-  setPrintFolders,
+  onEditPrintFolder,
+  onDeletePrintFolder,
 }: PrintFolderListProps) {
   return (
     <div className={styles.PrintFolderList}>
-      {printFolders.map((printFolder) => (
-        <div className={styles.PrintFolder} key={address.id}>
+      {printFolders.map((printFolder, index) => (
+        <div className={styles.PrintFolder} key={index}>
           <div className={styles.Header}>
-            <div className={styles.Label}>{address.label}</div>
-            <div className={styles.Spacer} />
+            <div className={styles.Label}>پوشه {index + 1}</div>
             <div className={styles.Actions}>
               <button
                 className={styles.EditButton}
-                onClick={() => onEditAddress(address.id)}
+                // onClick={() => onEditAddress(address.id)}
               >
                 <EditIcon />
               </button>
               <button
                 className={styles.DeleteButton}
-                onClick={() => onDeleteAddress(address.id)}
+                // onClick={() => onDeleteAddress(address.id)}
               >
                 <DeletetIcon />
               </button>
             </div>
           </div>
-          <div>نام گیرنده: {address.recipientName}</div>
-          <div>شماره تلفن: {address.recipientPhoneNumber}</div>
-          <div>کد پستی: {address.recipientPostalCode}</div>
-          <div>نشانی: {address.recipientDeliveryAddress}</div>
+          <div>
+            فایلها:{" "}
+            {printFolder.files.map((printFile) => printFile.name).join(" / ")}
+          </div>
+          <div>
+            خلاصه سفارش : {printFolder.colors} / {printFolder.paperSize} /{" "}
+            {printFolder.type}
+          </div>
+          {printFolder.description && (
+            <div>توضیحات: {printFolder.description}</div>
+          )}
         </div>
       ))}
     </div>

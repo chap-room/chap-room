@@ -28,7 +28,6 @@ export default function AddressList({
           <div className={styles.Address} key={address.id}>
             <div className={styles.Header}>
               <div className={styles.Label}>{address.label}</div>
-              <div className={styles.Spacer} />
               <ButtonList gap={5}>
                 <button
                   className={styles.EditButton}

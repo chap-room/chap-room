@@ -28,7 +28,7 @@ export default function WithdrawBalanceDialog({
               type="number"
               value={shabaNumber}
               onTextChange={(newValue) =>
-                setShabaNumber(newValue.substring(0, 26))
+                setShabaNumber(newValue.substring(0, 24))
               }
               prefix="IR"
             />

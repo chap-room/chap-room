@@ -27,3 +27,33 @@
     transform: translate(-50%, -50%);
   }
 }
+
+.Payment {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+
+  > div:first-child {
+    flex: 1;
+  }
+
+  .PaymentMethod {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    background-color: #f5f5f5;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: inset -3px -3px 6px #ffffffdb, inset 3px 3px 6px #00000029;
+    align-items: center;
+
+    .Title {
+      color: #464646;
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 40px;
+    }
+  }
+}
