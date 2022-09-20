@@ -5,8 +5,8 @@ import { ReactComponent as DeletetIcon } from "../../../assets/icons/delete.svg"
 
 interface PrintFolderListProps {
   printFolders: PrintFolder[];
-  onEditPrintFolder: (printFolderIndex: string) => void;
-  onDeletePrintFolder: (printFolderIndex: string) => void;
+  onEditPrintFolder: (printFolderIndex: number) => void;
+  onDeletePrintFolder: (printFolderIndex: number) => void;
 }
 
 export default function PrintFolderList({
@@ -23,13 +23,13 @@ export default function PrintFolderList({
             <div className={styles.Actions}>
               <button
                 className={styles.EditButton}
-                // onClick={() => onEditAddress(address.id)}
+                onClick={() => onEditPrintFolder(index)}
               >
                 <EditIcon />
               </button>
               <button
                 className={styles.DeleteButton}
-                // onClick={() => onDeleteAddress(address.id)}
+                onClick={() => onDeletePrintFolder(index)}
               >
                 <DeletetIcon />
               </button>
@@ -37,11 +37,13 @@ export default function PrintFolderList({
           </div>
           <div>
             فایلها:{" "}
-            {printFolder.files.map((printFile) => printFile.name).join(" / ")}
+            {printFolder.printFiles
+              .map((printFile) => printFile.name)
+              .join(" / ")}
           </div>
           <div>
-            خلاصه سفارش : {printFolder.colors} / {printFolder.paperSize} /{" "}
-            {printFolder.type}
+            خلاصه سفارش : {printFolder.printColors} /{" "}
+            {printFolder.printPaperSize} / {printFolder.printType}
           </div>
           {printFolder.description && (
             <div>توضیحات: {printFolder.description}</div>

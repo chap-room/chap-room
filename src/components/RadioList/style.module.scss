@@ -1,0 +1,11 @@
+.RadioList {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+
+  > .RadioWithLabel {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+}

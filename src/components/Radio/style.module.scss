@@ -1,14 +1,11 @@
-.Input {
-  display: none;
-}
-
 .Radio {
   width: 16px;
   height: 16px;
   border-radius: 100%;
+  display: inline-flex;
   position: relative;
   background: linear-gradient(135deg, #04b2d9 0%, #0487d9 100%);
-  box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029; 
+  box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
 
   &::before {
     display: block;
@@ -20,13 +17,13 @@
     height: 6px;
     border-radius: 100%;
     background-color: #efeeee;
-
-    .Input:not(:checked) + & {
-      display: none;
-    }
   }
 
-  .Input:not(:checked) + & {
+  &:not([data-checked="true"]) {
     background: none;
+
+    &::before {
+      display: none;
+    }
   }
 }

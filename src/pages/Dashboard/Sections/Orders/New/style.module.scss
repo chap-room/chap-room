@@ -28,6 +28,12 @@
   }
 }
 
+.PrintFolder {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .AddressSelect {
   display: flex;
   flex-direction: column;

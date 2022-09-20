@@ -1,11 +1,7 @@
-.Input {
-  display: none;
-}
-
 .CheckBox {
   width: 16px;
   height: 16px;
-  display: flex;
+  display: inline-flex;
   box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
   border-radius: 2px;
   justify-content: center;
@@ -15,8 +11,10 @@
     width: 16px;
     height: 16px;
     fill: #2578fa;
+  }
 
-    .Input:not(:checked) + & {
+  &:not([data-checked="true"]) {
+    > svg {
       display: none;
     }
   }

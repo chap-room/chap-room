@@ -21,53 +21,56 @@ export interface Order {
 }
 
 export interface PrintFolder {
-  files: PrintFile[];
-  colors: PrintColors;
-  paperSize: PrintPaperSize;
-  type: PrintType;
+  printFiles: PrintFile[];
+  printColors: PrintColors;
+  printPaperSize: PrintPaperSize;
+  printType: PrintType;
+  paperCount: number;
   description: string | null;
+  copiesCount: number | null;
 }
 
 export interface PrintFile {
+  id: string;
   name: string;
 }
 
 export enum PrintColors {
-  blackAndWhite = 'سیاه و سفید',
-  normalColor = 'رنگی معمولی',
-  fullColor = 'تمام رنگی',
+  blackAndWhite = "سیاه و سفید",
+  normalColor = "رنگی معمولی",
+  fullColor = "تمام رنگی",
 }
 
 export enum PrintPaperSize {
-  a3 = 'A3',
-  a4 = 'A4',
-  a5 = 'A5',
+  a4 = "A4",
+  a3 = "A3",
+  a5 = "A5",
 }
-  
+
 export enum PrintType {
-  singleSided = 'یک رو',
-  doubleSided = 'دو رو',
+  singleSided = "یک رو",
+  doubleSided = "دو رو",
 }
 
 export enum OrderStatus {
-  canceled = 'لغو شده',
-  pending = 'در حال بررسی',
-  preparing = 'در حال آماده سازی',
-  sent = 'ارسال شده',
+  canceled = "لغو شده",
+  pending = "در حال بررسی",
+  preparing = "در حال آماده سازی",
+  sent = "ارسال شده",
 }
 
 export enum OrderCancelReason {
-  userCancel = 'لغو شخصی',
-  paperCountMismatch = 'تعداد برگ با سفارش همخوانی ندارد',
+  userCancel = "لغو شخصی",
+  paperCountMismatch = "تعداد برگ با سفارش همخوانی ندارد",
 }
 
 export enum PaymentMethod {
-  wallet = 'کیف پول',
-  zarinPalGate = 'زرین پال',
+  wallet = "کیف پول",
+  zarinPalGate = "زرین پال",
 }
 
 export enum PostageMethod {
-  expressMail = 'پست پیشتاز',
+  expressMail = "پست پیشتاز",
 }
 
 export interface Address {
@@ -90,6 +93,6 @@ export interface Transaction {
 }
 
 export enum TransactionStatus {
-  successful = 'موفق',
-  unsuccessful = 'نا موفق',
+  successful = "موفق",
+  unsuccessful = "نا موفق",
 }

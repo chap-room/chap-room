@@ -1,9 +1,13 @@
-.AddressList {
+.PrintFolderList {
   display: flex;
   flex-direction: column;
   gap: 15px;
 
-  .Address {
+  &:empty {
+    display: none;
+  }
+
+  .PrintFolder {
     background-color: #f5f5f5;
     padding: 15px;
     color: #9c9c9c;

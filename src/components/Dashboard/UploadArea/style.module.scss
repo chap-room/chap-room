@@ -1,0 +1,42 @@
+.UploadArea {
+  background: #cccccc26;
+  border: 3px dashed #cccccc;
+  color: #9c9c9c;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+  cursor: pointer;
+
+  &[data-drag-active="true"] {
+    background: #2578fa26;
+    border: 3px dashed #2578fa;
+    color: #2578fa;
+  }
+
+  .Input {
+    display: none;
+  }
+
+  .Image {
+    width: 40px;
+    padding: 20px 20px 0;
+  }
+
+  .Message {
+    padding: 10px;
+  }
+
+  .Footer {
+    width: 100%;
+    font-size: 10px;
+    gap: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    > div {
+      padding: 10px;
+    }
+  }
+}

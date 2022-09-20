@@ -22,14 +22,14 @@ type SelectProps =
       placeholder?: undefined;
       options: Record<string, string>;
       value: string;
-      onChange: (value: string) => void;
+      onChange: (newValue: string) => void;
       readOnly?: boolean;
     }
   | {
       placeholder: string;
       options: Record<string, string>;
       value: string | null;
-      onChange: (value: string | null) => void;
+      onChange: (newValue: string | null) => void;
       readOnly?: boolean;
     };
 
