@@ -6,12 +6,21 @@
   flex-direction: column;
   align-items: center;
   user-select: none;
-  cursor: pointer;
+  position: relative;
 
   &[data-drag-active="true"] {
     background: #2578fa26;
     border: 3px dashed #2578fa;
     color: #2578fa;
+  }
+
+  .DropZone {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
   }
 
   .Input {
@@ -35,7 +44,7 @@
     flex-direction: row;
     justify-content: space-between;
 
-    > div {
+    >div {
       padding: 10px;
     }
   }

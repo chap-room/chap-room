@@ -24,25 +24,7 @@ export default function UploadArea({
   const [dragActive, setDragActive] = useState(false);
 
   return (
-    <div
-      className={styles.UploadArea}
-      data-drag-active={dragActive}
-      onClick={() => inputRef.current?.click()}
-      onDragEnter={() => {
-        setDragActive(true);
-      }}
-      onDragLeave={() => {
-        setDragActive(false);
-      }}
-      onDrop={(event) => {
-        event.preventDefault();
-        event.stopPropagation();
-
-        const dataTransfer = event.dataTransfer;
-        Array.from(dataTransfer.files).forEach(onSelectFile);
-        setDragActive(false);
-      }}
-    >
+    <div className={styles.UploadArea} data-drag-active={dragActive}>
       <input
         ref={inputRef}
         type="file"
@@ -56,6 +38,20 @@ export default function UploadArea({
           Array.from(input.files).forEach(onSelectFile);
         }}
         multiple={multiple}
+      />
+      <div
+        className={styles.DropZone}
+        onClick={() => inputRef.current?.click()}
+        onDragEnter={() => setDragActive(true)}
+        onDragOver={(event) => event.preventDefault()}
+        onDragLeave={() => setDragActive(false)}
+        onDrop={(event) => {
+          event.preventDefault();
+
+          const dataTransfer = event.dataTransfer;
+          Array.from(dataTransfer.files).forEach(onSelectFile);
+          setDragActive(false);
+        }}
       />
       <div className={styles.Image}>
         <UploadImage />
