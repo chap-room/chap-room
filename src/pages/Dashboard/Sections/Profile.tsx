@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { DashboardDataContext } from "../../../context/DashboardData";
 import Section from "../../../components/Dashboard/Section";
 import ContentHeader from "../../../components/Dashboard/ContentHeader";

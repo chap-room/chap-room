@@ -1,11 +1,11 @@
 import { useContext, useState } from "react";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import { DashboardDataContext } from "../../../../context/DashboardData";
 import ContentHeader from "../../../../components/Dashboard/ContentHeader";
 import Button from "../../../../components/Button";
 import AddressList from "../../../../components/Dashboard/AddressList";
-import ConfirmDeleteDialog from "../../../../components/Dashboard/ConfirmDeleteDialog";
+import WarningConfirmDialog from "../../../../components/Dashboard/WarningConfirmDialog";
 
 export default function DashboardAddresseList() {
   const data = useContext(DashboardDataContext);
@@ -33,7 +33,7 @@ export default function DashboardAddresseList() {
         }
         onDeleteAddress={setPendingDeleteRequest}
       />
-      <ConfirmDeleteDialog
+      <WarningConfirmDialog
         open={pendingDeleteRequest !== null}
         onClose={() => {
           setPendingDeleteRequest(null);
@@ -46,6 +46,7 @@ export default function DashboardAddresseList() {
           setPendingDeleteRequest(null);
         }}
         message="از حذف این آدرس مطمئن هستید؟"
+        confirmButtonText="حذف"
       />
     </>
   );

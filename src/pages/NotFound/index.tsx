@@ -1,5 +1,5 @@
 import styles from "./style.module.scss";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { ReactComponent as LogoWithName } from "../../assets/images/logoWithName.svg";
 import Button from "../../components/Button";

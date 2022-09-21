@@ -171,6 +171,7 @@ export default function PrintFolderForm({
                   </Button>
                   <Button
                     varient="filled"
+                    style={{ minWidth: 150 }}
                     onClick={() => setCurrentStep("2")}
                     disabled={printFiles.length === 0 || !paperCount}
                   >
@@ -230,6 +231,7 @@ export default function PrintFolderForm({
                   </Button>
                   <Button
                     varient="filled"
+                    style={{ minWidth: 150 }}
                     onClick={() => {
                       setCurrentStep("1");
                       onFinish({

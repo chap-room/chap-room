@@ -1,7 +1,7 @@
 import styles from "./style.module.scss";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import Header from "../../components/Header";
 import TextInput from "../../components/TextInput";
 import Button from "../../components/Button";

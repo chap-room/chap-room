@@ -2,14 +2,14 @@
 export interface Order {
   id: string;
   date: Date;
-  folders: PrintFolder[];
+  printFolders: PrintFolder[];
   recipientName: string;
   recipientPhoneNumber: string;
   recipientPostalCode: string;
   recipientDeliveryAddress: string;
   amount: number;
   postageAmount: number;
-  discountAmount: number;
+  discountAmount: number | null;
   discountCode: string;
   paymentMethod: Record<PaymentMethod, number>;
   status: OrderStatus;

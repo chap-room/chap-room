@@ -1,6 +1,6 @@
 import styles from "./style.module.scss";
 import { useContext, useState } from "react";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import PrintPrices from "../../../../components/PrintPrices";
 import Switch from "../../../../components/Switch";

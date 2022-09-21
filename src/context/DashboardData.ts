@@ -1,4 +1,4 @@
-import { Order } from "./../types";
+import { Order, OrderCancelReason, OrderStatus } from "./../types";
 import { Address } from "../types";
 import { createContext, Dispatch } from "react";
 import {
@@ -25,7 +25,9 @@ type DashboardDataAddressesAction =
   | { type: "ADDRESSES:PUSH"; payload: Address }
   | { type: "ADDRESSES:UPDATE"; payload: Address }
   | { type: "ADDRESSES:DELETE"; payload: string };
-type DashboardDataOrdersAction = { type: "ORDERS:PUSH"; payload: Order };
+type DashboardDataOrdersAction =
+  | { type: "ORDERS:PUSH"; payload: Order }
+  | { type: "ORDERS:CANCEL"; payload: string };
 
 export function dashboardDataReducer(
   state: DashboardDataState,
@@ -40,7 +42,7 @@ export function dashboardDataReducer(
     return {
       ...state,
       addresses: state.addresses.map((item) =>
-        item.id === address.id ? { ...address } : { ...item }
+        item.id === address.id ? { ...address } : item
       ),
     };
   }
@@ -54,6 +56,21 @@ export function dashboardDataReducer(
   if (action.type === "ORDERS:PUSH") {
     const order = action.payload;
     return { ...state, orders: [...state.orders, { ...order }] };
+  }
+  if (action.type === "ORDERS:CANCEL") {
+    const orderId = action.payload;
+    return {
+      ...state,
+      orders: state.orders.map((item) =>
+        item.id === orderId
+          ? {
+              ...item,
+              status: OrderStatus.canceled,
+              cancelReason: OrderCancelReason.userCancel,
+            }
+          : item
+      ),
+    };
   }
   return state;
 }

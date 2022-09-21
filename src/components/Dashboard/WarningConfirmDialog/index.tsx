@@ -4,19 +4,21 @@ import Dialog from "../../Dialog";
 import ButtonList from "../../ButtonList";
 import { ReactComponent as WarningIcon } from "../../../assets/icons/warning.svg";
 
-interface ConfirmDeleteDialogProps {
+interface WarningConfirmDialogProps {
   open: boolean;
   onConfirm: () => void;
   onClose: () => void;
   message: string;
+  confirmButtonText: string;
 }
 
-export default function ConfirmDeleteDialog({
+export default function WarningConfirmDialog({
   open,
   onConfirm,
   onClose,
   message,
-}: ConfirmDeleteDialogProps) {
+  confirmButtonText,
+}: WarningConfirmDialogProps) {
   return (
     <Dialog open={open} onClose={onClose}>
       <div className={styles.Container}>
@@ -33,7 +35,7 @@ export default function ConfirmDeleteDialog({
             style={{ minWidth: 150 }}
             onClick={onConfirm}
           >
-            حذف
+            {confirmButtonText}
           </Button>
         </ButtonList>
       </div>

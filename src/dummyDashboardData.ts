@@ -37,7 +37,7 @@ export const orders: Order[] = [
     id: "265454",
     status: OrderStatus.sent,
     cancelReason: null,
-    folders: [
+    printFolders: [
       {
         printFiles: [
           {
@@ -81,7 +81,7 @@ export const orders: Order[] = [
     id: "12345",
     status: OrderStatus.preparing,
     cancelReason: null,
-    folders: [
+    printFolders: [
       {
         printFiles: [
           {
@@ -125,7 +125,7 @@ export const orders: Order[] = [
     id: "56789",
     status: OrderStatus.pending,
     cancelReason: null,
-    folders: [
+    printFolders: [
       {
         printFiles: [
           {
@@ -169,7 +169,7 @@ export const orders: Order[] = [
     id: "123789",
     status: OrderStatus.canceled,
     cancelReason: OrderCancelReason.userCancel,
-    folders: [
+    printFolders: [
       {
         printFiles: [
           {
@@ -213,7 +213,7 @@ export const orders: Order[] = [
     id: "456134",
     status: OrderStatus.canceled,
     cancelReason: OrderCancelReason.paperCountMismatch,
-    folders: [
+    printFolders: [
       {
         printFiles: [
           {

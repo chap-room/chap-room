@@ -1,5 +1,5 @@
 import styles from "./style.module.scss";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { FormattedNumber } from "react-intl";
 import Section from "../../../../components/Dashboard/Section";
 import { ReactComponent as LinkIcon } from "../../../../assets/icons/link.svg";

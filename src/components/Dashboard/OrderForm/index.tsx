@@ -1,28 +1,27 @@
 import styles from "./style.module.scss";
+import { useContext, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 import { CircularProgressbar } from "react-circular-progressbar";
-import { useContext, useState } from "react";
 import { FormattedNumber } from "react-intl";
-import { ReactComponent as ZarinpalLogo } from "../../../../../assets/images/zarinpal.svg";
-import { ReactComponent as ArrowBackIcon } from "../../../../../assets/icons/arrowBack.svg";
-import { DashboardDataContext } from "../../../../../context/DashboardData";
-import Switch from "../../../../../components/Switch";
-import ContentHeader from "../../../../../components/Dashboard/ContentHeader";
-import Button from "../../../../../components/Button";
-import BottomActions from "../../../../../components/Dashboard/BottomActions";
-import PrintFolderList from "../../../../../components/Dashboard/PrintFolderList";
-import { Address, PrintFolder } from "../../../../../types";
-import AreaButton from "../../../../../components/Dashboard/AreaButton";
-import CheckBox from "../../../../../components/CheckBox";
-import Radio from "../../../../../components/Radio";
-import AddressView from "../../../../../components/Dashboard/AddressView";
-import PrintFolderForm from "../../../../../components/Dashboard/PrintFolderForm";
-import ConfirmDeleteDialog from "../../../../../components/Dashboard/ConfirmDeleteDialog";
-import AddressForm from "../../../../../components/Dashboard/AddressForm";
+import { PrintFolder, Address } from "../../../types";
+import { DashboardDataContext } from "../../../context/DashboardData";
+import { ReactComponent as ZarinpalLogo } from "../../../assets/images/zarinpal.svg";
+import { ReactComponent as ArrowBackIcon } from "../../../assets/icons/arrowBack.svg";
+import Switch from "../../Switch";
+import ContentHeader from "../ContentHeader";
+import BottomActions from "../BottomActions";
+import Button from "../../Button";
+import AreaButton from "../AreaButton";
+import WarningConfirmDialog from "../WarningConfirmDialog";
+import PrintFolderList from "../PrintFolderList";
+import PrintFolderForm from "../PrintFolderForm";
+import AddressView from "../AddressView";
+import AddressForm from "../AddressForm";
+import Radio from "../../Radio";
+import CheckBox from "../../CheckBox";
 
-enum NewOrderStages {
+enum OrderFormStages {
   printFolders = "پوشه ها",
   newPrintFolder = "پوشه جدید",
   editPrintFolder = "ویرایش پوشه",
@@ -32,11 +31,33 @@ enum NewOrderStages {
   payment = "پرداخت",
 }
 
-export default function DashboardNewOrder() {
+// interface OrderFormData {
+//   printFolders: PrintFolder[];
+//   addressId: string;
+//   recipientPhoneNumber: string;
+//   recipientPostalCode: string;
+//   recipientDeliveryProvince: string;
+//   recipientDeliveryCity: string;
+//   recipientDeliveryAddress: string;
+// }
+
+interface OrderFormProps {
+  // defaultValues?: OrderFormData;
+  onCancel: () => void;
+  onSave: (/* data: OrderFormData */) => void;
+}
+
+export default function OrderForm({
+  // defaultValues,
+  onCancel,
+  onSave,
+}: OrderFormProps) {
   const data = useContext(DashboardDataContext);
   const navigate = useNavigate();
 
-  const [currentStage, setCurrentStage] = useState(NewOrderStages.printFolders);
+  const [currentStage, setCurrentStage] = useState(
+    OrderFormStages.printFolders
+  );
   const [printFolders, setPrintFolders] = useState<PrintFolder[]>([]);
   const [selectedAddressId, setSelectedAddressId] = useState<string | null>(
     data.state.addresses[0]?.id
@@ -44,13 +65,13 @@ export default function DashboardNewOrder() {
   const [useWallet, setUseWallet] = useState(false);
 
   const progress = {
-    [NewOrderStages.printFolders]: 1,
-    [NewOrderStages.newPrintFolder]: 1,
-    [NewOrderStages.editPrintFolder]: 1,
-    [NewOrderStages.address]: 2,
-    [NewOrderStages.newAddress]: 2,
-    [NewOrderStages.editAddress]: 2,
-    [NewOrderStages.payment]: 3,
+    [OrderFormStages.printFolders]: 1,
+    [OrderFormStages.newPrintFolder]: 1,
+    [OrderFormStages.editPrintFolder]: 1,
+    [OrderFormStages.address]: 2,
+    [OrderFormStages.newAddress]: 2,
+    [OrderFormStages.editAddress]: 2,
+    [OrderFormStages.payment]: 3,
   }[currentStage];
 
   const [pendingPrintFolderDeleteRequest, setPendingPrintFolderDeleteRequest] =
@@ -65,7 +86,6 @@ export default function DashboardNewOrder() {
 
   return (
     <>
-      <Helmet title="داشبورد - سفارش جدید" />
       <ContentHeader
         title={currentStage}
         start={
@@ -98,7 +118,7 @@ export default function DashboardNewOrder() {
         currentViewId={currentStage}
         views={[
           {
-            id: NewOrderStages.printFolders,
+            id: OrderFormStages.printFolders,
             content: (
               <>
                 <div className={styles.PrintFolder}>
@@ -106,11 +126,11 @@ export default function DashboardNewOrder() {
                     printFolders={printFolders}
                     onEditPrintFolder={(index) => {
                       setCurrentInEditPrintFolder(printFolders[index]);
-                      setCurrentStage(NewOrderStages.editPrintFolder);
+                      setCurrentStage(OrderFormStages.editPrintFolder);
                     }}
                     onDeletePrintFolder={setPendingPrintFolderDeleteRequest}
                   />
-                  <ConfirmDeleteDialog
+                  <WarningConfirmDialog
                     open={pendingPrintFolderDeleteRequest !== null}
                     onClose={() => {
                       setPendingPrintFolderDeleteRequest(null);
@@ -125,20 +145,22 @@ export default function DashboardNewOrder() {
                       setPendingPrintFolderDeleteRequest(null);
                     }}
                     message="از حذف این پوشه مطمئن هستید؟"
+                    confirmButtonText="حذف"
                   />
                   <AreaButton
                     title="افزودن پوشه +"
                     description="در هر پوشه فایلهایی که مشخصات چاپ یکسانی دارند را آپلود کنید"
                     onClick={() =>
-                      setCurrentStage(NewOrderStages.newPrintFolder)
+                      setCurrentStage(OrderFormStages.newPrintFolder)
                     }
                   />
                 </div>
                 <BottomActions>
+                  <Button onClick={() => onCancel()}>بازگشت</Button>
                   <Button
                     varient="filled"
                     style={{ minWidth: 150 }}
-                    onClick={() => setCurrentStage(NewOrderStages.address)}
+                    onClick={() => setCurrentStage(OrderFormStages.address)}
                     disabled={printFolders.length === 0}
                   >
                     مرحله بعد
@@ -148,15 +170,15 @@ export default function DashboardNewOrder() {
             ),
           },
           {
-            id: NewOrderStages.newPrintFolder,
+            id: OrderFormStages.newPrintFolder,
             // Unmount when currently not displayed to reset default state
             content:
-              currentStage === NewOrderStages.newPrintFolder ? (
+              currentStage === OrderFormStages.newPrintFolder ? (
                 <PrintFolderForm
-                  onCancel={() => setCurrentStage(NewOrderStages.printFolders)}
+                  onCancel={() => setCurrentStage(OrderFormStages.printFolders)}
                   onFinish={(printFolder) => {
                     setPrintFolders([...printFolders, printFolder]);
-                    setCurrentStage(NewOrderStages.printFolders);
+                    setCurrentStage(OrderFormStages.printFolders);
                   }}
                 />
               ) : (
@@ -164,15 +186,15 @@ export default function DashboardNewOrder() {
               ),
           },
           {
-            id: NewOrderStages.editPrintFolder,
+            id: OrderFormStages.editPrintFolder,
             // Unmount when currently not displayed to reset default state
             content:
-              currentStage === NewOrderStages.editPrintFolder ? (
+              currentStage === OrderFormStages.editPrintFolder ? (
                 <PrintFolderForm
                   defaultValues={currentInEditPrintFolder!}
                   onCancel={() => {
                     setCurrentInEditPrintFolder(null);
-                    setCurrentStage(NewOrderStages.printFolders);
+                    setCurrentStage(OrderFormStages.printFolders);
                   }}
                   onFinish={(printFolderData) => {
                     setPrintFolders(
@@ -183,7 +205,7 @@ export default function DashboardNewOrder() {
                       )
                     );
                     setCurrentInEditPrintFolder(null);
-                    setCurrentStage(NewOrderStages.printFolders);
+                    setCurrentStage(OrderFormStages.printFolders);
                   }}
                 />
               ) : (
@@ -191,7 +213,7 @@ export default function DashboardNewOrder() {
               ),
           },
           {
-            id: NewOrderStages.address,
+            id: OrderFormStages.address,
             content: (
               <>
                 <div className={styles.AddressSelect}>
@@ -205,7 +227,7 @@ export default function DashboardNewOrder() {
                         address={address}
                         onEdit={() => {
                           setCurrentInEditAddress(address);
-                          setCurrentStage(NewOrderStages.editAddress);
+                          setCurrentStage(OrderFormStages.editAddress);
                         }}
                         onDelete={() =>
                           setPendingAddressDeleteRequest(address.id)
@@ -214,12 +236,19 @@ export default function DashboardNewOrder() {
                     </div>
                   ))}
                 </div>
-                <ConfirmDeleteDialog
+                <WarningConfirmDialog
                   open={pendingAddressDeleteRequest !== null}
                   onClose={() => {
                     setPendingAddressDeleteRequest(null);
                   }}
                   onConfirm={() => {
+                    if (pendingAddressDeleteRequest === selectedAddressId) {
+                      if (selectedAddressId === data.state.addresses[0]?.id) {
+                        setSelectedAddressId(data.state.addresses[1]?.id);
+                      } else {
+                        setSelectedAddressId(data.state.addresses[0]?.id);
+                      }
+                    }
                     data.dispatch({
                       type: "ADDRESSES:DELETE",
                       payload: pendingAddressDeleteRequest!,
@@ -227,21 +256,24 @@ export default function DashboardNewOrder() {
                     setPendingAddressDeleteRequest(null);
                   }}
                   message="از حذف این آدرس مطمئن هستید؟"
+                  confirmButtonText="حذف"
                 />
                 <AreaButton
                   title="افزودن آدرس +"
-                  onClick={() => setCurrentStage(NewOrderStages.newAddress)}
+                  onClick={() => setCurrentStage(OrderFormStages.newAddress)}
                 />
                 <BottomActions>
                   <Button
-                    onClick={() => setCurrentStage(NewOrderStages.printFolders)}
+                    onClick={() =>
+                      setCurrentStage(OrderFormStages.printFolders)
+                    }
                   >
                     مرحله قبل
                   </Button>
                   <Button
                     varient="filled"
                     style={{ minWidth: 150 }}
-                    onClick={() => setCurrentStage(NewOrderStages.payment)}
+                    onClick={() => setCurrentStage(OrderFormStages.payment)}
                     disabled={
                       !data.state.addresses
                         .map((item) => item.id)
@@ -255,12 +287,12 @@ export default function DashboardNewOrder() {
             ),
           },
           {
-            id: NewOrderStages.newAddress,
+            id: OrderFormStages.newAddress,
             // Unmount when currently not displayed to reset default state
             content:
-              currentStage === NewOrderStages.newAddress ? (
+              currentStage === OrderFormStages.newAddress ? (
                 <AddressForm
-                  onCancel={() => setCurrentStage(NewOrderStages.address)}
+                  onCancel={() => setCurrentStage(OrderFormStages.address)}
                   onSave={(addressData) => {
                     data.dispatch({
                       type: "ADDRESSES:PUSH",
@@ -269,7 +301,7 @@ export default function DashboardNewOrder() {
                         ...addressData,
                       },
                     });
-                    setCurrentStage(NewOrderStages.address);
+                    setCurrentStage(OrderFormStages.address);
                   }}
                 />
               ) : (
@@ -277,15 +309,15 @@ export default function DashboardNewOrder() {
               ),
           },
           {
-            id: NewOrderStages.editAddress,
+            id: OrderFormStages.editAddress,
             // Unmount when currently not displayed to reset default state
             content:
-              currentStage === NewOrderStages.editAddress ? (
+              currentStage === OrderFormStages.editAddress ? (
                 <AddressForm
                   defaultValues={currentInEditAddress!}
                   onCancel={() => {
                     setCurrentInEditAddress(null);
-                    setCurrentStage(NewOrderStages.address);
+                    setCurrentStage(OrderFormStages.address);
                   }}
                   onSave={(addressData) => {
                     data.dispatch({
@@ -296,7 +328,7 @@ export default function DashboardNewOrder() {
                       },
                     });
                     setCurrentInEditAddress(null);
-                    setCurrentStage(NewOrderStages.address);
+                    setCurrentStage(OrderFormStages.address);
                   }}
                 />
               ) : (
@@ -304,7 +336,7 @@ export default function DashboardNewOrder() {
               ),
           },
           {
-            id: NewOrderStages.payment,
+            id: OrderFormStages.payment,
             content: (
               <>
                 <div className={styles.Payment}>
@@ -341,14 +373,14 @@ export default function DashboardNewOrder() {
                 </div>
                 <BottomActions>
                   <Button
-                    onClick={() => setCurrentStage(NewOrderStages.address)}
+                    onClick={() => setCurrentStage(OrderFormStages.address)}
                   >
                     مرحله قبل
                   </Button>
                   <Button
                     varient="filled"
                     style={{ minWidth: 150 }}
-                    onClick={() => setCurrentStage(NewOrderStages.address)}
+                    onClick={() => onSave()}
                   >
                     پرداخت
                   </Button>
