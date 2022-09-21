@@ -2,6 +2,10 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { FormattedNumber } from "react-intl";
 import {
+  BindingMethod,
+  BindingOptions,
+  BindingType,
+  CoverColor,
   PrintColors,
   PrintFile,
   PrintPaperSize,
@@ -17,6 +21,7 @@ import TextInput from "../../TextInput";
 import BottomActions from "../BottomActions";
 import UploadArea from "../UploadArea";
 import styles from "./style.module.scss";
+import Radio from "../../Radio";
 
 interface PrintFolderFormData {
   printFiles: PrintFile[];
@@ -24,6 +29,7 @@ interface PrintFolderFormData {
   printPaperSize: PrintPaperSize;
   printType: PrintType;
   paperCount: number;
+  bindingOptions: BindingOptions | null;
   description: string | null;
   copiesCount: number | null;
 }
@@ -53,7 +59,31 @@ export default function PrintFolderForm({
   const [paperCount, setPaperCount] = useState(
     defaultValues?.paperCount.toString() || ""
   );
-  const [needBinding, setNeedBinding] = useState(false);
+  const [needBinding, setNeedBinding] = useState(
+    defaultValues ? defaultValues.bindingOptions !== null : false
+  );
+  const [bindingType, setBindingType] = useState(
+    defaultValues && defaultValues.bindingOptions
+      ? defaultValues.bindingOptions.bindingType
+      : BindingType.springNormal
+  );
+  const [bindingMethod, setBindingMethod] = useState(
+    defaultValues && defaultValues.bindingOptions
+      ? defaultValues.bindingOptions.bindingMethod
+      : BindingMethod.eachFileSeparated
+  );
+  const [numberOfFiles, setNumberOfFiles] = useState(
+    defaultValues &&
+      defaultValues.bindingOptions &&
+      defaultValues.bindingOptions.numberOfFiles
+      ? defaultValues.bindingOptions.numberOfFiles.toString()
+      : ""
+  );
+  const [coverColor, setCoverColor] = useState(
+    defaultValues && defaultValues.bindingOptions
+      ? defaultValues.bindingOptions.coverColor
+      : CoverColor.colorful
+  );
   const [needSpecialDescription, setNeedSpecialDescription] = useState(
     defaultValues ? defaultValues.description !== null : false
   );
@@ -190,6 +220,115 @@ export default function PrintFolderForm({
                     <CheckBox checked={needBinding} onChange={setNeedBinding} />{" "}
                     نیاز به صحافی دارد نیاز به صحافی دارد
                   </div>
+                  {needBinding && (
+                    <div className={styles.BindingOtions}>
+                      <div>
+                        <div>نوع صحافی:</div>
+                        <div>
+                          <div>
+                            <Radio
+                              checked={bindingType === BindingType.springNormal}
+                              onChecked={() =>
+                                setBindingType(BindingType.springNormal)
+                              }
+                            />
+                            {BindingType.springNormal}
+                          </div>
+                          <div>
+                            <Radio
+                              checked={bindingType === BindingType.springPapco}
+                              onChecked={() =>
+                                setBindingType(BindingType.springPapco)
+                              }
+                            />
+                            {BindingType.springPapco}
+                          </div>
+                          <div>
+                            <Radio
+                              checked={bindingType === BindingType.stapler}
+                              onChecked={() =>
+                                setBindingType(BindingType.stapler)
+                              }
+                            />
+                            {BindingType.stapler}
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <div>طریقه صحافی:</div>
+                        <div>
+                          <div>
+                            <Radio
+                              checked={
+                                bindingMethod ===
+                                BindingMethod.eachFileSeparated
+                              }
+                              onChecked={() =>
+                                setBindingMethod(
+                                  BindingMethod.eachFileSeparated
+                                )
+                              }
+                            />
+                            {BindingMethod.eachFileSeparated}
+                          </div>
+                          <div>
+                            <Radio
+                              checked={
+                                bindingMethod === BindingMethod.allFilesTogether
+                              }
+                              onChecked={() =>
+                                setBindingMethod(BindingMethod.allFilesTogether)
+                              }
+                            />
+                            {BindingMethod.allFilesTogether}
+                          </div>
+                          <div>
+                            <Radio
+                              checked={
+                                bindingMethod === BindingMethod.numberOfFiles
+                              }
+                              onChecked={() =>
+                                setBindingMethod(BindingMethod.numberOfFiles)
+                              }
+                            />
+                            {BindingMethod.numberOfFiles}
+                            <div className={styles.Spacer} />
+                            <div className={styles.NumberOfFiles}>
+                              <TextInput
+                                type="number"
+                                placeholder="تعداد"
+                                value={numberOfFiles}
+                                onTextChange={setNumberOfFiles}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <div>رنگ جلد:</div>
+                        <div>
+                          <div>
+                            <Radio
+                              checked={coverColor === CoverColor.colorful}
+                              onChecked={() =>
+                                setCoverColor(CoverColor.colorful)
+                              }
+                            />
+                            {CoverColor.colorful}
+                          </div>
+                          <div>
+                            <Radio
+                              checked={coverColor === CoverColor.blackAndWhite}
+                              onChecked={() =>
+                                setCoverColor(CoverColor.blackAndWhite)
+                              }
+                            />
+                            {CoverColor.blackAndWhite}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                   <div className={styles.Separator} />
                   <div className={styles.CheckBoxWithLabel}>
                     <CheckBox
@@ -240,6 +379,17 @@ export default function PrintFolderForm({
                         printPaperSize,
                         printType,
                         paperCount: parseInt(paperCount),
+                        bindingOptions: needBinding
+                          ? {
+                              bindingType,
+                              bindingMethod,
+                              numberOfFiles:
+                                bindingMethod === BindingMethod.numberOfFiles
+                                  ? parseInt(numberOfFiles)
+                                  : null,
+                              coverColor,
+                            }
+                          : null,
                         description: needSpecialDescription
                           ? description
                           : null,
@@ -248,6 +398,14 @@ export default function PrintFolderForm({
                           : null,
                       });
                     }}
+                    disabled={
+                      (needBinding &&
+                        bindingMethod === BindingMethod.numberOfFiles &&
+                        isNaN(parseInt(numberOfFiles))) ||
+                      (needSpecialDescription && !description) ||
+                      (toBePrintedInSeveralCopies &&
+                        isNaN(parseInt(copiesCount)))
+                    }
                   >
                     ثبت پوشه
                   </Button>

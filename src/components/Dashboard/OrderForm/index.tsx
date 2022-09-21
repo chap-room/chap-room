@@ -176,8 +176,8 @@ export default function OrderForm({
               currentStage === OrderFormStages.newPrintFolder ? (
                 <PrintFolderForm
                   onCancel={() => setCurrentStage(OrderFormStages.printFolders)}
-                  onFinish={(printFolder) => {
-                    setPrintFolders([...printFolders, printFolder]);
+                  onFinish={(printFolderData) => {
+                    setPrintFolders([...printFolders, printFolderData]);
                     setCurrentStage(OrderFormStages.printFolders);
                   }}
                 />

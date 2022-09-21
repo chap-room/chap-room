@@ -32,8 +32,20 @@
     padding: 20px 20px 0;
   }
 
-  .Message {
+  .Message, .MobileMessage {
     padding: 10px;
+  }
+
+  .Message {
+    @media (max-width: 896px) {
+      display: none;
+    }
+  }
+
+  .MobileMessage {
+    @media (min-width: 897px) {
+      display: none;
+    }
   }
 
   .Footer {

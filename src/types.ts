@@ -26,6 +26,7 @@ export interface PrintFolder {
   printPaperSize: PrintPaperSize;
   printType: PrintType;
   paperCount: number;
+  bindingOptions: BindingOptions | null;
   description: string | null;
   copiesCount: number | null;
 }
@@ -50,6 +51,30 @@ export enum PrintPaperSize {
 export enum PrintType {
   singleSided = "یک رو",
   doubleSided = "دو رو",
+}
+
+export interface BindingOptions {
+  bindingType: BindingType;
+  bindingMethod: BindingMethod;
+  numberOfFiles: number | null;
+  coverColor: CoverColor;
+}
+
+export enum BindingType {
+  springNormal = "فنر با طلق معمولی",
+  springPapco = "فنر با طلق پاپکو",
+  stapler = "منگنه",
+}
+
+export enum BindingMethod {
+  eachFileSeparated = "هر فایل جدا",
+  allFilesTogether = "همه فایل ها با هم",
+  numberOfFiles = "تعدادی از فایل ها",
+}
+
+export enum CoverColor {
+  colorful = "رنگی",
+  blackAndWhite = "سیاه و سفید",
 }
 
 export enum OrderStatus {

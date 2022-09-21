@@ -59,6 +59,9 @@ export default function UploadArea({
       <div className={styles.Message}>
         فایل‌ها را اینجا بکشید و رها کنید یا بارگزاری کنید
       </div>
+      <div className={styles.MobileMessage}>
+        برای انتخاب فایل اینجا کلیک کنید
+      </div>
       <div className={styles.Footer}>
         <div>
           فرمت مجاز: <FormattedList value={Object.keys(acceptedTypes)} />
