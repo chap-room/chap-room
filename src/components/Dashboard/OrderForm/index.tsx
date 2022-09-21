@@ -8,8 +8,10 @@ import { PrintFolder, Address } from "../../../types";
 import { DashboardDataContext } from "../../../context/DashboardData";
 import { ReactComponent as ZarinpalLogo } from "../../../assets/images/zarinpal.svg";
 import { ReactComponent as ArrowBackIcon } from "../../../assets/icons/arrowBack.svg";
+import { ReactComponent as CloseIcon } from "../../../assets/icons/close.svg";
 import Switch from "../../Switch";
 import ContentHeader from "../ContentHeader";
+import MobileContentHeader from "../MobileContentHeader";
 import BottomActions from "../BottomActions";
 import Button from "../../Button";
 import AreaButton from "../AreaButton";
@@ -20,6 +22,8 @@ import AddressView from "../AddressView";
 import AddressForm from "../AddressForm";
 import Radio from "../../Radio";
 import CheckBox from "../../CheckBox";
+import IconButton from "../../IconButton";
+import TextInput from "../../TextInput";
 
 enum OrderFormStages {
   printFolders = "پوشه ها",
@@ -55,6 +59,16 @@ export default function OrderForm({
   const data = useContext(DashboardDataContext);
   const navigate = useNavigate();
 
+  const [pendingPrintFolderDeleteRequest, setPendingPrintFolderDeleteRequest] =
+    useState<number | null>(null);
+  const [currentInEditPrintFolder, setCurrentInEditPrintFolder] =
+    useState<PrintFolder | null>(null);
+
+  const [pendingAddressDeleteRequest, setPendingAddressDeleteRequest] =
+    useState<string | null>(null);
+  const [currentInEditAddress, setCurrentInEditAddress] =
+    useState<Address | null>(null);
+
   const [currentStage, setCurrentStage] = useState(
     OrderFormStages.printFolders
   );
@@ -63,6 +77,8 @@ export default function OrderForm({
     data.state.addresses[0]?.id
   );
   const [useWallet, setUseWallet] = useState(false);
+  const [discountCode, setDiscountCode] = useState("");
+  const [discountAmount, setDiscountAmount] = useState<number | null>(null);
 
   const progress = {
     [OrderFormStages.printFolders]: 1,
@@ -74,44 +90,52 @@ export default function OrderForm({
     [OrderFormStages.payment]: 3,
   }[currentStage];
 
-  const [pendingPrintFolderDeleteRequest, setPendingPrintFolderDeleteRequest] =
-    useState<number | null>(null);
-  const [currentInEditPrintFolder, setCurrentInEditPrintFolder] =
-    useState<PrintFolder | null>(null);
-
-  const [pendingAddressDeleteRequest, setPendingAddressDeleteRequest] =
-    useState<string | null>(null);
-  const [currentInEditAddress, setCurrentInEditAddress] =
-    useState<Address | null>(null);
+  const SemiCircleProgressBar = (
+    <div className={styles.SemiCircleProgressBar}>
+      <CircularProgressbar
+        value={progress}
+        maxValue={3}
+        counterClockwise
+        circleRatio={0.75}
+        classes={{
+          root: "",
+          background: "",
+          path: styles.SemiCircleProgressBarPath,
+          trail: styles.SemiCircleProgressBarTrail,
+          text: "",
+        }}
+      />
+      <div className={styles.SemiCircleProgressBarText}>
+        <FormattedNumber value={progress} />/<FormattedNumber value={3} />
+      </div>
+    </div>
+  );
 
   return (
     <>
       <ContentHeader
         title={currentStage}
-        start={
-          <div className={styles.SemiCircleProgressBar}>
-            <CircularProgressbar
-              value={progress}
-              maxValue={3}
-              counterClockwise
-              circleRatio={0.75}
-              classes={{
-                root: "",
-                background: "",
-                path: styles.SemiCircleProgressBarPath,
-                trail: styles.SemiCircleProgressBarTrail,
-                text: "",
-              }}
-            />
-            <div className={styles.SemiCircleProgressBarText}>
-              <FormattedNumber value={progress} />/<FormattedNumber value={3} />
-            </div>
-          </div>
-        }
+        start={SemiCircleProgressBar}
         end={
           <Button onClick={() => navigate("/dashboard/orders")}>
             انصراف و بازگشت <ArrowBackIcon />
           </Button>
+        }
+      />
+      <MobileContentHeader
+        start={
+          <div className={styles.MobileSemiCircleProgressBar}>
+            {SemiCircleProgressBar}
+          </div>
+        }
+        title={currentStage}
+        end={
+          <IconButton
+            varient="outlined"
+            onClick={() => navigate("/dashboard/orders")}
+          >
+            <CloseIcon />
+          </IconButton>
         }
       />
       <Switch
@@ -340,7 +364,84 @@ export default function OrderForm({
             content: (
               <>
                 <div className={styles.Payment}>
-                  <div className={styles.OrderDetails}></div>
+                  <div className={styles.OrderDetails}>
+                    <div>
+                      <div className={styles.Amount}>
+                        <div>پوشه 1:</div>
+                        <div>
+                          <FormattedNumber value={85000} /> تومان
+                        </div>
+                      </div>
+                      <div className={styles.Amount}>
+                        <div>پوشه 2:</div>
+                        <div>
+                          <FormattedNumber value={85000} /> تومان
+                        </div>
+                      </div>
+                      <div className={styles.Amount}>
+                        <div>پوشه 3:</div>
+                        <div>
+                          <FormattedNumber value={85000} /> تومان
+                        </div>
+                      </div>
+                    </div>
+                    <div className={styles.DiscountCode}>
+                      <div>
+                        <TextInput
+                          value={discountCode}
+                          onTextChange={setDiscountCode}
+                          placeholder="کد تخفیف"
+                          readOnly={discountAmount !== null}
+                        />
+                      </div>
+                      <div>
+                        <Button
+                          varient="filled"
+                          style={{ minWidth: 100 }}
+                          onClick={() =>
+                            discountAmount === null
+                              ? setDiscountAmount(80000)
+                              : setDiscountAmount(null)
+                          }
+                        >
+                          {discountAmount === null ? "اعمال" : "حذف"}
+                        </Button>
+                      </div>
+                    </div>
+                    <div>
+                      <div className={styles.Amount}>
+                        <div>هزینه ارسال:</div>
+                        <div>
+                          <FormattedNumber value={15000} /> تومان
+                        </div>
+                      </div>
+                      {useWallet && (
+                        <div className={styles.Amount}>
+                          <div>کسر از کیف پول:</div>
+                          <div>
+                            <FormattedNumber value={75000} /> تومان
+                          </div>
+                        </div>
+                      )}
+                      {discountAmount && (
+                        <div className={styles.Amount}>
+                          <div>کسر کد تخفیف:</div>
+                          <div>
+                            <FormattedNumber value={discountAmount} /> تومان
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    <div className={styles.AmountPayable}>
+                      <div>مبلغ قابل پرداخت:</div>
+                      <div>
+                        <span>
+                          <FormattedNumber value={195000} />
+                        </span>{" "}
+                        تومان
+                      </div>
+                    </div>
+                  </div>
                   <div className={styles.PaymentMethod}>
                     <div className={styles.Title}>شیوه پرداخت</div>
                     <div className={styles.List}>

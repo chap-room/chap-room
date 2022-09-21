@@ -1,9 +1,10 @@
 import styles from "./style.module.scss";
 import { Helmet } from "react-helmet-async";
 import { FormattedNumber } from "react-intl";
-import Section from "../../../../components/Dashboard/Section";
 import { ReactComponent as LinkIcon } from "../../../../assets/icons/link.svg";
 import { ReactComponent as PercentIcon } from "../../../../assets/icons/percent.svg";
+import Section from "../../../../components/Dashboard/Section";
+import MobileContentHeader from "../../../../components/Dashboard/MobileContentHeader";
 import CopyableText from "../../../../components/CopyableText";
 
 export default function DashboardMarketing() {
@@ -13,6 +14,7 @@ export default function DashboardMarketing() {
       description="با استفاده از این سیستم می توانید به راحتی برای خود درآمدزایی کنید"
     >
       <Helmet title="داشبورد - بازاریابی" />
+      <MobileContentHeader backTo="/dashboard" title="بازاریابی" />
       <div className={styles.Container}>
         <div className={styles.DedicatedLink}>
           <div>

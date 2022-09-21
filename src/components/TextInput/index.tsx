@@ -9,7 +9,14 @@ interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
   ({ prefix, suffix, onTextChange, ...props }: TextInputProps, ref) => (
-    <div className={styles.InputBox} dir={props.dir}>
+    <div
+      className={
+        props.readOnly
+          ? styles.ReadOnly + " " + styles.InputBox
+          : styles.InputBox
+      }
+      dir={props.dir}
+    >
       {prefix}
       <input
         ref={ref}

@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { DashboardDataContext } from "../../../context/DashboardData";
 import Section from "../../../components/Dashboard/Section";
 import ContentHeader from "../../../components/Dashboard/ContentHeader";
+import MobileContentHeader from "../../../components/Dashboard/MobileContentHeader";
 import TextInput from "../../../components/TextInput";
 import FormTable from "../../../components/Dashboard/FormTable";
 import BottomActions from "../../../components/Dashboard/BottomActions";
@@ -21,6 +22,7 @@ export default function DashboardProfile() {
     >
       <Helmet title="داشبورد - پروفایل" />
       <ContentHeader title="اطلاعات من" />
+      <MobileContentHeader backTo="/dashboard" title="اطلاعات من" />
       <FormTable
         fields={[
           {
@@ -63,7 +65,9 @@ export default function DashboardProfile() {
         ]}
       />
       <BottomActions>
-        <Button varient="filled" style={{ minWidth: 100 }}>ذخیره</Button>
+        <Button varient="filled" style={{ minWidth: 100 }}>
+          ذخیره
+        </Button>
       </BottomActions>
     </Section>
   );

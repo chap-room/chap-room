@@ -11,6 +11,10 @@
   gap: 5px;
   justify-content: center;
 
+  &.ReadOnly {
+    background-color: #efeeee;
+  }
+
   > input {
     background: transparent;
     border: none;

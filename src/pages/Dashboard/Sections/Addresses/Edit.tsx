@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
 import { DashboardDataContext } from "../../../../context/DashboardData";
 import ContentHeader from "../../../../components/Dashboard/ContentHeader";
+import MobileContentHeader from "../../../../components/Dashboard/MobileContentHeader";
 import AddressForm from "../../../../components/Dashboard/AddressForm";
 
 export default function DashboardEditAddresse() {
@@ -18,6 +19,7 @@ export default function DashboardEditAddresse() {
     <>
       <Helmet title="داشبورد - ویرایش آدرس" />
       <ContentHeader title="ویرایش کردن آدرس" />
+      <MobileContentHeader title="ویرایش کردن آدرس" />
       <AddressForm
         defaultValues={address}
         onCancel={() => navigate("/dashboard/addresses")}
