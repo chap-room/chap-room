@@ -26,18 +26,20 @@ export default function WarningConfirmDialog({
           <WarningIcon />
         </div>
         <div className={styles.Message}>{message}</div>
-        <ButtonList>
-          <Button style={{ minWidth: 150 }} onClick={onClose}>
-            بستن
-          </Button>
-          <Button
-            varient="filled"
-            style={{ minWidth: 150 }}
-            onClick={onConfirm}
-          >
-            {confirmButtonText}
-          </Button>
-        </ButtonList>
+        <div className={styles.Buttons}>
+          <ButtonList>
+            <Button className={styles.Button} onClick={onClose}>
+              بستن
+            </Button>
+            <Button
+              varient="filled"
+              className={styles.Button}
+              onClick={onConfirm}
+            >
+              {confirmButtonText}
+            </Button>
+          </ButtonList>
+        </div>
       </div>
     </Dialog>
   );

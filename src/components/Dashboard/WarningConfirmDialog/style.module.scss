@@ -20,4 +20,19 @@
     color: #9c9c9c;
     margin-bottom: 10px;
   }
+
+  .Buttons {
+    width: 100%;
+
+    > div {
+      width: 100%;
+      justify-content: center;
+
+      .Button {
+        width: 100%;
+        min-width: max-content;
+        max-width: 150px;
+      }
+    }
+  }
 }

@@ -1,7 +1,5 @@
 import styles from "./style.module.scss";
-import { ReactComponent as ExpandMoreIcon } from "../../assets/icons/expandMore.svg";
-
-import React, { useRef, useState, useLayoutEffect } from "react";
+import React, { useRef, useState, useLayoutEffect, useEffect } from "react";
 import {
   useFloating,
   offset,
@@ -16,6 +14,7 @@ import {
   autoUpdate,
   size,
 } from "@floating-ui/react-dom-interactions";
+import { ReactComponent as ExpandMoreIcon } from "../../assets/icons/expandMore.svg";
 
 type SelectProps =
   | {
@@ -40,21 +39,44 @@ export default function Select({
   value = null,
   readOnly,
 }: SelectProps) {
-  const listItemsRef = useRef<Array<HTMLDivElement | null>>([]);
+  const listElementsRef = useRef<(HTMLDivElement | null)[]>([]);
   const listValueRef = useRef<(string | null)[]>(
     placeholder ? [null, ...Object.keys(options)] : Object.keys(options)
   );
-  const listLabelRef = useRef<string[]>(
+  const listLabelsRef = useRef<string[]>(
     placeholder
       ? [placeholder, ...Object.values(options)]
       : Object.values(options)
   );
 
+  useEffect(() => {
+    const newListElements: (HTMLDivElement | null)[] = [];
+    const newListValue: (string | null)[] = placeholder ? [null] : [];
+    const newListLabels: string[] = placeholder ? [placeholder] : [];
+
+    const existingElements: Record<string, HTMLDivElement | null> = {};
+    listValueRef.current.forEach((itemValue, index) => {
+      if (itemValue !== null) {
+        existingElements[itemValue] = listElementsRef.current[index];
+      }
+    });
+
+    Object.entries(options).forEach(([itemValue, itemLabel]) => {
+      newListElements.push(
+        existingElements[itemValue] ? existingElements[itemValue] : null
+      );
+      newListValue.push(itemValue);
+      newListLabels.push(itemLabel);
+    });
+
+    listElementsRef.current = newListElements;
+    listValueRef.current = newListValue;
+    listLabelsRef.current = newListLabels;
+  }, [options, placeholder]);
+
   const [open, setOpen] = useState(false);
+  const selectedIndex = Math.max(0, listValueRef.current.indexOf(value));
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const [selectedIndex, setSelectedIndex] = useState(
-    Math.max(0, listValueRef.current.indexOf(value))
-  );
   const [pointer, setPointer] = useState(false);
 
   if (!open && pointer) {
@@ -82,19 +104,27 @@ export default function Select({
   const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
     [
       useClick(context, {
-        enabled: !readOnly
+        enabled: !readOnly,
       }),
       useRole(context, { role: "listbox" }),
       useDismiss(context),
       useListNavigation(context, {
-        listRef: listItemsRef,
+        listRef: listElementsRef,
         activeIndex,
         selectedIndex,
         onNavigate: setActiveIndex,
       }),
       useTypeahead(context, {
-        listRef: listLabelRef,
-        onMatch: open ? setActiveIndex : setSelectedIndex,
+        listRef: listLabelsRef,
+        onMatch: open
+          ? setActiveIndex
+          : (index) => {
+              if (placeholder) {
+                onChange(listValueRef.current[index]);
+              } else {
+                onChange(listValueRef.current[index]!);
+              }
+            },
         activeIndex,
         selectedIndex,
       }),
@@ -104,7 +134,7 @@ export default function Select({
   useLayoutEffect(() => {
     if (open && activeIndex != null && !pointer) {
       requestAnimationFrame(() => {
-        listItemsRef.current[activeIndex]?.scrollIntoView({
+        listElementsRef.current[activeIndex]?.scrollIntoView({
           block: "nearest",
         });
       });
@@ -112,7 +142,6 @@ export default function Select({
   }, [open, activeIndex, pointer]);
 
   function handleSelect(index: number) {
-    setSelectedIndex(index);
     if (placeholder) {
       onChange(listValueRef.current[index]);
     } else {
@@ -147,8 +176,9 @@ export default function Select({
           className: styles.Select,
         })}
       >
-        <span>{listLabelRef.current[selectedIndex]}</span>
-        <div className={styles.Spacer} />
+        <span className={styles.Text}>
+          {listLabelsRef.current[selectedIndex]}
+        </span>
         <ExpandMoreIcon className={styles.ExpandMore} />
       </div>
       {open && (
@@ -175,11 +205,11 @@ export default function Select({
               },
             })}
           >
-            {listLabelRef.current.map((label, index) => (
+            {listLabelsRef.current.map((label, index) => (
               <div
                 key={listValueRef.current[index]}
                 role="option"
-                ref={(node) => (listItemsRef.current[index] = node)}
+                ref={(node) => (listElementsRef.current[index] = node)}
                 tabIndex={activeIndex === index ? 0 : 1}
                 aria-selected={activeIndex === index}
                 data-selected={selectedIndex === index}

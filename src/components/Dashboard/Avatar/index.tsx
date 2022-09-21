@@ -11,7 +11,9 @@ export default function Avatar() {
       {data.state.currentUser.avatar ? (
         <img src={data.state.currentUser.avatar} alt="User Avatar" />
       ) : (
+        <div className={styles.DefaultAvatar}>
         <DefaultAvatar />
+        </div>
       )}
     </div>
   );

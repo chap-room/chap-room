@@ -9,12 +9,21 @@
     flex-direction: row;
     gap: 20px;
 
+    @media (max-width: 768px) {
+      flex-direction: column;
+    }
+
     > div:not(.Separator) {
       flex: 1;
       max-width: 350px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
+
+      @media (max-width: 768px) {
+        max-width: unset;
+        width: 100%;
+      }
 
       > * {
         width: 100%;
@@ -89,6 +98,11 @@
     > .Separator {
       background-color: #cccccc;
       width: 1px;
+
+      @media (max-width: 768px) {
+        width: 100%;
+        height: 1px;
+      }
     }
   }
 
