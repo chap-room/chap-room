@@ -19,16 +19,6 @@
       font-weight: 500; // Medium
     }
 
-    .EditButton,
-    .DeleteButton {
-      display: flex;
-      background-color: transparent;
-      border: none;
-      padding: 5px;
-      margin: 0;
-      cursor: pointer;
-    }
-
     .EditButton {
       fill: #9c9c9c;
     }

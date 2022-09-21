@@ -8,12 +8,12 @@ interface CheckBoxProps {
 
 export default function CheckBox({ checked, onChange }: CheckBoxProps) {
   return (
-    <div
+    <button
       data-checked={checked}
       className={styles.CheckBox}
       onClick={() => onChange(!checked)}
     >
       <CheckIcon />
-    </div>
+    </button>
   );
 }

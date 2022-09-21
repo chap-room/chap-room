@@ -174,6 +174,7 @@ export default function Select({
         {...getReferenceProps({
           ref: reference,
           className: styles.Select,
+          tabIndex: 0,
         })}
       >
         <span className={styles.Text}>

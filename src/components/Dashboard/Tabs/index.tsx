@@ -16,17 +16,16 @@ export default function Tabs({ tabs }: TabsProps) {
   return (
     <>
       <div className={styles.Tabs}>
-        {tabs.map((tab) =>
-          tab.id === currentTabId ? (
-            <div className={styles.Current} key={tab.id}>
-              {tab.label}
-            </div>
-          ) : (
-            <button onClick={() => setCurrentTabId(tab.id)} key={tab.id}>
-              {tab.label}
-            </button>
-          )
-        )}
+        {tabs.map((tab) => (
+          <button
+            className={tab.id === currentTabId ? styles.Current : undefined}
+            onClick={() => setCurrentTabId(tab.id)}
+            key={tab.id}
+            disabled={tab.id === currentTabId}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
       <ViewSwitch
         currentViewId={currentTabId}

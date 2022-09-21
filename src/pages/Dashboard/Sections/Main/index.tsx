@@ -114,7 +114,7 @@ export default function DashboardMain() {
                 title="هزینه ها"
                 end={
                   <div className={styles.PricesPrintPaperSizeButtons}>
-                    <div
+                    <button
                       onClick={() => setPricesPrintPaperSize(PrintPaperSize.a4)}
                       className={
                         pricesPrintPaperSize === PrintPaperSize.a4
@@ -123,8 +123,8 @@ export default function DashboardMain() {
                       }
                     >
                       {PrintPaperSize.a4}
-                    </div>
-                    <div
+                    </button>
+                    <button
                       onClick={() => setPricesPrintPaperSize(PrintPaperSize.a3)}
                       className={
                         pricesPrintPaperSize === PrintPaperSize.a3
@@ -133,8 +133,8 @@ export default function DashboardMain() {
                       }
                     >
                       {PrintPaperSize.a3}
-                    </div>
-                    <div
+                    </button>
+                    <button
                       onClick={() => setPricesPrintPaperSize(PrintPaperSize.a5)}
                       className={
                         pricesPrintPaperSize === PrintPaperSize.a5
@@ -143,7 +143,7 @@ export default function DashboardMain() {
                       }
                     >
                       {PrintPaperSize.a5}
-                    </div>
+                    </button>
                   </div>
                 }
               />

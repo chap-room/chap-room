@@ -1,5 +1,13 @@
 import styles from "./style.module.scss";
-import { PropsWithChildren, useEffect, useRef } from "react";
+import { PropsWithChildren, useId } from "react";
+import {
+  useFloating,
+  useInteractions,
+  useRole,
+  useDismiss,
+  FloatingPortal,
+  FloatingFocusManager,
+} from "@floating-ui/react-dom-interactions";
 import { ReactComponent as CloseIcon } from "../../assets/icons/close.svg";
 
 interface DialogProps {
@@ -14,45 +22,55 @@ export default function Dialog({
   title,
   children,
 }: PropsWithChildren<DialogProps>) {
-  const dialogWrapperRef = useRef<HTMLDivElement>(null);
+  const { floating, context } = useFloating({
+    open,
+    onOpenChange: (open) => {
+      if (!open) onClose()
+    }
+  });
 
-  useEffect(() => {
-    const listener = function (event: MouseEvent) {
-      if (event.target === dialogWrapperRef.current) {
-        onClose();
-      }
-    };
+  const id = useId();
+  const labelId = `${id}-label`;
 
-    window.addEventListener("click", listener);
-
-    return () => {
-      window.removeEventListener("click", listener);
-    };
-  }, [onClose]);
+  const { getFloatingProps } = useInteractions([
+    useRole(context),
+    useDismiss(context)
+  ]);
 
   return (
-    <div
-      className={
-        open ? styles.Container : styles.Container + " " + styles.Close
-      }
-      ref={dialogWrapperRef}
-    >
-      <div className={styles.Dialog}>
-        {title && (
-          <div className={styles.Header}>
-            <div className={styles.Start} />
-            <div className={styles.Center}>
-              <div className={styles.Title}>{title}</div>
+    <FloatingPortal>
+      {open && (
+        <div className={styles.Container}>
+          <FloatingFocusManager context={context}>
+            <div
+              className={styles.Dialog}
+              ref={floating}
+              aria-labelledby={labelId}
+              {...getFloatingProps()}
+            >
+              {title && (
+                <div className={styles.Header}>
+                  <div className={styles.Start} />
+                  <div className={styles.Center}>
+                    <div className={styles.Title} id={labelId}>
+                      {title}
+                    </div>
+                  </div>
+                  <div className={styles.End}>
+                    <button
+                      className={styles.CloseButton}
+                      onClick={() => onClose()}
+                    >
+                      <CloseIcon />
+                    </button>
+                  </div>
+                </div>
+              )}
+              <div className={styles.Content}>{children}</div>
             </div>
-            <div className={styles.End}>
-              <button className={styles.CloseButton} onClick={() => onClose()}>
-                <CloseIcon />
-              </button>
-            </div>
-          </div>
-        )}
-        <div className={styles.Content}>{children}</div>
-      </div>
-    </div>
+          </FloatingFocusManager>
+        </div>
+      )}
+    </FloatingPortal>
   );
 }

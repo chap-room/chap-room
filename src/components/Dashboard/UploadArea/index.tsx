@@ -39,7 +39,7 @@ export default function UploadArea({
         }}
         multiple={multiple}
       />
-      <div
+      <button
         className={styles.DropZone}
         onClick={() => inputRef.current?.click()}
         onDragEnter={() => setDragActive(true)}

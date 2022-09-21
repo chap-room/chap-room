@@ -174,7 +174,7 @@
               flex-direction: row;
               gap: 5px;
 
-              > div {
+              > button {
                 display: flex;
                 height: 36px;
                 width: 36px;
@@ -185,6 +185,9 @@
                 color: #5e5e5e;
                 fill: #5e5e5e;
                 user-select: none;
+                background: transparent;
+                border: none;
+                padding: 0;
 
                 &.Current {
                   color: #0077b5;

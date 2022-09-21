@@ -12,9 +12,9 @@ export default function AreaButton({
   onClick,
 }: AreaButtonProps) {
   return (
-    <div className={styles.AreaButton} onClick={() => onClick()}>
+    <button className={styles.AreaButton} onClick={() => onClick()}>
       <div className={styles.Title}>{title}</div>
       {description && <div className={styles.Description}>{description}</div>}
-    </div>
+    </button>
   );
 }

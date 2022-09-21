@@ -7,7 +7,7 @@ interface RadioProps {
 
 export default function Radio({ checked, onChecked }: RadioProps) {
   return (
-    <div
+    <button
       data-checked={checked}
       className={styles.Radio}
       onClick={() => !checked && onChecked()}

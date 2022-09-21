@@ -1,6 +1,6 @@
 .UploadArea {
   background: #cccccc26;
-  border: 3px dashed #cccccc;
+  border: 2px dashed #cccccc;
   color: #9c9c9c;
   display: flex;
   flex-direction: column;
@@ -10,7 +10,7 @@
 
   &[data-drag-active="true"] {
     background: #2578fa26;
-    border: 3px dashed #2578fa;
+    border: 2px dashed #2578fa;
     color: #2578fa;
   }
 
@@ -21,6 +21,8 @@
     width: 100%;
     height: 100%;
     cursor: pointer;
+    background: transparent;
+    border: none;
   }
 
   .Input {

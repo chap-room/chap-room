@@ -32,10 +32,7 @@ export default function InProgressOrderTable({
       <tbody>
         {inProgressOrders.map((order) => (
           <tr key={order.id}>
-            <td>
-              <span className={styles.MobileLabel}>شماره سفارش:</span>
-              {order.id}
-            </td>
+            <td>{order.id}</td>
             <td>
               <FormattedDate value={order.date} dateStyle="medium" />
               <br />
