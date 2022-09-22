@@ -1,25 +1,19 @@
 import styles from "./style.module.scss";
 import { useContext, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import PrintPrices from "../../../../components/PrintPrices";
-import Switch from "../../../../components/Switch";
-import ContentHeader from "../../../../components/Dashboard/ContentHeader";
-import Button from "../../../../components/Button";
-import Avatar from "../../../../components/Dashboard/Avatar";
-import Wallet from "../../../../components/Dashboard/Wallet";
-import InProgressOrderTable from "../../../../components/Dashboard/InProgressOrderTable";
-import { ReactComponent as NavigateBeforeIcon } from "../../../../assets/icons/navigateBefore.svg";
-import { ReactComponent as OrdersIcon } from "../../../../assets/icons/orders.svg";
-import { ReactComponent as AddressesIcon } from "../../../../assets/icons/addresses.svg";
-import { ReactComponent as TransactionsIcon } from "../../../../assets/icons/transactions.svg";
-import { ReactComponent as MarketingIcon } from "../../../../assets/icons/marketing.svg";
-import { ReactComponent as ProfileIcon } from "../../../../assets/icons/profile.svg";
-import { ReactComponent as LogoutIcon } from "../../../../assets/icons/logout.svg";
+import { Link, useNavigate } from "react-router-dom";
+import { PrintPaperSize } from "../../../../types";
+import { DashboardDataContext } from "../../../../context/DashboardData";
 import { ReactComponent as Logo } from "../../../../assets/images/logo.svg";
 import { ReactComponent as PrintingImage } from "../../../../assets/images/printing.svg";
-import { DashboardDataContext } from "../../../../context/DashboardData";
-import { PrintPaperSize } from "../../../../types";
+import Avatar from "../../../../components/Dashboard/Avatar";
+import Wallet from "../../../../components/Dashboard/Wallet";
+import DashboardNavLinks from "../../../../components/Dashboard/NavLinks";
+import ContentHeader from "../../../../components/Dashboard/ContentHeader";
+import PrintPrices from "../../../../components/PrintPrices";
+import Button from "../../../../components/Button";
+import Switch from "../../../../components/Switch";
+import InProgressOrderTable from "../../../../components/Dashboard/InProgressOrderTable";
 
 export default function DashboardMain() {
   const data = useContext(DashboardDataContext);
@@ -34,7 +28,7 @@ export default function DashboardMain() {
     <div className={styles.Container}>
       <Helmet title="داشبورد" />
       <div className={styles.Mobile}>
-        <div className={styles.Top}>
+        <div className={styles.User}>
           <Avatar />
           <div className={styles.Meta}>
             <div className={styles.PhoneNumber}>
@@ -45,48 +39,7 @@ export default function DashboardMain() {
         </div>
         <div className={styles.Welcome}>!خوش‌آمدی</div>
         <Wallet />
-        <NavLink to="/dashboard/orders" className={styles.NavLink}>
-          <OrdersIcon />
-          <div className={styles.Text}>سفارش ها</div>
-          <div className={styles.Arrow}>
-            <NavigateBeforeIcon />
-          </div>
-        </NavLink>
-        <NavLink to="/dashboard/addresses" className={styles.NavLink}>
-          <AddressesIcon />
-          <div className={styles.Text}>آدرس ها</div>
-          <div className={styles.Arrow}>
-            <NavigateBeforeIcon />
-          </div>
-        </NavLink>
-        <NavLink to="/dashboard/transactions" className={styles.NavLink}>
-          <TransactionsIcon />
-          <div className={styles.Text}>تراکنش ها</div>
-          <div className={styles.Arrow}>
-            <NavigateBeforeIcon />
-          </div>
-        </NavLink>
-        <NavLink to="/dashboard/marketing" className={styles.NavLink}>
-          <MarketingIcon />
-          <div className={styles.Text}>بازاریابی</div>
-          <div className={styles.Arrow}>
-            <NavigateBeforeIcon />
-          </div>
-        </NavLink>
-        <div className={styles.Spacer} />
-        <div className={styles.Bottom}>
-          <NavLink to="/dashboard/profile" className={styles.NavLink}>
-            <ProfileIcon />
-            <div className={styles.Text}>پروفایل</div>
-            <div className={styles.Arrow}>
-              <NavigateBeforeIcon />
-            </div>
-          </NavLink>
-          <div className={styles.NavLink}>
-            <LogoutIcon />
-            خروج
-          </div>
-        </div>
+        <DashboardNavLinks />
       </div>
       <div className={styles.NonMobile}>
         <div className={styles.TitleContainer}>
