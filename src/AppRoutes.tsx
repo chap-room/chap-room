@@ -41,10 +41,6 @@ const DashboardProfile = lazy(
 );
 const NotFound = lazy(() => import("./pages/NotFound"));
 
-// TODO Remove this
-// @ts-ignore
-const NonFilledPromise = lazy(() => new Promise<JSX.Element>(() => {}));
-
 export default function AppRoutes() {
   const location = useLocation();
   useEffect(() => {
@@ -62,7 +58,6 @@ export default function AppRoutes() {
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
-        <Route path="suspense" element={<NonFilledPromise />} />
         <Route path="dashboard" element={<Dashboard />}>
           <Route index element={<DashboardMain />} />
           <Route path="orders" element={<DashboardOrders />}>
