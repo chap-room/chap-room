@@ -12,7 +12,7 @@ export default function Avatar() {
         <img src={data.state.currentUser.avatar} alt="User Avatar" />
       ) : (
         <div className={styles.DefaultAvatar}>
-        <DefaultAvatar />
+          <DefaultAvatar />
         </div>
       )}
     </div>
