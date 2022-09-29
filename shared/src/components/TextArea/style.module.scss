@@ -1,0 +1,15 @@
+.TextArea {
+  box-sizing: border-box;
+  padding: 9px 15px;
+  font-size: 14px;
+  border-radius: 20px;
+  color: #000000;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  outline: none;
+  resize: vertical;
+
+  &::placeholder {
+    color: #cccccc;
+  }
+}

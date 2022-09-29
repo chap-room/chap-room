@@ -1,0 +1,109 @@
+.Container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  .Mobile {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    @media (min-width: 897px) {
+      display: none;
+    }
+
+    .User {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      padding: 10px;
+
+      .Meta {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        color: #464646;
+        flex: 1;
+
+        .PhoneNumber {
+          font-size: 10px;
+          font-weight: 300; // Light
+        }
+
+        .Name {
+          font-weight: bold;
+        }
+      }
+    }
+
+    .Welcome {
+      font-size: 16px;
+      height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .NonMobile {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    @media (max-width: 896px) {
+      display: none;
+    }
+
+    .ContentContainer {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+
+      > div:first-child {
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+
+        > div:first-child {
+          position: relative;
+          overflow: hidden;
+          min-height: 200px;
+
+          .WelcomeUser {
+            color: #464646;
+            font-size: 28px;
+            font-weight: 500; // Medium
+          }
+
+          .DashboardDescription {
+            color: #464646;
+          }
+
+          .Printing {
+            position: absolute;
+            bottom: 0;
+            left: -15px;
+            z-index: -1;
+
+            > svg {
+              width: auto;
+              height: 220px;
+            }
+          }
+        }
+
+        > div:last-child {
+          .PricesPrintPaperSizeButtons {
+            > div {
+              > button {
+                padding: 0;
+                width: 36px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

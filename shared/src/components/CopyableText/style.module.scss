@@ -1,0 +1,25 @@
+.CopyableText {
+  display: flex;
+  flex-direction: row;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 20px;
+  padding: 0 5px;
+
+  .Content {
+    padding: 0 10px;
+  }
+
+  .Separator {
+    background-color: #cccccc;
+    height: 25px;
+    width: 1px;
+  }
+
+  .CopyIcon {
+    fill: #5d5d5d;
+  }
+}

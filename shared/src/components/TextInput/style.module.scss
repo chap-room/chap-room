@@ -1,0 +1,42 @@
+.InputBox {
+  box-sizing: border-box;
+  padding: 9px 15px;
+  font-size: 14px;
+  border-radius: 20px;
+  color: #000000;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  justify-content: center;
+
+  &.ReadOnly {
+    background-color: #efeeee;
+  }
+
+  > input {
+    background: transparent;
+    border: none;
+    padding: 0;
+    outline: none;
+    flex: 1;
+    width: 100%;
+
+    &::placeholder {
+      color: #cccccc;
+    }
+
+    &[type="number"] {
+      /* Firefox */
+      -moz-appearance: textfield;
+
+      /* Chrome, Safari, Edge, Opera */
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+    }
+  }
+}

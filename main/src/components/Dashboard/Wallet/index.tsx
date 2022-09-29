@@ -1,0 +1,74 @@
+import styles from "./style.module.scss";
+import { useContext, useState } from "react";
+import { FormattedNumber } from "react-intl";
+import { DashboardDataContext } from "@chap-room/main/context/DashboardData";
+import { ReactComponent as ExpandMoreIcon } from "@chap-room/shared/assets/icons/expandMore.svg";
+import IncreasBalanceDialog from "@chap-room/main/components/Dashboard/IncreasBalanceDialog";
+import WithdrawBalanceDialog from "@chap-room/main/components/Dashboard/WithdrawBalanceDialog";
+
+export default function Wallet() {
+  const data = useContext(DashboardDataContext);
+
+  const [walletExpanded, setWalletExpanded] = useState(false);
+  const [showIncreasBalanceDialog, setShowIncreasBalanceDialog] =
+    useState(false);
+  const [showWithdrawBalanceDialog, setShowWithdrawBalanceDialog] =
+    useState(false);
+
+  return (
+    <div
+      className={
+        walletExpanded
+          ? styles.Wallet + " " + styles.WalletExpanded
+          : styles.Wallet
+      }
+    >
+      <div
+        className={styles.WalletOverview}
+        onClick={() => {
+          setWalletExpanded(!walletExpanded);
+        }}
+      >
+        موجودی:{" "}
+        <FormattedNumber
+          value={data.state.wallet.balance + data.state.wallet.marketingSales}
+        />{" "}
+        تومان
+        <div className={styles.Spacer} />
+        <ExpandMoreIcon className={styles.ExpandMoreIcon} />
+      </div>
+      <div className={styles.WalletDetails}>
+        <div>
+          موجودی کیف پول:
+          <div className={styles.Spacer} />
+          <FormattedNumber value={data.state.wallet.balance} /> تومان
+        </div>
+        <div>
+          موجودی فروش بازاریابی:
+          <div className={styles.Spacer} />
+          <FormattedNumber value={data.state.wallet.marketingSales} /> تومان
+        </div>
+        <button
+          className={styles.IncreasBalance}
+          onClick={() => setShowIncreasBalanceDialog(true)}
+        >
+          افزایش موجودی
+        </button>
+        <button
+          className={styles.WithdrawBalance}
+          onClick={() => setShowWithdrawBalanceDialog(true)}
+        >
+          برداشت موجودی
+        </button>
+      </div>
+      <IncreasBalanceDialog
+        open={showIncreasBalanceDialog}
+        onClose={() => setShowIncreasBalanceDialog(false)}
+      />
+      <WithdrawBalanceDialog
+        open={showWithdrawBalanceDialog}
+        onClose={() => setShowWithdrawBalanceDialog(false)}
+      />
+    </div>
+  );
+}
