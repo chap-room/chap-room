@@ -1,5 +1,5 @@
 {
-  "name": "chap-room-main",
+  "name": "@chap-room/shared",
   "version": "0.1.0",
   "private": true,
   "eslintConfig": {

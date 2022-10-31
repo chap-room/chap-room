@@ -21,19 +21,25 @@
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"noEmit": true,
-		"jsx": "react-jsx",
+    "incremental": true,
+		"jsx": "preserve",
 		"paths": {
-			"@chap-room/main/*": [
-				"main/src/*"
+			"@/main/*": [
+				"main/*"
 			],
-			"@chap-room/admin/*": [
-				"admin/src/*"
+			"@/admin/*": [
+				"admin/*"
 			],
-			"@chap-room/shared/*": [
-				"shared/src/*"
+			"@/shared/*": [
+				"shared/*"
 			]
 		}
 	},
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
 	"exclude": [
 		"node_modules",
 		"tmp"

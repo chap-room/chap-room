@@ -1,0 +1,177 @@
+.Header {
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 20px 140px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+
+  @media (max-width: 1024px) {
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+
+  @media (max-width: 960px) {
+    padding-left: 70px;
+    padding-right: 70px;
+  }
+
+  @media (max-width: 896px) {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  .Start {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+
+    .MobileMenuToggle {
+      width: 48px;
+      height: 48px;
+      padding: 0;
+      display: flex;
+      border: none;
+      background-color: transparent;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      border-radius: 24px;
+      box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
+
+      @media (min-width: 1201px) {
+        display: none;
+      }
+    }
+
+    .Logo {
+      display: inline-flex;
+
+      >svg {
+        width: auto;
+        height: 50px;
+
+        @media (max-width: 640px) {
+          height: 40px;
+        }
+
+        @media (max-width: 448px) {
+          height: 35px;
+        }
+      }
+
+      &.HideLogoInMobile {
+        @media (max-width: 896px) {
+          display: none;
+        }
+      }
+    }
+
+    .MobileBackButton {
+      background-color: #f5f5f5;
+      width: 54px;
+      height: 54px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      fill: #9c9c9c;
+      border-radius: 50%;
+      box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
+
+      @media (min-width: 897px) {
+        display: none;
+      }
+    }
+  }
+
+  .Center {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    @media (max-width: 1200px) {
+      display: none;
+    }
+  }
+
+  .End {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+
+    .UserAuth {
+      @media (max-width: 512px) {
+        display: none;
+      }
+
+      button {
+        white-space: nowrap;
+      }
+    }
+
+    .UserMobile {
+      border-radius: 24px;
+      box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
+
+      @media (min-width: 513px) {
+        display: none;
+      }
+    }
+  }
+
+  .MobileMenu {
+    display: flex;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #efeeee;
+    box-shadow: 0px 0px 12px rgb(0, 0, 0, 0.16);
+    box-sizing: border-box;
+    padding: 20px;
+    z-index: 100;
+
+    &:not([data-show="true"]) {
+      display: none;
+    }
+  }
+
+  .NavLinks {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+
+    @media (max-width: 640px) {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    >a {
+      display: flex;
+      height: 40px;
+      flex-direction: row;
+      gap: 10px;
+      align-items: center;
+      padding: 0 15px;
+      border-radius: 20px;
+      text-decoration: none;
+      color: #5e5e5e;
+      fill: #5e5e5e;
+      white-space: nowrap;
+
+      &:global(.active) {
+        color: #0077b5;
+        fill: #0077b5;
+        box-shadow: inset -3px -3px 6px #ffffffdb, inset 3px 3px 6px #00000029;
+      }
+    }
+  }
+}

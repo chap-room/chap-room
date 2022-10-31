@@ -1,0 +1,42 @@
+import styles from "./style.module.scss";
+import { useState } from "react";
+import { getProfile } from "@/main/api";
+import DataLoader from "@/shared/components/Dashboard/DataLoader";
+import DashboardNavLinks from "@/main/components/Dashboard/NavLinks";
+import Wallet from "@/main/components/Dashboard/Wallet";
+import Avatar from "@/shared/components/Dashboard/Avatar";
+
+export default function DashboardSidebar() {
+  const [data, setData] = useState<{
+    marketingBalance: number;
+    walletBalance: number;
+    avatar: string | null;
+    name: string;
+    phoneNumber: string;
+  }>({
+    marketingBalance: 0,
+    walletBalance: 0,
+    avatar: null,
+    name: "",
+    phoneNumber: "",
+  });
+
+  return (
+    <div className={styles.Sidebar}>
+      <DataLoader load={() => getProfile()} setData={setData}>
+        <Wallet
+          marketingBalance={data.marketingBalance}
+          walletBalance={data.walletBalance}
+        />
+        <DashboardNavLinks />
+        <div className={styles.User}>
+          <Avatar user={{ name: data.name, avatar: data.avatar }} />
+          <div className={styles.Meta}>
+            <div>{data.name}</div>
+            <div className={styles.PhoneNumber}>{data.phoneNumber}</div>
+          </div>
+        </div>
+      </DataLoader>
+    </div>
+  );
+}

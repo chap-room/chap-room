@@ -1,0 +1,176 @@
+.Container {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+
+  .Introduction {
+    margin: 0 auto;
+    max-width: 1024px;
+    background-image: url("~@/main/assets/images/teamWork.png");
+    background-position: 100%;
+    background-size: cover;
+    border-radius: 20px;
+    box-shadow: -3px -3px 6px rgba(255, 255, 255, 0.86), 3px 3px 6px rgba(0, 0, 0, 0.16);
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    padding: 40px 60px;
+  
+    @media (max-width: 896px) {
+      background-image: none;
+      box-shadow: none;
+      grid-template-columns: 1fr;
+      padding: 0;
+
+      > div:first-child {
+        display: none;
+      }
+    }
+
+    > div {
+      > h2 {
+        color: #5800b3;
+        margin: 0;
+        margin-bottom: 20px;
+      }
+
+      > p {
+        margin: 0;
+        color: #464646;
+      }
+    }
+  }
+
+  .Section1 {
+    margin: 0 auto;
+    max-width: 1024px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    align-items: center;
+  
+    @media (max-width: 896px) {
+      grid-template-columns: 1fr;
+    }
+
+    > div:first-child {
+      > h2 {
+        margin: 0;
+        margin-bottom: 20px;
+        color: #5800b3;
+      }
+
+      > p {
+        color: #464646;
+        line-height: 25px;
+      }
+    }
+
+    > div:last-child {
+      display: flex;
+      
+      > svg {
+        max-width: 512px;
+        margin: 0 auto;
+      }
+    }
+  }
+
+  .Section2 {
+    margin: 0 auto;
+    max-width: 1024px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    align-items: center;
+  
+    @media (max-width: 896px) {
+      grid-template-columns: 1fr;
+    }
+
+    > div:first-child {
+      display: flex;
+      
+      > svg {
+        max-width: 512px;
+        margin: 0 auto;
+      }
+    }
+
+    > div:last-child {
+      > h2 {
+        margin: 0;
+        margin-bottom: 20px;
+        color: #5800b3;
+      }
+
+      > p {
+        color: #464646;
+        line-height: 25px;
+      }
+    }
+  }
+
+  .Services {
+    margin: 0 auto;
+    max-width: 1024px;
+    text-align: center;
+    
+    > h2 {
+      margin: 0;
+      margin-bottom: 30px;
+      color: #5800b3;
+    }
+
+    > div {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 30px;
+  
+      @media (max-width: 896px) {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      @media (max-width: 512px) {
+        grid-template-columns: 1fr;
+      }
+
+      > div {
+        > svg {
+          width: auto;
+          height: 160px;
+        }
+
+        > h3 {
+          margin: 20px 0;
+          color: #5800b3;
+        }
+        
+        > p {
+          margin: 0;
+          color: #464646;
+          line-height: 25px;
+        }
+      }
+    }
+  }
+
+  .Customers {
+    margin: 0 auto;
+    max-width: 896px;
+    text-align: center;
+
+    > h2 {
+      color: #5800b3;
+      margin: 0;
+      margin-bottom: 20px;
+    }
+
+    > p {
+      margin: 0;
+      line-height: 25px;
+      color: #464646;
+    }
+  }
+}
