@@ -1,50 +1,16 @@
-export interface AdminUser {
-  id: string;
-  name: string;
-  phoneNumber: string;
-  avatar: string | null;
-  role: AdminUserRole;
-}
-
-export interface CurrentAdminUser {
-  name: string;
-  phoneNumber: string;
-  avatar: string | null;
-  role: AdminUserRole;
-}
-
-export enum AdminUserRole {
-  admin = "مدیر",
-  representation = "نمایندگی",
-}
-
 export interface User {
-  id: string;
+  id: number;
   name: string;
   phoneNumber: string;
-  avatar: string | null;
-  wallet: {
-    balance: number;
-    marketingSales: number;
-  };
-  addresses: Address[];
-  orders: Order[];
-  transactions: Transaction[];
 }
 
-export interface CurrentUser {
-  name: string;
-  phoneNumber: string;
-  avatar: string | null;
-  wallet: {
-    balance: number;
-    marketingSales: number;
-  };
+export interface AdminUserRole {
+  name: string,
 }
 
 // all amounts in toman
 export interface Order {
-  id: string;
+  id: number;
   date: Date;
   status: OrderStatus;
   recipientName: string;
@@ -59,7 +25,8 @@ export interface Order {
   postageMethod: PostageMethod;
   discountAmount: number | null;
   discountCode: string;
-  paymentMethod: Record<PaymentMethod, number>;
+  gatewayPaidAmount: number;
+  walletPaidAmount: number;
   cancelReason: string | null;
   lastUpdateDate: Date;
   trackingNumber: string | null;
@@ -79,7 +46,7 @@ export enum OrderCancelReason {
 }
 
 export interface PrintFolder {
-  id: string;
+  id: number;
   printColor: PrintColor;
   printSize: PrintSize;
   printSide: PrintSide;
@@ -88,14 +55,14 @@ export interface PrintFolder {
   description: string | null;
   countOfCopies: number | null;
   printFiles: PrintFile[];
+  filesUrl: string;
 }
 
 export interface PrintFile {
-  id: string;
+  id: number;
   name: string;
   countOfPages: number;
 }
-
 export enum PrintColor {
   blackAndWhite = "سیاه و سفید",
   normalColor = "رنگی معمولی",
@@ -147,7 +114,7 @@ export enum PostageMethod {
 }
 
 export interface Address {
-  id: string;
+  id: number;
   label: string;
   recipientName: string;
   recipientPhoneNumber: string;
@@ -158,11 +125,11 @@ export interface Address {
 }
 
 export interface Transaction {
-  id: string;
+  id: number;
   date: Date;
   amount: number;
-  details: string;
-  orderId: string | null;
+  description: string;
+  orderId: number | null;
   status: TransactionStatus;
 }
 
@@ -171,32 +138,28 @@ export enum TransactionStatus {
   unsuccessful = "نا موفق",
 }
 
-export interface DiscountCode {
-  id: string;
+export interface Discount {
+  id: number;
   active: boolean;
   code: string;
   description: string;
-  customer: User | null;
+  user: User | null;
+  phoneNumber: string | null;
   discountType: DiscountType;
   discountValue: number;
-  percentageDiscountCeiling: number | null;
-  minOrderAmount: number | null;
-  maxOrderAmount: number | null;
-  minPageCount: number | null;
-  maxPageCount: number | null;
   usageLimit: number | null;
   timesUsed: number | null;
-  expirationDate: Date | null;
+  expireDate: Date | null;
 }
 
 export enum DiscountType {
   fixedAmount = "مبلغ ثابت",
   percentage = "درصدی",
-  numberOfPages = "تعدادی از صفحات",
+  countOfPages = "تعدادی از صفحات",
 }
 
 export interface CooperationRequest {
-  id: string;
+  id: number;
   date: Date;
   phoneNumber: string;
   description: string | null;
@@ -204,21 +167,21 @@ export interface CooperationRequest {
 }
 
 export enum CooperationRequestStatus {
-  accepted = "قبول شده",
+  approved = "قبول شده",
   rejected = "رد شده",
   pending = "در انتظار بررسی",
 }
 
 export interface FinancialRecord {
-  id: string;
+  id: number;
   date: Date;
   user: User;
   amount: number;
-  details: string;
-  orderId: string | null;
+  description: string;
+  orderId: number | null;
   type: FinancialRecordType;
   status: FinancialRecordStatus;
-  addedBy: AdminUser | null;
+  admin: User | null;
 }
 
 export enum FinancialRecordType {
@@ -229,20 +192,19 @@ export enum FinancialRecordType {
 export enum FinancialRecordStatus {
   successful = "موفق",
   unsuccessful = "نا موفق",
-  addedManually = "دستی افزوده شده",
 }
 
 export interface WithdrawalRequest {
-  id: string;
+  id: number;
   date: Date;
   amount: number;
   user: User;
-  shabaNumber: number;
+  iban: number;
   accountHolderName: string;
   status: WithdrawalRequestStatus;
   rejectReason: string | null;
   transactionDate: string | null;
-  transactionTrackingCode: string | null;
+  trackingNumber: string | null;
 }
 
 export enum WithdrawalRequestStatus {
@@ -251,55 +213,59 @@ export enum WithdrawalRequestStatus {
   pending = "در انتظار بررسی",
 }
 
-// export interface AllPrintPrices {
-//   [PrintSize.a4]: {
-//     [PrintColor.blackAndWhite]: PrintPrices;
-//     [PrintColor.normalColor]: PrintPrices;
-//     [PrintColor.fullColor]: PrintPrices;
-//   };
-//   [PrintSize.a3]: {
-//     [PrintColor.blackAndWhite]: PrintPrices;
-//     [PrintColor.normalColor]: PrintPrices;
-//     [PrintColor.fullColor]: PrintPrices;
-//   };
-//   [PrintSize.a5]: {
-//     [PrintColor.blackAndWhite]: PrintPrices;
-//     [PrintColor.normalColor]: PrintPrices;
-//     [PrintColor.fullColor]: PrintPrices;
-//   };
-//   binding: BindingPrices;
-// }
+export interface Tariffs {
+  print: PrintTariffs;
+  binding: BindingTariffs;
+}
 
-// export interface PrintPrices {
-//   [PrintSide.singleSided]: number;
-//   [PrintSide.doubleSided]: number;
-//   [PrintSide.singleSidedGlossy]: number;
-//   [PrintSide.doubleSidedGlossy]: number;
-//   breakpoints: {
-//     at: number;
-//     [PrintSide.singleSided]: number;
-//     [PrintSide.doubleSided]: number;
-//     [PrintSide.singleSidedGlossy]: number;
-//     [PrintSide.doubleSidedGlossy]: number;
-//   }[];
-// }
+export interface PrintTariffs {
+  a4: {
+    blackAndWhite: PrintPrice;
+    normalColor: PrintPrice;
+    fullColor: PrintPrice;
+  };
+  a5: {
+    blackAndWhite: PrintPrice;
+    normalColor: PrintPrice;
+    fullColor: PrintPrice;
+  };
+  a3: {
+    blackAndWhite: PrintPrice;
+    normalColor: PrintPrice;
+    fullColor: PrintPrice;
+  };
+}
 
-export interface BindingPrices {
-  [BindingType.springNormal]: {
-    [PrintSize.a4]: number;
-    [PrintSize.a3]: number;
-    [PrintSize.a5]: number;
+export interface PrintPrice {
+  singleSided: number;
+  doubleSided: number;
+  singleSidedGlossy: number;
+  doubleSidedGlossy: number;
+  breakpoints: {
+    at: number;
+    singleSided: number;
+    doubleSided: number;
+    singleSidedGlossy: number;
+    doubleSidedGlossy: number;
+  }[];
+}
+
+export interface BindingTariffs {
+  springNormal: {
+    a4: number;
+    a3: number;
+    a5: number;
   };
-  [BindingType.springPapco]: {
-    [PrintSize.a4]: number;
-    [PrintSize.a3]: number;
-    [PrintSize.a5]: number;
+  springPapco: {
+    a4: number;
+    a3: number;
+    a5: number;
   };
-  [BindingType.stapler]: number;
+  stapler: number;
 }
 
 export interface Post {
-  id: string;
+  id: number;
   pageSlug: string;
   pageTitle: string;
   postTitle: string;
@@ -317,34 +283,39 @@ export enum PostStatus {
   published = "منتشر شده",
 }
 
-export interface DedicatedDiscountCodeReport {
-  id: string;
+export interface DedicatedLinkReport {
+  orderId: number;
   date: Date;
   user: User;
-  customer: User;
-  orderId: string;
-  orderAmount: number;
-  customerDiscount: number;
-  userFee: number;
-  discountCode: string;
+  buyer: User;
+  amount: number; 
+  referralBenefit: number;
+  referralCommission: number;
+  referralSlug: string;
 }
 
-export interface DedicatedLinkReport {
-  id: string;
+export interface DedicatedDiscountCodeReport {
+  orderId: number;
   date: Date;
   user: User;
-  customer: User;
-  orderId: string;
-  orderAmount: number;
-  userFee: number;
-  userLink: string;
+  buyer: User;
+  amount: number;
+  discountCode: string;
+  discountValue: number;
+  discountAmount: number;
+  discountBenefitPercentage: number;
+  discountBenefit: number;
 }
 
 export interface CustomerReport {
-  id: string;
-  user: User;
+  id: number;
+  name: string;
+  phoneNumber: string;
+  walletBalance: number;
+  marketingBalance: number;
+  countOfOrders: number;
+  totalPaidAmount: number;
   registrationDate: Date;
   firstOrderDate: Date;
   lastOrderDate: Date;
-  totalAmountPaid: number;
 }

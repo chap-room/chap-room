@@ -1,19 +1,26 @@
 import styles from "./style.module.scss";
 import { FormattedNumber } from "react-intl";
-import LogoutIcon from "@/shared/assets/icons/logout.svg";
+import InfoIcon from "@/admin/assets/icons/info.svg";
+import LoginIcon from "@/admin/assets/icons/login.svg";
 import EditIcon from "@/shared/assets/icons/edit.svg";
 import DeletetIcon from "@/shared/assets/icons/delete.svg";
-import { User } from "@/shared/types";
 import IconButton from "@/shared/components/IconButton";
 
 interface UserTableProps {
-  users: User[];
-  onSeeUserMarketingDetails: (userId: string) => void;
-  onSeeUserOrderList: (userId: string) => void;
-  onSeeUserAddressList: (userId: string) => void;
-  onDeleteUser: (userId: string) => void;
-  onLogoutUser: (userId: string) => void;
-  onEditUser: (userId: string) => void;
+  users: {
+    id: number;
+    name: string;
+    phoneNumber: string;
+    marketingBalance: number;
+    walletBalance: number;
+    countOfOrders: number;
+  }[];
+  onSeeUserMarketingDetails: (userId: number) => void;
+  onSeeUserOrderList: (userId: number) => void;
+  onSeeUserAddressList: (userId: number) => void;
+  onDeleteUser: (userId: number) => void;
+  onLoginAsUser: (userId: number) => void;
+  onEditUser: (userId: number) => void;
 }
 
 export default function UserTable({
@@ -22,7 +29,7 @@ export default function UserTable({
   onSeeUserOrderList,
   onSeeUserAddressList,
   onDeleteUser,
-  onLogoutUser,
+  onLoginAsUser,
   onEditUser,
 }: UserTableProps) {
   return (
@@ -43,7 +50,7 @@ export default function UserTable({
               <span className={styles.MobileLabel}>کاربر:</span>
               <div>
                 <div className={styles.UserName}>{user.name}</div>
-                <div className={styles.UserPhoneNumber}>{user.phoneNumber}</div>
+                <div>{user.phoneNumber}</div>
               </div>
             </td>
             <td>
@@ -51,7 +58,7 @@ export default function UserTable({
               <div className={styles.UserWallet}>
                 <div>
                   <FormattedNumber
-                    value={user.wallet.balance + user.wallet.marketingSales}
+                    value={user.walletBalance + user.marketingBalance}
                   />{" "}
                   تومان
                 </div>
@@ -59,15 +66,20 @@ export default function UserTable({
                   <div>
                     <span>کیف پول:</span>
                     <span>
-                      <FormattedNumber value={user.wallet.balance} /> تومان
+                      <FormattedNumber value={user.walletBalance} /> تومان
                     </span>
                   </div>
                   <span className={styles.Spacer} />
                   <div>
+                    <span
+                      className={styles.UserMarketing}
+                      onClick={() => onSeeUserMarketingDetails(user.id)}
+                    >
+                      <InfoIcon />
+                    </span>
                     <span>بازاریابی:</span>
                     <span>
-                      <FormattedNumber value={user.wallet.marketingSales} />{" "}
-                      تومان
+                      <FormattedNumber value={user.marketingBalance} /> تومان
                     </span>
                   </div>
                 </div>
@@ -90,6 +102,7 @@ export default function UserTable({
                 مشاهده
                 <span className={styles.MobileLabel}>سفارش ها</span>
               </button>
+              <div className={styles.CountOfOrders}>{user.countOfOrders}</div>
             </td>
             <td>
               <span className={styles.MobileLabel}>عملیات:</span>
@@ -98,9 +111,9 @@ export default function UserTable({
                   <IconButton
                     varient="none"
                     size={34}
-                    onClick={() => onLogoutUser(user.id)}
+                    onClick={() => onLoginAsUser(user.id)}
                   >
-                    <LogoutIcon />
+                    <LoginIcon />
                   </IconButton>
                 </div>
                 <div className={styles.EditButton}>

@@ -8,7 +8,7 @@ import Button from "@/shared/components/Button";
 interface OrderSentDialogProps {
   open: boolean;
   onClose: () => void;
-  onMarkOrderSent: (trackingCode: string) => void;
+  onMarkOrderSent: (trackingCode: string) => Promise<any>;
 }
 
 export default function OrderSentDialog({
@@ -23,6 +23,8 @@ export default function OrderSentDialog({
       setTrackingCode("");
     }
   }, [open]);
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   return (
     <Dialog title="ارسال سفارش" open={open} onClose={() => onClose()}>
@@ -39,9 +41,13 @@ export default function OrderSentDialog({
       <BottomActions>
         <Button
           varient="filled"
-          onClick={() => onMarkOrderSent(trackingCode)}
+          onClick={() => {
+            setIsSubmitting(true);
+            onMarkOrderSent(trackingCode).finally(() => setIsSubmitting(false));
+          }}
           style={{ minWidth: 100 }}
-          disabled={trackingCode.length !== 24}
+          loading={isSubmitting}
+          disabled={isSubmitting || trackingCode.length !== 24}
         >
           ارسال شده
         </Button>

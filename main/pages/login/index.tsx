@@ -1,21 +1,28 @@
 import styles from "./style.module.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
-import { login } from "@/main/api";
+import { isLoggedIn, login } from "@/main/api";
 import Thumbnail from "@/shared/assets/images/printing.svg";
 import Header from "@/main/components/Header";
 import TextInput from "@/shared/components/TextInput";
 import Button from "@/shared/components/Button";
-import toast from "react-hot-toast";
-import { useRouter } from "next/router";
 
 export default function Login() {
   const router = useRouter();
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    isLoggedIn().then(() => {
+      router.replace("/dashboard");
+    }).catch(() => {});
+  }, []);
 
   return (
     <div className={styles.Login}>

@@ -2,7 +2,10 @@ import styles from "./style.module.scss";
 import { useState } from "react";
 import { FormattedNumber } from "react-intl";
 import { CircularProgressbar } from "react-circular-progressbar";
+import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 import Link from "next/link";
+import { newOrder } from "@/main/api";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import CloseIcon from "@/shared/assets/icons/close.svg";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
@@ -16,8 +19,6 @@ import AddressStage from "@/main/components/Dashboard/OrderForm/AddressStage";
 import NewAddressesStage from "@/main/components/Dashboard/OrderForm/NewAddressesStage";
 import EditAddressesStage from "@/main/components/Dashboard/OrderForm/EditAddressesStage";
 import PaymentStage from "@/main/components/Dashboard/OrderForm/PaymentStage";
-import toast from "react-hot-toast";
-import { newOrder } from "@/main/api";
 
 enum OrderFormStages {
   printFolders = "پوشه ها",
@@ -30,17 +31,19 @@ enum OrderFormStages {
 }
 
 export default function OrderForm() {
+  const router = useRouter();
+
   const [currentStage, setCurrentStage] = useState(
     OrderFormStages.printFolders
   );
   const [currentInEditPrintFolderId, setCurrentInEditPrintFolderId] = useState<
-    string | null
+    number | null
   >(null);
   const [currentInEditAddressId, setCurrentInEditAddressId] = useState<
-    string | null
+    number | null
   >(null);
 
-  const [addressId, setAddressId] = useState<string | null>(null);
+  const [addressId, setAddressId] = useState<number | null>(null);
 
   const progress = {
     [OrderFormStages.printFolders]: 1,
@@ -171,7 +174,10 @@ export default function OrderForm() {
             finish: (discountCode, paidWithWallet) =>
               newOrder(addressId!, discountCode, paidWithWallet)
                 .then(({ message, paymentUrl }) => {
-                  if (message) toast.success(message);
+                  if (message) {
+                    toast.success(message);
+                    router.push("/dashboard/orders");
+                  }
                   if (paymentUrl) window.location.href = paymentUrl;
                 })
                 .catch(toast.error),

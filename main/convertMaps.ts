@@ -83,39 +83,10 @@ export const orderConvertMap: ConvertMap = [
       express_mail: PostageMethod.expressMail,
     },
   ],
-  [["postageAt", "lastUpdateDate"], convertDate],
+  [["updatedAt", "lastUpdateDate"], convertDate],
   [
     ["folders", "printFolders"],
     (items: any[], direction) =>
       items.map((item) => convert(printFoldersConvertMap, item, direction)),
   ],
-  [
-    ["binding", "bindingOptions"],
-    [
-      [
-        ["type", "bindingType"],
-        {
-          spring_normal: BindingType.springNormal,
-          spring_papco: BindingType.springPapco,
-          stapler: BindingType.stapler,
-        },
-      ],
-      [
-        ["method", "bindingMethod"],
-        {
-          all_files_together: BindingMethod.allFilesTogether,
-          each_file_separated: BindingMethod.eachFileSeparated,
-          count_of_files: BindingMethod.countOfFiles,
-        },
-      ],
-      [
-        ["coverColor", "coverColor"],
-        {
-          black_and_white: CoverColors.blackAndWhite,
-          colorful: CoverColors.colorful,
-        },
-      ],
-    ],
-  ],
-  [["files", "printFiles"], null],
 ];

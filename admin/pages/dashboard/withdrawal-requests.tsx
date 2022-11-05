@@ -1,42 +1,50 @@
-import { useContext, useState } from "react";
+import { ReactElement, useState } from "react";
+import toast from "react-hot-toast";
 import Head from "next/head";
-import { DataContext } from "@/admin/context/Data";
-import { WithdrawalRequestStatus } from "@/shared/types";
+import { WithdrawalRequest, WithdrawalRequestStatus } from "@/shared/types";
+import {
+  doWithdrawalRequests,
+  getWithdrawalRequests,
+  rejectWithdrawalRequests,
+} from "@/admin/api";
 import DashboardLayout from "@/admin/components/Layout";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
 import SwitchButtons from "@/shared/components/SwitchButtons";
+import DataLoader from "@/shared/components/DataLoader";
 import WithdrawalRequestTable from "@/admin/components/WithdrawalRequestTable";
+import EmptyNote from "@/shared/components/Dashboard/EmptyNote";
 import WithdrawalRequestDoneDialog from "@/admin/components/WithdrawalRequestDoneDialog";
 import WithdrawalRequestRejectDialog from "@/admin/components/WithdrawalRequestRejectDialog";
 
 export default function DashboardWithdrawalRequests() {
-  const data = useContext(DataContext);
+  const [itemsStatus, setItemsStatus] = useState<WithdrawalRequestStatus>(
+    WithdrawalRequestStatus.pending
+  );
 
-  const [filterByWithdrawalRequestStatus, setFilterByWithdrawalRequestStatus] =
-    useState<WithdrawalRequestStatus | null>(WithdrawalRequestStatus.pending);
+  const [data, setData] = useState<{
+    countOfItems: number;
+    withdrawals: WithdrawalRequest[];
+  }>({ countOfItems: 0, withdrawals: [] });
+
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+
   const [
     pendingWithdrawalRequestDoneRequest,
     setPendingWithdrawalRequestDoneRequest,
-  ] = useState<string | null>(null);
+  ] = useState<number | null>(null);
   const [
     pendingWithdrawalRequestRejectRequest,
     setPendingWithdrawalRequestRejectRequest,
-  ] = useState<string | null>(null);
+  ] = useState<number | null>(null);
 
-  const withdrawalRequests = data.state.withdrawalRequests.filter((item) => {
-    if (filterByWithdrawalRequestStatus !== null) {
-      if (item.status !== filterByWithdrawalRequestStatus) {
-        return false;
-      }
-    }
-    return true;
-  });
+  const [reload, setRelaod] = useState(true);
 
   return (
-    <DashboardLayout>
+    <>
       <Head>
         <title>داشبورد - درخواست های برداشت</title>
       </Head>
@@ -64,49 +72,69 @@ export default function DashboardWithdrawalRequests() {
                   label: WithdrawalRequestStatus.rejected,
                 },
               ]}
-              value={filterByWithdrawalRequestStatus}
-              onChange={setFilterByWithdrawalRequestStatus}
-              nullable
+              value={itemsStatus}
+              onChange={setItemsStatus}
             />
           }
         />
         <MobileContentHeader backTo="/dashboard" title="همه درخواست ها" />
-        <WithdrawalRequestTable
-          withdrawalRequests={withdrawalRequests}
-          onDoneWithdrawalRequest={setPendingWithdrawalRequestDoneRequest}
-          onRejectWithdrawalRequest={setPendingWithdrawalRequestRejectRequest}
-        />
+        <DataLoader
+          load={() => {
+            if (reload) {
+              setRelaod(false);
+              return getWithdrawalRequests(search, page);
+            }
+          }}
+          deps={[reload]}
+          setData={setData}
+        >
+          <WithdrawalRequestTable
+            withdrawalRequests={data.withdrawals}
+            onDoneWithdrawalRequest={setPendingWithdrawalRequestDoneRequest}
+            onRejectWithdrawalRequest={setPendingWithdrawalRequestRejectRequest}
+            itemsStatus={itemsStatus}
+          />
+          {!data.withdrawals.length && (
+            <EmptyNote>هیچ درخواست برداشتی وجود ندارید</EmptyNote>
+          )}
+          <WithdrawalRequestDoneDialog
+            open={pendingWithdrawalRequestDoneRequest !== null}
+            onClose={() => setPendingWithdrawalRequestDoneRequest(null)}
+            onDoneWithdrawalRequest={(transactionDate, trackingCode) =>
+              doWithdrawalRequests(
+                pendingWithdrawalRequestDoneRequest!,
+                trackingCode
+              )
+                .then((message) => {
+                  toast.success(message);
+                  setPendingWithdrawalRequestDoneRequest(null);
+                  setRelaod(true);
+                })
+                .catch(toast.error)
+            }
+          />
+          <WithdrawalRequestRejectDialog
+            open={pendingWithdrawalRequestRejectRequest !== null}
+            onClose={() => setPendingWithdrawalRequestRejectRequest(null)}
+            onRejectWithdrawalRequest={(reason) =>
+              rejectWithdrawalRequests(
+                pendingWithdrawalRequestRejectRequest!,
+                reason
+              )
+                .then((message) => {
+                  toast.success(message);
+                  setPendingWithdrawalRequestRejectRequest(null);
+                  setRelaod(true);
+                })
+                .catch(toast.error)
+            }
+          />
+        </DataLoader>
       </SectionContent>
-      <WithdrawalRequestDoneDialog
-        open={pendingWithdrawalRequestDoneRequest !== null}
-        onClose={() => {
-          setPendingWithdrawalRequestDoneRequest(null);
-        }}
-        onDoneWithdrawalRequest={(transactionDate, transactionTrackingCode) => {
-          data.dispatch({
-            type: "WITHDRAWAL_RRQUESTS:DONE",
-            payload: [
-              pendingWithdrawalRequestDoneRequest!,
-              transactionDate,
-              transactionTrackingCode,
-            ],
-          });
-          setPendingWithdrawalRequestDoneRequest(null);
-        }}
-      />
-      <WithdrawalRequestRejectDialog
-        open={pendingWithdrawalRequestRejectRequest !== null}
-        onClose={() => {
-          setPendingWithdrawalRequestRejectRequest(null);
-        }}
-        onRejectWithdrawalRequest={(reason) => {
-          data.dispatch({
-            type: "WITHDRAWAL_RRQUESTS:REJECT",
-            payload: [pendingWithdrawalRequestRejectRequest!, reason],
-          });
-          setPendingWithdrawalRequestRejectRequest(null);
-        }}
-      />
-    </DashboardLayout>
+    </>
   );
 }
+
+DashboardWithdrawalRequests.getLayout = function getLayout(page: ReactElement) {
+  return <DashboardLayout>{page}</DashboardLayout>;
+};

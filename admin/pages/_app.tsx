@@ -1,14 +1,29 @@
 import "@/shared/polyfills";
 import "./_app.scss";
-import type { AppProps } from "next/app";
+import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { IntlProvider } from "react-intl";
+import { Toaster } from "react-hot-toast";
+import { NextPage } from "next";
+import { AppProps } from "next/app";
 
-export default function App({ Component, pageProps }: AppProps) {
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+export default function App({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout ?? ((page) => page);
+
+  const [isBrowser, setIsBrowser] = useState(false);
+  useEffect(() => setIsBrowser(true), []);
+
   return (
     <IntlProvider locale="fa">
-      <div id="root">
-        <Component {...pageProps} />
-      </div>
+    {getLayout(<Component {...pageProps} />)}
+      {isBrowser && <Toaster position="bottom-center" />}
     </IntlProvider>
   );
 }

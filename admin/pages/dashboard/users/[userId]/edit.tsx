@@ -1,8 +1,9 @@
-import { useContext } from "react";
+import { ReactElement, useState } from "react";
 import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
-import { DataContext } from "@/admin/context/Data";
+import { getUser, updateUser } from "@/admin/api";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
@@ -10,16 +11,21 @@ import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
 import Button from "@/shared/components/Button";
-import UserForm from "@/shared/components/Dashboard/UserForm";
+import DataLoader from "@/shared/components/DataLoader";
+import UserForm from "@/admin/components/UserForm";
 
 export default function DashboardEditUser() {
-  const data = useContext(DataContext);
   const router = useRouter();
-  const { userId } = router.query;
-  const user = data.state.users.filter((item) => item.id === userId)[0];
+  const userId = parseInt(router.query.userId as string);
+
+  const [data, setData] = useState({
+    phoneNumber: "",
+    name: "",
+    walletBalance: 0,
+  });
 
   return (
-    <DashboardLayout>
+    <>
       <Head>
         <title>داشبورد - ویرایش کاربر</title>
       </Head>
@@ -43,20 +49,30 @@ export default function DashboardEditUser() {
           backTo="/dashboard/users"
           title="ویرایش کردن کاربر"
         />
-        <UserForm
-          defaultValues={user}
-          onSave={(userFormData) => {
-            data.dispatch({
-              type: "USERS:UPDATE",
-              payload: {
-                ...user,
-                ...userFormData,
-              },
-            });
-            router.push("/dashboard/users");
+        <DataLoader
+          load={() => {
+            if (router.isReady) return getUser(userId);
           }}
-        />
+          deps={[router.isReady]}
+          setData={setData}
+        >
+          <UserForm
+            defaultValues={data}
+            onSave={(userFormData) =>
+              updateUser(userId, userFormData)
+                .then((message) => {
+                  toast.success(message);
+                  router.push("/dashboard/users");
+                })
+                .catch(toast.error)
+            }
+          />
+        </DataLoader>
       </SectionContent>
-    </DashboardLayout>
+    </>
   );
 }
+
+DashboardEditUser.getLayout = function getLayout(page: ReactElement) {
+  return <DashboardLayout>{page}</DashboardLayout>;
+};

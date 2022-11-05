@@ -1,10 +1,10 @@
 import styles from "./style.module.scss";
-import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
 import { CustomerReport } from "@/shared/types";
+import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
 
 interface CustomerReportTableProps {
   customerReports: CustomerReport[];
-  onSeeUserOrderList: (userId: string) => void;
+  onSeeUserOrderList: (userId: number) => void;
 }
 
 export default function CustomerReportTable({
@@ -30,12 +30,8 @@ export default function CustomerReportTable({
             <td>
               <span className={styles.MobileLabel}>کاربر:</span>
               <div>
-                <div className={styles.UserName}>
-                  {customerReport.user.name}
-                </div>
-                <div className={styles.UserPhoneNumber}>
-                  {customerReport.user.phoneNumber}
-                </div>
+                <div className={styles.UserName}>{customerReport.name}</div>
+                <div>{customerReport.phoneNumber}</div>
               </div>
             </td>
             <td>
@@ -85,7 +81,7 @@ export default function CustomerReportTable({
             </td>
             <td>
               <span className={styles.MobileLabel}>کل مبلغ پرداختی:</span>
-              <FormattedNumber value={customerReport.totalAmountPaid} /> تومان
+              <FormattedNumber value={customerReport.totalPaidAmount} /> تومان
             </td>
             <td>
               <span className={styles.MobileLabel}>موجودی:</span>
@@ -93,8 +89,8 @@ export default function CustomerReportTable({
                 <div>
                   <FormattedNumber
                     value={
-                      customerReport.user.wallet.balance +
-                      customerReport.user.wallet.marketingSales
+                      customerReport.walletBalance +
+                      customerReport.marketingBalance
                     }
                   />{" "}
                   تومان
@@ -103,9 +99,7 @@ export default function CustomerReportTable({
                   <div>
                     <span>کیف پول:</span>
                     <span>
-                      <FormattedNumber
-                        value={customerReport.user.wallet.balance}
-                      />{" "}
+                      <FormattedNumber value={customerReport.walletBalance} />{" "}
                       تومان
                     </span>
                   </div>
@@ -113,7 +107,7 @@ export default function CustomerReportTable({
                     <span>بازاریابی:</span>
                     <span>
                       <FormattedNumber
-                        value={customerReport.user.wallet.marketingSales}
+                        value={customerReport.marketingBalance}
                       />{" "}
                       تومان
                     </span>
@@ -124,11 +118,14 @@ export default function CustomerReportTable({
             <td>
               <button
                 className={styles.SeeUserOrdersButton}
-                onClick={() => onSeeUserOrderList(customerReport.user.id)}
+                onClick={() => onSeeUserOrderList(customerReport.id)}
               >
                 مشاهده
                 <span className={styles.MobileLabel}>سفارش ها</span>
               </button>
+              <div className={styles.CountOfOrders}>
+                {customerReport.countOfOrders}
+              </div>
             </td>
           </tr>
         ))}

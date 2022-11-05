@@ -1,27 +1,28 @@
-import { useContext } from "react";
+import { ReactElement, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
-import { DataContext } from "@/admin/context/Data";
+import { Order } from "@/shared/types";
+import { getOrder } from "@/admin/api";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
+import DataLoader from "@/shared/components/DataLoader";
 import OrderDetails from "@/shared/components/Dashboard/OrderDetails";
 import Button from "@/shared/components/Button";
 import BottomActions from "@/shared/components/Dashboard/BottomActions";
 
 export default function DashboardOrderDetails() {
-  const data = useContext(DataContext);
-
   const router = useRouter();
-  const { orderId } = router.query;
-  const order = data.state.orders.filter((item) => item.id === orderId)[0];
+  const orderId = parseInt(router.query.orderId as string);
+
+  const [data, setData] = useState<Order>();
 
   return (
-    <DashboardLayout>
+    <>
       <Head>
         <title>داشبورد - جزئیات سفارش</title>
       </Head>
@@ -42,13 +43,25 @@ export default function DashboardOrderDetails() {
           }
         />
         <MobileContentHeader backTo="/dashboard/orders" title="جزئیات سفارش" />
-        <OrderDetails order={order} />
-        <BottomActions>
-          <Button varient="filled" style={{ minWidth: 100 }}>
-            دریافت فاکتور
-          </Button>
-        </BottomActions>
+        <DataLoader
+          load={() => {
+            if (router.isReady) return getOrder(orderId);
+          }}
+          deps={[router.isReady]}
+          setData={setData}
+        >
+          <OrderDetails order={data!} />
+          <BottomActions>
+            <Button varient="filled" style={{ minWidth: 100 }}>
+              دریافت فاکتور
+            </Button>
+          </BottomActions>
+        </DataLoader>
       </SectionContent>
-    </DashboardLayout>
+    </>
   );
 }
+
+DashboardOrderDetails.getLayout = function getLayout(page: ReactElement) {
+  return <DashboardLayout>{page}</DashboardLayout>;
+};

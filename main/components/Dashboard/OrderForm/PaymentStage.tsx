@@ -9,7 +9,7 @@ import CheckBox from "@/shared/components/CheckBox";
 import TextInput from "@/shared/components/TextInput";
 import { calculateOrderPrice } from "@/main/api";
 import toast from "react-hot-toast";
-import DataLoader from "@/shared/components/Dashboard/DataLoader";
+import DataLoader from "@/shared/components/DataLoader";
 
 interface PaymentStageProps {
   actions: {

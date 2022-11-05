@@ -2,11 +2,11 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { Address } from "@/shared/types";
 import { getAddress, updateAddress } from "@/main/api";
-import DataLoader from "@/shared/components/Dashboard/DataLoader";
+import DataLoader from "@/shared/components/DataLoader";
 import AddressForm from "@/shared/components/Dashboard/AddressForm";
 
 interface EditAddressesStageProps {
-  addressId: string;
+  addressId: number;
   actions: {
     finish: () => void;
   };
@@ -24,16 +24,7 @@ export default function EditAddressesStage({
         defaultValues={data}
         onCancel={actions.finish}
         onSave={(addressData) =>
-          updateAddress(
-            addressId,
-            addressData.label,
-            addressData.recipientName,
-            addressData.recipientPhoneNumber,
-            addressData.recipientPostalCode,
-            addressData.recipientDeliveryProvince,
-            addressData.recipientDeliveryCity,
-            addressData.recipientDeliveryAddress
-          )
+          updateAddress(addressId, addressData)
             .then((message) => {
               toast.success(message);
               actions.finish();

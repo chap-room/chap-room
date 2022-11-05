@@ -24,7 +24,7 @@ export default function DedicatedLinkReportTable({
       </thead>
       <tbody>
         {dedicatedLinkReports.map((dedicatedLinkReport) => (
-          <tr key={dedicatedLinkReport.id}>
+          <tr key={dedicatedLinkReport.orderId}>
             <td>
               <span className={styles.MobileLabel}>تاریخ:</span>
               <span className={styles.Date}>
@@ -45,49 +45,42 @@ export default function DedicatedLinkReportTable({
                 <div className={styles.UserName}>
                   {dedicatedLinkReport.user.name}
                 </div>
-                <div className={styles.UserPhoneNumber}>
-                  {dedicatedLinkReport.user.phoneNumber}
-                </div>
+                <div>{dedicatedLinkReport.user.phoneNumber}</div>
               </div>
             </td>
             <td>
               <span className={styles.MobileLabel}>خریدار:</span>
               <div>
                 <div className={styles.UserName}>
-                  {dedicatedLinkReport.customer.name}
+                  {dedicatedLinkReport.buyer.name}
                 </div>
-                <div className={styles.UserPhoneNumber}>
-                  {dedicatedLinkReport.customer.phoneNumber}
-                </div>
+                <div>{dedicatedLinkReport.buyer.phoneNumber}</div>
               </div>
             </td>
             <td>
               <span className={styles.MobileLabel}>شماره سفارش:</span>
               <FormattedNumber
-                value={parseInt(dedicatedLinkReport.orderId)}
+                value={dedicatedLinkReport.orderId}
                 useGrouping={false}
               />
             </td>
             <td>
               <span className={styles.MobileLabel}>مبلغ سفارش:</span>
-              <FormattedNumber value={dedicatedLinkReport.orderAmount} /> تومان
+              <FormattedNumber value={dedicatedLinkReport.amount} /> تومان
             </td>
             <td>
               <span className={styles.MobileLabel}>پورسانت کاربر:</span>
               <span className={styles.Commission}>
                 <span>
                   <FormattedNumber
-                    value={
-                      dedicatedLinkReport.orderAmount *
-                      dedicatedLinkReport.userFee
-                    }
+                    value={dedicatedLinkReport.referralBenefit}
                   />{" "}
                   تومان
                 </span>
                 <span>
                   {"("}
                   <FormattedNumber
-                    value={dedicatedLinkReport.userFee}
+                    value={dedicatedLinkReport.referralCommission / 100}
                     style="percent"
                   />
                   {")"}
@@ -97,7 +90,7 @@ export default function DedicatedLinkReportTable({
             <td>
               <span className={styles.MobileLabel}>لینک کاربر:</span>
               <span className={styles.Link}>
-                {dedicatedLinkReport.userLink}
+                {dedicatedLinkReport.referralSlug}
               </span>
             </td>
           </tr>

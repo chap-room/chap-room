@@ -9,7 +9,7 @@ import Button from "@/shared/components/Button";
 interface WithdrawalRequestRejectDialogProps {
   open: boolean;
   onClose: () => void;
-  onRejectWithdrawalRequest: (reason: string) => void;
+  onRejectWithdrawalRequest: (reason: string) => Promise<any>;
 }
 
 export default function WithdrawalRequestRejectDialog({
@@ -28,6 +28,8 @@ export default function WithdrawalRequestRejectDialog({
       setReasonText("");
     }
   }, [open]);
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   return (
     <Dialog
@@ -64,10 +66,15 @@ export default function WithdrawalRequestRejectDialog({
       <BottomActions>
         <Button
           varient="filled"
-          onClick={() =>
-            onRejectWithdrawalRequest(reason === "other" ? reasonText : reason)
-          }
+          onClick={() => {
+            setIsSubmitting(true);
+            onRejectWithdrawalRequest(
+              reason === "other" ? reasonText : reason
+            ).finally(() => setIsSubmitting(false));
+          }}
           style={{ minWidth: 100 }}
+          loading={isSubmitting}
+          disabled={isSubmitting || (reason === "other" && !reasonText)}
         >
           رد کردن
         </Button>

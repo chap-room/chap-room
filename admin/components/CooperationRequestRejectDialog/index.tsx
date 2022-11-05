@@ -15,7 +15,7 @@ interface CooperationRequestRejectDialogProps {
   defaultValues?: Partial<CooperationRequestRejectDialogData>;
   onRejectCooperationRequest: (
     data: CooperationRequestRejectDialogData
-  ) => void;
+  ) => Promise<any>;
 }
 
 export default function CooperationRequestRejectDialog({
@@ -27,9 +27,12 @@ export default function CooperationRequestRejectDialog({
   const [description, setDescription] = useState(
     defaultValues?.description || ""
   );
+
   useEffect(() => {
     setDescription(defaultValues?.description || "");
   }, [defaultValues?.description, open]);
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   return (
     <Dialog title="رد کردن درخواست ها همکاری" open={open} onClose={onClose}>
@@ -44,12 +47,15 @@ export default function CooperationRequestRejectDialog({
       <BottomActions>
         <Button
           varient="filled"
-          onClick={() =>
+          onClick={() => {
+            setIsSubmitting(true);
             onRejectCooperationRequest({
               description,
-            })
-          }
+            }).finally(() => setIsSubmitting(false));
+          }}
           style={{ minWidth: 100 }}
+          loading={isSubmitting}
+          disabled={isSubmitting}
         >
           رد کردن
         </Button>

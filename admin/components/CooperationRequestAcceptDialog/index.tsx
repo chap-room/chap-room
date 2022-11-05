@@ -15,7 +15,7 @@ interface CooperationRequestAcceptDialogProps {
   defaultValues?: Partial<CooperationRequestAcceptData>;
   onAcceptCooperationRequest: (
     data: CooperationRequestAcceptData
-  ) => void;
+  ) => Promise<any>;
 }
 
 export default function CooperationRequestAcceptDialog({
@@ -32,6 +32,8 @@ export default function CooperationRequestAcceptDialog({
     setDescription(defaultValues?.description || "");
   }, [defaultValues?.description, open]);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   return (
     <Dialog title="قبول کردن درخواست ها همکاری" open={open} onClose={onClose}>
       <div className={styles.DialogContent}>
@@ -45,12 +47,15 @@ export default function CooperationRequestAcceptDialog({
       <BottomActions>
         <Button
           varient="filled"
-          onClick={() =>
+          onClick={() => {
+            setIsSubmitting(true);
             onAcceptCooperationRequest({
               description,
-            })
-          }
+            }).finally(() => setIsSubmitting(false));
+          }}
           style={{ minWidth: 100 }}
+          loading={isSubmitting}
+          disabled={isSubmitting}
         >
           قبول کردن
         </Button>

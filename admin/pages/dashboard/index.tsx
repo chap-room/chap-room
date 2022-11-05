@@ -1,7 +1,5 @@
 import styles from "./style.module.scss";
-import { useContext } from "react";
 import Head from "next/head";
-import { DataContext } from "@/admin/context/Data";
 import Avatar from "@/shared/components/Dashboard/Avatar";
 import DashboardLayout from "@/admin/components/Layout";
 import DashboardNavLinks from "@/admin/components/NavLinks";
@@ -9,12 +7,11 @@ import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import BarChart from "@/admin/components/BarChart";
+import { ReactElement } from "react";
 
 export default function DashboardMain() {
-  const data = useContext(DataContext);
-
   return (
-    <DashboardLayout>
+    <>
       <Head>
         <title>داشبورد</title>
       </Head>
@@ -152,18 +149,26 @@ export default function DashboardMain() {
         </div>
         <div className={styles.Mobile}>
           <div className={styles.User}>
-            <Avatar user={data.state.currentUser} />
+            {/* <Avatar user={data} />
             <div className={styles.Meta}>
               <div className={styles.UserRole}>
-                {data.state.currentUser.role}
+                {{
+                  superAdmin: "سوپر ادمین",
+                  admin: "ادمین",
+                  agent: "نمایندگی",
+                }[data.role.name]}
               </div>
               <div className={styles.Name}>{data.state.currentUser.name}</div>
-            </div>
+            </div> */}
           </div>
           <div className={styles.Welcome}>!خوش‌آمدی</div>
           <DashboardNavLinks />
         </div>
       </div>
-    </DashboardLayout>
+    </>
   );
 }
+
+DashboardMain.getLayout = function getLayout(page: ReactElement) {
+  return <DashboardLayout>{page}</DashboardLayout>;
+};

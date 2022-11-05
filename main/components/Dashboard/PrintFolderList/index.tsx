@@ -5,8 +5,8 @@ import DeletetIcon from "@/shared/assets/icons/delete.svg";
 
 interface PrintFolderListProps {
   printFolders: PrintFolder[];
-  onEditPrintFolder: (printFolderIndex: string) => void;
-  onDeletePrintFolder: (printFolderIndex: string) => void;
+  onEditPrintFolder: (printFolderId: number) => void;
+  onDeletePrintFolder: (printFolderId: number) => void;
 }
 
 export default function PrintFolderList({
@@ -42,7 +42,7 @@ export default function PrintFolderList({
               .join(" / ")}
           </div>
           <div>
-            خلاصه سفارش : {printFolder.printColor} /{" "}
+            خلاصه: {printFolder.printColor} /{" "}
             {printFolder.printSize} / {printFolder.printSide}
           </div>
           {printFolder.description && (

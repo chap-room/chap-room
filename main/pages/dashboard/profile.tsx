@@ -7,8 +7,8 @@ import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
-import DataLoader from "@/shared/components/Dashboard/DataLoader";
-import UserForm from "@/shared/components/Dashboard/UserForm";
+import DataLoader from "@/shared/components/DataLoader";
+import ProfileForm from "@/shared/components/Dashboard/ProfileForm";
 
 export default function DashboardProfile() {
   const [data, setData] = useState<{
@@ -34,7 +34,7 @@ export default function DashboardProfile() {
         <ContentHeader title="اطلاعات من" />
         <MobileContentHeader backTo="/dashboard" title="اطلاعات من" />
         <DataLoader load={() => getProfile()} setData={setData}>
-          <UserForm
+          <ProfileForm
             defaultValues={{
               phoneNumber: data.phoneNumber,
               name: data.name,

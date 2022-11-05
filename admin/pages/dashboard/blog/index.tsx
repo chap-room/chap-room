@@ -1,4 +1,5 @@
 // import styles from "./style.module.scss";
+import { ReactElement } from "react";
 import Head from "next/head";
 import DashboardLayout from "@/admin/components/Layout";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
@@ -8,7 +9,7 @@ import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHead
 
 export default function DashboardBlog() {
   return (
-    <DashboardLayout>
+    <>
       <Head>
         <title>داشبورد - وبلاگ</title>
       </Head>
@@ -21,6 +22,10 @@ export default function DashboardBlog() {
         <ContentHeader title="همه نوشته ها" />
         <MobileContentHeader backTo="/dashboard" title="همه نوشته ها" />
       </SectionContent>
-    </DashboardLayout>
+    </>
   );
 }
+
+DashboardBlog.getLayout = function getLayout(page: ReactElement) {
+  return <DashboardLayout>{page}</DashboardLayout>;
+};

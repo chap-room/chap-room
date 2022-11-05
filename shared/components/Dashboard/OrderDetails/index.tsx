@@ -1,5 +1,5 @@
 import styles from "./style.module.scss";
-import { Order, OrderStatus } from "@/shared/types";
+import { Order, OrderStatus, PaymentMethod } from "@/shared/types";
 import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
 
 interface OrderDetailsProps {
@@ -23,16 +23,36 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
       </div>
       <div>
         <div className={styles.Label}>فایل ها:</div>
-        {order.printFolders.map((printFolder, index) => (
-          <div key={index}>
-            <div>پوشه {index + 1}:</div>
-            <div>
-              {printFolder.printFiles
-                .map((printFile) => printFile.name)
-                .join(" / ")}
+        {order.printFolders.map((printFolder, index) => {
+          const uploadedPages = printFolder.printFiles.reduce(
+            (result, item) => result + item.countOfPages,
+            0
+          );
+
+          return (
+            <div key={index}>
+              <div>پوشه {index + 1}:</div>
+              <div>
+                <span>
+                  <FormattedNumber value={printFolder.printFiles.length} /> فایل
+                </span>
+                <a href={printFolder.filesUrl} target="_blank">
+                  دانلود
+                </a>
+                <span
+                  className={
+                    uploadedPages === printFolder.countOfPages
+                      ? styles.Match
+                      : styles.NotMatch
+                  }
+                >
+                  مجموع: <FormattedNumber value={printFolder.countOfPages} />{" "}
+                  صفحه
+                </span>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
       <div>
         <div className={styles.Label}>توضیحات سفارش:</div>
@@ -93,14 +113,22 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
       <div>
         <div className={styles.Label}>روش پرداخت:</div>
         <div>
-          {Object.entries(order.paymentMethod).map(([method, amount]) => (
-            <div key={method}>
-              <div>{method}:</div>
+          {!!order.gatewayPaidAmount && (
+            <div>
+              <div>درگاه پرداخت:</div>
               <div>
-                <FormattedNumber value={amount} /> تومان
+                <FormattedNumber value={order.gatewayPaidAmount} /> تومان
               </div>
             </div>
-          ))}
+          )}
+          {!!order.walletPaidAmount && (
+            <div>
+              <div>کیف پول:</div>
+              <div>
+                <FormattedNumber value={order.walletPaidAmount} /> تومان
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <div>

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { ReactElement, useContext } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { DataContext } from "@/admin/context/Data";
@@ -10,7 +10,7 @@ import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
 import Button from "@/shared/components/Button";
 
-export default function DashboardEditUser() {
+export default function DashboardEditPost() {
   const data = useContext(DataContext);
   const router = useRouter();
 
@@ -20,7 +20,7 @@ export default function DashboardEditUser() {
   // )[0];
 
   return (
-    <DashboardLayout>
+    <>
       <Head>
         <title>داشبورد - ویرایش کد تخفیف</title>
       </Head>
@@ -35,17 +35,21 @@ export default function DashboardEditUser() {
           end={
             <Button
               style={{ padding: 0 }}
-              onClick={() => router.push("/dashboard/discount-codes")}
+              onClick={() => router.push("/dashboard/discounts")}
             >
               انصراف و بازگشت <ArrowBackIcon />
             </Button>
           }
         />
         <MobileContentHeader
-          backTo="/dashboard/discount-codes"
+          backTo="/dashboard/discounts"
           title="ویرایش کردن کد تخفیف"
         />
       </SectionContent>
-    </DashboardLayout>
+    </>
   );
 }
+
+DashboardEditPost.getLayout = function getLayout(page: ReactElement) {
+  return <DashboardLayout>{page}</DashboardLayout>;
+};

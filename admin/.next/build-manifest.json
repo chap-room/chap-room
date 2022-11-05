@@ -25,15 +25,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/dashboard/discount-codes": [
+    "/dashboard/users": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/dashboard/discount-codes.js"
-    ],
-    "/dashboard/print-prices": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/dashboard/print-prices.js"
+      "static/chunks/pages/dashboard/users.js"
     ]
   },
   "ampFirstPages": []

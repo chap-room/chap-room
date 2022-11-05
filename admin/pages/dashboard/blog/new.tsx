@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { ReactElement, useContext } from "react";
 import { useRouter } from "next/router";
 import { v4 as uuidv4 } from "uuid";
 import Head from "next/head";
@@ -11,14 +11,14 @@ import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
 import Button from "@/shared/components/Button";
-import DiscountCodeForm from "@/admin/components/DiscountCodeForm";
+import DiscountForm from "@/admin/components/DiscountForm";
 
-export default function DashboardNewDiscountCode() {
+export default function DashboardNewPost() {
   const data = useContext(DataContext);
   const router = useRouter();
 
   return (
-    <DashboardLayout>
+    <>
       <Head>
         <title>داشبورد - ایجاد نوشته</title>
       </Head>
@@ -31,7 +31,7 @@ export default function DashboardNewDiscountCode() {
         <ContentHeader
           title="ایجاد نوشته جدید"
           end={
-            <Link href="/dashboard/discount-codes">
+            <Link href="/dashboard/discounts">
               <Button style={{ padding: 0 }}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
@@ -39,22 +39,26 @@ export default function DashboardNewDiscountCode() {
           }
         />
         <MobileContentHeader
-          backTo="/dashboard/discount-codes"
+          backTo="/dashboard/discounts"
           title="ایجاد نوشته جدید"
         />
-        <DiscountCodeForm
-          onSave={(discountCodeData) => {
+        <DiscountForm
+          onSave={(discountData) => {
             data.dispatch({
               type: "DISCOUNT_CODES:PUSH",
               payload: {
                 id: uuidv4(),
-                ...discountCodeData,
+                ...discountData,
               },
             });
-            router.push("/dashboard/discount-codes");
+            router.push("/dashboard/discounts");
           }}
         />
       </SectionContent>
-    </DashboardLayout>
+    </>
   );
 }
+
+DashboardNewPost.getLayout = function getLayout(page: ReactElement) {
+  return <DashboardLayout>{page}</DashboardLayout>;
+};

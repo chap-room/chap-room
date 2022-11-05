@@ -11,10 +11,9 @@ import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
-import DataLoader from "@/shared/components/Dashboard/DataLoader";
 import IconButton from "@/shared/components/IconButton";
 import Button from "@/shared/components/Button";
-import TableControls from "@/shared/components/Dashboard/TableControls";
+import DataLoader from "@/shared/components/DataLoader";
 import AddressList from "@/shared/components/Dashboard/AddressList";
 import EmptyNote from "@/shared/components/Dashboard/EmptyNote";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
@@ -23,15 +22,14 @@ export default function DashboardAddresseList() {
   const router = useRouter();
 
   const [data, setData] = useState<{
-    itemCount: number;
+    countOfItems: number;
     addresses: Address[];
-  }>({ itemCount: 0, addresses: [] });
+  }>({ countOfItems: 0, addresses: [] });
 
-  const [itemPerPage, setItemPerPage] = useState(10);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [page, setPage] = useState(1);
 
   const [pendingDeleteRequest, setPendingDeleteRequest] = useState<
-    string | null
+    number | null
   >(null);
 
   const [reload, setRelaod] = useState(true);
@@ -71,21 +69,12 @@ export default function DashboardAddresseList() {
           load={() => {
             if (reload) {
               setRelaod(false);
-              return getAddresses(itemPerPage, currentPage);
+              return getAddresses(page);
             }
           }}
           deps={[reload]}
           setData={setData}
         >
-          {data.itemCount > 10 && (
-            <TableControls
-              itemPerPage={itemPerPage}
-              setItemPerPage={setItemPerPage}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              itemCount={data.itemCount}
-            />
-          )}
           <AddressList
             addresses={data.addresses}
             onEditAddress={(addressId) =>

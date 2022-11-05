@@ -2,11 +2,11 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { PrintFolder } from "@/shared/types";
 import { getPrintFolder, updatePrintFolder } from "@/main/api";
-import DataLoader from "@/shared/components/Dashboard/DataLoader";
+import DataLoader from "@/shared/components/DataLoader";
 import PrintFolderForm from "@/main/components/Dashboard/PrintFolderForm";
 
 interface EditPrintFolderStageProps {
-  printFolderId: string;
+  printFolderId: number;
   actions: {
     finish: () => void;
   };

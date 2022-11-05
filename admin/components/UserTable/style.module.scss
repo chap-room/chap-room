@@ -93,10 +93,7 @@
         .UserName {
           color: #464646;
           font-weight: bold;
-        }
-
-        .UserPhoneNumber {
-          font-size: 10px;
+          font-size: 14px;
         }
 
         .UserWallet {
@@ -116,7 +113,8 @@
             white-space: nowrap;
 
             @media (max-width: 800px) {
-              justify-content: flex-end;
+              flex-direction: column;
+              align-items: flex-end;
             }
 
             > div {
@@ -133,13 +131,23 @@
                 display: none;
               }
             }
+
+            .UserMarketing {
+              cursor: pointer;
+
+              > svg {
+                width: 18px;
+                height: 18px;
+                fill: #0077b5;
+              }
+            }
           }
         }
 
         .SeeUserAddressesButton,
         .SeeUserOrdersButton {
           display: inline-flex;
-          height: 40px;
+          height: 30px;
           flex-direction: row;
           justify-content: center;
           align-items: center;
@@ -175,6 +183,15 @@
         .SeeUserOrdersButton {
           background-color: #0077b5;
           color: #ffffff;
+        }
+        
+        .CountOfOrders {
+          margin-top: 5px;
+          color: #0077b5;
+
+          @media (max-width: 800px) {
+            display: none;
+          }
         }
 
         .OperationButtons {

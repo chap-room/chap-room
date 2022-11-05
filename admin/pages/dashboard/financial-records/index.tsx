@@ -1,8 +1,9 @@
-import { useContext, useState } from "react";
+import { ReactElement, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
-import { DataContext } from "@/admin/context/Data";
+import { FinancialRecord } from "@/shared/types";
+import { deleteFinancialRecord, getFinancialRecords } from "@/admin/api";
 import AddIcon from "@/shared/assets/icons/add.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
@@ -12,22 +13,35 @@ import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHead
 import IconButton from "@/shared/components/IconButton";
 import ButtonList from "@/shared/components/ButtonList";
 import Button from "@/shared/components/Button";
+import DataLoader from "@/shared/components/DataLoader";
 import FinancialRecordTable from "@/admin/components/FinancialRecordTable";
+import EmptyNote from "@/shared/components/Dashboard/EmptyNote";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
+import toast from "react-hot-toast";
 
 export default function DashboardFinancialRecordList() {
-  const data = useContext(DataContext);
   const router = useRouter();
+
+  const [data, setData] = useState<{
+    countOfItems: number;
+    records: FinancialRecord[];
+  }>({
+    countOfItems: 0,
+    records: [],
+  });
+
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
 
   const [
     pendingFinancialRecordCodeDeleteRequest,
     setPendingFinancialRecordCodeDeleteRequest,
-  ] = useState<string | null>(null);
+  ] = useState<number | null>(null);
 
-  const financialRecords = data.state.financialRecords;
+  const [reload, setRelaod] = useState(true);
 
   return (
-    <DashboardLayout>
+    <>
       <Head>
         <title>داشبورد - سوابق مالی</title>
       </Head>
@@ -63,34 +77,54 @@ export default function DashboardFinancialRecordList() {
             </Link>
           }
         />
-        <FinancialRecordTable
-          financialRecords={financialRecords}
-          onSeeDetails={(orderId) =>
-            router.push(`/dashboard/orders/${orderId}/details`)
-          }
-          onEditFinancialRecord={(financialRecordId) =>
-            router.push(
-              `/dashboard/financial-records/${financialRecordId}/edit`
-            )
-          }
-          onDeleteFinancialRecord={setPendingFinancialRecordCodeDeleteRequest}
-        />
-        <WarningConfirmDialog
-          open={pendingFinancialRecordCodeDeleteRequest !== null}
-          onClose={() => {
-            setPendingFinancialRecordCodeDeleteRequest(null);
+        <DataLoader
+          load={() => {
+            if (reload) {
+              setRelaod(false);
+              return getFinancialRecords(search, page, null);
+            }
           }}
-          onConfirm={() => {
-            // data.dispatch({
-            //   type: "DISCOUNT_CODES:DELETE",
-            //   payload: pendingFinancialRecordCodeDeleteRequest!,
-            // });
-            setPendingFinancialRecordCodeDeleteRequest(null);
-          }}
-          message="از حذف این سند مطمئن هستید؟"
-          confirmButtonText="حذف"
-        />
+          deps={[reload]}
+          setData={setData}
+        >
+          <FinancialRecordTable
+            financialRecords={data.records}
+            onSeeDetails={(orderId) =>
+              router.push(`/dashboard/orders/${orderId}/details`)
+            }
+            onEditFinancialRecord={(financialRecordId) =>
+              router.push(
+                `/dashboard/financial-records/${financialRecordId}/edit`
+              )
+            }
+            onDeleteFinancialRecord={setPendingFinancialRecordCodeDeleteRequest}
+          />
+          {!data.records.length && <EmptyNote>هیچ سندی وجود ندارید</EmptyNote>}
+          <WarningConfirmDialog
+            open={pendingFinancialRecordCodeDeleteRequest !== null}
+            onClose={() => {
+              setPendingFinancialRecordCodeDeleteRequest(null);
+            }}
+            onConfirm={() =>
+              deleteFinancialRecord(pendingFinancialRecordCodeDeleteRequest!)
+                .then((message) => {
+                  toast.success(message);
+                  setPendingFinancialRecordCodeDeleteRequest(null);
+                  setRelaod(true);
+                })
+                .catch(toast.error)
+            }
+            message="از حذف این سند مطمئن هستید؟"
+            confirmButtonText="حذف"
+          />
+        </DataLoader>
       </SectionContent>
-    </DashboardLayout>
+    </>
   );
 }
+
+DashboardFinancialRecordList.getLayout = function getLayout(
+  page: ReactElement
+) {
+  return <DashboardLayout>{page}</DashboardLayout>;
+};

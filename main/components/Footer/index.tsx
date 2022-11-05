@@ -3,7 +3,7 @@ import Link from "next/link";
 import AddressesIcon from "@/main/assets/icons/addresses.svg";
 import CaillIcon from "@/main/assets/icons/call.svg";
 import MailIcon from "@/main/assets/icons/mail.svg";
-import FacebookIcon from "@/main/assets/icons/facebook.svg";
+import LinkedinIcon from "@/main/assets/icons/linkedin.svg";
 import TwitterIcon from "@/main/assets/icons/twitter.svg";
 import YoutubeIcon from "@/main/assets/icons/youtube.svg";
 import AparatIcon from "@/main/assets/icons/aparat.svg";
@@ -104,7 +104,7 @@ export default function Footer() {
                   <TwitterIcon />
                 </a>
                 <a href="https://www.linkedin.com/in/chaproom-chaproom-6166b9202/">
-                  <FacebookIcon />
+                  <LinkedinIcon />
                 </a>
               </div>
             </div>

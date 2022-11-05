@@ -1,9 +1,7 @@
-// import { useContext } from "react";
-// import { v4 as uuidv4 } from "uuid";
+import { ReactElement } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
-// import { DataContext } from "@/admin/context/Data";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
@@ -14,11 +12,10 @@ import Button from "@/shared/components/Button";
 import FinancialRecordForm from "@/admin/components/FinancialRecordForm";
 
 export default function DashboardNewFinancialRecord() {
-  // const data = useContext(DataContext);
   const router = useRouter();
 
   return (
-    <DashboardLayout>
+    <>
       <Head>
         <title>داشبورد - ایجاد سند</title>
       </Head>
@@ -55,6 +52,10 @@ export default function DashboardNewFinancialRecord() {
           }}
         />
       </SectionContent>
-    </DashboardLayout>
+    </>
   );
 }
+
+DashboardNewFinancialRecord.getLayout = function getLayout(page: ReactElement) {
+  return <DashboardLayout>{page}</DashboardLayout>;
+};

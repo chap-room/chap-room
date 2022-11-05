@@ -10,7 +10,7 @@ import Button from "@/shared/components/Button";
 interface OrderCancelDialogProps {
   open: boolean;
   onClose: () => void;
-  onCancelOrder: (reason: string) => void;
+  onCancelOrder: (reason: string) => Promise<any>;
 }
 
 export default function OrderCancelDialog({
@@ -29,6 +29,8 @@ export default function OrderCancelDialog({
       setReasonText("");
     }
   }, [open]);
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   return (
     <Dialog title="لغو سفارش" open={open} onClose={() => onClose()}>
@@ -61,10 +63,15 @@ export default function OrderCancelDialog({
       <BottomActions>
         <Button
           varient="filled"
-          onClick={() =>
-            onCancelOrder(reason === "other" ? reasonText : reason)
-          }
+          onClick={() => {
+            setIsSubmitting(true);
+            onCancelOrder(reason === "other" ? reasonText : reason).finally(
+              () => setIsSubmitting(false)
+            );
+          }}
           style={{ minWidth: 100 }}
+          loading={isSubmitting}
+          disabled={isSubmitting || (reason === "other" && !reasonText)}
         >
           لغو کردن
         </Button>

@@ -1,8 +1,5 @@
 import styles from "./style.module.scss";
-import {
-  FinancialRecord,
-  FinancialRecordStatus,
-} from "@/shared/types";
+import { FinancialRecord, FinancialRecordStatus } from "@/shared/types";
 import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
 import EditIcon from "@/shared/assets/icons/edit.svg";
 import DeletetIcon from "@/shared/assets/icons/delete.svg";
@@ -10,9 +7,9 @@ import IconButton from "@/shared/components/IconButton";
 
 interface FinancialRecordTableProps {
   financialRecords: FinancialRecord[];
-  onSeeDetails: (orderId: string) => void;
-  onEditFinancialRecord: (financialRecordId: string) => void;
-  onDeleteFinancialRecord: (financialRecordId: string) => void;
+  onSeeDetails: (orderId: number) => void;
+  onEditFinancialRecord: (financialRecordId: number) => void;
+  onDeleteFinancialRecord: (financialRecordId: number) => void;
 }
 
 export default function FinancialRecordTable({
@@ -56,9 +53,7 @@ export default function FinancialRecordTable({
                 <div className={styles.UserName}>
                   {financialRecord.user.name}
                 </div>
-                <div className={styles.UserPhoneNumber}>
-                  {financialRecord.user.phoneNumber}
-                </div>
+                <div>{financialRecord.user.phoneNumber}</div>
               </div>
             </td>
             <td>
@@ -68,7 +63,7 @@ export default function FinancialRecordTable({
             <td>
               <span className={styles.MobileLabel}>جزییات:</span>
               {!financialRecord.orderId ? (
-                <span>{financialRecord.details}</span>
+                <span>{financialRecord.description}</span>
               ) : (
                 <button
                   className={styles.SeeDetailsButton}
@@ -84,8 +79,7 @@ export default function FinancialRecordTable({
             </td>
             <td>
               <span className={styles.MobileLabel}>وضعیت:</span>
-              {financialRecord.status !==
-              FinancialRecordStatus.addedManually ? (
+              {!financialRecord.admin ? (
                 <span
                   className={
                     financialRecord.status === FinancialRecordStatus.successful
@@ -97,13 +91,15 @@ export default function FinancialRecordTable({
                 </span>
               ) : (
                 <div>
-                  <div>دستی توسط: {financialRecord.addedBy?.name}</div>
+                  <div>دستی توسط: {financialRecord.admin.name}</div>
                   <div className={styles.OperationButtons}>
                     <div className={styles.EditButton}>
                       <IconButton
                         varient="none"
                         size={34}
-                        onClick={() => onEditFinancialRecord(financialRecord.id)}
+                        onClick={() =>
+                          onEditFinancialRecord(financialRecord.id)
+                        }
                       >
                         <EditIcon />
                       </IconButton>
@@ -112,7 +108,9 @@ export default function FinancialRecordTable({
                       <IconButton
                         varient="none"
                         size={34}
-                        onClick={() => onDeleteFinancialRecord(financialRecord.id)}
+                        onClick={() =>
+                          onDeleteFinancialRecord(financialRecord.id)
+                        }
                       >
                         <DeletetIcon />
                       </IconButton>

@@ -13,7 +13,7 @@ import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
 import IconButton from "@/shared/components/IconButton";
 import Button from "@/shared/components/Button";
-import DataLoader from "@/shared/components/Dashboard/DataLoader";
+import DataLoader from "@/shared/components/DataLoader";
 import OrderTable from "@/main/components/Dashboard/OrderTable";
 import EmptyNote from "@/shared/components/Dashboard/EmptyNote";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
@@ -21,18 +21,17 @@ import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDi
 export default function DashboardOrderList() {
   const router = useRouter();
   const [data, setData] = useState<{
-    itemCount: number;
+    countOfItems: number;
     orders: Order[];
   }>({
-    itemCount: 0,
+    countOfItems: 0,
     orders: [],
   });
 
-  const [itemPerPage, setItemPerPage] = useState(10);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [page, setPage] = useState(1);
 
   const [pendingOrderCancelRequest, setPendingOrderCancelRequest] = useState<
-    string | null
+    number | null
   >(null);
 
   const [reload, setRelaod] = useState(true);
@@ -72,7 +71,7 @@ export default function DashboardOrderList() {
           load={() => {
             if (reload) {
               setRelaod(false);
-              return getOrders(itemPerPage, currentPage);
+              return getOrders(page);
             }
           }}
           deps={[reload]}
