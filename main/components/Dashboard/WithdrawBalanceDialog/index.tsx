@@ -10,13 +10,15 @@ import toast from "react-hot-toast";
 interface WithdrawBalanceDialogProps {
   open: boolean;
   onClose: () => void;
+  onSubmit: (accountHolderName: string, iban: string) => Promise<any>;
 }
 
 export default function WithdrawBalanceDialog({
   open,
   onClose,
+  onSubmit,
 }: WithdrawBalanceDialogProps) {
-  const [shabaNumber, setShabaNumber] = useState("");
+  const [iban, setIban] = useState("");
   const [accountHolderName, setAccountHolder] = useState("");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -34,8 +36,8 @@ export default function WithdrawBalanceDialog({
                 type: "number",
                 placeholder: "شماره شبا",
               }}
-              value={shabaNumber}
-              onChange={(newValue) => setShabaNumber(newValue.substring(0, 24))}
+              value={iban}
+              onChange={(newValue) => setIban(newValue.substring(0, 24))}
             />
           </div>
         </div>
@@ -56,17 +58,16 @@ export default function WithdrawBalanceDialog({
           style={{ minWidth: 100 }}
           onClick={() => {
             setIsSubmitting(true);
-            walletWithdrawal(accountHolderName, shabaNumber)
-              .then(toast.success)
-              .catch(toast.error)
-              .finally(() => setIsSubmitting(false));
+            onSubmit(accountHolderName, iban).finally(() =>
+              setIsSubmitting(false)
+            );
           }}
           loading={isSubmitting}
           disabled={
             isSubmitting ||
             !accountHolderName ||
-            shabaNumber.length !== 24 ||
-            isNaN(parseInt(shabaNumber))
+            iban.length !== 24 ||
+            isNaN(parseInt(iban))
           }
         >
           ثبت درخواست

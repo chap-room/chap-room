@@ -1,5 +1,5 @@
 import styles from "./style.module.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import ProfileIcon from "@/main/assets/icons/profile.svg";
 import MenuIcon from "@/main/assets/icons/menu.svg";
@@ -9,6 +9,8 @@ import ButtonList from "@/shared/components/ButtonList";
 import Button from "@/shared/components/Button";
 import NavLink from "@/shared/components/NavLink";
 import IconButton from "@/shared/components/IconButton";
+import { isLoggedIn } from "@/main/api";
+import Avatar from "@/shared/components/Dashboard/Avatar";
 
 interface HeaderProps {
   showBackButtonInMobile?: boolean;
@@ -21,6 +23,17 @@ export default function Header({
   hideLogoInMobile = false,
   showNavMenuAndUser = false,
 }: HeaderProps) {
+  const [user, setUser] = useState<{
+    avatar: string | null;
+    name: string;
+  } | null>(null);
+
+  useEffect(() => {
+    isLoggedIn()
+      .then(setUser)
+      .catch(() => {});
+  }, []);
+
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   const logoClassName = [styles.Logo];
@@ -62,24 +75,42 @@ export default function Header({
           {showNavMenuAndUser && <NavLinks />}
         </div>
         <div className={styles.End}>
-          {showNavMenuAndUser && (
-            <div className={styles.UserAuth}>
-              <ButtonList>
-                <Link href="/login">
-                  <Button>ورود</Button>
-                </Link>
-                <Link href="/register">
-                  <Button varient="filled">ثبت نام</Button>
-                </Link>
-              </ButtonList>
-            </div>
-          )}
+          {showNavMenuAndUser &&
+            (user === null ? (
+              <div className={styles.UserAuth}>
+                <ButtonList>
+                  <Link href="/login">
+                    <Button>ورود</Button>
+                  </Link>
+                  <Link href="/register">
+                    <Button varient="filled">ثبت نام</Button>
+                  </Link>
+                </ButtonList>
+              </div>
+            ) : (
+              <Link href="/dashboard">
+                <div className={styles.User}>
+                  <div className={styles.UserAvatar}>
+                    <Avatar user={user} />
+                  </div>
+                  <div>{user.name}</div>
+                </div>
+              </Link>
+            ))}
           {showNavMenuAndUser && (
             <div className={styles.UserMobile}>
-              <Link href="/login">
-                <IconButton size={48}>
-                  <ProfileIcon width={28} height={28} />
-                </IconButton>
+              <Link href={user === null ? "/login" : "/dashboard"}>
+                {user === null ? (
+                  <div className={styles.LoginButton}>
+                    <IconButton size={48}>
+                      <ProfileIcon />
+                    </IconButton>
+                  </div>
+                ) : (
+                  <div className={styles.UserAvatar}>
+                    <Avatar user={user} />
+                  </div>
+                )}
               </Link>
             </div>
           )}
@@ -95,7 +126,7 @@ function NavLinks() {
       <NavLink href="/" end>
         <a>خانه</a>
       </NavLink>
-      <NavLink href="/prices" end>
+      <NavLink href="/tariffs" end>
         <a>تعرفه پرینت</a>
       </NavLink>
       {/* <NavLink href="/blog" end>

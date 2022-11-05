@@ -18,14 +18,14 @@ export default function DedicatedDiscountCodeReportTable({
           <th>خریدار</th>
           <th>شماره سفارش</th>
           <th>مبلغ سفارش</th>
-          <th>تخفیف خریدار</th> 
+          <th>تخفیف خریدار</th>
           <th>پورسانت کاربر</th>
           <th>لینک کاربر</th>
         </tr>
       </thead>
       <tbody>
         {dedicatedDiscountCodeReports.map((dedicatedDiscountCodeReport) => (
-          <tr key={dedicatedDiscountCodeReport.id}>
+          <tr key={dedicatedDiscountCodeReport.orderId}>
             <td>
               <span className={styles.MobileLabel}>تاریخ:</span>
               <span className={styles.Date}>
@@ -49,33 +49,29 @@ export default function DedicatedDiscountCodeReportTable({
                 <div className={styles.UserName}>
                   {dedicatedDiscountCodeReport.user.name}
                 </div>
-                <div className={styles.UserPhoneNumber}>
-                  {dedicatedDiscountCodeReport.user.phoneNumber}
-                </div>
+                <div>{dedicatedDiscountCodeReport.user.phoneNumber}</div>
               </div>
             </td>
             <td>
               <span className={styles.MobileLabel}>خریدار:</span>
               <div>
                 <div className={styles.UserName}>
-                  {dedicatedDiscountCodeReport.customer.name}
+                  {dedicatedDiscountCodeReport.buyer.name}
                 </div>
-                <div className={styles.UserPhoneNumber}>
-                  {dedicatedDiscountCodeReport.customer.phoneNumber}
-                </div>
+                <div>{dedicatedDiscountCodeReport.buyer.phoneNumber}</div>
               </div>
             </td>
             <td>
               <span className={styles.MobileLabel}>شماره سفارش:</span>
               <FormattedNumber
-                value={parseInt(dedicatedDiscountCodeReport.orderId)}
+                value={dedicatedDiscountCodeReport.orderId}
                 useGrouping={false}
               />
             </td>
             <td>
               <span className={styles.MobileLabel}>مبلغ سفارش:</span>
               <FormattedNumber
-                value={dedicatedDiscountCodeReport.orderAmount}
+                value={dedicatedDiscountCodeReport.amount}
               />{" "}
               تومان
             </td>
@@ -84,17 +80,14 @@ export default function DedicatedDiscountCodeReportTable({
               <span className={styles.Commission}>
                 <span>
                   <FormattedNumber
-                    value={
-                      dedicatedDiscountCodeReport.orderAmount *
-                      dedicatedDiscountCodeReport.customerDiscount
-                    }
+                    value={dedicatedDiscountCodeReport.discountAmount}
                   />{" "}
                   تومان
                 </span>
                 <span>
                   (
                   <FormattedNumber
-                    value={dedicatedDiscountCodeReport.customerDiscount}
+                    value={dedicatedDiscountCodeReport.discountValue / 100}
                     style="percent"
                   />
                   )
@@ -106,17 +99,17 @@ export default function DedicatedDiscountCodeReportTable({
               <span className={styles.Commission}>
                 <span>
                   <FormattedNumber
-                    value={
-                      dedicatedDiscountCodeReport.orderAmount *
-                      dedicatedDiscountCodeReport.userFee
-                    }
+                    value={dedicatedDiscountCodeReport.discountBenefit}
                   />{" "}
                   تومان
                 </span>
                 <span>
                   {"("}
                   <FormattedNumber
-                    value={dedicatedDiscountCodeReport.userFee}
+                    value={
+                      dedicatedDiscountCodeReport.discountBenefitPercentage /
+                      100
+                    }
                     style="percent"
                   />
                   {")"}

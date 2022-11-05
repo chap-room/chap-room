@@ -3,7 +3,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { PrintFolder } from "@/shared/types";
 import { deletePrintFolder, getPrintFolders } from "@/main/api";
-import DataLoader from "@/shared/components/Dashboard/DataLoader";
+import DataLoader from "@/shared/components/DataLoader";
 import PrintFolderList from "@/main/components/Dashboard/PrintFolderList";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
 import AreaButton from "@/shared/components/Dashboard/AreaButton";
@@ -13,7 +13,7 @@ import Button from "@/shared/components/Button";
 interface PrintFoldersStageProps {
   actions: {
     new: () => void;
-    edit: (printFolderId: string) => void;
+    edit: (printFolderId: number) => void;
     finish: () => void;
   };
 }
@@ -22,10 +22,21 @@ export default function PrintFoldersStage({ actions }: PrintFoldersStageProps) {
   const [data, setData] = useState<PrintFolder[]>([]);
 
   const [pendingPrintFolderDeleteRequest, setPendingPrintFolderDeleteRequest] =
-    useState<string | null>(null);
+    useState<number | null>(null);
+
+  const [reload, setRelaod] = useState(true);
 
   return (
-    <DataLoader load={() => getPrintFolders()} setData={setData}>
+    <DataLoader
+      load={() => {
+        if (reload) {
+          setRelaod(false);
+          return getPrintFolders();
+        }
+      }}
+      deps={[reload]}
+      setData={setData}
+    >
       <div className={styles.PrintFolder}>
         <PrintFolderList
           printFolders={data}
@@ -42,6 +53,7 @@ export default function PrintFoldersStage({ actions }: PrintFoldersStageProps) {
               .then((message) => {
                 toast.success(message);
                 setPendingPrintFolderDeleteRequest(null);
+                setRelaod(true);
               })
               .catch(toast.error)
           }

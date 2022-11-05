@@ -2,11 +2,19 @@ import styles from "./style.module.scss";
 import { ReactElement, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { FormattedNumber } from "react-intl";
+import toast from "react-hot-toast";
 import Head from "next/head";
-import { reportReferralView, sendCooperationRequest } from "@/main/api";
+import { Tariffs } from "@/shared/types";
+import {
+  getTariffs,
+  reportReferralView,
+  sendCooperationRequest,
+} from "@/main/api";
 import HomeIntroductionBG from "@/main/assets/images/homeIntroductionBG.svg";
 import GiftImage from "@/main/assets/images/gift.svg";
 import CalculatorImage from "@/main/assets/images/calculator.svg";
+import DataLoader from "@/shared/components/DataLoader";
+import PrintPriceCalculator from "@/main/components/PrintPriceCalculator";
 import BookPrintingImage from "@/main/assets/images/bookPrinting.svg";
 import Layout from "@/main/components/Layout";
 import Button from "@/shared/components/Button";
@@ -20,7 +28,6 @@ import VideoGalleryBG from "@/main/assets/images/videoGalleryBG.svg";
 import MonitorImage from "@/main/assets/images/monitor.svg";
 import CirclePauseIcon from "@/main/assets/icons/circlePause.svg";
 import CirclePlayIcon from "@/main/assets/icons/circlePlay.svg";
-import toast from "react-hot-toast";
 
 export default function Home() {
   const router = useRouter();
@@ -34,6 +41,11 @@ export default function Home() {
       }
     }
   }, [router.isReady]);
+
+  const [tariffs, setTariffs] = useState<Tariffs>({
+    print: {},
+    binding: {},
+  } as Tariffs);
 
   const videoGalleryList = {
     "معرفی چاپ روم":
@@ -134,41 +146,9 @@ export default function Home() {
         <h1>سفارش پرینت</h1>
         <div>
           <div>
-            <Select
-              value={null}
-              onChange={() => {}}
-              options={{}}
-              placeholder="اندازه کاغذ"
-              readOnly
-            />
-            <Select
-              value={null}
-              onChange={() => {}}
-              options={{}}
-              placeholder="سیاه و سفید/ رنگی"
-              readOnly
-            />
-            <Select
-              value={null}
-              onChange={() => {}}
-              options={{}}
-              placeholder="یک رو / دو رو"
-              readOnly
-            />
-            <div className={styles.Row}>
-              <TextInput
-                inputProps={{ type: "number", placeholder: "تعداد برگ" }}
-              />
-              <div>
-                <span>قیمت هر برگ: </span>
-                <span>
-                  <FormattedNumber value={380} /> تومان
-                </span>
-              </div>
-            </div>
-            <div className={styles.SubmitButton}>
-              <Button varient="gradient">سفارش پرینت</Button>
-            </div>
+            <DataLoader load={() => getTariffs()} setData={setTariffs}>
+              <PrintPriceCalculator printTariffs={tariffs.print} />
+            </DataLoader>
           </div>
           <CalculatorImage />
         </div>
@@ -323,7 +303,9 @@ export default function Home() {
               <TextInput
                 inputProps={{ type: "number", placeholder: "09xxxxxxxxx" }}
                 value={cooperationPhoneNumber}
-                onChange={setCooperationPhoneNumber}
+                onChange={(newValue) =>
+                  setCooperationPhoneNumber(newValue.substring(0, 11))
+                }
               />
               <Button
                 onClick={() => {

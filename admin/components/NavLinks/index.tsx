@@ -5,7 +5,7 @@ import NavigateBeforeIcon from "@/shared/assets/icons/navigateBefore.svg";
 import DashboardIcon from "@/shared/assets/icons/dashboard.svg";
 import UsersIcon from "@/admin/assets/icons/users.svg";
 import OrdersIcon from "@/admin/assets/icons/orders.svg";
-import DiscountCodeIcon from "@/admin/assets/icons/discountCode.svg";
+import DiscountIcon from "@/admin/assets/icons/discount.svg";
 import CooperationRequestsIcon from "@/admin/assets/icons/cooperationRequests.svg";
 import FinancialRecordsIcon from "@/admin/assets/icons/financialRecords.svg";
 import WithdrawalRequestsIcon from "@/admin/assets/icons/withdrawalRequests.svg";
@@ -46,9 +46,9 @@ export default function DashboardNavLinks() {
           </div>
         </a>
       </NavLink>
-      <NavLink href="/dashboard/discount-codes">
+      <NavLink href="/dashboard/discounts">
         <a className={styles.NavLink}>
-          <DiscountCodeIcon />
+          <DiscountIcon />
           <div className={styles.Text}>کدهای تخفیف</div>
           <div className={styles.Arrow}>
             <NavigateBeforeIcon />
@@ -82,7 +82,7 @@ export default function DashboardNavLinks() {
           </div>
         </a>
       </NavLink>
-      <NavLink href="/dashboard/print-prices">
+      <NavLink href="/dashboard/tariffs">
         <a className={styles.NavLink}>
           <PricesIcon />
           <div className={styles.Text}>تعرفه ها</div>

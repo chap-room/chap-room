@@ -1,16 +1,16 @@
 import styles from "./style.module.scss";
 import { useEffect, useState } from "react";
+import { FormattedNumber } from "react-intl";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
 import toast from "react-hot-toast";
-import { register, registerConfirm, resendCode } from "@/main/api";
+import { isLoggedIn, register, registerConfirm, resendCode } from "@/main/api";
 import Thumbnail from "@/shared/assets/images/printing.svg";
 import Header from "@/main/components/Header";
 import TextInput from "@/shared/components/TextInput";
 import Button from "@/shared/components/Button";
 import CheckBox from "@/shared/components/CheckBox";
-import { FormattedNumber, FormattedTime } from "react-intl";
 
 export default function Register() {
   const router = useRouter();
@@ -26,6 +26,12 @@ export default function Register() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isResending, setIsResending] = useState(false);
+
+  useEffect(() => {
+    isLoggedIn().then(() => {
+      router.replace("/dashboard");
+    }).catch(() => {});
+  }, []);
 
   return (
     <div className={styles.Register}>

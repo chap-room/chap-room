@@ -12,11 +12,13 @@ import toast from "react-hot-toast";
 interface IncreasBalanceDialogProps {
   open: boolean;
   onClose: () => void;
+  onSubmit: (amount: number) => Promise<any>;
 }
 
 export default function IncreasBalanceDialog({
   open,
   onClose,
+  onSubmit,
 }: IncreasBalanceDialogProps) {
   const [amount, setAmount] = useState("");
   const [gate, setGate] = useState<string>(PaymentMethod.zarinPalGate);
@@ -58,12 +60,7 @@ export default function IncreasBalanceDialog({
           style={{ minWidth: 100 }}
           onClick={() => {
             setIsSubmitting(true);
-            walletDeposit(parseInt(amount))
-              .then((paymentUrl) => {
-                window.location.href = paymentUrl;
-              })
-              .catch(toast.error)
-              .finally(() => setIsSubmitting(false));
+            onSubmit(parseInt(amount)).finally(() => setIsSubmitting(false));
           }}
           loading={isSubmitting}
           disabled={

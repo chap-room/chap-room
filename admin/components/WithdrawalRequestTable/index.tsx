@@ -1,28 +1,38 @@
 import styles from "./style.module.scss";
 import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
-import {
-  WithdrawalRequest,
-  WithdrawalRequestStatus,
-} from "@/shared/types";
+import { WithdrawalRequest, WithdrawalRequestStatus } from "@/shared/types";
 
 interface WithdrawalRequestTableProps {
   withdrawalRequests: WithdrawalRequest[];
-  onDoneWithdrawalRequest: (withdrawalRequestId: string) => void;
-  onRejectWithdrawalRequest: (withdrawalRequestId: string) => void;
+  onDoneWithdrawalRequest: (withdrawalRequestId: number) => void;
+  onRejectWithdrawalRequest: (withdrawalRequestId: number) => void;
+  itemsStatus: WithdrawalRequestStatus;
 }
 
 export default function WithdrawalRequestTable({
   withdrawalRequests,
   onDoneWithdrawalRequest,
   onRejectWithdrawalRequest,
+  itemsStatus,
 }: WithdrawalRequestTableProps) {
   return (
-    <table className={styles.WithdrawalRequestTable}>
+    <table
+      className={styles.WithdrawalRequestTable}
+      data-items-status={
+        {
+          [WithdrawalRequestStatus.pending]: "pending",
+          [WithdrawalRequestStatus.done]: "done",
+          [WithdrawalRequestStatus.rejected]: "rejected",
+        }[itemsStatus]
+      }
+    >
       <thead>
         <tr>
+          <th>تاریخ</th>
           <th>کاربر</th>
-          <th>جزئیات</th>
-          <th>وضعیت</th>
+          <th>مبلغ</th>
+          <th>شماره شبا</th>
+          <th>نام صاحب حساب</th>
           <th>عملیات</th>
         </tr>
       </thead>
@@ -30,65 +40,48 @@ export default function WithdrawalRequestTable({
         {withdrawalRequests.map((withdrawalRequest) => (
           <tr key={withdrawalRequest.id}>
             <td>
+              <span className={styles.MobileLabel}>تاریخ:</span>
+              <span className={styles.Date}>
+                <span>
+                  <FormattedDate
+                    value={withdrawalRequest.date}
+                    dateStyle="medium"
+                  />
+                </span>
+                <span>
+                  <FormattedTime value={withdrawalRequest.date} hour12 />
+                </span>
+              </span>
+            </td>
+            <td>
               <span className={styles.MobileLabel}>کاربر:</span>
               <div>
                 <div className={styles.UserName}>
                   {withdrawalRequest.user.name}
                 </div>
-                <div className={styles.UserPhoneNumber}>
-                  {withdrawalRequest.user.phoneNumber}
-                </div>
+                <div>{withdrawalRequest.user.phoneNumber}</div>
               </div>
             </td>
             <td>
-              <div className={styles.Details}>
-                <div>
-                  <span>تاریخ:</span>
-                  <span>
-                    <FormattedDate
-                      value={withdrawalRequest.date}
-                      dateStyle="medium"
-                    />{" "}
-                    <FormattedTime value={withdrawalRequest.date} hour12 />
-                  </span>
-                </div>
-                <div>
-                  <span>مبلغ:</span>
-                  <FormattedNumber value={withdrawalRequest.amount} /> تومان
-                </div>
-                <div>
-                  <span>شماره شبا:</span>
-                  <span>
-                    IR
-                    <FormattedNumber
-                      value={withdrawalRequest.shabaNumber}
-                      useGrouping={false}
-                    />
-                  </span>
-                </div>
-                <div>
-                  <span>نام صاحب حساب:</span>
-                  <span>{withdrawalRequest.accountHolderName}</span>
-                </div>
+              <span className={styles.MobileLabel}>مبلغ:</span>
+              <div>
+                <FormattedNumber value={withdrawalRequest.amount} /> تومان
               </div>
             </td>
             <td>
-              <span className={styles.MobileLabel}>وضعیت:</span>
-              <span
-                className={
-                  withdrawalRequest.status === WithdrawalRequestStatus.done
-                    ? styles.Done
-                    : withdrawalRequest.status ===
-                      WithdrawalRequestStatus.rejected
-                    ? styles.Rejected
-                    : withdrawalRequest.status ===
-                      WithdrawalRequestStatus.pending
-                    ? styles.Pending
-                    : undefined
-                }
-              >
-                {withdrawalRequest.status}
-              </span>
+              <span className={styles.MobileLabel}>شماره شبا:</span>
+              <div>
+                IR
+                <FormattedNumber
+                  value={withdrawalRequest.iban}
+                  useGrouping={false}
+                  minimumIntegerDigits={24}
+                />
+              </div>
+            </td>
+            <td>
+              <span className={styles.MobileLabel}>نام صاحب حساب:</span>
+              <div>{withdrawalRequest.accountHolderName}</div>
             </td>
             <td>
               {withdrawalRequest.status === WithdrawalRequestStatus.pending && (
@@ -125,10 +118,10 @@ export default function WithdrawalRequestTable({
                       <span>{withdrawalRequest.transactionDate}</span>
                     </div>
                   )}
-                  {withdrawalRequest.transactionTrackingCode && (
+                  {withdrawalRequest.trackingNumber && (
                     <div>
                       <span>کد پیگیری تراکنش:</span>
-                      <span>{withdrawalRequest.transactionTrackingCode}</span>
+                      <span>{withdrawalRequest.trackingNumber}</span>
                     </div>
                   )}
                 </div>

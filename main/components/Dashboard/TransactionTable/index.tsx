@@ -4,7 +4,7 @@ import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
 
 interface TransactionTableProps {
   transactions: Transaction[];
-  onSeeDetails: (orderId: string) => void;
+  onSeeDetails: (orderId: number) => void;
 }
 
 export default function TransactionTable({
@@ -42,7 +42,7 @@ export default function TransactionTable({
             <td>
               <span className={styles.MobileLabel}>جزییات:</span>
               {!transaction.orderId ? (
-                <span>{transaction.details}</span>
+                <span>{transaction.description}</span>
               ) : (
                 <button
                   className={styles.SeeDetailsButton}

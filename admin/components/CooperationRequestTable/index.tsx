@@ -1,21 +1,19 @@
 import styles from "./style.module.scss";
 import { FormattedDate, FormattedTime } from "react-intl";
-import {
-  CooperationRequest,
-  CooperationRequestStatus,
-} from "@/shared/types";
+import { CooperationRequest, CooperationRequestStatus } from "@/shared/types";
 
 interface CooperationRequestTableProps {
   cooperationRequests: CooperationRequest[];
   onAcceptCooperationRequest: (
-    cooperationRequestId: string,
+    cooperationRequestId: number,
     cooperationRequestDescription: string | null
   ) => void;
   onRejectCooperationRequest: (
-    cooperationRequestId: string,
+    cooperationRequestId: number,
     cooperationRequestDescription: string | null
   ) => void;
   showDescription?: boolean;
+  itemsStatus: CooperationRequestStatus;
 }
 
 export default function CooperationRequestTable({
@@ -23,15 +21,24 @@ export default function CooperationRequestTable({
   onAcceptCooperationRequest,
   onRejectCooperationRequest,
   showDescription = true,
+  itemsStatus,
 }: CooperationRequestTableProps) {
   return (
-    <table className={styles.CooperationRequestTable}>
+    <table
+      className={styles.CooperationRequestTable}
+      data-items-status={
+        {
+          [CooperationRequestStatus.pending]: "pending",
+          [CooperationRequestStatus.approved]: "approved",
+          [CooperationRequestStatus.rejected]: "rejected",
+        }[itemsStatus]
+      }
+    >
       <thead>
         <tr>
           <th>شماره موبایل</th>
           <th>تاریخ</th>
           {showDescription && <th>توضیحات</th>}
-          <th>وضعیت</th>
           <th>عملیات</th>
         </tr>
       </thead>
@@ -63,28 +70,9 @@ export default function CooperationRequestTable({
               </td>
             )}
             <td>
-              <span className={styles.MobileLabel}>وضعیت:</span>
-              <span
-                className={
-                  cooperationRequest.status ===
-                  CooperationRequestStatus.accepted
-                    ? styles.Accepted
-                    : cooperationRequest.status ===
-                      CooperationRequestStatus.rejected
-                    ? styles.Rejected
-                    : cooperationRequest.status ===
-                      CooperationRequestStatus.pending
-                    ? styles.Pending
-                    : undefined
-                }
-              >
-                {cooperationRequest.status}
-              </span>
-            </td>
-            <td>
               <div className={styles.ButtonList}>
                 {cooperationRequest.status !==
-                  CooperationRequestStatus.accepted && (
+                  CooperationRequestStatus.approved && (
                   <button
                     className={styles.AcceptButton}
                     onClick={() =>

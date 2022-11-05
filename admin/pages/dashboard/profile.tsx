@@ -1,18 +1,28 @@
-import { useContext } from "react";
+import { ReactElement, useState } from "react";
+import toast from "react-hot-toast";
 import Head from "next/head";
-import { DataContext } from "@/admin/context/Data";
+import { getProfile, updateProfile } from "@/admin/api";
 import DashboardLayout from "@/admin/components/Layout";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
-import UserForm from "@/shared/components/Dashboard/UserForm";
+import DataLoader from "@/shared/components/DataLoader";
+import ProfileForm from "@/shared/components/Dashboard/ProfileForm";
 
 export default function DashboardProfile() {
-  const data = useContext(DataContext);
+  const [data, setData] = useState<{
+    avatar: string | null;
+    name: string;
+    phoneNumber: string;
+  }>({
+    avatar: null,
+    name: "",
+    phoneNumber: "",
+  });
 
   return (
-    <DashboardLayout>
+    <>
       <Head>
         <title>داشبورد - پروفایل</title>
       </Head>
@@ -23,16 +33,24 @@ export default function DashboardProfile() {
       <SectionContent>
         <ContentHeader title="اطلاعات من" />
         <MobileContentHeader backTo="/dashboard" title="اطلاعات من" />
-        <UserForm
-          defaultValues={{
-            phoneNumber: data.state.currentUser.phoneNumber,
-            name: data.state.currentUser.name,
-          }}
-          onSave={(userFormData) => {
-            // TODO
-          }}
-        />
+        <DataLoader load={() => getProfile()} setData={setData}>
+          <ProfileForm
+            defaultValues={{
+              phoneNumber: data.phoneNumber,
+              name: data.name,
+            }}
+            onSave={(userFormData) =>
+              updateProfile(userFormData.name, userFormData.password)
+                .then(toast.success)
+                .catch(toast.error)
+            }
+          />
+        </DataLoader>
       </SectionContent>
-    </DashboardLayout>
+    </>
   );
 }
+
+DashboardProfile.getLayout = function getLayout(page: ReactElement) {
+  return <DashboardLayout>{page}</DashboardLayout>;
+};

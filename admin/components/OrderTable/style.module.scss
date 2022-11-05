@@ -13,6 +13,16 @@
       padding: 5px 15px;
     }
   }
+  
+  &[data-items-status="sent"] > thead > tr > th {
+    background-color: #14cc9c;
+    color: #ffffff;
+  }
+  
+  &[data-items-status="canceled"] > thead > tr > th {
+    background-color: #f20f4b;
+    color: #ffffff;
+  }
 
   > tbody {
     color: #9c9c9c;
@@ -90,7 +100,7 @@
         .ConfirmButton,
         .MarkAsSentButton {
           display: inline-flex;
-          height: 40px;
+          height: 30px;
           flex-direction: row;
           justify-content: center;
           align-items: center;

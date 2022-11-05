@@ -1,0 +1,48 @@
+.Calculator {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  border-radius: 20px;
+  box-sizing: border-box;
+  border: 1px solid #cccccc;
+
+  & > div {
+    width: 100%;
+  }
+
+  .Row {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+
+    > div:first-child {
+      width: 150px;
+    }
+
+    > div:last-child {
+      width: 100%;
+      padding: 0 10px;
+      display: flex;
+      flex-direction: row;
+      gap: 5px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+  }
+
+  .Bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+
+    > div {
+      overflow: auto;
+    }
+  }
+}

@@ -1,9 +1,9 @@
-import { useContext } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { ReactElement } from "react";
 import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
-import { DataContext } from "@/admin/context/Data";
+import { newUser } from "@/admin/api";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
@@ -11,14 +11,13 @@ import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
 import Button from "@/shared/components/Button";
-import UserForm from "@/shared/components/Dashboard/UserForm";
+import UserForm from "@/admin/components/UserForm";
 
 export default function DashboardNewUser() {
-  const data = useContext(DataContext);
   const router = useRouter();
 
   return (
-    <DashboardLayout>
+    <>
       <Head>
         <title>داشبورد - افزودن کاربر</title>
       </Head>
@@ -46,27 +45,20 @@ export default function DashboardNewUser() {
           title="افزودن کاربر جدید"
         />
         <UserForm
-          canEditPhoneNumber
-          onSave={(userFormData) => {
-            data.dispatch({
-              type: "USERS:PUSH",
-              payload: {
-                id: uuidv4(),
-                ...userFormData,
-                avatar: null,
-                wallet: {
-                  balance: 0,
-                  marketingSales: 0,
-                },
-                addresses: [],
-                orders: [],
-                transactions: [],
-              },
-            });
-            router.push("/dashboard/users");
-          }}
+          onSave={(userFormData) =>
+            newUser(userFormData)
+              .then((message) => {
+                toast.success(message);
+                router.push("/dashboard/users");
+              })
+              .catch(toast.error)
+          }
         />
       </SectionContent>
-    </DashboardLayout>
+    </>
   );
 }
+
+DashboardNewUser.getLayout = function getLayout(page: ReactElement) {
+  return <DashboardLayout>{page}</DashboardLayout>;
+};

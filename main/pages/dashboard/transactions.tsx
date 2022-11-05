@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { getTransactions } from "@/main/api";
@@ -8,22 +8,19 @@ import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
-import Loader from "@/shared/components/Loader";
-import TableControls from "@/shared/components/Dashboard/TableControls";
 import TransactionTable from "@/main/components/Dashboard/TransactionTable";
 import EmptyNote from "@/shared/components/Dashboard/EmptyNote";
-import DataLoader from "@/shared/components/Dashboard/DataLoader";
+import DataLoader from "@/shared/components/DataLoader";
 
 export default function DashboardTransactions() {
   const router = useRouter();
 
   const [data, setData] = useState<{
-    itemCount: number;
+    countOfItems: number;
     transactions: Transaction[];
-  }>({ itemCount: 0, transactions: [] });
+  }>({ countOfItems: 0, transactions: [] });
 
-  const [itemPerPage, setItemPerPage] = useState(10);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [page, setPage] = useState(1);
 
   return (
     <>
@@ -38,18 +35,9 @@ export default function DashboardTransactions() {
         <ContentHeader title="همه سوابق مالی" />
         <MobileContentHeader backTo="/dashboard" title="سوابق مالی" />
         <DataLoader
-          load={() => getTransactions(itemPerPage, currentPage)}
+          load={() => getTransactions(page)}
           setData={setData}
         >
-          {data.itemCount > 10 && (
-            <TableControls
-              itemPerPage={itemPerPage}
-              setItemPerPage={setItemPerPage}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              itemCount={data.itemCount}
-            />
-          )}
           <TransactionTable
             transactions={data.transactions}
             onSeeDetails={(orderId) => {

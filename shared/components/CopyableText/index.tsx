@@ -13,8 +13,6 @@ export default function CopyableText({
 }: PropsWithChildren<CopyableTextProps>) {
   return (
     <div className={styles.CopyableText}>
-      <div className={styles.Content}>{children}</div>
-      <div className={styles.Separator} />
       <div className={styles.CopyIcon}>
         <IconButton
           varient="none"
@@ -26,6 +24,8 @@ export default function CopyableText({
           <CopyIcon />
         </IconButton>
       </div>
+      <div className={styles.Separator} />
+      <div className={styles.Content}>{children}</div>
     </div>
   );
 }

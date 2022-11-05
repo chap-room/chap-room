@@ -42,7 +42,7 @@
         display: none;
       }
     }
-  }  
+  }
 
   .Content {
     width: 100%;
@@ -69,7 +69,7 @@
         max-width: 300px;
       }
 
-      > div {
+      .Column {
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -92,6 +92,26 @@
       .BottomNote {
         color: #464646;
         text-align: center;
+      }
+
+      .ConfirmCodeActions {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        justify-content: space-between;
+        
+        > button {
+          color: #0077b5;
+          cursor: pointer;
+          user-select: none;
+          background: transparent;
+          border: none;
+          padding: 0;
+
+          &:disabled {
+            color: #cccccc;
+          }
+        }
       }
     }
 

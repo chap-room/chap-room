@@ -9,7 +9,7 @@ import DashboardLayout from "@/main/components/Dashboard/Layout";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
-import DataLoader from "@/shared/components/Dashboard/DataLoader";
+import DataLoader from "@/shared/components/DataLoader";
 import CopyableText from "@/shared/components/CopyableText";
 
 export default function DashboardMarketing() {
@@ -70,45 +70,45 @@ export default function DashboardMarketing() {
                   کسب درآمد کنید. لازم به ذکر است پس از اولین بازدید از طریق
                   لینک شما تا یک ماه بعد (حتی اگر کاربر شما توسط لینک‌های دیگر
                   وارد سایت چاپ روم شود) کاربر خریدی انجام دهد،{" "}
-                  {<FormattedNumber value={data.referral.commission} />} درصد از
+                  {<FormattedNumber value={data!.referral.commission} />} درصد از
                   خرید آن مشتری در پنل بازاریابی شما لحاظ می‌شود.
                 </div>
               </div>
               <div>
                 <div className={styles.Title}>لینک اختصاصی شما</div>
                 <CopyableText
-                  text={`https://chaproom.ir/?${data.referral.slug}`}
+                  text={`https://chaproom.ir/?${data!.referral.slug}`}
                 >
                   <div style={{ color: "#7d00ff" }}>
-                    https://chaproom.ir/?{data.referral.slug}
+                    https://chaproom.ir/?{data!.referral.slug}
                   </div>
                 </CopyableText>
                 <div className={styles.Status}>
                   <div>
                     <div>تعداد مشاهده</div>
                     <div>
-                      <FormattedNumber value={data.referral.viewCount} />
+                      <FormattedNumber value={data!.referral.viewCount} />
                     </div>
                   </div>
                   <div className={styles.Separator} />
                   <div>
                     <div>تعداد فروش</div>
                     <div>
-                      <FormattedNumber value={data.referral.sellCount} />
+                      <FormattedNumber value={data!.referral.sellCount} />
                     </div>
                   </div>
                   <div className={styles.Separator} />
                   <div>
                     <div>کل فروش</div>
                     <div>
-                      <FormattedNumber value={data.referral.totalSale} /> تومان
+                      <FormattedNumber value={data!.referral.totalSale} /> تومان
                     </div>
                   </div>
                   <div className={styles.Separator} />
                   <div>
                     <div>سهم کاربر</div>
                     <div>
-                      <FormattedNumber value={data.referral.benefit} /> تومان
+                      <FormattedNumber value={data!.referral.benefit} /> تومان
                     </div>
                   </div>
                 </div>
@@ -127,7 +127,7 @@ export default function DashboardMarketing() {
               <div>
                 <div className={styles.Title}>کدهای تخفیف اختصاصی شما</div>
                 <div className={styles.DiscountCodes}>
-                  {data.discount.data.map((item) => (
+                  {data!.discount.data.map((item) => (
                     <div key={item.value}>
                       <span>
                         کد تخفیف{" "}
@@ -146,21 +146,21 @@ export default function DashboardMarketing() {
                   <div>
                     <div>دفعات استفاده</div>
                     <div>
-                      <FormattedNumber value={data.discount.timesUsed} />
+                      <FormattedNumber value={data!.discount.timesUsed} />
                     </div>
                   </div>
                   <div className={styles.Separator} />
                   <div>
                     <div>کل فروش</div>
                     <div>
-                      <FormattedNumber value={data.discount.totalSales} /> تومان
+                      <FormattedNumber value={data!.discount.totalSales} /> تومان
                     </div>
                   </div>
                   <div className={styles.Separator} />
                   <div>
                     <div>سهم کاربر</div>
                     <div>
-                      <FormattedNumber value={data.discount.benefit} /> تومان
+                      <FormattedNumber value={data!.discount.benefit} /> تومان
                     </div>
                   </div>
                 </div>

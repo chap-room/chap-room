@@ -8,10 +8,11 @@ import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
 import BarChart from "@/admin/components/BarChart";
 import Button from "@/shared/components/Button";
+import { ReactElement } from "react";
 
 export default function DashboardFinancialRecordsTotalIncome() {
   return (
-    <DashboardLayout>
+    <>
       <Head>
         <title>داشبورد - درامد کل</title>
       </Head>
@@ -61,6 +62,12 @@ export default function DashboardFinancialRecordsTotalIncome() {
           }}
         />
       </SectionContent>
-    </DashboardLayout>
+    </>
   );
 }
+
+DashboardFinancialRecordsTotalIncome.getLayout = function getLayout(
+  page: ReactElement
+) {
+  return <DashboardLayout>{page}</DashboardLayout>;
+};

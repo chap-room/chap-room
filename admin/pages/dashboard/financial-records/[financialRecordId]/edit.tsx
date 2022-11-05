@@ -1,8 +1,7 @@
-import { useContext } from "react";
+import { ReactElement, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
-import { DataContext } from "@/admin/context/Data";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
@@ -11,18 +10,19 @@ import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
 import Button from "@/shared/components/Button";
 import FinancialRecordForm from "@/admin/components/FinancialRecordForm";
+import { FinancialRecord } from "@/shared/types";
+import toast from "react-hot-toast";
+import DataLoader from "@/shared/components/DataLoader";
+import { getFinancialRecord, updateFinancialRecord } from "@/admin/api";
 
 export default function DashboardFinancialRecordEdit() {
-  const data = useContext(DataContext);
-
   const router = useRouter();
-  const { financialRecordId } = router.query;
-  const financialRecord = data.state.financialRecords.filter(
-    (item) => item.id === financialRecordId
-  )[0];
+  const financialRecordId = parseInt(router.query.financialRecordId as string);
+
+  const [data, setData] = useState<FinancialRecord>();
 
   return (
-    <DashboardLayout>
+    <>
       <Head>
         <title>داشبورد - ویرایش سند</title>
       </Head>
@@ -46,20 +46,32 @@ export default function DashboardFinancialRecordEdit() {
           backTo="/dashboard/financial-records"
           title="ویرایش کردن سند"
         />
-        <FinancialRecordForm
-          defaultValues={financialRecord}
-          onSave={(discountCodeData) => {
-            // data.dispatch({ // TODO
-            //   type: "DISCOUNT_CODES:UPDATE",
-            //   payload: {
-            //     id: financialRecord.id,
-            //     ...discountCodeData,
-            //   },
-            // });
-            router.push("/dashboard/financial-records");
+        <DataLoader
+          load={() => {
+            if (router.isReady) return getFinancialRecord(financialRecordId);
           }}
-        />
+          deps={[router.isReady]}
+          setData={setData}
+        >
+          <FinancialRecordForm
+            defaultValues={data}
+            onSave={(financialRecordData) => {
+              updateFinancialRecord(financialRecordId, financialRecordData)
+                .then((message) => {
+                  toast.success(message);
+                  router.push("/dashboard/financial-records");
+                })
+                .catch(toast.error);
+            }}
+          />
+        </DataLoader>
       </SectionContent>
-    </DashboardLayout>
+    </>
   );
 }
+
+DashboardFinancialRecordEdit.getLayout = function getLayout(
+  page: ReactElement
+) {
+  return <DashboardLayout>{page}</DashboardLayout>;
+};

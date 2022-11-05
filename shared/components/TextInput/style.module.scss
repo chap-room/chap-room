@@ -1,14 +1,16 @@
 .InputBox {
-  box-sizing: border-box;
-  padding: 9px 15px;
-  font-size: 14px;
-  border-radius: 20px;
-  color: #000000;
-  background-color: #ffffff;
-  border: 1px solid #cccccc;
   display: flex;
   flex-direction: row;
   gap: 5px;
+  height: 40px;
+  padding: 0 15px;
+  font-size: 14px;
+  border-radius: 20px;
+  background-color: #ffffff;
+  color: #000000;
+  box-sizing: border-box;
+  border: 1px solid #cccccc;
+  align-items: center;
   justify-content: center;
 
   &.ReadOnly {

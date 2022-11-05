@@ -11,8 +11,8 @@ interface WithdrawalRequestDoneDialogProps {
   onClose: () => void;
   onDoneWithdrawalRequest: (
     transactionDate: string,
-    transactionTrackingCode: string
-  ) => void;
+    trackingCode: string
+  ) => Promise<any>;
 }
 
 export default function WithdrawalRequestDoneDialog({
@@ -30,7 +30,7 @@ export default function WithdrawalRequestDoneDialog({
   const [transactionDateYear, setTransactionDateYear] = useState(
     jaliliMoment.year().toString()
   );
-  const [transactionTrackingCode, setTransactionTrackingCode] = useState("");
+  const [trackingCode, setTrackingCode] = useState("");
 
   useEffect(() => {
     if (open) {
@@ -38,9 +38,11 @@ export default function WithdrawalRequestDoneDialog({
       setTransactionDateDay(jaliliMoment.day().toString());
       setTransactionDateMonth(jaliliMoment.month().toString());
       setTransactionDateYear(jaliliMoment.year().toString());
-      setTransactionTrackingCode("");
+      setTrackingCode("");
     }
   }, [open]);
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   return (
     <Dialog
@@ -73,26 +75,29 @@ export default function WithdrawalRequestDoneDialog({
         <div>
           <TextInput
             inputProps={{ type: "number", placeholder: "کد پیگیری" }}
-            value={transactionTrackingCode}
-            onChange={setTransactionTrackingCode}
+            value={trackingCode}
+            onChange={setTrackingCode}
           />
         </div>
       </div>
       <BottomActions>
         <Button
           varient="filled"
-          onClick={() =>
+          onClick={() => {
+            setIsSubmitting(true);
             onDoneWithdrawalRequest(
               [
                 transactionDateDay,
                 transactionDateMonth,
                 transactionDateYear,
               ].join("-"),
-              transactionTrackingCode
-            )
-          }
+              trackingCode
+            ).finally(() => setIsSubmitting(false));
+          }}
           style={{ minWidth: 100 }}
+          loading={isSubmitting}
           disabled={
+            isSubmitting ||
             isNaN(parseInt(transactionDateYear)) ||
             parseInt(transactionDateYear) <= 0 ||
             transactionDateYear.length !== 4 ||

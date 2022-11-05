@@ -68,10 +68,7 @@
         .UserName {
           color: #464646;
           font-weight: bold;
-        }
-
-        .UserPhoneNumber {
-          font-size: 10px;
+          font-size: 14px;
         }
         
         .Date {
@@ -117,7 +114,7 @@
 
         .SeeUserOrdersButton {
           display: inline-flex;
-          height: 40px;
+          height: 30px;
           flex-direction: row;
           justify-content: center;
           align-items: center;
@@ -133,6 +130,7 @@
         
           @media (max-width: 800px) {
             font-size: 0;
+            width: 100%;
           }
 
           .MobileLabel {
@@ -144,6 +142,15 @@
             @media (min-width: 801px) {
               display: none;
             }
+          }
+        }
+
+        .CountOfOrders {
+          margin-top: 5px;
+          color: #0077b5;
+
+          @media (max-width: 800px) {
+            display: none;
           }
         }
       }

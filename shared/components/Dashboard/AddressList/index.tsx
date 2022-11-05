@@ -4,8 +4,8 @@ import AddressView from "@/shared/components/Dashboard/AddressView";
 
 interface AddressListProps {
   addresses: Address[];
-  onEditAddress: (addressId: string) => void;
-  onDeleteAddress: (addressId: string) => void;
+  onEditAddress: (addressId: number) => void;
+  onDeleteAddress: (addressId: number) => void;
 }
 
 export default function AddressList({

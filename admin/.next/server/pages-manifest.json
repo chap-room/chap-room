@@ -2,6 +2,5 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/dashboard/print-prices": "pages/dashboard/print-prices.js",
-  "/dashboard/discount-codes": "pages/dashboard/discount-codes.js"
+  "/dashboard/users": "pages/dashboard/users.js"
 }

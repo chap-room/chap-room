@@ -1,8 +1,10 @@
-import { useContext, useState } from "react";
+import { ReactElement, useState } from "react";
 import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
-import { DataContext } from "@/admin/context/Data";
+import { Address } from "@/shared/types";
+import { deleteAddress, getUserAddresses } from "@/admin/api";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
@@ -10,21 +12,27 @@ import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
 import Button from "@/shared/components/Button";
+import DataLoader from "@/shared/components/DataLoader";
 import AddressList from "@/shared/components/Dashboard/AddressList";
+import EmptyNote from "@/shared/components/Dashboard/EmptyNote";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
 
 export default function DashboardUserAddressList() {
-  const data = useContext(DataContext);
   const router = useRouter();
-  const { userId } = router.query;
-  const user = data.state.users.filter((item) => item.id === userId)[0];
-  if (!user) return <></>; // TODO 404
+  const userId = parseInt(router.query.userId as string); // TODO 404
+
+  const [data, setData] = useState<{
+    countOfItems: number;
+    addresses: Address[];
+  }>({ countOfItems: 0, addresses: [] });
+
+  const [page, setPage] = useState(1);
 
   const [pendingAddressDeleteRequest, setPendingAddressDeleteRequest] =
-    useState<string | null>(null);
+    useState<number | null>(null);
 
   return (
-    <DashboardLayout>
+    <>
       <Head>
         <title>داشبورد - آدرس ها</title>
       </Head>
@@ -45,36 +53,47 @@ export default function DashboardUserAddressList() {
           }
         />
         <MobileContentHeader backTo="/dashboard/users" title="آدرس ها" />
-        <AddressList
-          addresses={user.addresses}
-          onEditAddress={(addressId) =>
-            router.push(
-              `/dashboard/users/${userId}/addresses/${addressId}/edit`
-            )
-          }
-          onDeleteAddress={setPendingAddressDeleteRequest}
-        />
-        <WarningConfirmDialog
-          open={pendingAddressDeleteRequest !== null}
-          onClose={() => {
-            setPendingAddressDeleteRequest(null);
+        <DataLoader
+          load={() => {
+            if (router.isReady) return getUserAddresses(userId, page);
           }}
-          onConfirm={() => {
-            data.dispatch({
-              type: "USERS:UPDATE",
-              payload: {
-                ...user,
-                addresses: user.addresses.filter(
-                  (item) => item.id !== pendingAddressDeleteRequest
-                ),
-              },
-            });
-            setPendingAddressDeleteRequest(null);
-          }}
-          message="از حذف این آدرس مطمئن هستید؟"
-          confirmButtonText="حذف"
-        />
+          deps={[router.isReady]}
+          setData={setData}
+        >
+          <AddressList
+            addresses={data.addresses}
+            onEditAddress={(addressId) =>
+              router.push(
+                `/dashboard/users/${userId}/addresses/${addressId}/edit`
+              )
+            }
+            onDeleteAddress={setPendingAddressDeleteRequest}
+          />
+          {!data.addresses.length && (
+            <EmptyNote>این کاربر هیچ آدرسی ندارید</EmptyNote>
+          )}
+          <WarningConfirmDialog
+            open={pendingAddressDeleteRequest !== null}
+            onClose={() => {
+              setPendingAddressDeleteRequest(null);
+            }}
+            onConfirm={() =>
+              deleteAddress(pendingAddressDeleteRequest!)
+                .then((message) => {
+                  toast.success(message);
+                  setPendingAddressDeleteRequest(null);
+                })
+                .catch(toast.error)
+            }
+            message="از حذف این آدرس مطمئن هستید؟"
+            confirmButtonText="حذف"
+          />
+        </DataLoader>
       </SectionContent>
-    </DashboardLayout>
+    </>
   );
 }
+
+DashboardUserAddressList.getLayout = function getLayout(page: ReactElement) {
+  return <DashboardLayout>{page}</DashboardLayout>;
+};

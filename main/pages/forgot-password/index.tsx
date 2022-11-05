@@ -6,9 +6,10 @@ import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
 import {
+  isLoggedIn,
   passwordReset,
   passwordResetConfirmCode,
-  passwordResetT,
+  passwordResetSet,
   resendCode,
 } from "@/main/api";
 import Header from "@/main/components/Header";
@@ -31,6 +32,12 @@ export default function ForgotPassword() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isResending, setIsResending] = useState(false);
+
+  useEffect(() => {
+    isLoggedIn().then(() => {
+      router.replace("/dashboard");
+    }).catch(() => {});
+  }, []);
 
   return (
     <div className={styles.ForgotPassword}>
@@ -190,7 +197,7 @@ export default function ForgotPassword() {
                   varient="gradient"
                   onClick={() => {
                     setIsSubmitting(true);
-                    passwordResetT(passwordResetToken, newPassword)
+                    passwordResetSet(passwordResetToken, newPassword)
                       .then(({ data }) => {
                         toast.success(data.message);
                         router.push(

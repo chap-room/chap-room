@@ -4,8 +4,8 @@ import { Order, OrderStatus } from "@/shared/types";
 
 interface OrderTableProps {
   orders: Order[];
-  onSeeOrderDetails: (orderId: string) => void;
-  onCancelOrder: (orderId: string) => void;
+  onSeeOrderDetails: (orderId: number) => void;
+  onCancelOrder: (orderId: number) => void;
 }
 
 export default function OrderTable({

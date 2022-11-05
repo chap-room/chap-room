@@ -11,11 +11,10 @@ import BottomActions from "@/shared/components/Dashboard/BottomActions";
 import Select from "@/shared/components/Select";
 
 interface FinancialRecordData {
-  user: User;
+  userId: number;
   amount: number;
-  details: string;
+  description: string;
   type: FinancialRecordType;
-  status: FinancialRecordStatus;
 }
 
 interface FinancialRecordFormProps {
@@ -27,9 +26,9 @@ export default function FinancialRecordForm({
   defaultValues,
   onSave,
 }: FinancialRecordFormProps) {
-  const [user, setUser] = useState(defaultValues?.user?.name || "");
+  const [userId, setUserId] = useState(defaultValues?.userId?.toString() || "");
   const [amount, setAmount] = useState(defaultValues?.amount?.toString() || "");
-  const [details, setDetails] = useState(""); // TODO
+  const [description, setDescription] = useState(""); // TODO
   const [type, setType] = useState(
     defaultValues?.type || FinancialRecordType.creditor
   );
@@ -41,8 +40,8 @@ export default function FinancialRecordForm({
         <div className={styles.Input}>
           <TextInput
             inputProps={{ placeholder: "کاربر" }}
-            value={user}
-            onChange={setUser}
+            value={userId}
+            onChange={setUserId}
           />
         </div>
         <div className={styles.Label}>مبلغ:</div>
@@ -71,7 +70,7 @@ export default function FinancialRecordForm({
           style={{ minWidth: 100 }}
           onClick={
             () => 0 /* onSave({ // TODO
-            user: {parseInt(amount)},
+            userId: parseInt(userId),
             amount: parseInt(amount),
           }) */
           }

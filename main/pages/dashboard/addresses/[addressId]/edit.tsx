@@ -12,23 +12,14 @@ import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
 import Button from "@/shared/components/Button";
-import DataLoader from "@/shared/components/Dashboard/DataLoader";
+import DataLoader from "@/shared/components/DataLoader";
 import AddressForm from "@/shared/components/Dashboard/AddressForm";
 
 export default function DashboardEditAddresse() {
   const router = useRouter();
-  const addressId = router.query.addressId as string;
+  const addressId = parseInt(router.query.addressId as string);
 
-  const [data, setData] = useState<Address>({
-    id: addressId,
-    label: "",
-    recipientName: "",
-    recipientPhoneNumber: "",
-    recipientPostalCode: "",
-    recipientDeliveryProvince: "",
-    recipientDeliveryCity: "",
-    recipientDeliveryAddress: "",
-  });
+  const [data, setData] = useState<Address>();
 
   return (
     <>
@@ -64,16 +55,7 @@ export default function DashboardEditAddresse() {
           <AddressForm
             defaultValues={data}
             onSave={(addressData) =>
-              updateAddress(
-                addressId,
-                addressData.label,
-                addressData.recipientName,
-                addressData.recipientPhoneNumber,
-                addressData.recipientPostalCode,
-                addressData.recipientDeliveryProvince,
-                addressData.recipientDeliveryCity,
-                addressData.recipientDeliveryAddress
-              )
+              updateAddress(addressId, addressData)
                 .then((message) => {
                   toast.success(message);
                   router.push("/dashboard/addresses");

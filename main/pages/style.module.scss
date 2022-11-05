@@ -263,7 +263,40 @@
     }
   }
 
-  .Calculator,
+  .Calculator {
+    width: 100%;
+    max-width: 1360px;
+    margin: 0 auto;
+
+    > h1 {
+      margin: 30px 0;
+      text-align: center;
+      color: #5800b3;
+    }
+
+    > div {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: center;
+      gap: 30px;
+
+      > svg {
+        width: 100%;
+        max-width: 500px;
+
+        @media (max-width: 1024px) {
+          display: none;
+        }
+      }
+
+      > div {
+        width: 100%;
+        max-width: 400px;
+      }
+    }
+  }
+
   .BookPrinting {
     width: 100%;
     max-width: 1360px;
@@ -313,6 +346,21 @@
           > div {
             width: 100%;
           }
+
+          &:nth-child(5) {
+            flex-wrap: wrap;
+            white-space: nowrap;
+            justify-content: space-between;
+
+            > div {
+              padding: 0 10px;
+              display: flex;
+              width: max-content;
+              flex-direction: row;
+              gap: 5px;
+              align-items: center;
+            }
+          }
         }
 
         .SubmitButton {
@@ -320,40 +368,6 @@
           flex-direction: row;
           justify-content: flex-end;
         }
-      }
-    }
-  }
-
-  .Calculator > div > div {
-    .Row {
-      > div:first-child {
-        width: 150px;
-      }
-
-      > div:last-child {
-        padding: 0 10px;
-        display: flex;
-        flex-direction: row;
-        gap: 5px;
-        align-items: center;
-        justify-content: flex-end;
-      }
-    }
-  }
-
-  .BookPrinting > div > div {
-    .Row:nth-child(5) {
-      flex-wrap: wrap;
-      white-space: nowrap;
-      justify-content: space-between;
-
-      > div {
-        padding: 0 10px;
-        display: flex;
-        width: max-content;
-        flex-direction: row;
-        gap: 5px;
-        align-items: center;
       }
     }
   }
@@ -472,7 +486,7 @@
       gap: 20px;
 
       > div {
-        box-shadow: -3px -3px 6px rgba(255, 255, 255, 0.86), 3px 3px 6px rgba(0, 0, 0, 0.16);
+        box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
         border-radius: 20px;
         height: 40px;
         display: flex;
@@ -513,7 +527,7 @@
   .Cooperation {
     height: 512px;
     position: relative;
-    background-image: url("~@/main/assets/images/CooperationBG.svg");
+    background-image: url("~@/main/assets/images/cooperationBG.svg");
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 1500px auto;

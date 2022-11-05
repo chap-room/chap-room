@@ -7,7 +7,7 @@ interface TableControlsProps {
   setItemPerPage: (newValue: number) => void;
   currentPage: number;
   setCurrentPage: (newValue: number) => void;
-  itemCount: number;
+  countOfItems: number;
 }
 
 export default function TableControls({
@@ -15,7 +15,7 @@ export default function TableControls({
   setItemPerPage,
   currentPage,
   setCurrentPage,
-  itemCount,
+  countOfItems,
 }: TableControlsProps) {
   const intl = useIntl();
 

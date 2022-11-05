@@ -4,10 +4,11 @@ import { Order, OrderStatus } from "@/shared/types";
 
 interface OrderTableProps {
   orders: Order[];
-  onSeeOrderDetails: (orderId: string) => void;
-  onCancelOrder: (orderId: string) => void;
-  onConfirmOrder: (orderId: string) => void;
-  onMarkOrderSent: (orderId: string) => void;
+  onSeeOrderDetails: (orderId: number) => void;
+  onCancelOrder: (orderId: number) => void;
+  onConfirmOrder: (orderId: number) => void;
+  onMarkOrderSent: (orderId: number) => void;
+  itemsStatus: OrderStatus | null;
 }
 
 export default function OrderTable({
@@ -16,15 +17,28 @@ export default function OrderTable({
   onCancelOrder,
   onConfirmOrder,
   onMarkOrderSent,
+  itemsStatus,
 }: OrderTableProps) {
   return (
-    <table className={styles.OrderTable}>
+    <table
+      className={styles.OrderTable}
+      data-items-status={
+        itemsStatus
+          ? {
+              [OrderStatus.canceled]: "canceled",
+              [OrderStatus.pending]: "pending",
+              [OrderStatus.preparing]: "preparing",
+              [OrderStatus.sent]: "sent",
+            }[itemsStatus]
+          : undefined
+      }
+    >
       <thead>
         <tr>
           <th>شماره سفارش</th>
           <th>تاریخ سفارش</th>
           <th>مبلغ سفارش</th>
-          <th>وضعیت</th>
+          {itemsStatus === null && <th>وضعیت</th>}
           <th>جزییات</th>
           <th>عملیات</th>
         </tr>
@@ -51,39 +65,41 @@ export default function OrderTable({
               <span className={styles.MobileLabel}>مبلغ سفارش:</span>
               <FormattedNumber value={order.amount} /> تومان
             </td>
-            <td>
-              <span className={styles.MobileLabel}>وضعیت:</span>
-              {(() => {
-                switch (order.status) {
-                  case OrderStatus.pending:
-                    return (
-                      <span className={styles.Pending}>{order.status}</span>
-                    );
-                  case OrderStatus.preparing:
-                    return (
-                      <span className={styles.Preparing}>{order.status}</span>
-                    );
-                  case OrderStatus.sent:
-                    return (
-                      <a
-                        href="/"
-                        target="_blank"
-                        className={styles.TrackingLink}
-                      >
-                        رهگیری مرسوله
-                      </a>
-                    );
-                  case OrderStatus.canceled:
-                    return (
-                      <span className={styles.Canceled}>
-                        {order.cancelReason}
-                        <br />
-                        بازگشت وجه به کیف پول
-                      </span>
-                    );
-                }
-              })()}
-            </td>
+            {itemsStatus === null && (
+              <td>
+                <span className={styles.MobileLabel}>وضعیت:</span>
+                {(() => {
+                  switch (order.status) {
+                    case OrderStatus.pending:
+                      return (
+                        <span className={styles.Pending}>{order.status}</span>
+                      );
+                    case OrderStatus.preparing:
+                      return (
+                        <span className={styles.Preparing}>{order.status}</span>
+                      );
+                    case OrderStatus.sent:
+                      return (
+                        <a
+                          href="/"
+                          target="_blank"
+                          className={styles.TrackingLink}
+                        >
+                          رهگیری مرسوله
+                        </a>
+                      );
+                    case OrderStatus.canceled:
+                      return (
+                        <span className={styles.Canceled}>
+                          {order.cancelReason}
+                          <br />
+                          بازگشت وجه به کیف پول
+                        </span>
+                      );
+                  }
+                })()}
+              </td>
+            )}
             <td>
               <button
                 className={styles.SeeDetailsButton}

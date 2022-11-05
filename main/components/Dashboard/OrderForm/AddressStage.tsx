@@ -3,7 +3,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { Address } from "@/shared/types";
 import { deleteAddress, getAddresses } from "@/main/api";
-import DataLoader from "@/shared/components/Dashboard/DataLoader";
+import DataLoader from "@/shared/components/DataLoader";
 import AddressView from "@/shared/components/Dashboard/AddressView";
 import Radio from "@/shared/components/Radio";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
@@ -12,12 +12,12 @@ import BottomActions from "@/shared/components/Dashboard/BottomActions";
 import Button from "@/shared/components/Button";
 
 interface AddressStageProps {
-  selectedAddressId: string | null;
-  setSelectedAddressId: (addressId: string | null) => void;
+  selectedAddressId: number | null;
+  setSelectedAddressId: (addressId: number | null) => void;
   actions: {
     back: () => void;
     new: () => void;
-    edit: (addressId: string) => void;
+    edit: (addressId: number) => void;
     finish: () => void;
   };
 }
@@ -30,11 +30,19 @@ export default function AddressStage({
   const [data, setData] = useState<Address[]>([]);
 
   const [pendingAddressDeleteRequest, setPendingAddressDeleteRequest] =
-    useState<string | null>(null);
+    useState<number | null>(null);
+
+  const [reload, setRelaod] = useState(true);
 
   return (
     <DataLoader
-      load={() => getAddresses(0, 0)}
+      load={() => {
+        if (reload) {
+          setRelaod(false);
+          return getAddresses(0);
+        }
+      }}
+      deps={[reload]}
       setData={({ addresses }) => setData(addresses)}
     >
       <div className={styles.AddressSelect}>
@@ -62,6 +70,7 @@ export default function AddressStage({
             .then((message) => {
               toast.success(message);
               setPendingAddressDeleteRequest(null);
+              setRelaod(true);
             })
             .catch(toast.error)
         }
@@ -75,9 +84,7 @@ export default function AddressStage({
           varient="filled"
           style={{ minWidth: 150 }}
           onClick={actions.finish}
-          disabled={
-            !data.map((item) => item.id).includes(selectedAddressId || "")
-          }
+          disabled={!data.map((item) => item.id).includes(selectedAddressId!)}
         >
           مرحله بعد
         </Button>

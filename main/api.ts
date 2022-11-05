@@ -1,41 +1,34 @@
 import {
-  BindingMethod,
+  Address,
   BindingOptions,
-  BindingType,
-  CoverColors,
-  PostageMethod,
+  Order,
+  OrderStatus,
   PrintColor,
   PrintFile,
   PrintFolder,
   PrintSide,
   PrintSize,
-} from "./../shared/types";
-import {
-  Address,
-  Order,
-  OrderCancelReason,
-  OrderStatus,
-  PaymentMethod,
+  Tariffs,
   Transaction,
   TransactionStatus,
 } from "@/shared/types";
 import axios, { AxiosRequestConfig } from "axios";
 import Router from "next/router";
 import { convert } from "@/shared/utils";
-import { printFoldersConvertMap } from "@/main/convertMaps";
+import { orderConvertMap, printFoldersConvertMap } from "@/main/convertMaps";
 
 const BASE_URL = "http://78.157.34.146:3000/v1";
 
 function getAccessToken() {
-  return localStorage.getItem("accessToken");
+  return localStorage.getItem("userAccessToken");
 }
 
 function setAccessToken(token: string) {
-  localStorage.setItem("accessToken", token);
+  localStorage.setItem("userAccessToken", token);
 }
 
 export function logout() {
-  localStorage.removeItem("accessToken");
+  localStorage.removeItem("userAccessToken");
 }
 
 const api = axios.create({
@@ -48,13 +41,20 @@ const api = axios.create({
 
 interface requestConfig extends AxiosRequestConfig<any> {
   needAuth?: boolean;
+  redirectIfNotLogin?: boolean;
 }
 
-const request = async ({ needAuth, ...config }: requestConfig) => {
+const request = async ({
+  needAuth,
+  redirectIfNotLogin = true,
+  ...config
+}: requestConfig) => {
   return new Promise<any>((resolve, reject) => {
     if (needAuth && !getAccessToken()) {
       reject("لطفا دوباره وارد شوید");
-      Router.push(`/login?redirectTo=${encodeURIComponent(Router.asPath)}`);
+      if (redirectIfNotLogin) {
+        Router.push(`/login?redirectTo=${encodeURIComponent(Router.asPath)}`);
+      }
       return;
     }
     api({
@@ -79,12 +79,28 @@ const request = async ({ needAuth, ...config }: requestConfig) => {
         if (response?.status === 401) {
           logout();
           reject("لطفا دوباره وارد شوید");
-          Router.push(`/login?redirectTo=${encodeURIComponent(Router.asPath)}`);
+          if (redirectIfNotLogin) {
+            Router.push(
+              `/login?redirectTo=${encodeURIComponent(Router.asPath)}`
+            );
+          }
         }
         reject(response?.data?.error?.message || message || "");
       });
   });
 };
+
+export function isLoggedIn() {
+  return request({
+    method: "GET",
+    url: "/users/profile",
+    needAuth: true,
+    redirectIfNotLogin: false,
+  }).then(({ data }) => ({
+    avatar: data.avatar,
+    name: data.name,
+  }));
+}
 
 export function reportReferralView(slug: string) {
   return request({
@@ -104,6 +120,13 @@ export function sendCooperationRequest(phoneNumber: string) {
       phoneNumber,
     },
   }).then(({ data }) => data.message);
+}
+
+export function getTariffs() {
+  return request({
+    method: "GET",
+    url: "/public/tariffs",
+  }).then(({ data }) => data as Tariffs);
 }
 
 export function submitContactUs(
@@ -205,7 +228,7 @@ export function passwordResetConfirmCode(phoneNumber: string, code: number) {
   }));
 }
 
-export function passwordResetT(
+export function passwordResetSet(
   passwordResetToken: string,
   newPassword: string
 ) {
@@ -243,6 +266,7 @@ export function getDashboard() {
     url: "/users/dashboard",
     needAuth: true,
   }).then(({ data }) => ({
+    tariffs: data.tariffs,
     marketingBalance: data.marketingBalance,
     walletBalance: data.walletBalance,
     avatar: data.avatar,
@@ -258,17 +282,16 @@ export function getDashboard() {
   }));
 }
 
-export function getOrders(itemPerPage: number, currentPage: number) {
+export function getOrders(page: number) {
   return request({
     method: "GET",
     url: "/users/orders",
     needAuth: true,
-    data: {
-      pageSize: itemPerPage,
-      page: currentPage,
+    params: {
+      page,
     },
   }).then(({ data }) => ({
-    itemCount: data.totalCount,
+    countOfItems: data.totalCount,
     orders: data.orders.map((item: any) => ({
       id: item.id,
       date: new Date(item.createdAt),
@@ -286,58 +309,15 @@ export function getOrders(itemPerPage: number, currentPage: number) {
   }));
 }
 
-export function getOrder(orderId: string) {
+export function getOrder(orderId: number) {
   return request({
     method: "GET",
     url: `/users/orders/id/${orderId}`,
     needAuth: true,
-  }).then(
-    ({ data }) =>
-      ({
-        id: data.id,
-        date: new Date(data.createdAt),
-        status:
-          data.status === "sent"
-            ? OrderStatus.sent
-            : data.status === "pending"
-            ? OrderStatus.pending
-            : data.status === "preparing"
-            ? OrderStatus.preparing
-            : OrderStatus.canceled,
-        recipientName: data.recipientName,
-        recipientPhoneNumber: data.recipientPhoneNumber,
-        recipientPostalCode: data.recipientPostalCode,
-        recipientDeliveryProvince: data.recipientDeliveryProvince,
-        recipientDeliveryCity: data.recipientDeliveryCity,
-        recipientDeliveryAddress: data.recipientDeliveryAddress,
-        amount: data.amount,
-        postageFee: data.postageFee,
-        postageDate: new Date(data.postageAt),
-        postageMethod: {
-          express_mail: PostageMethod.expressMail,
-        }[data.postageMethod as string],
-        discountAmount: data.discountAmount,
-        discountCode: data.discountCode,
-        paymentMethod: {
-          [PaymentMethod.zarinPalGate]: data.gatewayPaidAmount
-            ? data.gatewayPaidAmount
-            : 0,
-          [PaymentMethod.wallet]: data.walletPaidAmount
-            ? data.walletPaidAmount
-            : 0,
-        },
-        cancelReason: data.cancelReason,
-        lastUpdateDate: new Date(data.updatedAt),
-        trackingNumber: data.trackingNumber,
-        printFolders: data.folders.map(
-          (item: any) =>
-            convert(printFoldersConvertMap, item, "a2b") as PrintFolder
-        ),
-      } as Order)
-  );
+  }).then(({ data }) => convert(orderConvertMap, data, "a2b") as Order);
 }
 
-export function cancelOrder(orderId: string) {
+export function cancelOrder(orderId: number) {
   return request({
     method: "PUT",
     url: `/users/orders/id/${orderId}/cancel`,
@@ -372,7 +352,7 @@ export function uploadPrintFile(
   }));
 }
 
-export function deletePrintFile(printFileId: string) {
+export function deletePrintFile(printFileId: number) {
   return request({
     method: "DELETE",
     url: `/users/files/id/${printFileId}`,
@@ -392,7 +372,7 @@ export function getPrintFolders() {
   );
 }
 
-export function getPrintFolder(printFolderId: string) {
+export function getPrintFolder(printFolderId: number) {
   return request({
     method: "GET",
     url: `/users/folders/id/${printFolderId}`,
@@ -421,7 +401,7 @@ export function newPrintFolder(data: {
 }
 
 export function updatePrintFolder(
-  printFolderId: string,
+  printFolderId: number,
   data: {
     printColor: PrintColor;
     printSize: PrintSize;
@@ -441,7 +421,7 @@ export function updatePrintFolder(
   }).then(({ data }) => data.message);
 }
 
-export function deletePrintFolder(printFolderId: string) {
+export function deletePrintFolder(printFolderId: number) {
   return request({
     method: "DELETE",
     url: `/users/folders/id/${printFolderId}`,
@@ -466,7 +446,7 @@ export function calculateOrderPrice(discountCode: string | null) {
 }
 
 export function newOrder(
-  addressId: string,
+  addressId: number,
   discountCode: string | null,
   paidWithWallet: boolean
 ) {
@@ -485,17 +465,16 @@ export function newOrder(
   }));
 }
 
-export function getAddresses(itemPerPage: number, currentPage: number) {
+export function getAddresses(page: number) {
   return request({
     method: "GET",
     url: "/users/addresses",
     needAuth: true,
-    data: {
-      pageSize: itemPerPage,
-      page: currentPage,
+    params: {
+      page,
     },
   }).then(({ data }) => ({
-    itemCount: data.totalCount,
+    countOfItems: data.totalCount,
     addresses: data.addresses as Address[],
   }));
 }
@@ -525,7 +504,7 @@ export function newAddress(
   }).then(({ data }) => data.message);
 }
 
-export function getAddress(addressId: string) {
+export function getAddress(addressId: number) {
   return request({
     method: "GET",
     url: `/users/addresses/id/${addressId}`,
@@ -546,32 +525,26 @@ export function getAddress(addressId: string) {
 }
 
 export function updateAddress(
-  addressId: string,
-  label: string,
-  recipientName: string,
-  recipientPhoneNumber: string,
-  recipientPostalCode: string,
-  recipientDeliveryProvince: string,
-  recipientDeliveryCity: string,
-  recipientDeliveryAddress: string
+  addressId: number,
+  data: {
+    label: string;
+    recipientName: string;
+    recipientPhoneNumber: string;
+    recipientPostalCode: string;
+    recipientDeliveryProvince: string;
+    recipientDeliveryCity: string;
+    recipientDeliveryAddress: string;
+  }
 ) {
   return request({
     method: "PUT",
     url: `/users/addresses/id/${addressId}`,
     needAuth: true,
-    data: {
-      label,
-      recipientName,
-      recipientPhoneNumber,
-      recipientPostalCode,
-      recipientDeliveryProvince,
-      recipientDeliveryCity,
-      recipientDeliveryAddress,
-    },
+    data,
   }).then(({ data }) => data.message);
 }
 
-export function deleteAddress(addressId: string) {
+export function deleteAddress(addressId: number) {
   return request({
     method: "DELETE",
     url: `/users/addresses/id/${addressId}`,
@@ -579,17 +552,16 @@ export function deleteAddress(addressId: string) {
   }).then(({ data }) => data.message);
 }
 
-export function getTransactions(itemPerPage: number, currentPage: number) {
+export function getTransactions(page: number) {
   return request({
     method: "GET",
     url: "/users/transactions",
     needAuth: true,
-    data: {
-      pageSize: itemPerPage,
-      page: currentPage,
+    params: {
+      page,
     },
   }).then(({ data }) => ({
-    itemCount: data.totalCount,
+    countOfItems: data.totalCount,
     transactions: data.transactions.map((item: any) => ({
       id: item.id,
       date: new Date(item.createdAt),

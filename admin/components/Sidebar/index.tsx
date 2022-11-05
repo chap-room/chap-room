@@ -1,24 +1,46 @@
 import styles from "./style.module.scss";
-import { useContext } from "react";
-import { DataContext } from "@/admin/context/Data";
+import { useState } from "react";
+import { AdminUserRole } from "@/shared/types";
+import { getProfile } from "@/admin/api";
+import DataLoader from "@/shared/components/DataLoader";
 import DashboardNavLinks from "@/admin/components/NavLinks";
 import Avatar from "@/shared/components/Dashboard/Avatar";
 
 export default function DashboardSidebar() {
-  const data = useContext(DataContext);
+  const [data, setData] = useState<{
+    avatar: string | null;
+    name: string;
+    phoneNumber: string;
+    role: AdminUserRole;
+  }>({
+    avatar: null,
+    name: "",
+    phoneNumber: "",
+    role: {
+      name: "admin",
+    },
+  });
 
   return (
     <div className={styles.Sidebar}>
-      <div className={styles.User}>
-        <Avatar user={data.state.currentUser} />
-        <div className={styles.Meta}>
-          <div>{data.state.currentUser.name}</div>
-          <div className={styles.UserRole}>
-            {data.state.currentUser.role}
+      <DataLoader load={() => getProfile()} setData={setData}>
+        <div className={styles.User}>
+          <Avatar user={{ name: data.name, avatar: data.avatar }} />
+          <div className={styles.Meta}>
+            <div>{data.name}</div>
+            <div className={styles.UserRole}>
+              {
+                {
+                  superAdmin: "سوپر ادمین",
+                  admin: "ادمین",
+                  agent: "نمایندگی",
+                }[data.role.name]
+              }
+            </div>
           </div>
         </div>
-      </div>
-      <DashboardNavLinks />
+        <DashboardNavLinks />
+      </DataLoader>
     </div>
   );
 }
