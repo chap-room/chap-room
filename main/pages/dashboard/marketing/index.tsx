@@ -70,14 +70,15 @@ export default function DashboardMarketing() {
                   کسب درآمد کنید. لازم به ذکر است پس از اولین بازدید از طریق
                   لینک شما تا یک ماه بعد (حتی اگر کاربر شما توسط لینک‌های دیگر
                   وارد سایت چاپ روم شود) کاربر خریدی انجام دهد،{" "}
-                  {<FormattedNumber value={data!.referral.commission} />} درصد از
-                  خرید آن مشتری در پنل بازاریابی شما لحاظ می‌شود.
+                  {<FormattedNumber value={data!.referral.commission} />} درصد
+                  از خرید آن مشتری در پنل بازاریابی شما لحاظ می‌شود.
                 </div>
               </div>
               <div>
                 <div className={styles.Title}>لینک اختصاصی شما</div>
                 <CopyableText
                   text={`https://chaproom.ir/?${data!.referral.slug}`}
+                  varient="shadow"
                 >
                   <div style={{ color: "#7d00ff" }}>
                     https://chaproom.ir/?{data!.referral.slug}
@@ -136,7 +137,7 @@ export default function DashboardMarketing() {
                           style="percent"
                         />
                       </span>
-                      <CopyableText text="HGVFCD">
+                      <CopyableText text={item.code} varient="shadow">
                         <div style={{ color: "#7d00ff" }}>{item.code}</div>
                       </CopyableText>
                     </div>
@@ -153,7 +154,8 @@ export default function DashboardMarketing() {
                   <div>
                     <div>کل فروش</div>
                     <div>
-                      <FormattedNumber value={data!.discount.totalSales} /> تومان
+                      <FormattedNumber value={data!.discount.totalSales} />{" "}
+                      تومان
                     </div>
                   </div>
                   <div className={styles.Separator} />
