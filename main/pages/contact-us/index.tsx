@@ -29,17 +29,20 @@ export default function ContactUs() {
         <div className={styles.Row}>
           <TextInput
             inputProps={{ placeholder: "نام و نام خانوادگی" }}
+            varient="shadow"
             value={name}
             onChange={setName}
           />
           <TextInput
             inputProps={{ placeholder: "شماره موبایل", type: "number" }}
+            varient="shadow"
             value={phoneNumber}
             onChange={(newValue) => setPhoneNumber(newValue.substring(0, 11))}
           />
         </div>
         <TextArea
           placeholder="پیام خودتان را بنویسید ..."
+          varient="shadow"
           rows={5}
           value={message}
           onTextChange={setMessage}

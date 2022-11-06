@@ -79,7 +79,8 @@
 
   .Map {
     > iframe {
-      border: 1px solid #cccccc;
+      border: none;
+      box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
       border-radius: 20px;
       width: 100%;
       height: 100%;

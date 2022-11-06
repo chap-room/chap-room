@@ -33,7 +33,7 @@ export default function DashboardTransactions() {
       />
       <SectionContent>
         <ContentHeader title="همه سوابق مالی" />
-        <MobileContentHeader backTo="/dashboard" title="سوابق مالی" />
+        <MobileContentHeader backTo="/dashboard" title="تراکنش ها" />
         <DataLoader
           load={() => getTransactions(page)}
           setData={setData}
