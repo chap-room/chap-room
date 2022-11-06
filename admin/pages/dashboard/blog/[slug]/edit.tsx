@@ -1,7 +1,7 @@
 import { ReactElement, useContext } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { DataContext } from "@/admin/context/Data";
+// import { DataContext } from "@/admin/context/Data";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
@@ -11,7 +11,7 @@ import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHead
 import Button from "@/shared/components/Button";
 
 export default function DashboardEditPost() {
-  const data = useContext(DataContext);
+  // const data = useContext(DataContext);
   const router = useRouter();
 
   const { slug } = router.query;
