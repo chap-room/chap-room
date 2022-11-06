@@ -2,7 +2,7 @@ import styles from "./style.module.scss";
 
 interface RadioProps {
   checked: boolean;
-  onChecked: () => void;
+  onChecked?: () => void;
 }
 
 export default function Radio({ checked, onChecked }: RadioProps) {
@@ -10,7 +10,7 @@ export default function Radio({ checked, onChecked }: RadioProps) {
     <button
       data-checked={checked}
       className={styles.Radio}
-      onClick={() => !checked && onChecked()}
+      onClick={() => !checked && onChecked && onChecked()}
     />
   );
 }

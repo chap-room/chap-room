@@ -129,9 +129,9 @@ function NavLinks() {
       <NavLink href="/tariffs" end>
         <a>تعرفه پرینت</a>
       </NavLink>
-      {/* <NavLink href="/blog" end>
+      <NavLink href="/blog" end>
         <a>وبلاگ</a>
-      </NavLink> */}
+      </NavLink>
       <NavLink href="/contact-us" end>
         <a>تماس با ما</a>
       </NavLink>
