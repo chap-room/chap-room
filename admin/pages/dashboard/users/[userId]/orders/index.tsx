@@ -84,6 +84,7 @@ export default function DashboardUserOrderList() {
             onCancelOrder={setPendingOrderCancelRequest}
             onConfirmOrder={setPendingOrderConfirmRequest}
             onMarkOrderSent={setPendingMarkOrderSentRequest}
+            itemsStatus={null}
           />
           {!data.orders.length && (
             <EmptyNote>این کاربر هیچ سفارشی ندارید</EmptyNote>
