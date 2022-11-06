@@ -53,6 +53,7 @@ export default function DashboardEditAddresse() {
           setData={setData}
         >
           <AddressForm
+            inputsVarient="shadow"
             defaultValues={data}
             onSave={(addressData) =>
               updateAddress(addressId, addressData)

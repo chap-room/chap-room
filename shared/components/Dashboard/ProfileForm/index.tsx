@@ -13,11 +13,13 @@ interface ProfileFormData {
 interface ProfileFormProps {
   defaultValues?: Partial<ProfileFormData>;
   onSave: (data: ProfileFormData) => Promise<any>;
+  inputsVarient?: "outlined" | "shadow";
 }
 
 export default function ProfileForm({
   defaultValues,
   onSave,
+  inputsVarient,
 }: ProfileFormProps) {
   const [phoneNumber, setPhoneNumber] = useState(
     defaultValues?.phoneNumber || ""
@@ -39,6 +41,7 @@ export default function ProfileForm({
         <div className={styles.Input}>
           <TextInput
             inputProps={{ placeholder: "نام کامل" }}
+            varient={inputsVarient}
             value={name}
             onChange={setName}
           />
@@ -50,6 +53,7 @@ export default function ProfileForm({
               type: "password",
               placeholder: "رمز عبور",
             }}
+            varient={inputsVarient}
             value={password}
             onChange={setPassword}
           />
@@ -61,6 +65,7 @@ export default function ProfileForm({
               type: "password",
               placeholder: "تکرار رمز عبور",
             }}
+            varient={inputsVarient}
             value={retryPassword}
             onChange={setRetryPassword}
           />

@@ -6,6 +6,7 @@ interface TextInputProps {
   value?: string;
   suffix?: ReactNode;
   onChange?: (newValue: string) => void;
+  varient?: "outlined" | "shadow";
   boxProps?: InputHTMLAttributes<HTMLDivElement>;
   inputProps?: InputHTMLAttributes<HTMLInputElement>;
   inputRef?: Ref<HTMLInputElement>;
@@ -19,42 +20,55 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
       value,
       suffix,
       onChange,
+      varient = "outlined",
       boxProps,
       inputProps,
       inputRef,
       readOnly = false,
     }: TextInputProps,
     ref
-  ) => (
-    <div
-      ref={ref}
-      className={
-        readOnly ? styles.ReadOnly + " " + styles.InputBox : styles.InputBox
-      }
-      {...boxProps}
-    >
-      {prefix}
-      <input
-        ref={inputRef}
-        {...inputProps}
-        readOnly={readOnly}
-        value={
-          value !== undefined
-            ? value
-            : inputProps
-            ? inputProps.value
-            : undefined
-        }
-        onChange={(event) => {
-          onChange && onChange(event.target.value);
-          if (typeof inputProps?.onChange === "function") {
-            return inputProps.onChange.apply(this, [event]);
+  ) => {
+    const className = [styles.InputBox];
+    switch (varient) {
+      case "outlined":
+        className.push(styles.Outlined);
+        break;
+      case "shadow":
+        className.push(styles.Shadow);
+        break;
+    }
+    if (readOnly) {
+      className.push(styles.ReadOnly);
+    }
+    if (boxProps?.className) {
+      className.push(boxProps.className);
+    }
+
+    return (
+      <div ref={ref} className={className.join(" ")} {...boxProps}>
+        {prefix}
+        <input
+          ref={inputRef}
+          {...inputProps}
+          readOnly={readOnly}
+          value={
+            value !== undefined
+              ? value
+              : inputProps
+              ? inputProps.value
+              : undefined
           }
-        }}
-      />
-      {suffix}
-    </div>
-  )
+          onChange={(event) => {
+            onChange && onChange(event.target.value);
+            if (typeof inputProps?.onChange === "function") {
+              return inputProps.onChange.apply(this, [event]);
+            }
+          }}
+        />
+        {suffix}
+      </div>
+    );
+  }
 );
 
 export default TextInput;

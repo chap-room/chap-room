@@ -34,9 +34,11 @@ export default function ForgotPassword() {
   const [isResending, setIsResending] = useState(false);
 
   useEffect(() => {
-    isLoggedIn().then(() => {
-      router.replace("/dashboard");
-    }).catch(() => {});
+    isLoggedIn()
+      .then(() => {
+        router.replace("/dashboard");
+      })
+      .catch(() => {});
   }, []);
 
   return (
@@ -57,6 +59,7 @@ export default function ForgotPassword() {
               </div>
               <TextInput
                 inputProps={{ type: "number", placeholder: "شماره موبایل" }}
+                varient="shadow"
                 value={phoneNumber}
                 onChange={(newValue) =>
                   setPhoneNumber(newValue.substring(0, 11))
@@ -108,6 +111,7 @@ export default function ForgotPassword() {
               </div>
               <TextInput
                 inputProps={{ type: "number", placeholder: "کد تائیید" }}
+                varient="shadow"
                 value={confirmCode}
                 onChange={(newValue) =>
                   setConfirmCode(newValue.substring(0, 6))
@@ -181,6 +185,7 @@ export default function ForgotPassword() {
                   type: "password",
                   placeholder: "رمز عبور",
                 }}
+                varient="shadow"
                 value={newPassword}
                 onChange={setNewPassword}
               />
@@ -189,6 +194,7 @@ export default function ForgotPassword() {
                   type: "password",
                   placeholder: "تکرار رمز عبور",
                 }}
+                varient="shadow"
                 value={newPasswordRepeat}
                 onChange={setNewPasswordRepeat}
               />

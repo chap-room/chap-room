@@ -5,14 +5,16 @@ interface ContentSelectProps {
   options: string[];
   value: string;
   onChange: (value: string) => void;
+  varient?: "outlined" | "shadow";
   readOnly?: boolean;
 };
 
 export default function ContentSelect({
   placeholder,
   options,
-  onChange,
   value,
+  onChange,
+  varient,
   readOnly,
 }: ContentSelectProps) {
   const optionsObject: Record<string, string> = {}
@@ -22,8 +24,9 @@ export default function ContentSelect({
   return (
     <Select
       options={optionsObject}
-      onChange={onChange}
       value={value}
+      onChange={onChange}
+      varient={varient}
       readOnly={readOnly}
     />
   );

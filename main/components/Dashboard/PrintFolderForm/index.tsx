@@ -186,6 +186,7 @@ export default function PrintFolderForm({
                     </div>
                     <div>
                       <ContentSelect
+                        varient="shadow"
                         options={Object.values(PrintColor)}
                         value={printColor}
                         onChange={(printColor) =>
@@ -193,6 +194,7 @@ export default function PrintFolderForm({
                         }
                       />
                       <ContentSelect
+                        varient="shadow"
                         options={Object.values(PrintSize)}
                         value={printSize}
                         onChange={(printSize) =>
@@ -200,6 +202,7 @@ export default function PrintFolderForm({
                         }
                       />
                       <ContentSelect
+                        varient="shadow"
                         options={Object.values(PrintSide)}
                         value={printSide}
                         onChange={(printSide) =>
@@ -213,6 +216,7 @@ export default function PrintFolderForm({
                               type: "number",
                               placeholder: "تعداد برگ",
                             }}
+                            varient="shadow"
                             value={countOfPages}
                             onChange={setPaperCount}
                           />
@@ -329,6 +333,7 @@ export default function PrintFolderForm({
                                   type: "number",
                                   placeholder: "تعداد",
                                 }}
+                                varient="shadow"
                                 value={countOfFiles}
                                 onChange={setNumberOfFiles}
                               />
@@ -371,6 +376,7 @@ export default function PrintFolderForm({
                   </div>
                   {needSpecialDescription && (
                     <TextArea
+                      varient="shadow"
                       value={description}
                       onTextChange={setDescription}
                       placeholder="توضیحات"
@@ -392,6 +398,7 @@ export default function PrintFolderForm({
                           type: "number",
                           placeholder: "تعداد کپی ها",
                         }}
+                        varient="shadow"
                         value={countOfCopies}
                         onChange={setCountOfCopies}
                       />

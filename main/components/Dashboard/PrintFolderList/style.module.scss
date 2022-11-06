@@ -20,8 +20,17 @@
 
       .Label {
         flex: 1;
-        color: #464646;
-        font-weight: 500; // Medium
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+
+        > span:first-child {
+          font-weight: 500; // Medium
+        }
+
+        > span:last-child {
+          color: #2578fa;
+        }
       }
 
       .Actions {

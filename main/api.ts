@@ -566,7 +566,7 @@ export function getTransactions(page: number) {
       id: item.id,
       date: new Date(item.createdAt),
       amount: item.amount,
-      details: item.description,
+      description: item.description,
       orderId: item.orderId,
       status:
         item.status === "successful"

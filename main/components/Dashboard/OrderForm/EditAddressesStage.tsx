@@ -21,6 +21,7 @@ export default function EditAddressesStage({
   return (
     <DataLoader load={() => getAddress(addressId)} setData={setData}>
       <AddressForm
+        inputsVarient="shadow"
         defaultValues={data}
         onCancel={actions.finish}
         onSave={(addressData) =>

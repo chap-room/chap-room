@@ -76,6 +76,7 @@ export default function PaymentStage({ actions }: PaymentStageProps) {
                   placeholder: "کد تخفیف",
                   readOnly: discountCode !== null,
                 }}
+                varient="shadow"
                 value={discountCodeInputText}
                 onChange={setDiscountCodeInputText}
               />

@@ -46,6 +46,7 @@ export default function PrintPriceCalculator({
   return (
     <div className={styles.Calculator}>
       <Select
+        varient="shadow"
         value={printSize}
         onChange={(newValue: string) =>
           setPrintSize(newValue as "a4" | "a5" | "a3")
@@ -57,6 +58,7 @@ export default function PrintPriceCalculator({
         }}
       />
       <Select
+        varient="shadow"
         value={printColor}
         onChange={(newValue: string) =>
           setPrintColor(
@@ -70,6 +72,7 @@ export default function PrintPriceCalculator({
         }}
       />
       <Select
+        varient="shadow"
         value={printSide}
         onChange={(newValue: string) =>
           setPrintSide(newValue as "singleSided" | "doubleSided")
@@ -82,6 +85,7 @@ export default function PrintPriceCalculator({
       <div className={styles.Row}>
         <TextInput
           inputProps={{ type: "number", placeholder: "تعداد برگ" }}
+          varient="shadow"
           value={countOfPages}
           onChange={setCountOfPages}
         />

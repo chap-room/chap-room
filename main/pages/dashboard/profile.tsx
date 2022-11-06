@@ -35,6 +35,7 @@ export default function DashboardProfile() {
         <MobileContentHeader backTo="/dashboard" title="اطلاعات من" />
         <DataLoader load={() => getProfile()} setData={setData}>
           <ProfileForm
+            inputsVarient="shadow"
             defaultValues={{
               phoneNumber: data.phoneNumber,
               name: data.name,

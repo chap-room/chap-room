@@ -162,6 +162,7 @@ export default function Home() {
               value={null}
               onChange={() => {}}
               options={{}}
+              varient="shadow"
               placeholder="قطع کتاب"
               readOnly
             />
@@ -169,6 +170,7 @@ export default function Home() {
               value={null}
               onChange={() => {}}
               options={{}}
+              varient="shadow"
               placeholder="جنس کاغذ"
               readOnly
             />
@@ -176,18 +178,21 @@ export default function Home() {
               value={null}
               onChange={() => {}}
               options={{}}
+              varient="shadow"
               placeholder="نوع صحافی"
               readOnly
             />
             <div className={styles.Row}>
               <TextInput
                 inputProps={{ type: "number", placeholder: "تعداد صفحه" }}
+                varient="shadow"
               />
               <TextInput
                 inputProps={{
                   type: "number",
                   placeholder: "تیراژ (حداقل 50 نسخه)",
                 }}
+                varient="shadow"
               />
             </div>
             <div className={styles.Row}>

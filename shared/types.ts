@@ -47,6 +47,7 @@ export enum OrderCancelReason {
 
 export interface PrintFolder {
   id: number;
+  amount: number;
   printColor: PrintColor;
   printSize: PrintSize;
   printSide: PrintSide;

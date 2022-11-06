@@ -3,16 +3,34 @@ import styles from "./style.module.scss";
 
 interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   onTextChange?: (newValue: string) => void;
+  varient?: "outlined" | "shadow";
 }
 
-const TextArea = React.forwardRef<HTMLTextAreaElement, PropsWithChildren<TextAreaProps>>(
-  ({ onTextChange, ...props }: TextAreaProps, ref) => (
+const TextArea = React.forwardRef<
+  HTMLTextAreaElement,
+  PropsWithChildren<TextAreaProps>
+>(({ onTextChange, varient = "outlined", ...props }: TextAreaProps, ref) => {
+  const className = [styles.TextArea];
+  switch (varient) {
+    case "outlined":
+      className.push(styles.Outlined);
+      break;
+    case "shadow":
+      className.push(styles.Shadow);
+      break;
+  }
+  if (props.readOnly) {
+    className.push(styles.ReadOnly);
+  }
+  if (props?.className) {
+    className.push(props.className);
+  }
+
+  return (
     <textarea
       ref={ref}
       {...props}
-      className={
-        props.className ? props.className + " " + styles.TextArea : styles.TextArea
-      }
+      className={className.join(" ")}
       onChange={(event) => {
         onTextChange && onTextChange(event.target.value);
         if (typeof props?.onChange === "function") {
@@ -20,7 +38,7 @@ const TextArea = React.forwardRef<HTMLTextAreaElement, PropsWithChildren<TextAre
         }
       }}
     />
-  )
-);
+  );
+});
 
 export default TextArea;

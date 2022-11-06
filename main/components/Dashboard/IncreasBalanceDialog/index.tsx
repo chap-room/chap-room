@@ -36,6 +36,7 @@ export default function IncreasBalanceDialog({
                 type: "number",
                 placeholder: "مبلغ",
               }}
+              varient="shadow"
               value={amount}
               onChange={setAmount}
               suffix="تومان"
@@ -47,6 +48,7 @@ export default function IncreasBalanceDialog({
               options={{
                 [PaymentMethod.zarinPalGate]: "زرین پال",
               }}
+              varient="shadow"
               value={gate}
               onChange={(newValue) => setGate(newValue)}
               readOnly

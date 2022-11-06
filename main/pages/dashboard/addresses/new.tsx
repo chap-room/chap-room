@@ -41,6 +41,7 @@ export default function DashboardNewAddresse() {
           title="افزودن آدرس جدید"
         />
         <AddressForm
+          inputsVarient="shadow"
           onSave={(addressData) =>
             newAddress(
               addressData.label,

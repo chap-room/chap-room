@@ -22,6 +22,7 @@ type SelectProps =
       options: Record<string, string>;
       value: string;
       onChange: (newValue: string) => void;
+      varient?: "outlined" | "shadow";
       readOnly?: boolean;
     }
   | {
@@ -29,6 +30,7 @@ type SelectProps =
       options: Record<string, string>;
       value: string | null;
       onChange: (newValue: string | null) => void;
+      varient?: "outlined" | "shadow";
       readOnly?: boolean;
     };
 
@@ -36,6 +38,7 @@ export default function Select({
   placeholder,
   options,
   onChange,
+  varient = "outlined",
   value,
   readOnly,
 }: SelectProps) {
@@ -143,6 +146,29 @@ export default function Select({
     }
   }, [open, activeIndex, pointer]);
 
+  const selectClassName = [styles.Select];
+  switch (varient) {
+    case "outlined":
+      selectClassName.push(styles.Outlined);
+      break;
+    case "shadow":
+      selectClassName.push(styles.Shadow);
+      break;
+  }
+  if (readOnly) {
+    selectClassName.push(styles.ReadOnly);
+  }
+
+  const dropdownClassName = [styles.Dropdown];
+  switch (varient) {
+    case "outlined":
+      dropdownClassName.push(styles.Outlined);
+      break;
+    case "shadow":
+      dropdownClassName.push(styles.Shadow);
+      break;
+  }
+
   function handleSelect(index: number) {
     if (placeholder) {
       onChange(listValueRef.current[index]);
@@ -175,7 +201,7 @@ export default function Select({
       <div
         {...getReferenceProps({
           ref: reference,
-          className: styles.Select,
+          className: selectClassName.join(" "),
           tabIndex: 0,
         })}
       >
@@ -191,7 +217,7 @@ export default function Select({
           <div
             {...getFloatingProps({
               ref: floating,
-              className: styles.Dropdown,
+              className: dropdownClassName.join(" "),
               style: {
                 position: strategy,
                 top: y ?? 0,

@@ -50,12 +50,14 @@ export default function Register() {
                 </div>
               </div>
               <TextInput
+                inputProps={{ placeholder: "نام و نام خانوادگی" }}
+                varient="shadow"
                 value={name}
                 onChange={setName}
-                inputProps={{ placeholder: "نام و نام خانوادگی" }}
               />
               <TextInput
                 inputProps={{ type: "number", placeholder: "شماره موبایل" }}
+                varient="shadow"
                 value={phoneNumber}
                 onChange={(newValue) =>
                   setPhoneNumber(newValue.substring(0, 11))
@@ -66,6 +68,7 @@ export default function Register() {
                   type: "password",
                   placeholder: "رمز عبور",
                 }}
+                varient="shadow"
                 value={password}
                 onChange={setPassword}
               />
@@ -74,6 +77,7 @@ export default function Register() {
                   type: "password",
                   placeholder: "تکرار رمز عبور",
                 }}
+                varient="shadow"
                 value={passwordRepeat}
                 onChange={setPasswordRepeat}
               />
@@ -146,6 +150,7 @@ export default function Register() {
               </div>
               <TextInput
                 inputProps={{ type: "number", placeholder: "کد تائیید" }}
+                varient="shadow"
                 value={confirmCode}
                 onChange={(newValue) =>
                   setConfirmCode(newValue.substring(0, 6))

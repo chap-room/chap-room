@@ -24,12 +24,14 @@ interface AddressFormProps {
   defaultValues?: Partial<AddressFormData>;
   onCancel?: () => void;
   onSave: (data: AddressFormData) => Promise<any>;
+  inputsVarient?: "outlined" | "shadow";
 }
 
 export default function AddressForm({
   defaultValues,
   onCancel,
   onSave,
+  inputsVarient,
 }: AddressFormProps) {
   const [label, setLabel] = useState(defaultValues?.label || "");
   const [recipientName, setRecipientName] = useState(
@@ -58,11 +60,13 @@ export default function AddressForm({
       <div className={styles.Form}>
         <TextInput
           inputProps={{ placeholder: "عنوان" }}
+          varient={inputsVarient}
           value={label}
           onChange={(newValue) => setLabel(newValue)}
         />
         <TextInput
           inputProps={{ placeholder: "نام تحویل گیرنده" }}
+          varient={inputsVarient}
           value={recipientName}
           onChange={(newValue) => setRecipientName(newValue)}
         />
@@ -71,6 +75,7 @@ export default function AddressForm({
             type: "number",
             placeholder: "شماره موبایل تحویل گیرنده",
           }}
+          varient={inputsVarient}
           value={recipientPhoneNumber}
           onChange={(newValue) =>
             setRecipientPhoneNumber(newValue.substring(0, 11))
@@ -78,6 +83,7 @@ export default function AddressForm({
         />
         <TextInput
           inputProps={{ type: "number", placeholder: "کد پستی" }}
+          varient={inputsVarient}
           value={recipientPostalCode}
           onChange={(newValue) =>
             setRecipientPostalCode(newValue.substring(0, 10))
@@ -87,6 +93,7 @@ export default function AddressForm({
           <ContentSelect
             placeholder="استان"
             options={Object.keys(iranProvincesAndCities)}
+            varient={inputsVarient}
             value={recipientDeliveryProvince}
             onChange={(newValue) => {
               setRecipientDeliveryProvince(newValue);
@@ -96,12 +103,14 @@ export default function AddressForm({
           <ContentSelect
             placeholder="شهر"
             options={iranProvincesAndCities[recipientDeliveryProvince] || []}
+            varient={inputsVarient}
             value={recipientDeliveryCity}
             onChange={(newValue) => setRecipientDeliveryCity(newValue)}
             readOnly={!iranProvincesAndCities[recipientDeliveryProvince]}
           />
         </div>
         <TextArea
+          varient={inputsVarient}
           placeholder="نشانی"
           rows={4}
           value={recipientDeliveryAddress}

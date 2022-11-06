@@ -3,21 +3,29 @@
   flex-direction: row;
   gap: 5px;
   height: 40px;
+  box-sizing: border-box;
   padding: 0 15px;
   font-size: 14px;
   border-radius: 20px;
-  background-color: #ffffff;
   color: #000000;
-  box-sizing: border-box;
-  border: 1px solid #cccccc;
   align-items: center;
   justify-content: center;
 
-  &.ReadOnly {
-    background-color: #efeeee;
+  &.Outlined {
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+
+    &.ReadOnly {
+      background-color: #efeeee;
+    }
   }
 
-  > input {
+  &.Shadow {
+    background-color: #f5f5f5;
+    box-shadow: inset -3px -3px 6px #ffffffdb, inset 3px 3px 6px #00000029;
+  }
+
+  >input {
     background: transparent;
     border: none;
     padding: 0;

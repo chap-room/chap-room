@@ -68,8 +68,6 @@ export function convert(
     }
   });
 
-  console.log(input);
-  console.log(result);
   return result;
 }
 

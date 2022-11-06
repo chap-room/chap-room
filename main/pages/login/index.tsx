@@ -40,6 +40,7 @@ export default function Login() {
           </div>
           <TextInput
             inputProps={{ type: "number", placeholder: "شماره موبایل" }}
+            varient="shadow"
             value={phoneNumber}
             onChange={(newValue) => setPhoneNumber(newValue.substring(0, 11))}
           />
@@ -49,6 +50,7 @@ export default function Login() {
                 type: "password",
                 placeholder: "رمز عبور",
               }}
+              varient="shadow"
               value={password}
               onChange={setPassword}
             />
