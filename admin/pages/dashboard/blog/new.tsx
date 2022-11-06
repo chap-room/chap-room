@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { v4 as uuidv4 } from "uuid";
 import Head from "next/head";
 import Link from "next/link";
-import { DataContext } from "@/admin/context/Data";
+// import { DataContext } from "@/admin/context/Data";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
@@ -14,7 +14,7 @@ import Button from "@/shared/components/Button";
 import DiscountForm from "@/admin/components/DiscountForm";
 
 export default function DashboardNewPost() {
-  const data = useContext(DataContext);
+  // const data = useContext(DataContext);
   const router = useRouter();
 
   return (
@@ -42,7 +42,7 @@ export default function DashboardNewPost() {
           backTo="/dashboard/discounts"
           title="ایجاد نوشته جدید"
         />
-        <DiscountForm
+        {/* <DiscountForm
           onSave={(discountData) => {
             data.dispatch({
               type: "DISCOUNT_CODES:PUSH",
@@ -53,7 +53,7 @@ export default function DashboardNewPost() {
             });
             router.push("/dashboard/discounts");
           }}
-        />
+        /> */}
       </SectionContent>
     </>
   );
