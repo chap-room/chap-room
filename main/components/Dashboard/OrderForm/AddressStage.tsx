@@ -1,5 +1,5 @@
 import styles from "./style.module.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Address } from "@/shared/types";
 import { deleteAddress, getAddresses } from "@/main/api";
@@ -31,6 +31,10 @@ export default function AddressStage({
 
   const [pendingAddressDeleteRequest, setPendingAddressDeleteRequest] =
     useState<number | null>(null);
+
+  useEffect(() => {
+    if (selectedAddressId === null && data[0]) setSelectedAddressId(data[0].id);
+  }, [data]);
 
   const [reload, setRelaod] = useState(true);
 

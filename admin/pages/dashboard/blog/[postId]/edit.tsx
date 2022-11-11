@@ -1,6 +1,7 @@
 import { ReactElement, useContext } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import Link from "next/link";
 // import { DataContext } from "@/admin/context/Data";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
@@ -33,12 +34,11 @@ export default function DashboardEditPost() {
         <ContentHeader
           title="ویرایش کردن کد تخفیف"
           end={
-            <Button
-              style={{ padding: 0 }}
-              onClick={() => router.push("/dashboard/discounts")}
-            >
-              انصراف و بازگشت <ArrowBackIcon />
-            </Button>
+            <Link href="/dashboard/discounts">
+              <Button style={{ padding: 0 }}>
+                انصراف و بازگشت <ArrowBackIcon />
+              </Button>
+            </Link>
           }
         />
         <MobileContentHeader

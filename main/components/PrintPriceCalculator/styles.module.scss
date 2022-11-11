@@ -9,8 +9,21 @@
   box-sizing: border-box;
   box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
 
-  & > div {
-    width: 100%;
+  .Title {
+    text-align: center;
+    color: #9c9c9c;
+    margin-top: 20px;
+    margin-bottom: 30px;
+  }
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    > div:first-child {
+      max-width: unset;
+    }
   }
 
   .Row {
@@ -19,7 +32,13 @@
     gap: 20px;
 
     > div:first-child {
-      width: 150px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      > div:first-child {
+        width: 150px;
+      }
     }
 
     > div:last-child {
@@ -30,6 +49,8 @@
       gap: 5px;
       align-items: center;
       justify-content: flex-end;
+      color: #5d5d5d;
+      font-size: 12px;
     }
   }
 
@@ -40,6 +61,7 @@
     align-items: center;
     gap: 10px;
     white-space: nowrap;
+    margin-top: 30px;
 
     > div {
       overflow: auto;

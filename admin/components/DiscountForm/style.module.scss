@@ -18,7 +18,11 @@
   }
 
   .Input {
-    & > * {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    > * {
       width: 100%;
       max-width: 300px;
 
@@ -39,6 +43,20 @@
       flex-direction: row;
       gap: 10px;
       align-items: center;
+    }
+  }
+
+  .UserModeRadioList {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+
+    > div {
+      display: flex;
+      flex-direction: row;
+      gap: 5px;
     }
   }
 }

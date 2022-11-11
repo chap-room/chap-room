@@ -1,12 +1,22 @@
 import styles from "./style.module.scss";
 import { useState } from "react";
-import { User, DiscountType } from "@/shared/types";
+import { User } from "@/shared/types";
 import TextInput from "@/shared/components/TextInput";
 import Button from "@/shared/components/Button";
 import BottomActions from "@/shared/components/Dashboard/BottomActions";
-import ContentSelect from "@/shared/components/ContentSelect";
-import CheckBox from "@/shared/components/CheckBox";
 import Select from "@/shared/components/Select";
+import CheckBox from "@/shared/components/CheckBox";
+import DatePicker from "@/shared/components/DatePicker";
+import UserSelect from "@/admin/components/UserSelect";
+import {
+  optionalValidate,
+  useValidation,
+  validateInt,
+  validateNotEmpty,
+  validatePhoneNumber,
+} from "@/shared/utils/validation";
+import ErrorList from "@/shared/components/ErrorList";
+import Radio from "@/shared/components/Radio";
 
 interface DiscountFormData {
   active: boolean;
@@ -14,7 +24,7 @@ interface DiscountFormData {
   description: string;
   user: User | null;
   phoneNumber: string | null;
-  discountType: DiscountType;
+  discountType: "fixed" | "percentage" | "page";
   discountValue: number;
   usageLimit: number | null;
   expireDate: Date | null;
@@ -41,10 +51,15 @@ export default function DiscountForm({
   const [forOneUser, setForOneUser] = useState(
     defaultValues ? defaultValues.user !== null : false
   );
-  const [customer, setCustomer] = useState<User | null>(null);
-  const [phoneNumber, setPhoneNumber] = useState<string | null>(null);
+  const [userMode, setUserMode] = useState<"user" | "phoneNumber">(
+    defaultValues?.phoneNumber !== null ? "user" : "phoneNumber"
+  );
+  const [user, setUser] = useState<User | null>(defaultValues?.user || null);
+  const [phoneNumber, setPhoneNumber] = useState(
+    defaultValues?.phoneNumber?.toString() || ""
+  );
   const [discountType, setDiscountType] = useState(
-    defaultValues?.discountType || DiscountType.countOfPages
+    defaultValues?.discountType || "page"
   );
   const [discountValue, setDiscountValue] = useState(
     defaultValues?.discountValue?.toString() || ""
@@ -58,8 +73,58 @@ export default function DiscountForm({
   const [hasExpireDate, setHasExpireDate] = useState(
     defaultValues ? defaultValues.expireDate !== null : false
   );
+  const [expireDate, setExpireDate] = useState<Date | null>(
+    defaultValues?.expireDate || null
+  );
+  const [isExpireDateValid, setIsExpireDateValid] = useState(
+    expireDate !== null
+  );
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const formValidation = useValidation(
+    {
+      code: [validateNotEmpty()],
+      user: [
+        optionalValidate({
+          enabled: forOneUser && userMode === "user",
+          validator: validateNotEmpty(),
+        }),
+      ],
+      phoneNumber: [
+        optionalValidate({
+          enabled: forOneUser && userMode === "phoneNumber",
+          validator: validatePhoneNumber(),
+        }),
+      ],
+      discountValue: [
+        validateInt({
+          unsigned: true,
+          max: discountType === "percentage" ? 100 : undefined,
+        }),
+      ],
+      usageLimit: [
+        optionalValidate({
+          enabled: hasUsageLimit,
+          validator: validateInt({ unsigned: true, min: 1 }),
+        }),
+      ],
+      isExpireDateValid: [
+        optionalValidate({
+          enabled: hasExpireDate,
+          validator: validateNotEmpty({ message: "تاریخ نامعتبر" }),
+        }),
+      ],
+    },
+    {
+      code,
+      user,
+      phoneNumber,
+      discountValue,
+      usageLimit,
+      isExpireDateValid,
+    }
+  );
 
   return (
     <>
@@ -78,6 +143,7 @@ export default function DiscountForm({
             value={code}
             onChange={setCode}
           />
+          <ErrorList errors={formValidation.errors.code} />
         </div>
         <div className={styles.Label}>توضیحات:</div>
         <div className={styles.Input}>
@@ -90,29 +156,56 @@ export default function DiscountForm({
         <div className={styles.Separator} />
         <div className={styles.OptionalInput}>
           <div className={styles.CheckBoxWithLabel}>
-            <CheckBox checked={forOneUser} onChange={setForOneUser} />{" "}
-            مختص یک مشتری است
+            <CheckBox checked={forOneUser} onChange={setForOneUser} /> مختص یک
+            مشتری است
           </div>
           {forOneUser && (
             <div>
-              <div className={styles.Input}>
-                <TextInput
-                  inputProps={{ type: "number", placeholder: "کاربر" }}
-                  value={customer?.id.toString()}
-                  // onChange={}
-                  readOnly
-                />
+              <div className={styles.UserModeRadioList}>
+                <div>
+                  <Radio
+                    checked={userMode === "user"}
+                    onChecked={() => setUserMode("user")}
+                  />
+                  کاربر
+                </div>
+                <div>
+                  <Radio
+                    checked={userMode === "phoneNumber"}
+                    onChecked={() => setUserMode("phoneNumber")}
+                  />
+                  شماره موبایل
+                </div>
               </div>
+              {userMode === "user" ? (
+                <div className={styles.Input}>
+                  <UserSelect value={user} onChange={setUser} />
+                  <ErrorList errors={formValidation.errors.user} />
+                </div>
+              ) : (
+                <div className={styles.Input}>
+                  <TextInput
+                    inputProps={{ type: "number", placeholder: "شماره موبایل" }}
+                    value={phoneNumber}
+                    onChange={setPhoneNumber}
+                  />
+                  <ErrorList errors={formValidation.errors.phoneNumber} />
+                </div>
+              )}
             </div>
           )}
         </div>
         <div className={styles.Separator} />
         <div className={styles.Label}>نوع تخفیف:</div>
         <div className={styles.Input}>
-          <ContentSelect
-            options={Object.values(DiscountType)}
+          <Select
+            options={{
+              fixed: "مبلغ ثابت",
+              percentage: "درصدی",
+              page: "تعدادی از صفحات",
+            }}
             value={discountType}
-            onChange={(newValue) => setDiscountType(newValue as DiscountType)}
+            onChange={setDiscountType}
           />
         </div>
         <div className={styles.Label}>مقدار تخفیف:</div>
@@ -123,15 +216,16 @@ export default function DiscountForm({
               placeholder: "مقدار تخفیف",
             }}
             suffix={
-              discountType === DiscountType.fixedAmount
+              discountType === "fixed"
                 ? "تومان"
-                : discountType === DiscountType.countOfPages
+                : discountType === "page"
                 ? "صفحه"
                 : "درصد"
             }
             value={discountValue}
             onChange={setDiscountValue}
           />
+          <ErrorList errors={formValidation.errors.discountValue} />
         </div>
         <div className={styles.Separator} />
         <div className={styles.OptionalInput}>
@@ -140,18 +234,17 @@ export default function DiscountForm({
             دارای محدودیت استفاده است
           </div>
           {hasUsageLimit && (
-            <div>
-              <div className={styles.Input}>
-                <TextInput
-                  inputProps={{
-                    type: "number",
-                    placeholder: "محدودیت استفاده",
-                  }}
-                  suffix="بار"
-                  value={usageLimit}
-                  onChange={setUsageLimit}
-                />
-              </div>
+            <div className={styles.Input}>
+              <TextInput
+                inputProps={{
+                  type: "number",
+                  placeholder: "محدودیت استفاده",
+                }}
+                suffix="بار"
+                value={usageLimit}
+                onChange={setUsageLimit}
+              />
+              <ErrorList errors={formValidation.errors.usageLimit} />
             </div>
           )}
         </div>
@@ -161,7 +254,18 @@ export default function DiscountForm({
             <CheckBox checked={hasExpireDate} onChange={setHasExpireDate} />{" "}
             دارای تاریخ انقضا است
           </div>
-          {hasExpireDate && <div>2022-07-13T07:24:52</div>}
+          {hasExpireDate && (
+            <div>
+              <div className={styles.Input}>
+                <DatePicker
+                  value={expireDate}
+                  onChange={(newValue) => setExpireDate(newValue.toDate())}
+                  setIsValid={setIsExpireDateValid}
+                />
+                <ErrorList errors={formValidation.errors.isExpireDateValid} />
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <BottomActions>
@@ -174,8 +278,9 @@ export default function DiscountForm({
               active,
               code,
               description,
-              user: forOneUser ? customer : null,
-              phoneNumber,
+              user: forOneUser && userMode === "user" ? user : null,
+              phoneNumber:
+                forOneUser && userMode === "phoneNumber" ? phoneNumber : null,
               discountType,
               discountValue: parseInt(discountValue),
               usageLimit: hasUsageLimit ? parseInt(usageLimit) : null,
@@ -185,17 +290,7 @@ export default function DiscountForm({
             }).finally(() => setIsSubmitting(false));
           }}
           loading={isSubmitting}
-          disabled={
-            isSubmitting ||
-            !code ||
-            (forOneUser && !customer && !phoneNumber) ||
-            isNaN(parseInt(discountValue)) ||
-            parseInt(discountValue) < 0 ||
-            (discountType === DiscountType.percentage &&
-              parseInt(discountValue) > 100) ||
-            (hasUsageLimit && isNaN(parseInt(usageLimit))) ||
-            (hasUsageLimit && parseInt(usageLimit) < 0)
-          }
+          disabled={isSubmitting || !formValidation.isValid}
         >
           ذخیره
         </Button>

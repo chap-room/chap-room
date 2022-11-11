@@ -6,9 +6,19 @@ import Head from "next/head";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { isLoggedIn, register, registerConfirm, resendCode } from "@/main/api";
+import {
+  useValidation,
+  validateInt,
+  validateLength,
+  validateNotEmpty,
+  validatePasswordRepeat,
+  validatePhoneNumber,
+} from "@/shared/utils/validation";
+import LogoWithName from "@/shared/assets/images/logoWithName.svg";
+import ArrowForwardIcon from "@/shared/assets/icons/arrowForward.svg";
 import Thumbnail from "@/shared/assets/images/printing.svg";
-import Header from "@/main/components/Header";
 import TextInput from "@/shared/components/TextInput";
+import ErrorList from "@/shared/components/ErrorList";
 import Button from "@/shared/components/Button";
 import CheckBox from "@/shared/components/CheckBox";
 
@@ -27,10 +37,42 @@ export default function Register() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isResending, setIsResending] = useState(false);
 
+  const formValidation = useValidation(
+    {
+      name: [validateNotEmpty()],
+      phoneNumber: [validatePhoneNumber()],
+      password: [validateLength({ min: 8 })],
+      passwordRepeat: [
+        validateLength({ min: 8 }),
+        validatePasswordRepeat(password),
+      ],
+    },
+    {
+      name,
+      phoneNumber,
+      password,
+      passwordRepeat,
+    }
+  );
+
+  const confirmCodeValidation = useValidation(
+    {
+      confirmCode: [
+        validateLength({ length: 6 }),
+        validateInt({ unsigned: true }),
+      ],
+    },
+    {
+      confirmCode,
+    }
+  );
+
   useEffect(() => {
-    isLoggedIn().then(() => {
-      router.replace("/dashboard");
-    }).catch(() => {});
+    isLoggedIn()
+      .then((userData) => {
+        if (userData) router.replace("/dashboard");
+      })
+      .catch(() => {});
   }, []);
 
   return (
@@ -38,7 +80,18 @@ export default function Register() {
       <Head>
         <title>ثبت نام</title>
       </Head>
-      <Header hideLogoInMobile showBackButtonInMobile />
+      <div className={styles.Header}>
+        <Link href="/">
+          <a className={styles.Logo}>
+            <LogoWithName />
+          </a>
+        </Link>
+        <Link href="/">
+          <a className={styles.MobileBackButton}>
+            <ArrowForwardIcon />
+          </a>
+        </Link>
+      </div>
       <div className={styles.Content}>
         <div className={styles.Form}>
           {confirmCodeExpirationDate === null ? (
@@ -49,38 +102,50 @@ export default function Register() {
                   برای ثبت نام اطلاعات خود را وارد کنید
                 </div>
               </div>
-              <TextInput
-                inputProps={{ placeholder: "نام و نام خانوادگی" }}
-                varient="shadow"
-                value={name}
-                onChange={setName}
-              />
-              <TextInput
-                inputProps={{ type: "number", placeholder: "شماره موبایل" }}
-                varient="shadow"
-                value={phoneNumber}
-                onChange={(newValue) =>
-                  setPhoneNumber(newValue.substring(0, 11))
-                }
-              />
-              <TextInput
-                inputProps={{
-                  type: "password",
-                  placeholder: "رمز عبور",
-                }}
-                varient="shadow"
-                value={password}
-                onChange={setPassword}
-              />
-              <TextInput
-                inputProps={{
-                  type: "password",
-                  placeholder: "تکرار رمز عبور",
-                }}
-                varient="shadow"
-                value={passwordRepeat}
-                onChange={setPasswordRepeat}
-              />
+              <div className={styles.Column}>
+                <TextInput
+                  inputProps={{ placeholder: "نام و نام خانوادگی" }}
+                  varient="shadow"
+                  value={name}
+                  onChange={setName}
+                />
+                <ErrorList errors={formValidation.errors.name} />
+              </div>
+              <div className={styles.Column}>
+                <TextInput
+                  inputProps={{ type: "number", placeholder: "شماره موبایل" }}
+                  varient="shadow"
+                  value={phoneNumber}
+                  onChange={(newValue) =>
+                    setPhoneNumber(newValue.substring(0, 11))
+                  }
+                />
+                <ErrorList errors={formValidation.errors.phoneNumber} />
+              </div>
+              <div className={styles.Column}>
+                <TextInput
+                  inputProps={{
+                    type: "password",
+                    placeholder: "رمز عبور",
+                  }}
+                  varient="shadow"
+                  value={password}
+                  onChange={setPassword}
+                />
+                <ErrorList errors={formValidation.errors.password} />
+              </div>
+              <div className={styles.Column}>
+                <TextInput
+                  inputProps={{
+                    type: "password",
+                    placeholder: "تکرار رمز عبور",
+                  }}
+                  varient="shadow"
+                  value={passwordRepeat}
+                  onChange={setPasswordRepeat}
+                />
+                <ErrorList errors={formValidation.errors.passwordRepeat} />
+              </div>
               <div className={styles.CheckBoxWithLabel}>
                 <CheckBox
                   checked={agreeTermsAndConditions}
@@ -116,11 +181,7 @@ export default function Register() {
                   loading={isSubmitting}
                   disabled={
                     isSubmitting ||
-                    phoneNumber.length !== 11 ||
-                    !phoneNumber.startsWith("09") ||
-                    isNaN(parseInt(phoneNumber)) ||
-                    password.length < 8 ||
-                    password !== passwordRepeat ||
+                    !formValidation.isValid ||
                     !agreeTermsAndConditions
                   }
                 >
@@ -148,15 +209,18 @@ export default function Register() {
                   ارسال شد.
                 </div>
               </div>
-              <TextInput
-                inputProps={{ type: "number", placeholder: "کد تائیید" }}
-                varient="shadow"
-                value={confirmCode}
-                onChange={(newValue) =>
-                  setConfirmCode(newValue.substring(0, 6))
-                }
-                suffix={<CountDown date={confirmCodeExpirationDate} />}
-              />
+              <div className={styles.Column}>
+                <TextInput
+                  inputProps={{ type: "number", placeholder: "کد تائیید" }}
+                  varient="shadow"
+                  value={confirmCode}
+                  onChange={(newValue) =>
+                    setConfirmCode(newValue.substring(0, 6))
+                  }
+                  suffix={<CountDown date={confirmCodeExpirationDate} />}
+                />
+                <ErrorList errors={confirmCodeValidation.errors.confirmCode} />
+              </div>
               <div className={styles.ConfirmCodeActions}>
                 <button
                   onClick={() => {
@@ -192,11 +256,7 @@ export default function Register() {
                     .finally(() => setIsSubmitting(false));
                 }}
                 loading={isSubmitting}
-                disabled={
-                  isSubmitting ||
-                  confirmCode.length !== 6 ||
-                  isNaN(parseInt(confirmCode))
-                }
+                disabled={isSubmitting || !confirmCodeValidation.isValid}
               >
                 ثبت نام
               </Button>

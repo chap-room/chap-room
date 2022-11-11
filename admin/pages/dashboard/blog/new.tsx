@@ -12,6 +12,7 @@ import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
 import Button from "@/shared/components/Button";
 import DiscountForm from "@/admin/components/DiscountForm";
+import PostForm from "@/admin/components/PostForm";
 
 export default function DashboardNewPost() {
   // const data = useContext(DataContext);
@@ -29,9 +30,9 @@ export default function DashboardNewPost() {
       />
       <SectionContent>
         <ContentHeader
-          title="ایجاد نوشته جدید"
+          title="ایجاد بلاگ جدید"
           end={
-            <Link href="/dashboard/discounts">
+            <Link href="/dashboard/blog">
               <Button style={{ padding: 0 }}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
@@ -39,21 +40,14 @@ export default function DashboardNewPost() {
           }
         />
         <MobileContentHeader
-          backTo="/dashboard/discounts"
-          title="ایجاد نوشته جدید"
+          backTo="/dashboard/blog"
+          title="ایجاد بلاگ جدید"
         />
-        {/* <DiscountForm
-          onSave={(discountData) => {
-            data.dispatch({
-              type: "DISCOUNT_CODES:PUSH",
-              payload: {
-                id: uuidv4(),
-                ...discountData,
-              },
-            });
-            router.push("/dashboard/discounts");
+        <PostForm
+          onSave={(postFormData) => {
+            router.push("/dashboard/blog");
           }}
-        /> */}
+        />
       </SectionContent>
     </>
   );

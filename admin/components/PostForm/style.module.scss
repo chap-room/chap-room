@@ -1,0 +1,36 @@
+.Container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  .Form {
+    display: grid;
+    grid-template-columns: minmax(100px, 120px) 1fr;
+  
+    @media (max-width: 512px) {
+      grid-template-columns: 1fr;
+    }
+  
+    > div {
+      padding: 10px;
+  
+      &.Label {
+        color: #9c9c9c;
+      }
+  
+      &.Input {
+        & > * {
+          width: 100%;
+          max-width: 300px;
+  
+          @media (max-width: 512px) {
+            max-width: unset;
+          }
+        }
+      }
+    }
+  }
+  
+  > div:last-child {
+    grid-column: span 2;
+  }
+}

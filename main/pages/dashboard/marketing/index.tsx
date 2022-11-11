@@ -78,7 +78,6 @@ export default function DashboardMarketing() {
                 <div className={styles.Title}>لینک اختصاصی شما</div>
                 <CopyableText
                   text={`https://chaproom.ir/?${data!.referral.slug}`}
-                  varient="shadow"
                 >
                   <div style={{ color: "#7d00ff" }}>
                     https://chaproom.ir/?{data!.referral.slug}
@@ -137,7 +136,7 @@ export default function DashboardMarketing() {
                           style="percent"
                         />
                       </span>
-                      <CopyableText text={item.code} varient="shadow">
+                      <CopyableText text={item.code}>
                         <div style={{ color: "#7d00ff" }}>{item.code}</div>
                       </CopyableText>
                     </div>

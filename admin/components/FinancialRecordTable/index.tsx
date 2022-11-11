@@ -1,5 +1,5 @@
 import styles from "./style.module.scss";
-import { FinancialRecord, FinancialRecordStatus } from "@/shared/types";
+import { FinancialRecord } from "@/shared/types";
 import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
 import EditIcon from "@/shared/assets/icons/edit.svg";
 import DeletetIcon from "@/shared/assets/icons/delete.svg";
@@ -75,19 +75,29 @@ export default function FinancialRecordTable({
             </td>
             <td>
               <span className={styles.MobileLabel}>نوع:</span>
-              {financialRecord.type}
+              {
+                {
+                  debtor: "بدهکار",
+                  creditor: "بستانکار",
+                }[financialRecord.type]
+              }
             </td>
             <td>
               <span className={styles.MobileLabel}>وضعیت:</span>
               {!financialRecord.admin ? (
                 <span
                   className={
-                    financialRecord.status === FinancialRecordStatus.successful
+                    financialRecord.status === "successful"
                       ? styles.Successful
                       : styles.Unsuccessful
                   }
                 >
-                  {financialRecord.status}
+                  {
+                    {
+                      successful: "موفق",
+                      unsuccessful: "نا موفق",
+                    }[financialRecord.status]
+                  }
                 </span>
               ) : (
                 <div>

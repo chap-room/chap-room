@@ -1,6 +1,6 @@
 import styles from "./style.module.scss";
 import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
-import { Discount, DiscountType } from "@/shared/types";
+import { Discount } from "@/shared/types";
 import EditIcon from "@/shared/assets/icons/edit.svg";
 import DeletetIcon from "@/shared/assets/icons/delete.svg";
 import IconButton from "@/shared/components/IconButton";
@@ -55,22 +55,17 @@ export default function DiscountTable({
                 <span>
                   <span>مقدار:</span>
                   <span>
-                    {discount.discountType === DiscountType.fixedAmount ? (
+                    {discount.discountType === "fixed" ? (
                       <>
-                        <FormattedNumber value={discount.discountValue} />{" "}
-                        تومان
+                        <FormattedNumber value={discount.discountValue} /> تومان
                       </>
-                    ) : discount.discountType ===
-                      DiscountType.countOfPages ? (
+                    ) : discount.discountType === "percentage" ? (
                       <>
-                        <FormattedNumber value={discount.discountValue} />{" "}
-                        صفحه
+                        <FormattedNumber value={discount.discountValue} /> درصد
                       </>
-                    ) : discount.discountType ===
-                      DiscountType.percentage ? (
+                    ) : discount.discountType === "page" ? (
                       <>
-                        <FormattedNumber value={discount.discountValue} />{" "}
-                        درصد
+                        <FormattedNumber value={discount.discountValue} /> صفحه
                       </>
                     ) : (
                       <></>
@@ -82,8 +77,7 @@ export default function DiscountTable({
                     <span>محدودیت استفاده:</span>
                     <span>
                       <FormattedNumber value={discount.usageLimit} /> بار /{" "}
-                      <FormattedNumber value={discount.timesUsed || 0} />{" "}
-                      بار
+                      <FormattedNumber value={discount.timesUsed || 0} /> بار
                     </span>
                   </span>
                 )}
@@ -95,10 +89,7 @@ export default function DiscountTable({
                         value={discount.expireDate}
                         dateStyle="medium"
                       />{" "}
-                      <FormattedTime
-                        value={discount.expireDate}
-                        hour12
-                      />
+                      <FormattedTime value={discount.expireDate} hour12 />
                     </span>
                   </span>
                 )}
@@ -107,9 +98,7 @@ export default function DiscountTable({
             <td>
               <span className={styles.MobileLabel}>وضعیت:</span>
               <span
-                className={
-                  discount.active ? styles.Active : styles.Inactive
-                }
+                className={discount.active ? styles.Active : styles.Inactive}
               >
                 {discount.active ? "فعال" : "غیر فعال"}
               </span>

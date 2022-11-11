@@ -1,7 +1,7 @@
 import { ReactElement, useState } from "react";
 import toast from "react-hot-toast";
 import Head from "next/head";
-import { CooperationRequest, CooperationRequestStatus } from "@/shared/types";
+import { CooperationRequest } from "@/shared/types";
 import { getCooperationRequests, updateCooperationRequest } from "@/admin/api";
 import DashboardLayout from "@/admin/components/Layout";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
@@ -16,9 +16,9 @@ import CooperationRequestAcceptDialog from "@/admin/components/CooperationReques
 import CooperationRequestRejectDialog from "@/admin/components/CooperationRequestRejectDialog";
 
 export default function DashboardCooperationRequests() {
-  const [itemsStatus, setItemsStatus] = useState<CooperationRequestStatus>(
-    CooperationRequestStatus.pending
-  );
+  const [itemsStatus, setItemsStatus] = useState<
+    "approved" | "rejected" | "pending"
+  >("pending");
 
   const [data, setData] = useState<{
     countOfItems: number;
@@ -56,16 +56,16 @@ export default function DashboardCooperationRequests() {
             <SwitchButtons
               options={[
                 {
-                  id: CooperationRequestStatus.pending,
-                  label: CooperationRequestStatus.pending,
+                  id: "pending",
+                  label: "در انتظار بررسی",
                 },
                 {
-                  id: CooperationRequestStatus.approved,
-                  label: CooperationRequestStatus.approved,
+                  id: "approved",
+                  label: "قبول شده",
                 },
                 {
-                  id: CooperationRequestStatus.rejected,
-                  label: CooperationRequestStatus.rejected,
+                  id: "rejected",
+                  label: "رد شده",
                 },
               ]}
               value={itemsStatus}
@@ -104,7 +104,7 @@ export default function DashboardCooperationRequests() {
                 description: cooperationRequestDescription,
               });
             }}
-            showDescription={itemsStatus !== CooperationRequestStatus.pending}
+            showDescription={itemsStatus !== "pending"}
             itemsStatus={itemsStatus}
           />
           {!data.cooperations.length && (
@@ -123,7 +123,7 @@ export default function DashboardCooperationRequests() {
             onAcceptCooperationRequest={(cooperationRequestAcceptData) =>
               updateCooperationRequest(
                 pendingCooperationRequestAcceptRequest!.id,
-                CooperationRequestStatus.approved,
+                "approved",
                 cooperationRequestAcceptData.description
               )
                 .then((message) => {
@@ -147,7 +147,7 @@ export default function DashboardCooperationRequests() {
             onRejectCooperationRequest={(cooperationRequestRejectData) =>
               updateCooperationRequest(
                 pendingCooperationRequestRejectRequest!.id,
-                CooperationRequestStatus.rejected,
+                "rejected",
                 cooperationRequestRejectData.description
               )
                 .then((message) => {

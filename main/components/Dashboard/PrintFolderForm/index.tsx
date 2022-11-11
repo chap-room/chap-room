@@ -2,36 +2,40 @@ import styles from "./style.module.scss";
 import { useEffect, useRef, useState } from "react";
 import { FormattedNumber } from "react-intl";
 import toast from "react-hot-toast";
+import { BindingOptions, PrintFile, Tariffs } from "@/shared/types";
 import {
-  BindingMethod,
-  BindingOptions,
-  BindingType,
-  CoverColors,
-  PrintColor,
-  PrintFile,
-  PrintSize,
-  PrintSide,
-} from "@/shared/types";
-import { uploadPrintFile, deletePrintFile } from "@/main/api";
+  uploadPrintFile,
+  deletePrintFile,
+  getTariffs,
+  calculatePrintFolderPrice,
+} from "@/main/api";
 import DeleteIcon from "@/shared/assets/icons/delete.svg";
 import CloseIcon from "@/shared/assets/icons/close.svg";
 import Button from "@/shared/components/Button";
 import CheckBox from "@/shared/components/CheckBox";
-import ContentSelect from "@/shared/components/ContentSelect";
 import Switch from "@/shared/components/Switch";
-import TextArea from "@/shared/components/TextArea";
+import Select from "@/shared/components/Select";
+import ErrorList from "@/shared/components/ErrorList";
 import TextInput from "@/shared/components/TextInput";
+import DataLoader from "@/shared/components/DataLoader";
+import TextArea from "@/shared/components/TextArea";
 import BottomActions from "@/shared/components/Dashboard/BottomActions";
 import UploadArea from "@/shared/components/Dashboard/UploadArea";
 import Radio from "@/shared/components/Radio";
 import ProgressBar from "@/shared/components/ProgressBar";
 import IconButton from "@/shared/components/IconButton";
+import {
+  optionalValidate,
+  useValidation,
+  validateInt,
+  validateNotEmpty,
+} from "@/shared/utils/validation";
 
 interface PrintFolderFormData {
   printFiles: PrintFile[];
-  printColor: PrintColor;
-  printSize: PrintSize;
-  printSide: PrintSide;
+  printColor: "blackAndWhite" | "normalColor" | "fullColor";
+  printSize: "a4" | "a5" | "a3";
+  printSide: "singleSided" | "doubleSided";
   countOfPages: number;
   bindingOptions: BindingOptions | null;
   description: string | null;
@@ -49,20 +53,17 @@ export default function PrintFolderForm({
   onCancel,
   onFinish,
 }: PrintFolderFormProps) {
+  const [tariffs, setTariffs] = useState<Tariffs | null>(null);
   const [inUploadPrintFiles, setInUploadPrintFiles] = useState<File[]>([]);
 
   const [currentStep, setCurrentStep] = useState<"1" | "2">("1");
   const [printFiles, setPrintFiles] = useState(defaultValues?.printFiles || []);
   const [printColor, setPrintColor] = useState(
-    defaultValues?.printColor || PrintColor.blackAndWhite
+    defaultValues?.printColor || null
   );
-  const [printSize, setPrintSize] = useState(
-    defaultValues?.printSize || PrintSize.a4
-  );
-  const [printSide, setPrintSide] = useState(
-    defaultValues?.printSide || PrintSide.doubleSided
-  );
-  const [countOfPages, setPaperCount] = useState(
+  const [printSize, setPrintSize] = useState(defaultValues?.printSize || null);
+  const [printSide, setPrintSide] = useState(defaultValues?.printSide || null);
+  const [countOfPages, setCountOfPages] = useState(
     defaultValues?.countOfPages?.toString() || ""
   );
   const [needBinding, setNeedBinding] = useState(
@@ -71,14 +72,14 @@ export default function PrintFolderForm({
   const [bindingType, setBindingType] = useState(
     defaultValues && defaultValues.bindingOptions
       ? defaultValues.bindingOptions.bindingType
-      : BindingType.springNormal
+      : "springNormal"
   );
   const [bindingMethod, setBindingMethod] = useState(
     defaultValues && defaultValues.bindingOptions
       ? defaultValues.bindingOptions.bindingMethod
-      : BindingMethod.eachFileSeparated
+      : "eachFileSeparated"
   );
-  const [countOfFiles, setNumberOfFiles] = useState(
+  const [countOfFiles, setCountOfFiles] = useState(
     defaultValues &&
       defaultValues.bindingOptions &&
       defaultValues.bindingOptions.countOfFiles
@@ -88,7 +89,7 @@ export default function PrintFolderForm({
   const [coverColor, setCoverColor] = useState(
     defaultValues && defaultValues.bindingOptions
       ? defaultValues.bindingOptions.coverColor
-      : CoverColors.colorful
+      : "colorful"
   );
   const [needSpecialDescription, setNeedSpecialDescription] = useState(
     defaultValues ? defaultValues.description !== null : false
@@ -102,6 +103,73 @@ export default function PrintFolderForm({
   const [countOfCopies, setCountOfCopies] = useState(
     defaultValues?.countOfCopies?.toString() || ""
   );
+
+  const step1FormValidation = useValidation(
+    {
+      printColor: [validateNotEmpty()],
+      printSize: [validateNotEmpty()],
+      printSide: [validateNotEmpty()],
+      countOfPages: [validateInt({ unsigned: true, min: 1 })],
+    },
+    {
+      printColor,
+      printSize,
+      printSide,
+      countOfPages,
+    }
+  );
+
+  const step2FormValidation = useValidation(
+    {
+      countOfFiles: [
+        optionalValidate({
+          enabled: needBinding && bindingMethod === "countOfFiles",
+          validator: validateInt({ unsigned: true, min: 1 }),
+        }),
+      ],
+      description: [
+        optionalValidate({
+          enabled: needSpecialDescription,
+          validator: validateNotEmpty(),
+        }),
+      ],
+      countOfCopies: [
+        optionalValidate({
+          enabled: toBePrintedInSeveralCopies,
+          validator: validateInt({ unsigned: true, min: 1 }),
+        }),
+      ],
+    },
+    {
+      countOfFiles,
+      description,
+      countOfCopies,
+    }
+  );
+
+  let pagePrice = null;
+  if (step1FormValidation.isValid && tariffs) {
+    const printPrice = tariffs!.print[printSize!][printColor!];
+    const breakpoints = [
+      {
+        at: 1,
+        singleSided: printPrice.singleSided,
+        doubleSided: printPrice.doubleSided,
+        singleSidedGlossy: printPrice.singleSidedGlossy,
+        doubleSidedGlossy: printPrice.doubleSidedGlossy,
+      },
+      ...printPrice.breakpoints,
+    ];
+    let breakpoint = breakpoints[0];
+    for (let item of breakpoints) {
+      if (parseInt(countOfPages) >= item.at) {
+        breakpoint = item;
+      }
+    }
+    pagePrice = breakpoint[printSide!];
+  }
+
+  const [printFolderPrice, setPrintFolderPrice] = useState<number | null>(null);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -185,32 +253,55 @@ export default function PrintFolderForm({
                       فایل های این پوشه رو چکارش کنم برات؟!
                     </div>
                     <div>
-                      <ContentSelect
-                        varient="shadow"
-                        options={Object.values(PrintColor)}
-                        value={printColor}
-                        onChange={(printColor) =>
-                          setPrintColor(printColor as PrintColor)
-                        }
-                      />
-                      <ContentSelect
-                        varient="shadow"
-                        options={Object.values(PrintSize)}
-                        value={printSize}
-                        onChange={(printSize) =>
-                          setPrintSize(printSize as PrintSize)
-                        }
-                      />
-                      <ContentSelect
-                        varient="shadow"
-                        options={Object.values(PrintSide)}
-                        value={printSide}
-                        onChange={(printSide) =>
-                          setPrintSide(printSide as PrintSide)
-                        }
-                      />
+                      <div>
+                        <Select
+                          varient="shadow"
+                          placeholder="سیاه و سفید / رنگی "
+                          options={{
+                            blackAndWhite: "سیاه و سفید",
+                            normalColor: "رنگی معمولی",
+                            fullColor: "تمام رنگی",
+                          }}
+                          value={printColor}
+                          onChange={setPrintColor}
+                        />
+                        <ErrorList
+                          errors={step1FormValidation.errors.printColor}
+                        />
+                      </div>
+                      <div>
+                        <Select
+                          varient="shadow"
+                          placeholder="اندازه کاغذ"
+                          options={{
+                            a4: "A4",
+                            a5: "A5",
+                            a3: "A3",
+                          }}
+                          value={printSize}
+                          onChange={setPrintSize}
+                        />
+                        <ErrorList
+                          errors={step1FormValidation.errors.printSize}
+                        />
+                      </div>
+                      <div>
+                        <Select
+                          varient="shadow"
+                          placeholder="یک رو / دو رو"
+                          options={{
+                            singleSided: "یک رو",
+                            doubleSided: "دو رو",
+                          }}
+                          value={printSide}
+                          onChange={setPrintSide}
+                        />
+                        <ErrorList
+                          errors={step1FormValidation.errors.printSide}
+                        />
+                      </div>
                       <div className={styles.PaperCount}>
-                        <div>
+                        <div className={styles.InputContainer}>
                           <TextInput
                             inputProps={{
                               type: "number",
@@ -218,18 +309,31 @@ export default function PrintFolderForm({
                             }}
                             varient="shadow"
                             value={countOfPages}
-                            onChange={setPaperCount}
+                            onChange={setCountOfPages}
+                          />
+                          <ErrorList
+                            errors={step1FormValidation.errors.countOfPages}
                           />
                         </div>
                         <div>
-                          قیمت هر برگ: <FormattedNumber value={380} /> تومان
+                          <DataLoader
+                            load={() => getTariffs()}
+                            setData={setTariffs}
+                            size="small"
+                          >
+                            {pagePrice && (
+                              <>
+                                قیمت هر برگ:{" "}
+                                <FormattedNumber value={pagePrice} /> تومان
+                              </>
+                            )}
+                          </DataLoader>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <BottomActions>
-                  {" "}
                   <Button varient="none" onClick={() => onCancel()}>
                     بازگشت
                   </Button>
@@ -237,7 +341,7 @@ export default function PrintFolderForm({
                     varient="filled"
                     style={{ minWidth: 150 }}
                     onClick={() => setCurrentStep("2")}
-                    disabled={printFiles.length === 0 || !countOfPages}
+                    disabled={!step1FormValidation.isValid}
                   >
                     مرحله بعد
                   </Button>
@@ -251,7 +355,7 @@ export default function PrintFolderForm({
               <>
                 <div className={styles.Step2}>
                   <div className={styles.CheckBoxWithLabel}>
-                    <CheckBox checked={needBinding} onChange={setNeedBinding} />{" "}
+                    <CheckBox checked={needBinding} onChange={setNeedBinding} />
                     نیاز به صحافی دارد نیاز به صحافی دارد
                   </div>
                   {needBinding && (
@@ -261,30 +365,24 @@ export default function PrintFolderForm({
                         <div>
                           <div>
                             <Radio
-                              checked={bindingType === BindingType.springNormal}
-                              onChecked={() =>
-                                setBindingType(BindingType.springNormal)
-                              }
+                              checked={bindingType === "springNormal"}
+                              onChecked={() => setBindingType("springNormal")}
                             />
-                            {BindingType.springNormal}
+                            فنر با طلق معمولی
                           </div>
                           <div>
                             <Radio
-                              checked={bindingType === BindingType.springPapco}
-                              onChecked={() =>
-                                setBindingType(BindingType.springPapco)
-                              }
+                              checked={bindingType === "springPapco"}
+                              onChecked={() => setBindingType("springPapco")}
                             />
-                            {BindingType.springPapco}
+                            فنر با طلق پاپکو
                           </div>
                           <div>
                             <Radio
-                              checked={bindingType === BindingType.stapler}
-                              onChecked={() =>
-                                setBindingType(BindingType.stapler)
-                              }
+                              checked={bindingType === "stapler"}
+                              onChecked={() => setBindingType("stapler")}
                             />
-                            {BindingType.stapler}
+                            منگنه
                           </div>
                         </div>
                       </div>
@@ -293,49 +391,44 @@ export default function PrintFolderForm({
                         <div>
                           <div>
                             <Radio
-                              checked={
-                                bindingMethod ===
-                                BindingMethod.eachFileSeparated
-                              }
+                              checked={bindingMethod === "eachFileSeparated"}
                               onChecked={() =>
-                                setBindingMethod(
-                                  BindingMethod.eachFileSeparated
-                                )
+                                setBindingMethod("eachFileSeparated")
                               }
                             />
-                            {BindingMethod.eachFileSeparated}
+                            هر فایل جدا
                           </div>
                           <div>
                             <Radio
-                              checked={
-                                bindingMethod === BindingMethod.allFilesTogether
-                              }
+                              checked={bindingMethod === "allFilesTogether"}
                               onChecked={() =>
-                                setBindingMethod(BindingMethod.allFilesTogether)
+                                setBindingMethod("allFilesTogether")
                               }
                             />
-                            {BindingMethod.allFilesTogether}
+                            همه فایل ها با هم
                           </div>
                           <div>
                             <Radio
-                              checked={
-                                bindingMethod === BindingMethod.countOfFiles
-                              }
-                              onChecked={() =>
-                                setBindingMethod(BindingMethod.countOfFiles)
-                              }
+                              checked={bindingMethod === "countOfFiles"}
+                              onChecked={() => setBindingMethod("countOfFiles")}
                             />
-                            {BindingMethod.countOfFiles}
+                            تعدادی از فایل ها
                             <div className={styles.Spacer} />
-                            <div className={styles.NumberOfFiles}>
-                              <TextInput
-                                inputProps={{
-                                  type: "number",
-                                  placeholder: "تعداد",
-                                }}
-                                varient="shadow"
-                                value={countOfFiles}
-                                onChange={setNumberOfFiles}
+                            <div className={styles.InputContainer}>
+                              <div className={styles.NumberOfFiles}>
+                                <TextInput
+                                  inputProps={{
+                                    type: "number",
+                                    placeholder: "تعداد",
+                                  }}
+                                  varient="shadow"
+                                  value={countOfFiles}
+                                  onChange={setCountOfFiles}
+                                  readOnly={bindingMethod !== "countOfFiles"}
+                                />
+                              </div>
+                              <ErrorList
+                                errors={step2FormValidation.errors.countOfFiles}
                               />
                             </div>
                           </div>
@@ -346,21 +439,17 @@ export default function PrintFolderForm({
                         <div>
                           <div>
                             <Radio
-                              checked={coverColor === CoverColors.colorful}
-                              onChecked={() =>
-                                setCoverColor(CoverColors.colorful)
-                              }
+                              checked={coverColor === "colorful"}
+                              onChecked={() => setCoverColor("colorful")}
                             />
-                            {CoverColors.colorful}
+                            رنگی
                           </div>
                           <div>
                             <Radio
-                              checked={coverColor === CoverColors.blackAndWhite}
-                              onChecked={() =>
-                                setCoverColor(CoverColors.blackAndWhite)
-                              }
+                              checked={coverColor === "blackAndWhite"}
+                              onChecked={() => setCoverColor("blackAndWhite")}
                             />
-                            {CoverColors.blackAndWhite}
+                            سیاه و سفید
                           </div>
                         </div>
                       </div>
@@ -371,41 +460,112 @@ export default function PrintFolderForm({
                     <CheckBox
                       checked={needSpecialDescription}
                       onChange={setNeedSpecialDescription}
-                    />{" "}
+                    />
                     نیاز به توضیحات خاصی دارد
                   </div>
                   {needSpecialDescription && (
-                    <TextArea
-                      varient="shadow"
-                      value={description}
-                      onTextChange={setDescription}
-                      placeholder="توضیحات"
-                      rows={3}
-                    />
+                    <div className={styles.InputContainer}>
+                      <TextArea
+                        varient="shadow"
+                        value={description}
+                        onTextChange={setDescription}
+                        placeholder="توضیحات"
+                        rows={3}
+                      />
+                      <ErrorList
+                        errors={step2FormValidation.errors.description}
+                      />
+                    </div>
                   )}
                   <div className={styles.Separator} />
                   <div className={styles.CheckBoxWithLabel}>
                     <CheckBox
                       checked={toBePrintedInSeveralCopies}
                       onChange={setToBePrintedInSeveralCopies}
-                    />{" "}
+                    />
                     در چند نسخه چاپ شود
                   </div>
                   {toBePrintedInSeveralCopies && (
-                    <div className={styles.CopiesCount}>
-                      <TextInput
-                        inputProps={{
-                          type: "number",
-                          placeholder: "تعداد کپی ها",
-                        }}
-                        varient="shadow"
-                        value={countOfCopies}
-                        onChange={setCountOfCopies}
+                    <div className={styles.InputContainer}>
+                      <div className={styles.CopiesCount}>
+                        <TextInput
+                          inputProps={{
+                            type: "number",
+                            placeholder: "تعداد کپی ها",
+                          }}
+                          varient="shadow"
+                          value={countOfCopies}
+                          onChange={setCountOfCopies}
+                        />
+                      </div>
+                      <ErrorList
+                        errors={step2FormValidation.errors.countOfCopies}
                       />
                     </div>
                   )}
                 </div>
-                <BottomActions>
+                <BottomActions
+                  start={
+                    <DataLoader
+                      load={() => {
+                        if (step2FormValidation.isValid) {
+                          const abortController = new AbortController();
+                          return [
+                            calculatePrintFolderPrice(
+                              {
+                                printFiles,
+                                printColor: printColor!,
+                                printSize: printSize!,
+                                printSide: printSide!,
+                                countOfPages: parseInt(countOfPages),
+                                bindingOptions: needBinding
+                                  ? {
+                                      bindingType,
+                                      bindingMethod,
+                                      countOfFiles:
+                                        bindingMethod === "countOfFiles"
+                                          ? parseInt(countOfFiles)
+                                          : null,
+                                      coverColor,
+                                    }
+                                  : null,
+                                countOfCopies: toBePrintedInSeveralCopies
+                                  ? parseInt(countOfCopies)
+                                  : null,
+                              },
+                              abortController
+                            ),
+                            abortController,
+                          ];
+                        }
+                      }}
+                      setData={setPrintFolderPrice}
+                      deps={[
+                        printFiles,
+                        printColor,
+                        printSize,
+                        printSide,
+                        countOfPages,
+                        needBinding && bindingType,
+                        needBinding && bindingMethod,
+                        needBinding &&
+                          bindingMethod === "countOfFiles" &&
+                          parseInt(countOfFiles),
+                        needBinding && coverColor,
+                        toBePrintedInSeveralCopies && parseInt(countOfCopies),
+                      ]}
+                      size="small"
+                    >
+                      {step2FormValidation.isValid && (
+                        <div className={styles.PrintPriceView}>
+                          مبلغ:{" "}
+                          <FormattedNumber value={printFolderPrice || 0} />{" "}
+                          تومان
+                        </div>
+                      )}
+                    </DataLoader>
+                  }
+                >
                   <Button varient="none" onClick={() => setCurrentStep("1")}>
                     مرحله قبل
                   </Button>
@@ -416,16 +576,16 @@ export default function PrintFolderForm({
                       setIsSubmitting(true);
                       onFinish({
                         printFiles,
-                        printColor,
-                        printSize,
-                        printSide,
+                        printColor: printColor!,
+                        printSize: printSize!,
+                        printSide: printSide!,
                         countOfPages: parseInt(countOfPages),
                         bindingOptions: needBinding
                           ? {
                               bindingType,
                               bindingMethod,
                               countOfFiles:
-                                bindingMethod === BindingMethod.countOfFiles
+                                bindingMethod === "countOfFiles"
                                   ? parseInt(countOfFiles)
                                   : null,
                               coverColor,
@@ -440,17 +600,7 @@ export default function PrintFolderForm({
                       }).finally(() => setIsSubmitting(false));
                     }}
                     loading={isSubmitting}
-                    disabled={
-                      isSubmitting ||
-                      (needBinding &&
-                        bindingMethod === BindingMethod.countOfFiles &&
-                        (isNaN(parseInt(countOfFiles)) ||
-                          parseInt(countOfFiles) <= 0)) ||
-                      (needSpecialDescription && !description) ||
-                      (toBePrintedInSeveralCopies &&
-                        (isNaN(parseInt(countOfCopies)) ||
-                          parseInt(countOfCopies) <= 0))
-                    }
+                    disabled={isSubmitting || !step2FormValidation.isValid}
                   >
                     ثبت پوشه
                   </Button>

@@ -1,7 +1,10 @@
-.Actions {
+.BottomActions {
   margin-top: auto;
   padding-top: 20px;
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+
+  .Start {
+    flex: 1;
+  }
 }

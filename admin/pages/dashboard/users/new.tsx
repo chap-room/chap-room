@@ -31,10 +31,7 @@ export default function DashboardNewUser() {
           title="افزودن کاربر جدید"
           end={
             <Link href="/dashboard/users">
-              <Button
-                style={{ padding: 0 }}
-                onClick={() => router.push("/dashboard/users")}
-              >
+              <Button style={{ padding: 0 }}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
             </Link>

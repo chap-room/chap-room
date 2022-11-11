@@ -1,11 +1,16 @@
 import styles from "./style.module.scss";
 import { useState } from "react";
+import {
+  useValidation,
+  validateInt,
+  validateLength,
+  validateNotEmpty,
+} from "@/shared/utils/validation";
 import Dialog from "@/shared/components/Dialog";
 import TextInput from "@/shared/components/TextInput";
+import ErrorList from "@/shared/components/ErrorList";
 import BottomActions from "@/shared/components/Dashboard/BottomActions";
 import Button from "@/shared/components/Button";
-import { walletWithdrawal } from "@/main/api";
-import toast from "react-hot-toast";
 
 interface WithdrawBalanceDialogProps {
   open: boolean;
@@ -23,35 +28,47 @@ export default function WithdrawBalanceDialog({
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const formValidation = useValidation(
+    {
+      iban: [
+        validateLength({ length: 24 }),
+        validateInt({ unsigned: true }),
+      ],
+      accountHolderName: [validateNotEmpty()],
+    },
+    {
+      iban,
+      accountHolderName,
+    }
+  );
+
   return (
     <Dialog title="برداشت موجودی" open={open} onClose={onClose}>
       <div className={styles.DialogContent}>
-        <div>
-          <div>شماره شبا:</div>
-          <div>
-            <TextInput
-              prefix="IR"
-              boxProps={{ dir: "ltr" }}
-              inputProps={{
-                type: "number",
-                placeholder: "شماره شبا",
-              }}
-              varient="shadow"
-              value={iban}
-              onChange={(newValue) => setIban(newValue.substring(0, 24))}
-            />
-          </div>
+        <div className={styles.Label}>شماره شبا:</div>
+        <div className={styles.Input}>
+          <TextInput
+            prefix="IR"
+            boxProps={{ dir: "ltr" }}
+            inputProps={{
+              type: "number",
+              placeholder: "شماره شبا",
+            }}
+            varient="shadow"
+            value={iban}
+            onChange={(newValue) => setIban(newValue.substring(0, 24))}
+          />
+          <ErrorList errors={formValidation.errors.iban} />
         </div>
-        <div>
-          <div>نام صاحب حساب:</div>
-          <div>
-            <TextInput
-              inputProps={{ placeholder: "صاحب حساب" }}
-              varient="shadow"
-              value={accountHolderName}
-              onChange={setAccountHolder}
-            />
-          </div>
+        <div className={styles.Label}>نام صاحب حساب:</div>
+        <div className={styles.Input}>
+          <TextInput
+            inputProps={{ placeholder: "صاحب حساب" }}
+            varient="shadow"
+            value={accountHolderName}
+            onChange={setAccountHolder}
+          />
+          <ErrorList errors={formValidation.errors.accountHolderName} />
         </div>
       </div>
       <BottomActions>
@@ -65,12 +82,7 @@ export default function WithdrawBalanceDialog({
             );
           }}
           loading={isSubmitting}
-          disabled={
-            isSubmitting ||
-            !accountHolderName ||
-            iban.length !== 24 ||
-            isNaN(parseInt(iban))
-          }
+          disabled={isSubmitting || !formValidation.isValid}
         >
           ثبت درخواست
         </Button>

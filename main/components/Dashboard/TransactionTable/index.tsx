@@ -1,5 +1,5 @@
 import styles from "./style.module.scss";
-import { Transaction, TransactionStatus } from "@/shared/types";
+import { Transaction } from "@/shared/types";
 import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
 
 interface TransactionTableProps {
@@ -54,12 +54,10 @@ export default function TransactionTable({
             </td>
             <td>
               <span className={styles.MobileLabel}>وضعیت:</span>
-              {transaction.status === TransactionStatus.successful ? (
-                <span className={styles.Successful}>{transaction.status}</span>
+              {transaction.status === "successful" ? (
+                <span className={styles.Successful}>موفق</span>
               ) : (
-                <span className={styles.Unsuccessful}>
-                  {transaction.status}
-                </span>
+                <span className={styles.Unsuccessful}>نا موفق</span>
               )}
             </td>
           </tr>

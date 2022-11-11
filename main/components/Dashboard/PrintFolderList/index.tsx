@@ -48,8 +48,20 @@ export default function PrintFolderList({
               .join(" / ")}
           </div>
           <div>
-            خلاصه: {printFolder.printColor} / {printFolder.printSize} /{" "}
-            {printFolder.printSide}
+            خلاصه:{" "}
+            {
+              {
+                blackAndWhite: "سیاه و سفید",
+                normalColor: "رنگی معمولی",
+                fullColor: "تمام رنگی",
+              }[printFolder.printColor]
+            }{" "}
+            / {{ a4: "A4", a5: "A5", a3: "A3" }[printFolder.printSize]} /{" "}
+            {
+              { singleSided: "یک رو", doubleSided: "دو رو" }[
+                printFolder.printSide
+              ]
+            }
           </div>
           {printFolder.description && (
             <div>توضیحات: {printFolder.description}</div>

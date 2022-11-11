@@ -3,6 +3,12 @@
   display: flex;
   flex-direction: column;
 
+  .InputContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
   .Step1 {
     flex: 1;
     display: flex;
@@ -15,6 +21,7 @@
 
     > div:not(.Separator) {
       flex: 1;
+      width: 100%;
       max-width: 350px;
       margin: 0 auto;
       display: flex;
@@ -22,18 +29,13 @@
 
       @media (max-width: 768px) {
         max-width: unset;
-        width: 100%;
-      }
-
-      > * {
-        width: 100%;
       }
 
       .Title {
         color: #464646;
         font-size: 18px;
         text-align: center;
-        margin-bottom: 30px;
+        margin: 10px 0 30px;
       }
 
       > div:last-child {
@@ -41,10 +43,15 @@
         display: flex;
         flex-direction: column;
         gap: 20px;
-        justify-content: center;
 
-        > * {
-          width: 100%;
+        > div {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          
+          > div:first-child {
+            max-width: unset;
+          }
         }
 
         .UploadedFileList {
@@ -172,7 +179,7 @@
       align-items: center;
     }
 
-    > .BindingOtions {
+    .BindingOtions {
       display: flex;
       flex-direction: column;
 
@@ -230,7 +237,7 @@
       }
     }
 
-    > .CopiesCount {
+    .CopiesCount {
       max-width: 300px;
     }
 
@@ -238,5 +245,15 @@
       background-color: #cccccc;
       height: 1px;
     }
+  }
+
+  .PrintPriceView {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: #0077b5;
+    font-size: 18px;
+    font-weight: 500; // Medium
   }
 }

@@ -16,7 +16,7 @@
     border: 1px solid #cccccc;
 
     &.ReadOnly {
-      background-color: #efeeee;
+      background-color: #eeeeee;
     }
   }
 
@@ -25,7 +25,7 @@
     box-shadow: inset -3px -3px 6px #ffffffdb, inset 3px 3px 6px #00000029;
   }
 
-  >input {
+  > input {
     background: transparent;
     border: none;
     padding: 0;

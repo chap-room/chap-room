@@ -1,6 +1,6 @@
 import styles from "./style.module.scss";
 import { FormattedDate, FormattedTime } from "react-intl";
-import { CooperationRequest, CooperationRequestStatus } from "@/shared/types";
+import { CooperationRequest } from "@/shared/types";
 
 interface CooperationRequestTableProps {
   cooperationRequests: CooperationRequest[];
@@ -13,7 +13,7 @@ interface CooperationRequestTableProps {
     cooperationRequestDescription: string | null
   ) => void;
   showDescription?: boolean;
-  itemsStatus: CooperationRequestStatus;
+  itemsStatus: "approved" | "rejected" | "pending";
 }
 
 export default function CooperationRequestTable({
@@ -26,13 +26,7 @@ export default function CooperationRequestTable({
   return (
     <table
       className={styles.CooperationRequestTable}
-      data-items-status={
-        {
-          [CooperationRequestStatus.pending]: "pending",
-          [CooperationRequestStatus.approved]: "approved",
-          [CooperationRequestStatus.rejected]: "rejected",
-        }[itemsStatus]
-      }
+      data-items-status={itemsStatus}
     >
       <thead>
         <tr>
@@ -71,8 +65,7 @@ export default function CooperationRequestTable({
             )}
             <td>
               <div className={styles.ButtonList}>
-                {cooperationRequest.status !==
-                  CooperationRequestStatus.approved && (
+                {cooperationRequest.status !== "approved" && (
                   <button
                     className={styles.AcceptButton}
                     onClick={() =>
@@ -85,8 +78,7 @@ export default function CooperationRequestTable({
                     تایید کردن
                   </button>
                 )}
-                {cooperationRequest.status !==
-                  CooperationRequestStatus.rejected && (
+                {cooperationRequest.status !== "rejected" && (
                   <button
                     className={styles.RejectButton}
                     onClick={() =>

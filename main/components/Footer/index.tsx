@@ -8,6 +8,7 @@ import TwitterIcon from "@/main/assets/icons/twitter.svg";
 import YoutubeIcon from "@/main/assets/icons/youtube.svg";
 import AparatIcon from "@/main/assets/icons/aparat.svg";
 import InstagramIcon from "@/main/assets/icons/instagram.svg";
+import BottomButtons from "@/main/components/BottomButtons";
 
 export default function Footer() {
   return (
@@ -123,6 +124,9 @@ export default function Footer() {
           <div className={styles.Copyrights}>
             کلیه حقوق این وبسایت متعلق به چاپ روم می باشد.
           </div>
+        </div>
+        <div className={styles.BottomButtonsPlaceholder}>
+          <BottomButtons />
         </div>
       </div>
     </div>

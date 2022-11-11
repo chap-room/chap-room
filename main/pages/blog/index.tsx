@@ -4,8 +4,8 @@ import { FormattedDate, FormattedNumber } from "react-intl";
 import StickyBox from "react-sticky-box";
 import Head from "next/head";
 import Layout from "@/main/components/Layout";
-import DateIcon from "@/main/assets/icons/date.svg";
-import ViewIcon from "@/main/assets/icons/view.svg";
+import DateIcon from "@/shared/assets/icons/date.svg";
+import ViewIcon from "@/shared/assets/icons/view.svg";
 import Radio from "@/shared/components/Radio";
 import Button from "@/shared/components/Button";
 
@@ -297,44 +297,32 @@ export default function Blog() {
                 <div className={styles.WidgetTitle}>دسته بندی</div>
                 <div className={styles.CategoryList}>
                   <div onClick={() => setCategory("")}>
-                    <div>
-                      <Radio checked={category === ""} />
-                    </div>
+                    <Radio checked={category === ""} />
                     <div>همه</div>
                     <div>221</div>
                   </div>
                   <div onClick={() => setCategory("book-print")}>
-                    <div>
-                      <Radio checked={category === "book-print"} />
-                    </div>
+                    <Radio checked={category === "book-print"} />
                     <div>چاپ کتاب</div>
                     <div>93</div>
                   </div>
                   <div onClick={() => setCategory("cheap-print")}>
-                    <div>
-                      <Radio checked={category === "cheap-print"} />
-                    </div>
+                    <Radio checked={category === "cheap-print"} />
                     <div>پرینت ارزان</div>
                     <div>79</div>
                   </div>
                   <div onClick={() => setCategory("colorful-print")}>
-                    <div>
-                      <Radio checked={category === "colorful-print"} />
-                    </div>
+                    <Radio checked={category === "colorful-print"} />
                     <div>پرینت رنگی</div>
                     <div>21</div>
                   </div>
                   <div onClick={() => setCategory("black-and-white-print")}>
-                    <div>
-                      <Radio checked={category === "black-and-white-print"} />
-                    </div>
+                    <Radio checked={category === "black-and-white-print"} />
                     <div>پرینت سیاه سفید</div>
                     <div>4</div>
                   </div>
                   <div onClick={() => setCategory("picture-print")}>
-                    <div>
-                      <Radio checked={category === "picture-print"} />
-                    </div>
+                    <Radio checked={category === "picture-print"} />
                     <div>چاپ عکس</div>
                     <div>24</div>
                   </div>

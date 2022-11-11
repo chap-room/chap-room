@@ -1,10 +1,5 @@
 import styles from "./style.module.scss";
-import {
-  PrintTariffs,
-  PrintSize,
-  PrintColor,
-  PrintPrice,
-} from "@/shared/types";
+import { PrintTariffs, PrintPrice } from "@/shared/types";
 import { FormattedNumber } from "react-intl";
 
 interface PrintTariffsTableProps {

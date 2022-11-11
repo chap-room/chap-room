@@ -5,6 +5,7 @@ import ArrowForwardIcon from "@/shared/assets/icons/arrowForward.svg";
 
 interface MobileContentHeaderProps {
   backTo?: string;
+  onBack?: () => {};
   start?: ReactNode;
   title: string;
   end?: ReactNode;
@@ -12,6 +13,7 @@ interface MobileContentHeaderProps {
 
 export default function MobileContentHeader({
   backTo,
+  onBack,
   start,
   title,
   end,
@@ -21,7 +23,7 @@ export default function MobileContentHeader({
       {start}
       {backTo && (
         <Link href={backTo}>
-          <a className={styles.BackButton}>
+          <a className={styles.BackButton} onClick={onBack}>
             <ArrowForwardIcon />
           </a>
         </Link>

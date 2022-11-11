@@ -58,6 +58,7 @@ export default function DashboardEditUser() {
         >
           <UserForm
             defaultValues={data}
+            isEdit={true}
             onSave={(userFormData) =>
               updateUser(userId, userFormData)
                 .then((message) => {

@@ -1,8 +1,7 @@
 import { ReactElement, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import Link from "next/link";
-import { Order, OrderStatus, PostageMethod } from "@/shared/types";
+import { Order } from "@/shared/types";
 import { getOrder } from "@/main/api";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/main/components/Dashboard/Layout";
@@ -14,6 +13,7 @@ import DataLoader from "@/shared/components/DataLoader";
 import OrderDetails from "@/shared/components/Dashboard/OrderDetails";
 import Button from "@/shared/components/Button";
 import BottomActions from "@/shared/components/Dashboard/BottomActions";
+import Link from "next/link";
 
 export default function DashboardOrderDetails() {
   const router = useRouter();
@@ -34,14 +34,27 @@ export default function DashboardOrderDetails() {
         <ContentHeader
           title="جزئیات سفارش"
           end={
-            <Link href="/dashboard/orders">
+            <Link
+              href={
+                router.query.fromTransactions === "true"
+                  ? "/dashboard/transactions"
+                  : "/dashboard/orders"
+              }
+            >
               <Button style={{ padding: 0 }}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
             </Link>
           }
         />
-        <MobileContentHeader backTo="/dashboard/orders" title="جزئیات سفارش" />
+        <MobileContentHeader
+          backTo={
+            router.query.fromTransactions === "true"
+              ? "/dashboard/transactions"
+              : "/dashboard/orders"
+          }
+          title="جزئیات سفارش"
+        />
         <DataLoader
           load={() => {
             if (router.isReady) return getOrder(orderId);

@@ -6,6 +6,13 @@ import TextInput from "@/shared/components/TextInput";
 import iranProvincesAndCitiesJson from "@/shared/assets/json/iranProvincesAndCities.json";
 import Button from "@/shared/components/Button";
 import BottomActions from "@/shared/components/Dashboard/BottomActions";
+import {
+  useValidation,
+  validateInt,
+  validateNotEmpty,
+  validatePhoneNumber,
+} from "@/shared/utils/validation";
+import ErrorList from "@/shared/components/ErrorList";
 
 const iranProvincesAndCities: Record<string, string[]> =
   iranProvincesAndCitiesJson;
@@ -44,16 +51,37 @@ export default function AddressForm({
     defaultValues?.recipientPostalCode || ""
   );
   const [recipientDeliveryProvince, setRecipientDeliveryProvince] = useState(
-    defaultValues?.recipientDeliveryProvince || ""
+    defaultValues?.recipientDeliveryProvince || null
   );
   const [recipientDeliveryCity, setRecipientDeliveryCity] = useState(
-    defaultValues?.recipientDeliveryCity || ""
+    defaultValues?.recipientDeliveryCity || null
   );
   const [recipientDeliveryAddress, setRecipientDeliveryAddress] = useState(
     defaultValues?.recipientDeliveryAddress || ""
   );
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const formValidation = useValidation(
+    {
+      label: [validateNotEmpty()],
+      recipientName: [validateNotEmpty()],
+      recipientPhoneNumber: [validatePhoneNumber()],
+      recipientPostalCode: [validateInt({ length: 10, unsigned: true })],
+      recipientDeliveryProvince: [validateNotEmpty()],
+      recipientDeliveryCity: [validateNotEmpty()],
+      recipientDeliveryAddress: [validateNotEmpty()],
+    },
+    {
+      label,
+      recipientName,
+      recipientPhoneNumber,
+      recipientPostalCode,
+      recipientDeliveryProvince,
+      recipientDeliveryCity,
+      recipientDeliveryAddress,
+    }
+  );
 
   return (
     <>
@@ -64,12 +92,14 @@ export default function AddressForm({
           value={label}
           onChange={(newValue) => setLabel(newValue)}
         />
+        <ErrorList errors={formValidation.errors.label} />
         <TextInput
           inputProps={{ placeholder: "نام تحویل گیرنده" }}
           varient={inputsVarient}
           value={recipientName}
           onChange={(newValue) => setRecipientName(newValue)}
         />
+        <ErrorList errors={formValidation.errors.recipientName} />
         <TextInput
           inputProps={{
             type: "number",
@@ -81,6 +111,7 @@ export default function AddressForm({
             setRecipientPhoneNumber(newValue.substring(0, 11))
           }
         />
+        <ErrorList errors={formValidation.errors.recipientPhoneNumber} />
         <TextInput
           inputProps={{ type: "number", placeholder: "کد پستی" }}
           varient={inputsVarient}
@@ -89,25 +120,38 @@ export default function AddressForm({
             setRecipientPostalCode(newValue.substring(0, 10))
           }
         />
+        <ErrorList errors={formValidation.errors.recipientPostalCode} />
         <div className={styles.ProvinceAndCitySelects}>
-          <ContentSelect
-            placeholder="استان"
-            options={Object.keys(iranProvincesAndCities)}
-            varient={inputsVarient}
-            value={recipientDeliveryProvince}
-            onChange={(newValue) => {
-              setRecipientDeliveryProvince(newValue);
-              setRecipientDeliveryCity("");
-            }}
-          />
-          <ContentSelect
-            placeholder="شهر"
-            options={iranProvincesAndCities[recipientDeliveryProvince] || []}
-            varient={inputsVarient}
-            value={recipientDeliveryCity}
-            onChange={(newValue) => setRecipientDeliveryCity(newValue)}
-            readOnly={!iranProvincesAndCities[recipientDeliveryProvince]}
-          />
+          <div>
+            <ContentSelect
+              placeholder="استان"
+              options={Object.keys(iranProvincesAndCities)}
+              varient={inputsVarient}
+              value={recipientDeliveryProvince}
+              onChange={(newValue) => {
+                setRecipientDeliveryProvince(newValue);
+                setRecipientDeliveryCity(null);
+              }}
+            />
+            <ErrorList errors={formValidation.errors.recipientDeliveryProvince} />
+          </div>
+          <div>
+            <ContentSelect
+              placeholder="شهر"
+              options={
+                iranProvincesAndCities[recipientDeliveryProvince || ""] || []
+              }
+              varient={inputsVarient}
+              value={recipientDeliveryCity}
+              onChange={(newValue) => setRecipientDeliveryCity(newValue)}
+              readOnly={
+                !iranProvincesAndCities[recipientDeliveryProvince || ""]
+              }
+            />
+            <ErrorList
+              errors={formValidation.errors.recipientDeliveryCity}
+            />
+          </div>
         </div>
         <TextArea
           varient={inputsVarient}
@@ -116,6 +160,7 @@ export default function AddressForm({
           value={recipientDeliveryAddress}
           onTextChange={(newText) => setRecipientDeliveryAddress(newText)}
         />
+        <ErrorList errors={formValidation.errors.recipientDeliveryAddress} />
       </div>
       <BottomActions>
         {onCancel && <Button onClick={() => onCancel()}>بازگشت</Button>}
@@ -129,27 +174,13 @@ export default function AddressForm({
               recipientName,
               recipientPhoneNumber,
               recipientPostalCode,
-              recipientDeliveryProvince,
-              recipientDeliveryCity,
+              recipientDeliveryProvince: recipientDeliveryProvince!,
+              recipientDeliveryCity: recipientDeliveryCity!,
               recipientDeliveryAddress,
             }).finally(() => setIsSubmitting(false));
           }}
           loading={isSubmitting}
-          disabled={
-            isSubmitting ||
-            !label ||
-            !recipientName ||
-            !recipientPhoneNumber ||
-            recipientPhoneNumber.length !== 11 ||
-            !recipientPhoneNumber.startsWith("09") ||
-            isNaN(parseInt(recipientPhoneNumber)) ||
-            !recipientPostalCode ||
-            recipientPostalCode.length !== 10 ||
-            isNaN(parseInt(recipientPostalCode)) ||
-            !recipientDeliveryProvince ||
-            !recipientDeliveryCity ||
-            !recipientDeliveryAddress
-          }
+          disabled={isSubmitting || !formValidation.isValid}
         >
           ذخیره
         </Button>

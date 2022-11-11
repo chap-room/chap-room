@@ -24,7 +24,7 @@ export default function TableControls({
       <div className={styles.ItemPerPageSelect}>
         <Select
           value={itemPerPage.toString()}
-          onChange={(newValue: string) => setItemPerPage(parseInt(newValue))}
+          onChange={(newValue) => setItemPerPage(parseInt(newValue))}
           options={{
             "10": intl.formatNumber(10),
             "20": intl.formatNumber(20),

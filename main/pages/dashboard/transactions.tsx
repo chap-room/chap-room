@@ -41,7 +41,7 @@ export default function DashboardTransactions() {
           <TransactionTable
             transactions={data.transactions}
             onSeeDetails={(orderId) => {
-              router.push(`/dashboard/orders/${orderId}/details`);
+              router.push(`/dashboard/orders/${orderId}/details?fromTransactions=true`);
             }}
           />
           {!data.transactions.length && (

@@ -1,7 +1,7 @@
 import { ReactElement, useState } from "react";
 import toast from "react-hot-toast";
 import Head from "next/head";
-import { WithdrawalRequest, WithdrawalRequestStatus } from "@/shared/types";
+import { WithdrawalRequest } from "@/shared/types";
 import {
   doWithdrawalRequests,
   getWithdrawalRequests,
@@ -20,8 +20,8 @@ import WithdrawalRequestDoneDialog from "@/admin/components/WithdrawalRequestDon
 import WithdrawalRequestRejectDialog from "@/admin/components/WithdrawalRequestRejectDialog";
 
 export default function DashboardWithdrawalRequests() {
-  const [itemsStatus, setItemsStatus] = useState<WithdrawalRequestStatus>(
-    WithdrawalRequestStatus.pending
+  const [itemsStatus, setItemsStatus] = useState<"done" | "rejected" | null>(
+    null
   );
 
   const [data, setData] = useState<{
@@ -60,20 +60,17 @@ export default function DashboardWithdrawalRequests() {
             <SwitchButtons
               options={[
                 {
-                  id: WithdrawalRequestStatus.pending,
-                  label: WithdrawalRequestStatus.pending,
+                  id: "done",
+                  label: "انجام شده",
                 },
                 {
-                  id: WithdrawalRequestStatus.done,
-                  label: WithdrawalRequestStatus.done,
-                },
-                {
-                  id: WithdrawalRequestStatus.rejected,
-                  label: WithdrawalRequestStatus.rejected,
+                  id: "rejected",
+                  label: "رد شده",
                 },
               ]}
               value={itemsStatus}
               onChange={setItemsStatus}
+              nullable
             />
           }
         />
@@ -92,7 +89,7 @@ export default function DashboardWithdrawalRequests() {
             withdrawalRequests={data.withdrawals}
             onDoneWithdrawalRequest={setPendingWithdrawalRequestDoneRequest}
             onRejectWithdrawalRequest={setPendingWithdrawalRequestRejectRequest}
-            itemsStatus={itemsStatus}
+            itemsStatus={itemsStatus === null ? "pending" : itemsStatus}
           />
           {!data.withdrawals.length && (
             <EmptyNote>هیچ درخواست برداشتی وجود ندارید</EmptyNote>

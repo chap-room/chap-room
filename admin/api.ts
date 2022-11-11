@@ -10,27 +10,19 @@ import {
   Address,
   BindingTariffs,
   CooperationRequest,
-  CooperationRequestStatus,
   CustomerReport,
   DedicatedDiscountCodeReport,
   DedicatedLinkReport,
   Discount,
-  DiscountType,
   FinancialRecord,
-  FinancialRecordStatus,
-  FinancialRecordType,
   Order,
-  OrderStatus,
-  PrintPrice,
   PrintTariffs,
   WithdrawalRequest,
 } from "@/shared/types";
-import { convert } from "@/shared/utils";
+import { convert } from "@/shared/utils/convert";
 import axios, { AxiosRequestConfig } from "axios";
 import Router from "next/router";
 import { orderConvertMap } from "@/main/convertMaps";
-
-const BASE_URL = "http://78.157.34.146:3000/v1";
 
 function getAccessToken() {
   return localStorage.getItem("adminAccessToken");
@@ -42,6 +34,7 @@ function setAccessToken(token: string) {
 
 export function logout() {
   localStorage.removeItem("adminAccessToken");
+  localStorage.removeItem("adminData");
 }
 
 const api = axios.create({
@@ -57,7 +50,7 @@ interface requestConfig extends AxiosRequestConfig<any> {
   redirectIfNotLogin?: boolean;
 }
 
-const request = async ({
+export const request = async ({
   needAuth,
   redirectIfNotLogin = true,
   ...config
@@ -252,6 +245,7 @@ export function getUsers(search: string, page: number) {
     },
   }).then(({ data }) => ({
     countOfItems: data.totalCount,
+    pageSize: data.pageSize,
     users: data.users,
   }));
 }
@@ -335,18 +329,12 @@ export function getUserOrders(userId: number, search: string, page: number) {
     },
   }).then(({ data }) => ({
     countOfItems: data.totalCount,
+    pageSize: data.pageSize,
     orders: data.orders.map((item: any) => ({
       id: item.id,
       date: new Date(item.createdAt),
       amount: item.amount,
-      status:
-        item.status === "sent"
-          ? OrderStatus.sent
-          : item.status === "pending"
-          ? OrderStatus.pending
-          : item.status === "preparing"
-          ? OrderStatus.preparing
-          : OrderStatus.canceled,
+      status: item.status,
       cancelReason: item.cancelReason,
     })) as Order[],
   }));
@@ -362,6 +350,7 @@ export function getUserAddresses(userId: number, page: number) {
     },
   }).then(({ data }) => ({
     countOfItems: data.totalCount,
+    pageSize: data.pageSize,
     addresses: data.addresses as Address[],
   }));
 }
@@ -414,6 +403,71 @@ export function deleteAddress(addressId: number) {
   }).then(({ data }) => data.message);
 }
 
+export function getAdmins(search: string, page: number) {
+  return request({
+    method: "GET",
+    url: "/admins",
+    needAuth: true,
+    params: {
+      search,
+      page,
+    },
+  }).then(({ data }) => ({
+    countOfItems: data.totalCount,
+    pageSize: data.pageSize,
+    admins: data.admins,
+  }));
+}
+
+export function newAdmin(data: {
+  name: string;
+  phoneNumber: string;
+  password: string;
+}) {
+  return request({
+    method: "POST",
+    url: "/admins",
+    needAuth: true,
+    data,
+  }).then(({ data }) => data.message);
+}
+
+export function getAdmin(adminId: number) {
+  return request({
+    method: "GET",
+    url: `/admins/id/${adminId}`,
+    needAuth: true,
+  }).then(({ data }) => ({
+    id: data.id,
+    name: data.name,
+    phoneNumber: data.phoneNumber,
+  }));
+}
+
+export function updateAdmin(
+  adminId: number,
+  data: {
+    name: string;
+    phoneNumber: string;
+    password: string;
+  }
+) {
+  return request({
+    method: "PUT",
+    url: `/admins/id/${adminId}`,
+    needAuth: true,
+    data,
+  }).then(({ data }) => data.message);
+}
+
+export function deleteAdmin(adminId: number) {
+  return request({
+    method: "DELETE",
+    url: `/admins/id/${adminId}`,
+    needAuth: true,
+  }).then(({ data }) => data.message);
+}
+
 export function getOrders(search: string, page: number) {
   return request({
     method: "GET",
@@ -422,18 +476,12 @@ export function getOrders(search: string, page: number) {
     params: { search, page },
   }).then(({ data }) => ({
     countOfItems: data.totalCount,
+    pageSize: data.pageSize,
     orders: data.orders.map((item: any) => ({
       id: item.id,
       date: new Date(item.createdAt),
       amount: item.amount,
-      status:
-        item.status === "sent"
-          ? OrderStatus.sent
-          : item.status === "pending"
-          ? OrderStatus.pending
-          : item.status === "preparing"
-          ? OrderStatus.preparing
-          : OrderStatus.canceled,
+      status: item.status,
       cancelReason: item.cancelReason,
     })) as Order[],
   }));
@@ -493,6 +541,7 @@ export function getDiscounts(search: string, page: number) {
     },
   }).then(({ data }) => ({
     countOfItems: data.totalCount,
+    pageSize: data.pageSize,
     discounts: data.discounts.map((item: any) =>
       convert(discountConvertMap, item, "a2b")
     ) as Discount[],
@@ -509,7 +558,7 @@ export function newDiscount(data: {
     phoneNumber: string;
   } | null;
   phoneNumber: string | null;
-  discountType: DiscountType;
+  discountType: "fixed" | "percentage" | "page";
   discountValue: number;
   usageLimit: number | null;
   expireDate: Date | null;
@@ -542,7 +591,7 @@ export function updateDiscount(
       phoneNumber: string;
     } | null;
     phoneNumber: string | null;
-    discountType: DiscountType;
+    discountType: "fixed" | "percentage" | "page";
     discountValue: number;
     usageLimit: number | null;
     expireDate: Date | null;
@@ -575,6 +624,7 @@ export function getCooperationRequests(search: string, page: number) {
     },
   }).then(({ data }) => ({
     countOfItems: data.totalCount,
+    pageSize: data.pageSize,
     cooperations: data.cooperations.map((item: any) =>
       convert(cooperationRequestConvertMap, item, "a2b")
     ) as CooperationRequest[],
@@ -583,7 +633,7 @@ export function getCooperationRequests(search: string, page: number) {
 
 export function updateCooperationRequest(
   cooperationRequestId: number,
-  status: CooperationRequestStatus,
+  status: "approved" | "rejected" | "pending",
   description: string
 ) {
   return request({
@@ -591,11 +641,7 @@ export function updateCooperationRequest(
     url: `/admins/cooperations/id/${cooperationRequestId}`,
     needAuth: true,
     data: {
-      status: {
-        [CooperationRequestStatus.pending]: "pending",
-        [CooperationRequestStatus.approved]: "approved",
-        [CooperationRequestStatus.rejected]: "rejected",
-      }[status],
+      status,
       description,
     },
   }).then(({ data }) => data.message);
@@ -604,7 +650,7 @@ export function updateCooperationRequest(
 export function getFinancialRecords(
   search: string,
   page: number,
-  status: FinancialRecordStatus | null
+  status: "successful" | "unsuccessful" | null
 ) {
   return request({
     method: "GET",
@@ -613,15 +659,11 @@ export function getFinancialRecords(
     params: {
       search,
       page,
-      status: status
-        ? {
-            [FinancialRecordStatus.successful]: "successful",
-            [FinancialRecordStatus.unsuccessful]: "unsuccessful",
-          }[status]
-        : "null",
+      status: status || "null",
     },
   }).then(({ data }) => ({
     countOfItems: data.totalCount,
+    pageSize: data.pageSize,
     records: data.transactions.map((item: any) =>
       convert(financialRecordConvertMap, item, "a2b")
     ) as FinancialRecord[],
@@ -643,7 +685,7 @@ export function updateFinancialRecord(
   financialRecordId: number,
   data: {
     userId: number;
-    type: FinancialRecordType;
+    type: "debtor" | "creditor";
     amount: number;
     description: string;
   }
@@ -675,6 +717,7 @@ export function getWithdrawalRequests(search: string, page: number) {
     },
   }).then(({ data }) => ({
     countOfItems: data.totalCount,
+    pageSize: data.pageSize,
     withdrawals: data.withdrawals.map((item: any) =>
       convert(cooperationRequestConvertMap, item, "a2b")
     ) as WithdrawalRequest[],
@@ -756,6 +799,7 @@ export function getDedicatedDiscountCodeReports(search: string, page: number) {
     },
   }).then(({ data }) => ({
     countOfItems: data.totalCount,
+    pageSize: data.pageSize,
     reports: data.marketings.map((item: any) =>
       convert(dedicatedDiscountCodeReportConvertMap, item, "a2b")
     ) as DedicatedDiscountCodeReport[],
@@ -773,6 +817,7 @@ export function getDedicatedLinkReports(search: string, page: number) {
     },
   }).then(({ data }) => ({
     countOfItems: data.totalCount,
+    pageSize: data.pageSize,
     reports: data.marketings.map((item: any) =>
       convert(dedicatedLinkReportConvertMap, item, "a2b")
     ) as DedicatedLinkReport[],
@@ -790,6 +835,7 @@ export function getCustomerReports(search: string, page: number) {
     },
   }).then(({ data }) => ({
     countOfItems: data.totalCount,
+    pageSize: data.pageSize,
     reports: data.customersReport.map((item: any) =>
       convert(customerReportConvertMap, item, "a2b")
     ) as CustomerReport[],
@@ -812,14 +858,19 @@ export function getProfile() {
     method: "GET",
     url: "/admins/profile",
     needAuth: true,
-  }).then(({ data }) => ({
-    marketingBalance: data.marketingBalance,
-    walletBalance: data.walletBalance,
-    avatar: data.avatar,
-    name: data.name,
-    phoneNumber: data.phoneNumber,
-    role: data.role,
-  }));
+  })
+    .then(({ data }) => ({
+      marketingBalance: data.marketingBalance,
+      walletBalance: data.walletBalance,
+      avatar: data.avatar,
+      name: data.name,
+      phoneNumber: data.phoneNumber,
+      role: data.role,
+    }))
+    .then((adminData) => {
+      localStorage.setItem("adminData", JSON.stringify(adminData));
+      return adminData;
+    });
 }
 
 export function updateProfile(name: string, password: string) {

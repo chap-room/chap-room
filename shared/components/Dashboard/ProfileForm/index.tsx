@@ -3,6 +3,14 @@ import { useState } from "react";
 import TextInput from "@/shared/components/TextInput";
 import Button from "@/shared/components/Button";
 import BottomActions from "@/shared/components/Dashboard/BottomActions";
+import {
+  useValidation,
+  validateNotEmpty,
+  validateLength,
+  validatePasswordRepeat,
+  optionalValidate,
+} from "@/shared/utils/validation";
+import ErrorList from "@/shared/components/ErrorList";
 
 interface ProfileFormData {
   phoneNumber: string;
@@ -21,16 +29,38 @@ export default function ProfileForm({
   onSave,
   inputsVarient,
 }: ProfileFormProps) {
-  const [phoneNumber, setPhoneNumber] = useState(
-    defaultValues?.phoneNumber || ""
-  );
+  const [phoneNumber] = useState(defaultValues?.phoneNumber || "");
   const [name, setName] = useState(defaultValues?.name || "");
   const [password, setPassword] = useState(defaultValues?.password || "");
-  const [retryPassword, setRetryPassword] = useState(
+  const [passwordRepeat, setPasswordRepeat] = useState(
     defaultValues?.password || ""
   );
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const formValidation = useValidation(
+    {
+      name: [validateNotEmpty()],
+      password: [
+        optionalValidate({
+          enabled: password !== "",
+          validator: validateLength({ min: 8 }),
+        }),
+      ],
+      passwordRepeat: [
+        optionalValidate({
+          enabled: password !== "",
+          validator: validateLength({ min: 8 }),
+        }),
+        validatePasswordRepeat(password),
+      ],
+    },
+    {
+      name,
+      password,
+      passwordRepeat,
+    }
+  );
 
   return (
     <>
@@ -45,6 +75,7 @@ export default function ProfileForm({
             value={name}
             onChange={setName}
           />
+          <ErrorList errors={formValidation.errors.name} />
         </div>
         <div className={styles.Label}>رمز عبور:</div>
         <div className={styles.Input}>
@@ -57,6 +88,7 @@ export default function ProfileForm({
             value={password}
             onChange={setPassword}
           />
+          <ErrorList errors={formValidation.errors.password} />
         </div>
         <div className={styles.Label}>تکرار رمز عبور:</div>
         <div className={styles.Input}>
@@ -66,9 +98,10 @@ export default function ProfileForm({
               placeholder: "تکرار رمز عبور",
             }}
             varient={inputsVarient}
-            value={retryPassword}
-            onChange={setRetryPassword}
+            value={passwordRepeat}
+            onChange={setPasswordRepeat}
           />
+          <ErrorList errors={formValidation.errors.passwordRepeat} />
         </div>
       </div>
       <BottomActions>
@@ -84,12 +117,7 @@ export default function ProfileForm({
             }).finally(() => setIsSubmitting(false));
           }}
           loading={isSubmitting}
-          disabled={
-            isSubmitting ||
-            !name ||
-            (password !== "" && password.length < 8) ||
-            password !== retryPassword
-          }
+          disabled={isSubmitting || !formValidation.isValid}
         >
           ذخیره
         </Button>

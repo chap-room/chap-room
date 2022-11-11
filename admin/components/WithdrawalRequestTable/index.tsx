@@ -1,12 +1,12 @@
 import styles from "./style.module.scss";
 import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
-import { WithdrawalRequest, WithdrawalRequestStatus } from "@/shared/types";
+import { WithdrawalRequest } from "@/shared/types";
 
 interface WithdrawalRequestTableProps {
   withdrawalRequests: WithdrawalRequest[];
   onDoneWithdrawalRequest: (withdrawalRequestId: number) => void;
   onRejectWithdrawalRequest: (withdrawalRequestId: number) => void;
-  itemsStatus: WithdrawalRequestStatus;
+  itemsStatus: "done" | "rejected" | "pending";
 }
 
 export default function WithdrawalRequestTable({
@@ -18,13 +18,7 @@ export default function WithdrawalRequestTable({
   return (
     <table
       className={styles.WithdrawalRequestTable}
-      data-items-status={
-        {
-          [WithdrawalRequestStatus.pending]: "pending",
-          [WithdrawalRequestStatus.done]: "done",
-          [WithdrawalRequestStatus.rejected]: "rejected",
-        }[itemsStatus]
-      }
+      data-items-status={itemsStatus}
     >
       <thead>
         <tr>
@@ -84,7 +78,7 @@ export default function WithdrawalRequestTable({
               <div>{withdrawalRequest.accountHolderName}</div>
             </td>
             <td>
-              {withdrawalRequest.status === WithdrawalRequestStatus.pending && (
+              {withdrawalRequest.status === "pending" && (
                 <div className={styles.ButtonList}>
                   <button
                     className={styles.RejectButton}
@@ -104,7 +98,7 @@ export default function WithdrawalRequestTable({
                   </button>
                 </div>
               )}
-              {withdrawalRequest.status !== WithdrawalRequestStatus.pending && (
+              {withdrawalRequest.status !== "pending" && (
                 <div className={styles.Details}>
                   {withdrawalRequest.rejectReason && (
                     <div>

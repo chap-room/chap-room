@@ -57,7 +57,7 @@ export default function PaymentStage({ actions }: PaymentStageProps) {
     >
       <div className={styles.Payment}>
         <div className={styles.OrderDetails}>
-          <div>
+          <div className={styles.FoldersAmount}>
             {data.foldersAmount.map((amount, index) => (
               <div className={styles.Amount} key={index}>
                 <div>
@@ -70,40 +70,37 @@ export default function PaymentStage({ actions }: PaymentStageProps) {
             ))}
           </div>
           <div className={styles.DiscountCode}>
-            <div>
-              <TextInput
-                inputProps={{
-                  placeholder: "کد تخفیف",
-                  readOnly: discountCode !== null,
-                }}
-                varient="shadow"
-                value={discountCodeInputText}
-                onChange={setDiscountCodeInputText}
-              />
-            </div>
-            <div>
-              <Button
-                varient="filled"
-                style={{ minWidth: 100 }}
-                onClick={() => {
-                  if (discountCode === null) {
-                    setIsCheckingDiscountCode(true);
-                    calculateOrderPrice(discountCodeInputText)
-                      .then((data) => {
-                        setDiscountCode(discountCodeInputText);
-                      })
-                      .catch(toast.error)
-                      .finally(() => setIsCheckingDiscountCode(false));
-                  } else {
-                    setDiscountCode(null);
-                  }
-                }}
-                loading={isCheckingDiscountCode}
-                disabled={isCheckingDiscountCode}
-              >
-                {discountCode === null ? "اعمال" : "حذف"}
-              </Button>
-            </div>
+            <TextInput
+              inputProps={{
+                placeholder: "کد تخفیف",
+                readOnly: discountCode !== null,
+              }}
+              varient="shadow"
+              value={discountCodeInputText}
+              onChange={setDiscountCodeInputText}
+            />
+            <Button
+              varient="filled"
+              style={{ minWidth: 100 }}
+              onClick={() => {
+                if (discountCode === null) {
+                  setIsCheckingDiscountCode(true);
+                  calculateOrderPrice(discountCodeInputText)
+                    .then((data) => {
+                      setData(data);
+                      setDiscountCode(discountCodeInputText);
+                    })
+                    .catch(toast.error)
+                    .finally(() => setIsCheckingDiscountCode(false));
+                } else {
+                  setDiscountCode(null);
+                }
+              }}
+              loading={isCheckingDiscountCode}
+              disabled={isCheckingDiscountCode}
+            >
+              {discountCode === null ? "اعمال" : "حذف"}
+            </Button>
           </div>
           <div>
             <div className={styles.Amount}>
@@ -118,7 +115,7 @@ export default function PaymentStage({ actions }: PaymentStageProps) {
                 <FormattedNumber value={total} /> تومان
               </div>
             </div>
-            {discountCode === null && data.discountAmount && (
+            {discountCode !== null && data.discountAmount && (
               <div className={styles.Amount}>
                 <div>کسر کد تخفیف:</div>
                 <div>
@@ -134,21 +131,6 @@ export default function PaymentStage({ actions }: PaymentStageProps) {
                 </div>
               </div>
             )}
-          </div>
-          <div className={styles.AmountPayable}>
-            <div>مبلغ قابل پرداخت:</div>
-            <div>
-              {payable ? (
-                <>
-                  <span>
-                    <FormattedNumber value={payable} />
-                  </span>{" "}
-                  تومان
-                </>
-              ) : (
-                "رایگان"
-              )}
-            </div>
           </div>
         </div>
         <div className={styles.PaymentMethod}>
@@ -179,7 +161,25 @@ export default function PaymentStage({ actions }: PaymentStageProps) {
           </div>
         </div>
       </div>
-      <BottomActions>
+      <BottomActions
+        start={
+          <div className={styles.AmountPayable}>
+            <div>مبلغ قابل پرداخت:</div>
+            <div>
+              {payable ? (
+                <>
+                  <span>
+                    <FormattedNumber value={payable} />
+                  </span>{" "}
+                  تومان
+                </>
+              ) : (
+                "رایگان"
+              )}
+            </div>
+          </div>
+        }
+      >
         <Button onClick={actions.back}>مرحله قبل</Button>
         <Button
           varient="filled"

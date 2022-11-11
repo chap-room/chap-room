@@ -36,7 +36,7 @@ export default function DashboardOrderDetails() {
           title="جزئیات سفارش"
           end={
             <Link href="/dashboard/orders">
-              <Button style={{ padding: 0 }}>
+              <Button style={{ padding: 0 }} onClick={() => router.back()}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
             </Link>

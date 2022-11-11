@@ -2,7 +2,7 @@ import { ReactElement, useState } from "react";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { Order, OrderStatus } from "@/shared/types";
+import { Order } from "@/shared/types";
 import {
   cancelOrder,
   confirmOrder,
@@ -30,9 +30,9 @@ export default function DashboardOrderList() {
     orders: Order[];
   }>({ countOfItems: 0, orders: [] });
 
-  const [itemsStatus, setItemsStatus] = useState<OrderStatus | null>(
-    OrderStatus.pending
-  );
+  const [itemsStatus, setItemsStatus] = useState<
+    "canceled" | "pending" | "preparing" | "sent" | null
+  >("pending");
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
 
@@ -64,20 +64,20 @@ export default function DashboardOrderList() {
             <SwitchButtons
               options={[
                 {
-                  id: OrderStatus.canceled,
-                  label: OrderStatus.canceled,
+                  id: "canceled",
+                  label: "لغو شده",
                 },
                 {
-                  id: OrderStatus.pending,
-                  label: OrderStatus.pending,
+                  id: "pending",
+                  label: "در انتظار بررسی",
                 },
                 {
-                  id: OrderStatus.preparing,
-                  label: OrderStatus.preparing,
+                  id: "preparing",
+                  label: "در حال آماده سازی",
                 },
                 {
-                  id: OrderStatus.sent,
-                  label: OrderStatus.sent,
+                  id: "sent",
+                  label: "ارسال شده",
                 },
               ]}
               value={itemsStatus}

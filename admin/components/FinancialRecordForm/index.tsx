@@ -1,9 +1,4 @@
 import styles from "./style.module.scss";
-import {
-  User,
-  FinancialRecordType,
-  FinancialRecordStatus,
-} from "@/shared/types";
 import { useState } from "react";
 import TextInput from "@/shared/components/TextInput";
 import Button from "@/shared/components/Button";
@@ -14,7 +9,7 @@ interface FinancialRecordData {
   userId: number;
   amount: number;
   description: string;
-  type: FinancialRecordType;
+  type: "debtor" | "creditor";
 }
 
 interface FinancialRecordFormProps {
@@ -29,9 +24,7 @@ export default function FinancialRecordForm({
   const [userId, setUserId] = useState(defaultValues?.userId?.toString() || "");
   const [amount, setAmount] = useState(defaultValues?.amount?.toString() || "");
   const [description, setDescription] = useState(""); // TODO
-  const [type, setType] = useState(
-    defaultValues?.type || FinancialRecordType.creditor
-  );
+  const [type, setType] = useState(defaultValues?.type || "creditor");
 
   return (
     <>
@@ -55,12 +48,9 @@ export default function FinancialRecordForm({
         <div className={styles.Label}>نوع:</div>
         <div className={styles.Input}>
           <Select
-            options={{
-              [FinancialRecordType.creditor]: FinancialRecordType.creditor,
-              [FinancialRecordType.debtor]: FinancialRecordType.debtor,
-            }}
+            options={{ debtor: "بدهکار", creditor: "بستانکار" }}
             value={type}
-            onChange={(newValue) => setType(newValue as FinancialRecordType)}
+            onChange={setType}
           />
         </div>
       </div>

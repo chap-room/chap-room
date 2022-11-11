@@ -6,10 +6,17 @@ import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
 import { isLoggedIn, login, loginConfirm, resendCode } from "@/admin/api";
+import {
+  useValidation,
+  validateInt,
+  validateLength,
+  validatePhoneNumber,
+} from "@/shared/utils/validation";
 import LogoWithName from "@/shared/assets/images/logoWithName.svg";
 import ArrowForwardIcon from "@/shared/assets/icons/arrowForward.svg";
 import Thumbnail from "@/shared/assets/images/printing.svg";
 import TextInput from "@/shared/components/TextInput";
+import ErrorList from "@/shared/components/ErrorList";
 import Button from "@/shared/components/Button";
 
 export default function Login() {
@@ -25,10 +32,35 @@ export default function Login() {
   const [isResending, setIsResending] = useState(false);
 
   useEffect(() => {
-    isLoggedIn().then(() => {
-      router.replace("/dashboard");
-    }).catch(() => {});
+    isLoggedIn()
+      .then(() => {
+        router.replace("/dashboard");
+      })
+      .catch(() => {});
   }, []);
+
+  const formValidation = useValidation(
+    {
+      phoneNumber: [validatePhoneNumber()],
+      password: [validateLength({ min: 8 })],
+    },
+    {
+      phoneNumber,
+      password,
+    }
+  );
+
+  const confirmCodeValidation = useValidation(
+    {
+      confirmCode: [
+        validateLength({ length: 6 }),
+        validateInt({ unsigned: true }),
+      ],
+    },
+    {
+      confirmCode,
+    }
+  );
 
   return (
     <div className={styles.Login}>
@@ -57,14 +89,17 @@ export default function Login() {
                   لطفا وارد حساب کاربری خود شوید
                 </div>
               </div>
-              <TextInput
-                inputProps={{ type: "number", placeholder: "شماره موبایل" }}
-                value={phoneNumber}
-                onChange={(newValue) =>
-                  setPhoneNumber(newValue.substring(0, 11))
-                }
-              />
-              <div>
+              <div className={styles.Column}>
+                <TextInput
+                  inputProps={{ type: "number", placeholder: "شماره موبایل" }}
+                  value={phoneNumber}
+                  onChange={(newValue) =>
+                    setPhoneNumber(newValue.substring(0, 11))
+                  }
+                />
+                <ErrorList errors={formValidation.errors.phoneNumber} />
+              </div>
+              <div className={styles.Column}>
                 <TextInput
                   inputProps={{
                     type: "password",
@@ -73,6 +108,7 @@ export default function Login() {
                   value={password}
                   onChange={setPassword}
                 />
+                <ErrorList errors={formValidation.errors.password} />
               </div>
               <div className={styles.Column}>
                 <Link href="/forgot-password">
@@ -91,13 +127,7 @@ export default function Login() {
                       .finally(() => setIsSubmitting(false));
                   }}
                   loading={isSubmitting}
-                  disabled={
-                    isSubmitting ||
-                    phoneNumber.length !== 11 ||
-                    !phoneNumber.startsWith("09") ||
-                    isNaN(parseInt(phoneNumber)) ||
-                    password.length < 8
-                  }
+                  disabled={isSubmitting || !formValidation.isValid}
                 >
                   ارسال کد تائیید
                 </Button>
@@ -108,7 +138,7 @@ export default function Login() {
               <div className={styles.Column}>
                 <div className={styles.Title}>تایید شماره موبایل</div>
                 <div className={styles.SubTitle}>
-                  کد 6 رقمی به شماره{" "}
+                  کد <FormattedNumber value={6} /> رقمی به شماره{" "}
                   <FormattedNumber
                     value={parseInt(phoneNumber)}
                     minimumIntegerDigits={11}
@@ -117,14 +147,17 @@ export default function Login() {
                   ارسال شد.
                 </div>
               </div>
-              <TextInput
-                inputProps={{ type: "number", placeholder: "کد تائیید" }}
-                value={confirmCode}
-                onChange={(newValue) =>
-                  setConfirmCode(newValue.substring(0, 6))
-                }
-                suffix={<CountDown date={confirmCodeExpirationDate} />}
-              />
+              <div className={styles.Column}>
+                <TextInput
+                  inputProps={{ type: "number", placeholder: "کد تائیید" }}
+                  value={confirmCode}
+                  onChange={(newValue) =>
+                    setConfirmCode(newValue.substring(0, 6))
+                  }
+                  suffix={<CountDown date={confirmCodeExpirationDate} />}
+                />
+                <ErrorList errors={confirmCodeValidation.errors.confirmCode} />
+              </div>
               <div className={styles.ConfirmCodeActions}>
                 <button
                   onClick={() => {
@@ -164,11 +197,7 @@ export default function Login() {
                     .finally(() => setIsSubmitting(false));
                 }}
                 loading={isSubmitting}
-                disabled={
-                  isSubmitting ||
-                  confirmCode.length !== 6 ||
-                  isNaN(parseInt(confirmCode))
-                }
+                disabled={isSubmitting || !confirmCodeValidation.isValid}
               >
                 ورود
               </Button>

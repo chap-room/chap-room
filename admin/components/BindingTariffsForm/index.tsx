@@ -1,6 +1,7 @@
 import styles from "./style.module.scss";
 import { useState } from "react";
-import { BindingTariffs, BindingType, PrintSize } from "@/shared/types";
+import { BindingTariffs } from "@/shared/types";
+import { useValidation, validateInt } from "@/shared/utils/validation";
 import TextInput from "@/shared/components/TextInput";
 import Button from "@/shared/components/Button";
 import BottomActions from "@/shared/components/Dashboard/BottomActions";
@@ -37,6 +38,27 @@ export default function BindingTariffsForm({
   );
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const formValidation = useValidation(
+    {
+      springNormalA4Price: [validateInt({ unsigned: true, min: 1 })],
+      springNormalA3Price: [validateInt({ unsigned: true, min: 1 })],
+      springNormalA5Price: [validateInt({ unsigned: true, min: 1 })],
+      springPapcoA4Price: [validateInt({ unsigned: true, min: 1 })],
+      springPapcoA3Price: [validateInt({ unsigned: true, min: 1 })],
+      springPapcoA5Price: [validateInt({ unsigned: true, min: 1 })],
+      staplerPrice: [validateInt({ unsigned: true, min: 1 })],
+    },
+    {
+      springNormalA4Price,
+      springNormalA3Price,
+      springNormalA5Price,
+      springPapcoA4Price,
+      springPapcoA3Price,
+      springPapcoA5Price,
+      staplerPrice,
+    }
+  );
 
   return (
     <>
@@ -126,23 +148,7 @@ export default function BindingTariffsForm({
             }).finally(() => setIsSubmitting(false));
           }}
           loading={isSubmitting}
-          disabled={
-            isSubmitting ||
-            isNaN(parseInt(springNormalA4Price)) ||
-            parseInt(springNormalA4Price) < 0 ||
-            isNaN(parseInt(springNormalA3Price)) ||
-            parseInt(springNormalA3Price) < 0 ||
-            isNaN(parseInt(springNormalA5Price)) ||
-            parseInt(springNormalA5Price) < 0 ||
-            isNaN(parseInt(springPapcoA4Price)) ||
-            parseInt(springPapcoA4Price) < 0 ||
-            isNaN(parseInt(springPapcoA3Price)) ||
-            parseInt(springPapcoA3Price) < 0 ||
-            isNaN(parseInt(springPapcoA5Price)) ||
-            parseInt(springPapcoA5Price) < 0 ||
-            isNaN(parseInt(staplerPrice)) ||
-            parseInt(staplerPrice) < 0
-          }
+          disabled={isSubmitting || !formValidation.isValid}
         >
           ذخیره
         </Button>

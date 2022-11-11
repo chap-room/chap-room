@@ -1,5 +1,5 @@
 import styles from "./style.module.scss";
-import { Order, OrderStatus, PaymentMethod } from "@/shared/types";
+import { Order } from "@/shared/types";
 import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
 
 interface OrderDetailsProps {
@@ -15,8 +15,19 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
           <div key={index}>
             <div>پوشه {index + 1}:</div>
             <div>
-              {printFolder.printColor} / {printFolder.printSize} /{" "}
-              {printFolder.printSide}
+              {
+                {
+                  blackAndWhite: "سیاه و سفید",
+                  normalColor: "رنگی معمولی",
+                  fullColor: "تمام رنگی",
+                }[printFolder.printColor]
+              }{" "}
+              / {{ a4: "A4", a5: "A5", a3: "A3" }[printFolder.printSize]} /{" "}
+              {
+                { singleSided: "یک رو", doubleSided: "دو رو" }[
+                  printFolder.printSide
+                ]
+              }
             </div>
           </div>
         ))}
@@ -135,10 +146,17 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
         <div className={styles.Label}>وضعیت سفارش:</div>
         <div>
           <div>
-            <div>{order.status}</div>
-            {order.status === OrderStatus.canceled && (
-              <div>{order.cancelReason}</div>
-            )}
+            <div>
+              {
+                {
+                  canceled: "لغو شده",
+                  pending: "در انتظار بررسی",
+                  preparing: "در حال آماده سازی",
+                  sent: "ارسال شده",
+                }[order.status]
+              }
+            </div>
+            {order.status === "canceled" && <div>{order.cancelReason}</div>}
           </div>
           <div>
             <div>

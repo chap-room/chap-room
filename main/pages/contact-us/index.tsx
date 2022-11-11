@@ -1,7 +1,13 @@
 import styles from "./style.module.scss";
 import { ReactElement, useState } from "react";
+import toast from "react-hot-toast";
 import Head from "next/head";
-import Link from "next/link";
+import { submitContactUs } from "@/main/api";
+import {
+  useValidation,
+  validateNotEmpty,
+  validatePhoneNumber,
+} from "@/shared/utils/validation";
 import Layout from "@/main/components/Layout";
 import TextInput from "@/shared/components/TextInput";
 import TextArea from "@/shared/components/TextArea";
@@ -9,8 +15,7 @@ import Button from "@/shared/components/Button";
 import AddressesIcon from "@/main/assets/icons/addresses.svg";
 import CaillIcon from "@/main/assets/icons/call.svg";
 import MailIcon from "@/main/assets/icons/mail.svg";
-import { submitContactUs } from "@/main/api";
-import toast from "react-hot-toast";
+import ErrorList from "@/shared/components/ErrorList";
 
 export default function ContactUs() {
   const [name, setName] = useState("");
@@ -18,6 +23,19 @@ export default function ContactUs() {
   const [message, setMessage] = useState("");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const formValidation = useValidation(
+    {
+      name: [validateNotEmpty()],
+      phoneNumber: [validatePhoneNumber()],
+      message: [validateNotEmpty()],
+    },
+    {
+      name,
+      phoneNumber,
+      message,
+    }
+  );
 
   return (
     <div className={styles.Container}>
@@ -27,26 +45,35 @@ export default function ContactUs() {
       <div className={styles.Form}>
         <h1>تماس با ما</h1>
         <div className={styles.Row}>
-          <TextInput
-            inputProps={{ placeholder: "نام و نام خانوادگی" }}
-            varient="shadow"
-            value={name}
-            onChange={setName}
-          />
-          <TextInput
-            inputProps={{ placeholder: "شماره موبایل", type: "number" }}
-            varient="shadow"
-            value={phoneNumber}
-            onChange={(newValue) => setPhoneNumber(newValue.substring(0, 11))}
-          />
+          <div className={styles.NameInputContainer}>
+            <TextInput
+              inputProps={{ placeholder: "نام و نام خانوادگی" }}
+              varient="shadow"
+              value={name}
+              onChange={setName}
+            />
+            <ErrorList errors={formValidation.errors.name} />
+          </div>
+          <div className={styles.PhoneNumberInputContainer}>
+            <TextInput
+              inputProps={{ placeholder: "شماره موبایل", type: "number" }}
+              varient="shadow"
+              value={phoneNumber}
+              onChange={(newValue) => setPhoneNumber(newValue.substring(0, 11))}
+            />
+            <ErrorList errors={formValidation.errors.phoneNumber} />
+          </div>
         </div>
-        <TextArea
-          placeholder="پیام خودتان را بنویسید ..."
-          varient="shadow"
-          rows={5}
-          value={message}
-          onTextChange={setMessage}
-        />
+        <div className={styles.MessageInputContainer}>
+          <TextArea
+            placeholder="پیام خودتان را بنویسید ..."
+            varient="shadow"
+            rows={5}
+            value={message}
+            onTextChange={setMessage}
+          />
+          <ErrorList errors={formValidation.errors.message} />
+        </div>
         <div className={styles.SubmitButtonContainer}>
           <Button
             varient="gradient"
@@ -59,14 +86,7 @@ export default function ContactUs() {
                 .finally(() => setIsSubmitting(false));
             }}
             loading={isSubmitting}
-            disabled={
-              isSubmitting ||
-              !name ||
-              phoneNumber.length !== 11 ||
-              !phoneNumber.startsWith("09") ||
-              isNaN(parseInt(phoneNumber)) ||
-              !message
-            }
+            disabled={isSubmitting || !formValidation.isValid}
           >
             ارسال
           </Button>

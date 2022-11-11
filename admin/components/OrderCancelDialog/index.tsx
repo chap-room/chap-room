@@ -1,11 +1,10 @@
 import styles from "./style.module.scss";
 import { useEffect, useState } from "react";
-import { OrderCancelReason } from "@/shared/types";
 import Dialog from "@/shared/components/Dialog";
-import Select from "@/shared/components/Select";
 import TextInput from "@/shared/components/TextInput";
 import BottomActions from "@/shared/components/Dashboard/BottomActions";
 import Button from "@/shared/components/Button";
+import ContentSelect from "@/shared/components/ContentSelect";
 
 interface OrderCancelDialogProps {
   open: boolean;
@@ -19,13 +18,13 @@ export default function OrderCancelDialog({
   onCancelOrder,
 }: OrderCancelDialogProps) {
   const [reason, setReason] = useState<string>(
-    OrderCancelReason.countOfPagesMismatch
+    "تعداد برگ با سفارش همخوانی ندارد"
   );
   const [reasonText, setReasonText] = useState("");
 
   useEffect(() => {
     if (open) {
-      setReason(OrderCancelReason.countOfPagesMismatch);
+      setReason("تعداد برگ با سفارش همخوانی ندارد");
       setReasonText("");
     }
   }, [open]);
@@ -37,17 +36,13 @@ export default function OrderCancelDialog({
       <div className={styles.DialogContent}>
         <div>انتخاب علت:</div>
         <div>
-          <Select
-            options={{
-              [OrderCancelReason.countOfPagesMismatch]:
-                OrderCancelReason.countOfPagesMismatch,
-              other: "دیگر",
-            }}
+          <ContentSelect
+            options={["تعداد برگ با سفارش همخوانی ندارد", "دیگر"]}
             value={reason}
             onChange={setReason}
           />
         </div>
-        {reason === "other" && (
+        {reason === "دیگر" && (
           <>
             <div>علت:</div>
             <div>
@@ -65,13 +60,13 @@ export default function OrderCancelDialog({
           varient="filled"
           onClick={() => {
             setIsSubmitting(true);
-            onCancelOrder(reason === "other" ? reasonText : reason).finally(
-              () => setIsSubmitting(false)
+            onCancelOrder(reason === "دیگر" ? reasonText : reason).finally(() =>
+              setIsSubmitting(false)
             );
           }}
           style={{ minWidth: 100 }}
           loading={isSubmitting}
-          disabled={isSubmitting || (reason === "other" && !reasonText)}
+          disabled={isSubmitting || (reason === "دیگر" && !reasonText)}
         >
           لغو کردن
         </Button>

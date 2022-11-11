@@ -80,7 +80,13 @@ export default function OrderForm() {
     <>
       <ContentHeader
         title={currentStage}
-        start={SemiCircleProgressBar}
+        start={
+          [
+            OrderFormStages.printFolders,
+            OrderFormStages.address,
+            OrderFormStages.payment,
+          ].includes(currentStage) && SemiCircleProgressBar
+        }
         end={
           <Link href="/dashboard/orders">
             <Button style={{ padding: 0 }}>
@@ -91,9 +97,15 @@ export default function OrderForm() {
       />
       <MobileContentHeader
         start={
-          <div className={styles.MobileSemiCircleProgressBar}>
-            {SemiCircleProgressBar}
-          </div>
+          [
+            OrderFormStages.printFolders,
+            OrderFormStages.address,
+            OrderFormStages.payment,
+          ].includes(currentStage) && (
+            <div className={styles.MobileSemiCircleProgressBar}>
+              {SemiCircleProgressBar}
+            </div>
+          )
         }
         title={currentStage}
         end={

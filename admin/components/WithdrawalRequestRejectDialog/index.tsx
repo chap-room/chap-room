@@ -1,7 +1,7 @@
 import styles from "./style.module.scss";
 import { useEffect, useState } from "react";
 import Dialog from "@/shared/components/Dialog";
-import Select from "@/shared/components/Select";
+import ContentSelect from "@/shared/components/ContentSelect";
 import TextInput from "@/shared/components/TextInput";
 import BottomActions from "@/shared/components/Dashboard/BottomActions";
 import Button from "@/shared/components/Button";
@@ -40,17 +40,13 @@ export default function WithdrawalRequestRejectDialog({
       <div className={styles.DialogContent}>
         <div>انتخاب علت:</div>
         <div>
-          <Select
-            options={{
-              "شماره شبا با نام صاحب حساب مطابقت ندارد":
-                "شماره شبا با نام صاحب حساب مطابقت ندارد",
-              other: "دیگر",
-            }}
+          <ContentSelect
+            options={["شماره شبا با نام صاحب حساب مطابقت ندارد", "دیگر"]}
             value={reason}
             onChange={setReason}
           />
         </div>
-        {reason === "other" && (
+        {reason === "دیگر" && (
           <>
             <div>علت:</div>
             <div>
@@ -69,12 +65,12 @@ export default function WithdrawalRequestRejectDialog({
           onClick={() => {
             setIsSubmitting(true);
             onRejectWithdrawalRequest(
-              reason === "other" ? reasonText : reason
+              reason === "دیگر" ? reasonText : reason
             ).finally(() => setIsSubmitting(false));
           }}
           style={{ minWidth: 100 }}
           loading={isSubmitting}
-          disabled={isSubmitting || (reason === "other" && !reasonText)}
+          disabled={isSubmitting || (reason === "دیگر" && !reasonText)}
         >
           رد کردن
         </Button>

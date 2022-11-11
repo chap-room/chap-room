@@ -6,16 +6,7 @@
   align-items: center;
   border-radius: 20px;
   padding: 0 5px;
-
-  &.Outlined {
-    background-color: #ffffff;
-    border: 1px solid #cccccc;
-  }
-
-  &.Shadow {
-    background-color: #f5f5f5;
-    box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
-  }
+  box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
 
   .CopyIcon {
     fill: #5d5d5d;

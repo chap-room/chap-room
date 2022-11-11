@@ -5,14 +5,14 @@ export interface User {
 }
 
 export interface AdminUserRole {
-  name: string,
+  name: string;
 }
 
 // all amounts in toman
 export interface Order {
   id: number;
   date: Date;
-  status: OrderStatus;
+  status: "canceled" | "pending" | "preparing" | "sent";
   recipientName: string;
   recipientPhoneNumber: string;
   recipientDeliveryProvince: string;
@@ -22,7 +22,7 @@ export interface Order {
   amount: number;
   postageFee: number;
   postageDate: Date | null;
-  postageMethod: PostageMethod;
+  postageMethod: string | null;
   discountAmount: number | null;
   discountCode: string;
   gatewayPaidAmount: number;
@@ -33,13 +33,6 @@ export interface Order {
   printFolders: PrintFolder[];
 }
 
-export enum OrderStatus {
-  canceled = "لغو شده",
-  pending = "در انتظار بررسی",
-  preparing = "در حال آماده سازی",
-  sent = "ارسال شده",
-}
-
 export enum OrderCancelReason {
   userCancel = "لغو شخصی",
   countOfPagesMismatch = "تعداد برگ با سفارش همخوانی ندارد",
@@ -48,9 +41,9 @@ export enum OrderCancelReason {
 export interface PrintFolder {
   id: number;
   amount: number;
-  printColor: PrintColor;
-  printSize: PrintSize;
-  printSide: PrintSide;
+  printColor: "blackAndWhite" | "normalColor" | "fullColor";
+  printSize: "a4" | "a5" | "a3";
+  printSide: "singleSided" | "doubleSided";
   countOfPages: number;
   bindingOptions: BindingOptions | null;
   description: string | null;
@@ -64,54 +57,12 @@ export interface PrintFile {
   name: string;
   countOfPages: number;
 }
-export enum PrintColor {
-  blackAndWhite = "سیاه و سفید",
-  normalColor = "رنگی معمولی",
-  fullColor = "تمام رنگی",
-}
-
-export enum PrintSize {
-  a4 = "A4",
-  a3 = "A3",
-  a5 = "A5",
-}
-
-export enum PrintSide {
-  singleSided = "یک رو",
-  doubleSided = "دو رو",
-}
 
 export interface BindingOptions {
-  bindingType: BindingType;
-  bindingMethod: BindingMethod;
+  bindingType: "springNormal" | "springPapco" | "stapler";
+  bindingMethod: "eachFileSeparated" | "allFilesTogether" | "countOfFiles";
   countOfFiles: number | null;
-  coverColor: CoverColors;
-}
-
-export enum BindingType {
-  springNormal = "فنر با طلق معمولی",
-  springPapco = "فنر با طلق پاپکو",
-  stapler = "منگنه",
-}
-
-export enum BindingMethod {
-  eachFileSeparated = "هر فایل جدا",
-  allFilesTogether = "همه فایل ها با هم",
-  countOfFiles = "تعدادی از فایل ها",
-}
-
-export enum CoverColors {
-  colorful = "رنگی",
-  blackAndWhite = "سیاه و سفید",
-}
-
-export enum PaymentMethod {
-  wallet = "کیف پول",
-  zarinPalGate = "زرین پال",
-}
-
-export enum PostageMethod {
-  expressMail = "پست پیشتاز",
+  coverColor: "colorful" | "blackAndWhite";
 }
 
 export interface Address {
@@ -131,12 +82,7 @@ export interface Transaction {
   amount: number;
   description: string;
   orderId: number | null;
-  status: TransactionStatus;
-}
-
-export enum TransactionStatus {
-  successful = "موفق",
-  unsuccessful = "نا موفق",
+  status: "successful" | "unsuccessful";
 }
 
 export interface Discount {
@@ -146,17 +92,11 @@ export interface Discount {
   description: string;
   user: User | null;
   phoneNumber: string | null;
-  discountType: DiscountType;
+  discountType: "fixed" | "percentage" | "page";
   discountValue: number;
   usageLimit: number | null;
   timesUsed: number | null;
   expireDate: Date | null;
-}
-
-export enum DiscountType {
-  fixedAmount = "مبلغ ثابت",
-  percentage = "درصدی",
-  countOfPages = "تعدادی از صفحات",
 }
 
 export interface CooperationRequest {
@@ -164,13 +104,7 @@ export interface CooperationRequest {
   date: Date;
   phoneNumber: string;
   description: string | null;
-  status: CooperationRequestStatus;
-}
-
-export enum CooperationRequestStatus {
-  approved = "قبول شده",
-  rejected = "رد شده",
-  pending = "در انتظار بررسی",
+  status: "approved" | "rejected" | "pending";
 }
 
 export interface FinancialRecord {
@@ -180,19 +114,9 @@ export interface FinancialRecord {
   amount: number;
   description: string;
   orderId: number | null;
-  type: FinancialRecordType;
-  status: FinancialRecordStatus;
+  type: "debtor" | "creditor";
+  status: "successful" | "unsuccessful";
   admin: User | null;
-}
-
-export enum FinancialRecordType {
-  debtor = "بدهکار",
-  creditor = "بستانکار",
-}
-
-export enum FinancialRecordStatus {
-  successful = "موفق",
-  unsuccessful = "نا موفق",
 }
 
 export interface WithdrawalRequest {
@@ -202,18 +126,11 @@ export interface WithdrawalRequest {
   user: User;
   iban: number;
   accountHolderName: string;
-  status: WithdrawalRequestStatus;
+  status: "done" | "rejected" | "pending";
   rejectReason: string | null;
   transactionDate: string | null;
   trackingNumber: string | null;
 }
-
-export enum WithdrawalRequestStatus {
-  done = "انجام شده",
-  rejected = "رد شده",
-  pending = "در انتظار بررسی",
-}
-
 export interface Tariffs {
   print: PrintTariffs;
   binding: BindingTariffs;
@@ -267,21 +184,21 @@ export interface BindingTariffs {
 
 export interface Post {
   id: number;
+  countOfViews: number;
+  author: User;
   pageSlug: string;
   pageTitle: string;
-  postTitle: string;
-  categories: string[];
+  title: string;
+  categories: { id: number; name: string }[];
   keywords: string[];
   metaDescription: string;
-  thumbnail: string | null;
-  thumbnailAlt: string;
-  status: PostStatus;
+  thumbnailUrl: string | null;
+  thumbnailAlt: string | null;
+  display: boolean;
+  excerpt: string;
   content: string;
-}
-
-export enum PostStatus {
-  draft = "پیش نویس",
-  published = "منتشر شده",
+  createDate: string;
+  lastUpdateDate: string;
 }
 
 export interface DedicatedLinkReport {
@@ -289,7 +206,7 @@ export interface DedicatedLinkReport {
   date: Date;
   user: User;
   buyer: User;
-  amount: number; 
+  amount: number;
   referralBenefit: number;
   referralCommission: number;
   referralSlug: string;

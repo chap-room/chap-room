@@ -1,6 +1,6 @@
 import styles from "./style.module.scss";
 import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
-import { Order, OrderStatus } from "@/shared/types";
+import { Order } from "@/shared/types";
 
 interface OrderTableProps {
   orders: Order[];
@@ -51,15 +51,17 @@ export default function OrderTable({
               <span className={styles.MobileLabel}>وضعیت:</span>
               {(() => {
                 switch (order.status) {
-                  case OrderStatus.pending:
+                  case "pending":
                     return (
-                      <span className={styles.Pending}>{order.status}</span>
+                      <span className={styles.Pending}>در انتظار بررسی</span>
                     );
-                  case OrderStatus.preparing:
+                  case "preparing":
                     return (
-                      <span className={styles.Preparing}>{order.status}</span>
+                      <span className={styles.Preparing}>
+                        در حال آماده سازی
+                      </span>
                     );
-                  case OrderStatus.sent:
+                  case "sent":
                     return (
                       <a
                         href="/"
@@ -69,10 +71,10 @@ export default function OrderTable({
                         رهگیری مرسوله
                       </a>
                     );
-                  case OrderStatus.canceled:
+                  case "canceled":
                     return (
                       <span className={styles.Canceled}>
-                        {order.cancelReason}
+                        لغو شده
                         <br />
                         بازگشت وجه به کیف پول
                       </span>
@@ -89,15 +91,15 @@ export default function OrderTable({
               </button>
             </td>
             <td>
-              {order.status === OrderStatus.canceled ? (
-                <span className={styles.Canceled}>{order.status}</span>
-              ) : order.status === OrderStatus.sent ? (
-                <span className={styles.Sent}>{order.status}</span>
+              {order.status === "canceled" ? (
+                <span className={styles.Canceled}>لغو شده</span>
+              ) : order.status === "sent" ? (
+                <span className={styles.Sent}>ارسال شده</span>
               ) : (
                 <button
                   className={styles.CancelButton}
                   onClick={() => onCancelOrder(order.id)}
-                  disabled={order.status !== OrderStatus.pending}
+                  disabled={order.status !== "pending"}
                 >
                   لغو سفارش
                 </button>

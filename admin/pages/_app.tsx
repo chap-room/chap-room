@@ -22,7 +22,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <IntlProvider locale="fa">
-    {getLayout(<Component {...pageProps} />)}
+      {getLayout(<Component {...pageProps} />)}
       {isBrowser && <Toaster position="bottom-center" />}
     </IntlProvider>
   );

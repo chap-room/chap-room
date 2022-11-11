@@ -12,8 +12,8 @@ import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
 import DataLoader from "@/shared/components/DataLoader";
 import IconButton from "@/shared/components/IconButton";
-import SwitchButtons from "@/shared/components/SwitchButtons";
 import Button from "@/shared/components/Button";
+import ButtonList from "@/shared/components/ButtonList";
 import UserTable from "@/admin/components/UserTable";
 import EmptyNote from "@/shared/components/Dashboard/EmptyNote";
 import UserMarketingDetailsDialog from "@/admin/components/UserMarketingDetailsDialog";
@@ -61,24 +61,16 @@ export default function DashboardUserList() {
         <ContentHeader
           title="همه کاربران"
           end={
-            <>
-              <SwitchButtons
-                options={[
-                  {
-                    id: true,
-                    label: "ادمین ها",
-                  },
-                ]}
-                value={showAdminUsers}
-                onChange={setShowAdminUsers}
-                nullable
-              />
+            <ButtonList>
+              <Link href="/dashboard/users/admins">
+                <Button varient="filled">ادمین ها</Button>
+              </Link>
               <Link href="/dashboard/users/new">
                 <Button style={{ padding: 0 }}>
                   افزودن کاربر <AddIcon />
                 </Button>
               </Link>
-            </>
+            </ButtonList>
           }
         />
         <MobileContentHeader

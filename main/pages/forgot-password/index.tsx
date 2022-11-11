@@ -12,10 +12,19 @@ import {
   passwordResetSet,
   resendCode,
 } from "@/main/api";
-import Header from "@/main/components/Header";
-import TextInput from "@/shared/components/TextInput";
-import Button from "@/shared/components/Button";
+import {
+  useValidation,
+  validateInt,
+  validateLength,
+  validatePasswordRepeat,
+  validatePhoneNumber,
+} from "@/shared/utils/validation";
+import LogoWithName from "@/shared/assets/images/logoWithName.svg";
+import ArrowForwardIcon from "@/shared/assets/icons/arrowForward.svg";
 import Thumbnail from "@/shared/assets/images/thinking.svg";
+import TextInput from "@/shared/components/TextInput";
+import ErrorList from "@/shared/components/ErrorList";
+import Button from "@/shared/components/Button";
 
 export default function ForgotPassword() {
   const router = useRouter();
@@ -33,10 +42,45 @@ export default function ForgotPassword() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isResending, setIsResending] = useState(false);
 
+  const formValidation = useValidation(
+    {
+      phoneNumber: [validatePhoneNumber()],
+    },
+    {
+      phoneNumber,
+    }
+  );
+
+  const confirmCodeValidation = useValidation(
+    {
+      confirmCode: [
+        validateLength({ length: 6 }),
+        validateInt({ unsigned: true }),
+      ],
+    },
+    {
+      confirmCode,
+    }
+  );
+
+  const newPasswordValidation = useValidation(
+    {
+      newPassword: [validateLength({ min: 8 })],
+      newPasswordRepeat: [
+        validateLength({ min: 8 }),
+        validatePasswordRepeat(newPassword),
+      ],
+    },
+    {
+      newPassword,
+      newPasswordRepeat,
+    }
+  );
+
   useEffect(() => {
     isLoggedIn()
-      .then(() => {
-        router.replace("/dashboard");
+      .then((userData) => {
+        if (userData) router.replace("/dashboard");
       })
       .catch(() => {});
   }, []);
@@ -46,7 +90,18 @@ export default function ForgotPassword() {
       <Head>
         <title>فراموشی رمز عبور</title>
       </Head>
-      <Header hideLogoInMobile showBackButtonInMobile />
+      <div className={styles.Header}>
+        <Link href="/">
+          <a className={styles.Logo}>
+            <LogoWithName />
+          </a>
+        </Link>
+        <Link href="/">
+          <a className={styles.MobileBackButton}>
+            <ArrowForwardIcon />
+          </a>
+        </Link>
+      </div>
       <div className={styles.Content}>
         <div className={styles.Form}>
           {confirmCodeExpirationDate === null ? (
@@ -57,14 +112,17 @@ export default function ForgotPassword() {
                   شماره موبایلی که با آن ثبت نام کرده‌اید را وارد نمایید
                 </div>
               </div>
-              <TextInput
-                inputProps={{ type: "number", placeholder: "شماره موبایل" }}
-                varient="shadow"
-                value={phoneNumber}
-                onChange={(newValue) =>
-                  setPhoneNumber(newValue.substring(0, 11))
-                }
-              />
+              <div className={styles.Column}>
+                <TextInput
+                  inputProps={{ type: "number", placeholder: "شماره موبایل" }}
+                  varient="shadow"
+                  value={phoneNumber}
+                  onChange={(newValue) =>
+                    setPhoneNumber(newValue.substring(0, 11))
+                  }
+                />
+                <ErrorList errors={formValidation.errors.phoneNumber} />
+              </div>
               <div className={styles.Column}>
                 <Button
                   varient="gradient"
@@ -79,12 +137,7 @@ export default function ForgotPassword() {
                       .finally(() => setIsSubmitting(false));
                   }}
                   loading={isSubmitting}
-                  disabled={
-                    isSubmitting ||
-                    phoneNumber.length !== 11 ||
-                    !phoneNumber.startsWith("09") ||
-                    isNaN(parseInt(phoneNumber))
-                  }
+                  disabled={isSubmitting || !formValidation.isValid}
                 >
                   ارسال کد تائیید
                 </Button>
@@ -109,15 +162,18 @@ export default function ForgotPassword() {
                   ارسال شد.
                 </div>
               </div>
-              <TextInput
-                inputProps={{ type: "number", placeholder: "کد تائیید" }}
-                varient="shadow"
-                value={confirmCode}
-                onChange={(newValue) =>
-                  setConfirmCode(newValue.substring(0, 6))
-                }
-                suffix={<CountDown date={confirmCodeExpirationDate} />}
-              />
+              <div className={styles.Column}>
+                <TextInput
+                  inputProps={{ type: "number", placeholder: "کد تائیید" }}
+                  varient="shadow"
+                  value={confirmCode}
+                  onChange={(newValue) =>
+                    setConfirmCode(newValue.substring(0, 6))
+                  }
+                  suffix={<CountDown date={confirmCodeExpirationDate} />}
+                />
+                <ErrorList errors={confirmCodeValidation.errors.confirmCode} />
+              </div>
               <div className={styles.ConfirmCodeActions}>
                 <button
                   onClick={() => {
@@ -157,11 +213,7 @@ export default function ForgotPassword() {
                       .finally(() => setIsSubmitting(false));
                   }}
                   loading={isSubmitting}
-                  disabled={
-                    isSubmitting ||
-                    confirmCode.length !== 6 ||
-                    isNaN(parseInt(confirmCode))
-                  }
+                  disabled={isSubmitting || !confirmCodeValidation.isValid}
                 >
                   تایید کد
                 </Button>
@@ -180,24 +232,32 @@ export default function ForgotPassword() {
                   لطفا رمز عبور جدید خود را وارد نمایید
                 </div>
               </div>
-              <TextInput
-                inputProps={{
-                  type: "password",
-                  placeholder: "رمز عبور",
-                }}
-                varient="shadow"
-                value={newPassword}
-                onChange={setNewPassword}
-              />
-              <TextInput
-                inputProps={{
-                  type: "password",
-                  placeholder: "تکرار رمز عبور",
-                }}
-                varient="shadow"
-                value={newPasswordRepeat}
-                onChange={setNewPasswordRepeat}
-              />
+              <div className={styles.Column}>
+                <TextInput
+                  inputProps={{
+                    type: "password",
+                    placeholder: "رمز عبور",
+                  }}
+                  varient="shadow"
+                  value={newPassword}
+                  onChange={setNewPassword}
+                />
+                <ErrorList errors={newPasswordValidation.errors.newPassword} />
+              </div>
+              <div className={styles.Column}>
+                <TextInput
+                  inputProps={{
+                    type: "password",
+                    placeholder: "تکرار رمز عبور",
+                  }}
+                  varient="shadow"
+                  value={newPasswordRepeat}
+                  onChange={setNewPasswordRepeat}
+                />
+                <ErrorList
+                  errors={newPasswordValidation.errors.newPasswordRepeat}
+                />
+              </div>
               <div className={styles.Column}>
                 <Button
                   varient="gradient"
@@ -214,11 +274,7 @@ export default function ForgotPassword() {
                       .finally(() => setIsSubmitting(false));
                   }}
                   loading={isSubmitting}
-                  disabled={
-                    isSubmitting ||
-                    newPassword.length < 8 ||
-                    newPassword !== newPasswordRepeat
-                  }
+                  disabled={isSubmitting || !newPasswordValidation.isValid}
                 >
                   بازیابی رمز عبور
                 </Button>

@@ -5,9 +5,16 @@ import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
 import { isLoggedIn, login } from "@/main/api";
+import {
+  useValidation,
+  validateLength,
+  validatePhoneNumber,
+} from "@/shared/utils/validation";
+import LogoWithName from "@/shared/assets/images/logoWithName.svg";
+import ArrowForwardIcon from "@/shared/assets/icons/arrowForward.svg";
 import Thumbnail from "@/shared/assets/images/printing.svg";
-import Header from "@/main/components/Header";
 import TextInput from "@/shared/components/TextInput";
+import ErrorList from "@/shared/components/ErrorList";
 import Button from "@/shared/components/Button";
 
 export default function Login() {
@@ -19,17 +26,41 @@ export default function Login() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    isLoggedIn().then(() => {
-      router.replace("/dashboard");
-    }).catch(() => {});
+    isLoggedIn()
+      .then((userData) => {
+        if (userData) router.replace("/dashboard");
+      })
+      .catch(() => {});
   }, []);
+
+  const formValidation = useValidation(
+    {
+      phoneNumber: [validatePhoneNumber()],
+      password: [validateLength({ min: 8 })],
+    },
+    {
+      phoneNumber,
+      password,
+    }
+  );
 
   return (
     <div className={styles.Login}>
       <Head>
         <title>ورود</title>
       </Head>
-      <Header hideLogoInMobile showBackButtonInMobile />
+      <div className={styles.Header}>
+        <Link href="/">
+          <a className={styles.Logo}>
+            <LogoWithName />
+          </a>
+        </Link>
+        <Link href="/">
+          <a className={styles.MobileBackButton}>
+            <ArrowForwardIcon />
+          </a>
+        </Link>
+      </div>
       <div className={styles.Content}>
         <div className={styles.Form}>
           <div className={styles.Column}>
@@ -38,13 +69,16 @@ export default function Login() {
               لطفا وارد حساب کاربری خود شوید
             </div>
           </div>
-          <TextInput
-            inputProps={{ type: "number", placeholder: "شماره موبایل" }}
-            varient="shadow"
-            value={phoneNumber}
-            onChange={(newValue) => setPhoneNumber(newValue.substring(0, 11))}
-          />
-          <div>
+          <div className={styles.Column}>
+            <TextInput
+              inputProps={{ type: "number", placeholder: "شماره موبایل" }}
+              varient="shadow"
+              value={phoneNumber}
+              onChange={(newValue) => setPhoneNumber(newValue.substring(0, 11))}
+            />
+            <ErrorList errors={formValidation.errors.phoneNumber} />
+          </div>
+          <div className={styles.Column}>
             <TextInput
               inputProps={{
                 type: "password",
@@ -54,6 +88,7 @@ export default function Login() {
               value={password}
               onChange={setPassword}
             />
+            <ErrorList errors={formValidation.errors.password} />
           </div>
           <div className={styles.Column}>
             <Link href="/forgot-password">
@@ -73,13 +108,7 @@ export default function Login() {
                   .finally(() => setIsSubmitting(false));
               }}
               loading={isSubmitting}
-              disabled={
-                isSubmitting ||
-                phoneNumber.length !== 11 ||
-                !phoneNumber.startsWith("09") ||
-                isNaN(parseInt(phoneNumber)) ||
-                password.length < 8
-              }
+              disabled={isSubmitting || !formValidation.isValid}
             >
               ورود
             </Button>

@@ -2,9 +2,8 @@ import styles from "./style.module.scss";
 import { FormattedDate, FormattedNumber } from "react-intl";
 import Head from "next/head";
 import Layout from "@/main/components/Layout";
-import DateIcon from "@/main/assets/icons/date.svg";
-import ViewIcon from "@/main/assets/icons/view.svg";
-import Button from "@/shared/components/Button";
+import DateIcon from "@/shared/assets/icons/date.svg";
+import ViewIcon from "@/shared/assets/icons/view.svg";
 
 export default function BlogPost() {
   return (

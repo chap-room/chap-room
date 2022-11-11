@@ -2,7 +2,7 @@ import styles from "./style.module.scss";
 import { ReactElement, useState } from "react";
 import { FormattedNumber } from "react-intl";
 import Head from "next/head";
-import { PrintSize, PrintTariffs, Tariffs } from "@/shared/types";
+import { Tariffs } from "@/shared/types";
 import { getTariffs } from "@/main/api";
 import Layout from "@/main/components/Layout";
 import DataLoader from "@/shared/components/DataLoader";

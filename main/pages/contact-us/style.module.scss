@@ -20,16 +20,24 @@
     }
 
     .Row {
-      display: flex;
-      flex-direction: row;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 20px;
   
       @media (max-width: 512px) {
-        flex-direction: column;
+        grid-template-columns: 1fr;
       }
+    }
 
-      > div {
-        width: 100%;
+    .NameInputContainer,
+    .PhoneNumberInputContainer,
+    .MessageInputContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      > div:first-child {
+        max-width: unset;
       }
     }
 

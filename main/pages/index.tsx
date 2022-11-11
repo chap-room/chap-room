@@ -53,7 +53,7 @@ export default function Home() {
     "راهنمای ثبت سفارش":
       "https://www.aparat.com/video/video/embed/videohash/rP64U/vt/frame",
     "راهنمای پیگیری سفارش":
-      "https://www.aparat.com/video/video/embed/videohash/rP64U/vt/frame",
+      "https://www.aparat.com/video/video/embed/videohash/rP64U/vt/frame", // TOOD
     "همکاری در فروش":
       "https://www.aparat.com/video/video/embed/videohash/kQgJK/vt/frame",
   };
@@ -158,6 +158,9 @@ export default function Home() {
         <div>
           <BookPrintingImage />
           <div>
+            <div className={styles.Title}>
+              از منوی زیر خدمات مورد نظر خود را انتخاب کنید
+            </div>
             <Select
               value={null}
               onChange={() => {}}
@@ -261,6 +264,7 @@ export default function Home() {
         </div>
       </div>
       <div className={styles.VideoGallery}>
+        <h1>گالری ویدیو</h1>
         <div>
           <VideoGalleryBG />
           <div>

@@ -2,22 +2,15 @@ import {
   Address,
   BindingOptions,
   Order,
-  OrderStatus,
-  PrintColor,
   PrintFile,
   PrintFolder,
-  PrintSide,
-  PrintSize,
   Tariffs,
   Transaction,
-  TransactionStatus,
 } from "@/shared/types";
 import axios, { AxiosRequestConfig } from "axios";
 import Router from "next/router";
-import { convert } from "@/shared/utils";
+import { convert } from "@/shared/utils/convert";
 import { orderConvertMap, printFoldersConvertMap } from "@/main/convertMaps";
-
-const BASE_URL = "http://78.157.34.146:3000/v1";
 
 function getAccessToken() {
   return localStorage.getItem("userAccessToken");
@@ -29,6 +22,7 @@ function setAccessToken(token: string) {
 
 export function logout() {
   localStorage.removeItem("userAccessToken");
+  localStorage.removeItem("userData");
 }
 
 const api = axios.create({
@@ -90,18 +84,6 @@ const request = async ({
   });
 };
 
-export function isLoggedIn() {
-  return request({
-    method: "GET",
-    url: "/users/profile",
-    needAuth: true,
-    redirectIfNotLogin: false,
-  }).then(({ data }) => ({
-    avatar: data.avatar,
-    name: data.name,
-  }));
-}
-
 export function reportReferralView(slug: string) {
   return request({
     method: "PUT",
@@ -153,7 +135,18 @@ export function login(phoneNumber: string, password: string) {
       phoneNumber,
       password,
     },
-  });
+  })
+    .then(({ data }) => ({
+      marketingBalance: data.marketingBalance,
+      walletBalance: data.walletBalance,
+      avatar: data.avatar,
+      name: data.name,
+      phoneNumber: data.phoneNumber,
+    }))
+    .then((userData) => {
+      localStorage.setItem("userData", JSON.stringify(userData));
+      return userData;
+    });
 }
 
 export function resendCode(phoneNumber: string) {
@@ -198,7 +191,18 @@ export function registerConfirm(phoneNumber: string, code: number) {
       phoneNumber,
       code,
     },
-  });
+  })
+    .then(({ data }) => ({
+      marketingBalance: data.marketingBalance,
+      walletBalance: data.walletBalance,
+      avatar: data.avatar,
+      name: data.name,
+      phoneNumber: data.phoneNumber,
+    }))
+    .then((userData) => {
+      localStorage.setItem("userData", JSON.stringify(userData));
+      return userData;
+    });
 }
 
 export function passwordReset(phoneNumber: string) {
@@ -271,13 +275,12 @@ export function getDashboard() {
     walletBalance: data.walletBalance,
     avatar: data.avatar,
     name: data.name,
-    phoneNumber: data.name,
+    phoneNumber: data.phoneNumber,
     inProgressOrders: data.inProgressOrders.map((item: any) => ({
       id: item.id,
       date: new Date(item.createdAt),
       amount: item.amount,
-      status:
-        item.status === "pending" ? OrderStatus.pending : OrderStatus.preparing,
+      status: item.status,
     })) as Order[],
   }));
 }
@@ -292,18 +295,12 @@ export function getOrders(page: number) {
     },
   }).then(({ data }) => ({
     countOfItems: data.totalCount,
+    pageSize: data.pageSize,
     orders: data.orders.map((item: any) => ({
       id: item.id,
       date: new Date(item.createdAt),
       amount: item.amount,
-      status:
-        item.status === "sent"
-          ? OrderStatus.sent
-          : item.status === "pending"
-          ? OrderStatus.pending
-          : item.status === "preparing"
-          ? OrderStatus.preparing
-          : OrderStatus.canceled,
+      status: item.status,
       cancelReason: item.cancelReason,
     })) as Order[],
   }));
@@ -383,9 +380,9 @@ export function getPrintFolder(printFolderId: number) {
 }
 
 export function newPrintFolder(data: {
-  printColor: PrintColor;
-  printSize: PrintSize;
-  printSide: PrintSide;
+  printColor: "blackAndWhite" | "normalColor" | "fullColor";
+  printSize: "a4" | "a5" | "a3";
+  printSide: "singleSided" | "doubleSided";
   countOfPages: number;
   bindingOptions: BindingOptions | null;
   description: string | null;
@@ -403,9 +400,9 @@ export function newPrintFolder(data: {
 export function updatePrintFolder(
   printFolderId: number,
   data: {
-    printColor: PrintColor;
-    printSize: PrintSize;
-    printSide: PrintSide;
+    printColor: "blackAndWhite" | "normalColor" | "fullColor";
+    printSize: "a4" | "a5" | "a3";
+    printSide: "singleSided" | "doubleSided";
     countOfPages: number;
     bindingOptions: BindingOptions | null;
     description: string | null;
@@ -419,6 +416,27 @@ export function updatePrintFolder(
     needAuth: true,
     data: convert(printFoldersConvertMap, data, "b2a"),
   }).then(({ data }) => data.message);
+}
+
+export function calculatePrintFolderPrice(
+  data: {
+    printColor: "blackAndWhite" | "normalColor" | "fullColor";
+    printSize: "a4" | "a5" | "a3";
+    printSide: "singleSided" | "doubleSided";
+    countOfPages: number;
+    bindingOptions: BindingOptions | null;
+    countOfCopies: number | null;
+    printFiles: PrintFile[];
+  },
+  abortController: AbortController
+) {
+  return request({
+    method: "POST",
+    url: "/users/folders/price-calculator",
+    needAuth: true,
+    data: convert(printFoldersConvertMap, data, "b2a"),
+    signal: abortController.signal,
+  }).then(({ data }) => data.amount);
 }
 
 export function deletePrintFolder(printFolderId: number) {
@@ -475,6 +493,7 @@ export function getAddresses(page: number) {
     },
   }).then(({ data }) => ({
     countOfItems: data.totalCount,
+    pageSize: data.pageSize,
     addresses: data.addresses as Address[],
   }));
 }
@@ -562,16 +581,14 @@ export function getTransactions(page: number) {
     },
   }).then(({ data }) => ({
     countOfItems: data.totalCount,
+    pageSize: data.pageSize,
     transactions: data.transactions.map((item: any) => ({
       id: item.id,
       date: new Date(item.createdAt),
       amount: item.amount,
       description: item.description,
       orderId: item.orderId,
-      status:
-        item.status === "successful"
-          ? TransactionStatus.successful
-          : TransactionStatus.unsuccessful,
+      status: item.status,
     })) as Transaction[],
   }));
 }
@@ -589,13 +606,42 @@ export function getProfile() {
     method: "GET",
     url: "/users/profile",
     needAuth: true,
-  }).then(({ data }) => ({
-    marketingBalance: data.marketingBalance,
-    walletBalance: data.walletBalance,
-    avatar: data.avatar,
-    name: data.name,
-    phoneNumber: data.phoneNumber,
-  }));
+  })
+    .then(({ data }) => ({
+      marketingBalance: data.marketingBalance,
+      walletBalance: data.walletBalance,
+      avatar: data.avatar,
+      name: data.name,
+      phoneNumber: data.phoneNumber,
+    }))
+    .then((userData) => {
+      localStorage.setItem("userData", JSON.stringify(userData));
+      return userData;
+    });
+}
+
+export function isLoggedIn() {
+  return request({
+    method: "GET",
+    url: "/users/profile",
+    needAuth: true,
+    redirectIfNotLogin: false,
+  })
+    .then(({ data }) => ({
+      marketingBalance: data.marketingBalance,
+      walletBalance: data.walletBalance,
+      avatar: data.avatar,
+      name: data.name,
+      phoneNumber: data.phoneNumber,
+    }))
+    .catch((message) => {
+      if (message === "لطفا دوباره وارد شوید") return null;
+      throw message;
+    })
+    .then((userData) => {
+      localStorage.setItem("userData", JSON.stringify(userData));
+      return userData;
+    });
 }
 
 export function updateProfile(name: string, password: string) {

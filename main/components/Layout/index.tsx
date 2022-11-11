@@ -6,7 +6,7 @@ import Footer from "@/main/components/Footer";
 export default function Layout({ children }: PropsWithChildren<{}>) {
   return (
     <div className={styles.Container}>
-      <Header showNavMenuAndUser />
+      <Header />
       <div className={styles.Content}>{children}</div>
       <Footer />
     </div>

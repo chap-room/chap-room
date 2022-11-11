@@ -22,6 +22,7 @@ import PrintingImage from "@/shared/assets/images/printing.svg";
 import Avatar from "@/shared/components/Dashboard/Avatar";
 import Wallet from "@/main/components/Dashboard/Wallet";
 import DashboardNavLinks from "@/main/components/Dashboard/NavLinks";
+import BottomButtons from "@/main/components/BottomButtons";
 
 export default function DashboardMain() {
   const router = useRouter();
@@ -100,7 +101,7 @@ export default function DashboardMain() {
               </SectionContent>
               <SectionContent>
                 <ContentHeader
-                  title="هزینه ها"
+                  title="تعرفه ها"
                   end={
                     <div className={styles.PricesPrintSizeButtons}>
                       <SwitchButtons
@@ -225,6 +226,7 @@ export default function DashboardMain() {
             }}
           />
           <DashboardNavLinks />
+          <BottomButtons />
         </div>
       </DataLoader>
     </div>

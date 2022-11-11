@@ -1,5 +1,11 @@
 import styles from "./style.module.scss";
-import React, { useRef, useState, useLayoutEffect, useEffect } from "react";
+import React, {
+  useRef,
+  useState,
+  useLayoutEffect,
+  useEffect,
+  useMemo,
+} from "react";
 import {
   useFloating,
   offset,
@@ -15,24 +21,14 @@ import {
   size,
 } from "@floating-ui/react-dom-interactions";
 import ExpandMoreIcon from "@/shared/assets/icons/expandMore.svg";
-
-type SelectProps =
-  | {
-      placeholder?: undefined;
-      options: Record<string, string>;
-      value: string;
-      onChange: (newValue: string) => void;
-      varient?: "outlined" | "shadow";
-      readOnly?: boolean;
-    }
-  | {
-      placeholder: string;
-      options: Record<string, string>;
-      value: string | null;
-      onChange: (newValue: string | null) => void;
-      varient?: "outlined" | "shadow";
-      readOnly?: boolean;
-    };
+interface SelectProps {
+  placeholder?: string;
+  options: Record<string, string>;
+  value: string | null;
+  onChange: (newValue: any) => void;
+  varient?: "outlined" | "shadow";
+  readOnly?: boolean;
+}
 
 export default function Select({
   placeholder,
@@ -52,7 +48,7 @@ export default function Select({
       : Object.values(options)
   );
 
-  useEffect(() => {
+  useMemo(() => {
     const newListElements: (HTMLDivElement | null)[] = [];
     const newListValue: (string | null)[] = placeholder ? [null] : [];
     const newListLabels: string[] = placeholder ? [placeholder] : [];
@@ -136,7 +132,7 @@ export default function Select({
     ]
   );
 
-  (typeof window !== "undefined" ? useLayoutEffect : useEffect)(() => {
+  (typeof document !== "undefined" ? useLayoutEffect : useEffect)(() => {
     if (open && activeIndex != null && !pointer) {
       requestAnimationFrame(() => {
         listElementsRef.current[activeIndex]?.scrollIntoView({
@@ -158,6 +154,9 @@ export default function Select({
   if (readOnly) {
     selectClassName.push(styles.ReadOnly);
   }
+  if (open) {
+    selectClassName.push(styles.IsOpen);
+  }
 
   const dropdownClassName = [styles.Dropdown];
   switch (varient) {
@@ -170,11 +169,7 @@ export default function Select({
   }
 
   function handleSelect(index: number) {
-    if (placeholder) {
-      onChange(listValueRef.current[index]);
-    } else {
-      onChange(listValueRef.current[index]!);
-    }
+    onChange(listValueRef.current[index]);
     setOpen(false);
     setActiveIndex(null);
   }
@@ -250,7 +245,7 @@ export default function Select({
                     onKeyUp: handleKeyUp.bind(null, index),
                   })}
                 >
-                  {label}
+                  <div>{label}</div>
                 </div>
               ))}
             </div>
