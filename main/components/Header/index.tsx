@@ -80,7 +80,9 @@ export default function Header() {
               <div className={styles.UserAuth}>
                 <ButtonList>
                   <Link href="/login">
-                    <Button>ورود</Button>
+                    <Button>
+                      <ProfileFilledIcon /> ورود
+                    </Button>
                   </Link>
                   <Link href="/register">
                     <Button varient="filled">ثبت نام</Button>

@@ -4,13 +4,15 @@ import { useRouter } from "next/router";
 import { FormattedNumber } from "react-intl";
 import toast from "react-hot-toast";
 import Head from "next/head";
+import Link from "next/link";
 import { Tariffs } from "@/shared/types";
 import {
   getTariffs,
+  isLoggedIn,
   reportReferralView,
   sendCooperationRequest,
 } from "@/main/api";
-import HomeIntroductionBG from "@/main/assets/images/homeIntroductionBG.svg";
+import ExpandMoreIcon from "@/shared/assets/icons/expandMore.svg";
 import GiftImage from "@/main/assets/images/gift.svg";
 import CalculatorImage from "@/main/assets/images/calculator.svg";
 import DataLoader from "@/shared/components/DataLoader";
@@ -31,6 +33,20 @@ import CirclePlayIcon from "@/main/assets/icons/circlePlay.svg";
 
 export default function Home() {
   const router = useRouter();
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+
+  useEffect(() => {
+    if (router.asPath === "/auth") return;
+
+    try {
+      const userData = JSON.parse(localStorage.getItem("userData") || "");
+      if (userData) setIsUserLoggedIn(true);
+    } catch {}
+
+    isLoggedIn()
+      .then((userData) => setIsUserLoggedIn(!!userData))
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (router.isReady) {
@@ -72,12 +88,20 @@ export default function Home() {
         <div />
         <div>
           <h1>چاپ روم</h1>
-          <h2>سامانه چاپ و پرینت آنلاین و ارزان</h2>
+          <h1>سامانه چاپ و پرینت آنلاین و ارزان</h1>
           <p>
             استارت آپ چاپ روم با بهره گیری از دستگاه های صنعتی روز دنیا، خدمات
             چاپ آنلاین را با کیفیت بالا و قیمت باور نکردنی به سراسر کشور ارائه
             می کند.
           </p>
+          <div>
+            <Link href={isUserLoggedIn ? "/dashboard/orders/new" : "/auth"}>
+              <Button varient="gradient">سفارش پرینت</Button>
+            </Link>
+            <Link href="/tariffs">
+              <Button varient="outlined">تعرفه پرینت</Button>
+            </Link>
+          </div>
         </div>
         <div>
           <div className={styles.Steps}>
@@ -107,7 +131,6 @@ export default function Home() {
             </div>
           </div>
           <div className={styles.Images}>
-            <HomeIntroductionBG />
             <div>
               <div>
                 <div>
@@ -128,6 +151,10 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
+        <div>
+          بیشتر بخوانید
+          <ExpandMoreIcon />
         </div>
       </div>
       <div className={styles.Gift}>

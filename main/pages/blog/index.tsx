@@ -38,37 +38,12 @@ export default function Blog() {
             </div>
             <div className={styles.PostFooter}>
               <div>
-                <DateIcon /> <FormattedDate value={new Date()} />
-              </div>
-              <div>
-                <ViewIcon /> <FormattedNumber value={20} />
-              </div>
-              <Button varient="filled">مشاهده بیشتز</Button>
-            </div>
-          </div>
-          <div className={styles.Post}>
-            <div className={styles.PostThumbnail}>
-              <img
-                src="/assets/images/post-thumbnail.jpg"
-                alt="چاپ کتاب با یک کلیک!"
-              />
-            </div>
-            <div className={styles.PostTitle}>چاپ کتاب با یک کلیک!</div>
-            <div className={styles.PostContent}>
-              لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-              استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در
-              ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز
-              و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد کتابهای
-              زیادی در شصت و سه درصد گذشته حال و آینده شناخت فراوان جامعه و
-              متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان
-              رایانه ای علی الخصوص طراحان خلاقی
-            </div>
-            <div className={styles.PostFooter}>
-              <div>
-                <DateIcon /> <FormattedDate value={new Date()} />
-              </div>
-              <div>
-                <ViewIcon /> <FormattedNumber value={20} />
+                <div>
+                  <DateIcon /> <FormattedDate value={new Date()} />
+                </div>
+                <div>
+                  <ViewIcon /> <FormattedNumber value={20} />
+                </div>
               </div>
               <Button varient="filled">مشاهده بیشتز</Button>
             </div>
@@ -92,37 +67,12 @@ export default function Blog() {
             </div>
             <div className={styles.PostFooter}>
               <div>
-                <DateIcon /> <FormattedDate value={new Date()} />
-              </div>
-              <div>
-                <ViewIcon /> <FormattedNumber value={20} />
-              </div>
-              <Button varient="filled">مشاهده بیشتز</Button>
-            </div>
-          </div>
-          <div className={styles.Post}>
-            <div className={styles.PostThumbnail}>
-              <img
-                src="/assets/images/post-thumbnail.jpg"
-                alt="چاپ کتاب با یک کلیک!"
-              />
-            </div>
-            <div className={styles.PostTitle}>چاپ کتاب با یک کلیک!</div>
-            <div className={styles.PostContent}>
-              لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-              استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در
-              ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز
-              و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد کتابهای
-              زیادی در شصت و سه درصد گذشته حال و آینده شناخت فراوان جامعه و
-              متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان
-              رایانه ای علی الخصوص طراحان خلاقی
-            </div>
-            <div className={styles.PostFooter}>
-              <div>
-                <DateIcon /> <FormattedDate value={new Date()} />
-              </div>
-              <div>
-                <ViewIcon /> <FormattedNumber value={20} />
+                <div>
+                  <DateIcon /> <FormattedDate value={new Date()} />
+                </div>
+                <div>
+                  <ViewIcon /> <FormattedNumber value={20} />
+                </div>
               </div>
               <Button varient="filled">مشاهده بیشتز</Button>
             </div>
@@ -146,37 +96,12 @@ export default function Blog() {
             </div>
             <div className={styles.PostFooter}>
               <div>
-                <DateIcon /> <FormattedDate value={new Date()} />
-              </div>
-              <div>
-                <ViewIcon /> <FormattedNumber value={20} />
-              </div>
-              <Button varient="filled">مشاهده بیشتز</Button>
-            </div>
-          </div>
-          <div className={styles.Post}>
-            <div className={styles.PostThumbnail}>
-              <img
-                src="/assets/images/post-thumbnail.jpg"
-                alt="چاپ کتاب با یک کلیک!"
-              />
-            </div>
-            <div className={styles.PostTitle}>چاپ کتاب با یک کلیک!</div>
-            <div className={styles.PostContent}>
-              لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-              استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در
-              ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز
-              و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد کتابهای
-              زیادی در شصت و سه درصد گذشته حال و آینده شناخت فراوان جامعه و
-              متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان
-              رایانه ای علی الخصوص طراحان خلاقی
-            </div>
-            <div className={styles.PostFooter}>
-              <div>
-                <DateIcon /> <FormattedDate value={new Date()} />
-              </div>
-              <div>
-                <ViewIcon /> <FormattedNumber value={20} />
+                <div>
+                  <DateIcon /> <FormattedDate value={new Date()} />
+                </div>
+                <div>
+                  <ViewIcon /> <FormattedNumber value={20} />
+                </div>
               </div>
               <Button varient="filled">مشاهده بیشتز</Button>
             </div>
@@ -200,37 +125,12 @@ export default function Blog() {
             </div>
             <div className={styles.PostFooter}>
               <div>
-                <DateIcon /> <FormattedDate value={new Date()} />
-              </div>
-              <div>
-                <ViewIcon /> <FormattedNumber value={20} />
-              </div>
-              <Button varient="filled">مشاهده بیشتز</Button>
-            </div>
-          </div>
-          <div className={styles.Post}>
-            <div className={styles.PostThumbnail}>
-              <img
-                src="/assets/images/post-thumbnail.jpg"
-                alt="چاپ کتاب با یک کلیک!"
-              />
-            </div>
-            <div className={styles.PostTitle}>چاپ کتاب با یک کلیک!</div>
-            <div className={styles.PostContent}>
-              لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-              استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در
-              ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز
-              و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد کتابهای
-              زیادی در شصت و سه درصد گذشته حال و آینده شناخت فراوان جامعه و
-              متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان
-              رایانه ای علی الخصوص طراحان خلاقی
-            </div>
-            <div className={styles.PostFooter}>
-              <div>
-                <DateIcon /> <FormattedDate value={new Date()} />
-              </div>
-              <div>
-                <ViewIcon /> <FormattedNumber value={20} />
+                <div>
+                  <DateIcon /> <FormattedDate value={new Date()} />
+                </div>
+                <div>
+                  <ViewIcon /> <FormattedNumber value={20} />
+                </div>
               </div>
               <Button varient="filled">مشاهده بیشتز</Button>
             </div>
@@ -254,10 +154,12 @@ export default function Blog() {
             </div>
             <div className={styles.PostFooter}>
               <div>
-                <DateIcon /> <FormattedDate value={new Date()} />
-              </div>
-              <div>
-                <ViewIcon /> <FormattedNumber value={20} />
+                <div>
+                  <DateIcon /> <FormattedDate value={new Date()} />
+                </div>
+                <div>
+                  <ViewIcon /> <FormattedNumber value={20} />
+                </div>
               </div>
               <Button varient="filled">مشاهده بیشتز</Button>
             </div>
@@ -281,10 +183,128 @@ export default function Blog() {
             </div>
             <div className={styles.PostFooter}>
               <div>
-                <DateIcon /> <FormattedDate value={new Date()} />
+                <div>
+                  <DateIcon /> <FormattedDate value={new Date()} />
+                </div>
+                <div>
+                  <ViewIcon /> <FormattedNumber value={20} />
+                </div>
               </div>
+              <Button varient="filled">مشاهده بیشتز</Button>
+            </div>
+          </div>
+          <div className={styles.Post}>
+            <div className={styles.PostThumbnail}>
+              <img
+                src="/assets/images/post-thumbnail.jpg"
+                alt="چاپ کتاب با یک کلیک!"
+              />
+            </div>
+            <div className={styles.PostTitle}>چاپ کتاب با یک کلیک!</div>
+            <div className={styles.PostContent}>
+              لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
+              استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در
+              ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز
+              و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد کتابهای
+              زیادی در شصت و سه درصد گذشته حال و آینده شناخت فراوان جامعه و
+              متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان
+              رایانه ای علی الخصوص طراحان خلاقی
+            </div>
+            <div className={styles.PostFooter}>
               <div>
-                <ViewIcon /> <FormattedNumber value={20} />
+                <div>
+                  <DateIcon /> <FormattedDate value={new Date()} />
+                </div>
+                <div>
+                  <ViewIcon /> <FormattedNumber value={20} />
+                </div>
+              </div>
+              <Button varient="filled">مشاهده بیشتز</Button>
+            </div>
+          </div>
+          <div className={styles.Post}>
+            <div className={styles.PostThumbnail}>
+              <img
+                src="/assets/images/post-thumbnail.jpg"
+                alt="چاپ کتاب با یک کلیک!"
+              />
+            </div>
+            <div className={styles.PostTitle}>چاپ کتاب با یک کلیک!</div>
+            <div className={styles.PostContent}>
+              لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
+              استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در
+              ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز
+              و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد کتابهای
+              زیادی در شصت و سه درصد گذشته حال و آینده شناخت فراوان جامعه و
+              متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان
+              رایانه ای علی الخصوص طراحان خلاقی
+            </div>
+            <div className={styles.PostFooter}>
+              <div>
+                <div>
+                  <DateIcon /> <FormattedDate value={new Date()} />
+                </div>
+                <div>
+                  <ViewIcon /> <FormattedNumber value={20} />
+                </div>
+              </div>
+              <Button varient="filled">مشاهده بیشتز</Button>
+            </div>
+          </div>
+          <div className={styles.Post}>
+            <div className={styles.PostThumbnail}>
+              <img
+                src="/assets/images/post-thumbnail.jpg"
+                alt="چاپ کتاب با یک کلیک!"
+              />
+            </div>
+            <div className={styles.PostTitle}>چاپ کتاب با یک کلیک!</div>
+            <div className={styles.PostContent}>
+              لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
+              استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در
+              ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز
+              و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد کتابهای
+              زیادی در شصت و سه درصد گذشته حال و آینده شناخت فراوان جامعه و
+              متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان
+              رایانه ای علی الخصوص طراحان خلاقی
+            </div>
+            <div className={styles.PostFooter}>
+              <div>
+                <div>
+                  <DateIcon /> <FormattedDate value={new Date()} />
+                </div>
+                <div>
+                  <ViewIcon /> <FormattedNumber value={20} />
+                </div>
+              </div>
+              <Button varient="filled">مشاهده بیشتز</Button>
+            </div>
+          </div>
+          <div className={styles.Post}>
+            <div className={styles.PostThumbnail}>
+              <img
+                src="/assets/images/post-thumbnail.jpg"
+                alt="چاپ کتاب با یک کلیک!"
+              />
+            </div>
+            <div className={styles.PostTitle}>چاپ کتاب با یک کلیک!</div>
+            <div className={styles.PostContent}>
+              لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
+              استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در
+              ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز
+              و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد کتابهای
+              زیادی در شصت و سه درصد گذشته حال و آینده شناخت فراوان جامعه و
+              متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان
+              رایانه ای علی الخصوص طراحان خلاقی
+            </div>
+            <div className={styles.PostFooter}>
+              <div>
+                <div>
+                  <DateIcon /> <FormattedDate value={new Date()} />
+                </div>
+                <div>
+                  <ViewIcon /> <FormattedNumber value={20} />
+                </div>
               </div>
               <Button varient="filled">مشاهده بیشتز</Button>
             </div>

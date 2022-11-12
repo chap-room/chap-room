@@ -32,10 +32,9 @@
     gap: 20px;
     align-items: center;
 
-    @media (max-width: 640px) {
+    @media (max-width: 512px) {
       display: none;
     }
-
 
     .Logo {
       display: inline-flex;
@@ -46,10 +45,6 @@
 
         @media (max-width: 640px) {
           height: 40px;
-        }
-
-        @media (max-width: 512px) {
-          display: none;
         }
       }
     }
@@ -86,6 +81,7 @@
         color: #5e5e5e;
         fill: #5e5e5e;
         white-space: nowrap;
+        font-size: 18px;
   
         &:global(.active) {
           color: #0077b5;
@@ -118,6 +114,7 @@
 
         &:first-child {
           color: #5800b3;
+          fill: #5800b3;
         }
 
         &:last-child {

@@ -4,6 +4,12 @@
   gap: 20px;
   max-width: 1360px;
   margin: 0 auto;
+  box-sizing: border-box;
+  padding: 0 50px;
+
+  @media (max-width: 896px) {
+    padding: 0 30px;
+  }
   
   @media (max-width: 1024px) {
     grid-template-columns: 1fr;
