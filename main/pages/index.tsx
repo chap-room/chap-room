@@ -188,42 +188,52 @@ export default function Home() {
             <div className={styles.Title}>
               از منوی زیر خدمات مورد نظر خود را انتخاب کنید
             </div>
-            <Select
-              value={null}
-              onChange={() => {}}
-              options={{}}
-              varient="shadow-without-bg"
-              placeholder="قطع کتاب"
-              readOnly
-            />
-            <Select
-              value={null}
-              onChange={() => {}}
-              options={{}}
-              varient="shadow-without-bg"
-              placeholder="جنس کاغذ"
-              readOnly
-            />
-            <Select
-              value={null}
-              onChange={() => {}}
-              options={{}}
-              varient="shadow-without-bg"
-              placeholder="نوع صحافی"
-              readOnly
-            />
+            <div className={styles.Input}>
+              <Select
+                value={null}
+                onChange={() => {}}
+                options={{}}
+                varient="shadow-without-bg"
+                placeholder="قطع کتاب"
+                readOnly
+              />
+            </div>
+            <div className={styles.Input}>
+              <Select
+                value={null}
+                onChange={() => {}}
+                options={{}}
+                varient="shadow-without-bg"
+                placeholder="جنس کاغذ"
+                readOnly
+              />
+            </div>
+            <div className={styles.Input}>
+              <Select
+                value={null}
+                onChange={() => {}}
+                options={{}}
+                varient="shadow-without-bg"
+                placeholder="نوع صحافی"
+                readOnly
+              />
+            </div>
             <div className={styles.Row}>
-              <TextInput
-                inputProps={{ type: "number", placeholder: "تعداد صفحه" }}
-                varient="shadow-without-bg"
-              />
-              <TextInput
-                inputProps={{
-                  type: "number",
-                  placeholder: "تیراژ (حداقل 50 نسخه)",
-                }}
-                varient="shadow-without-bg"
-              />
+              <div className={styles.Input}>
+                <TextInput
+                  inputProps={{ type: "number", placeholder: "تعداد صفحه" }}
+                  varient="shadow-without-bg"
+                />
+              </div>
+              <div className={styles.Input}>
+                <TextInput
+                  inputProps={{
+                    type: "number",
+                    placeholder: "تیراژ (حداقل 50 نسخه)",
+                  }}
+                  varient="shadow-without-bg"
+                />
+              </div>
             </div>
             <div className={styles.Row}>
               <div>

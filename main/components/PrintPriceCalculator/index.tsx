@@ -73,7 +73,7 @@ export default function PrintPriceCalculator({
       <div className={styles.Title}>
         از منوی زیر خدمات مورد نظر خود را انتخاب کنید
       </div>
-      <div>
+      <div className={styles.Input}>
         <Select
           varient="shadow-without-bg"
           placeholder="سیاه و سفید / رنگی "
@@ -87,7 +87,7 @@ export default function PrintPriceCalculator({
         />
         <ErrorList errors={formValidation.errors.printSize} />
       </div>
-      <div>
+      <div className={styles.Input}>
         <Select
           varient="shadow-without-bg"
           placeholder="اندازه کاغذ"
@@ -101,7 +101,7 @@ export default function PrintPriceCalculator({
         />
         <ErrorList errors={formValidation.errors.printColor} />
       </div>
-      <div>
+      <div className={styles.Input}>
         <Select
           varient="shadow-without-bg"
           placeholder="یک رو / دو رو"
@@ -115,7 +115,7 @@ export default function PrintPriceCalculator({
         <ErrorList errors={formValidation.errors.printSide} />
       </div>
       <div className={styles.Row}>
-        <div>
+        <div className={styles.Input}>
           <TextInput
             inputProps={{ type: "number", placeholder: "تعداد برگ" }}
             varient="shadow-without-bg"

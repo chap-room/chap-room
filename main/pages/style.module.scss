@@ -495,8 +495,12 @@
           margin-bottom: 30px;
         }
 
-        > div {
-          max-width: unset;
+        .Input {
+          > div:first-child {
+            max-width: unset;
+            height: 48px;
+            border-radius: 24px;
+          }
         }
 
         .Row {

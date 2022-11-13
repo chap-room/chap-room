@@ -16,13 +16,15 @@
     margin-bottom: 30px;
   }
 
-  > div {
+  .Input {
     display: flex;
     flex-direction: column;
     gap: 10px;
 
     > div:first-child {
       max-width: unset;
+      height: 48px;
+      border-radius: 24px;
     }
   }
 

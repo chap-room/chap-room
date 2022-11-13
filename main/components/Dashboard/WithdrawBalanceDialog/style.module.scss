@@ -7,6 +7,9 @@
   > div {
     &.Label {
       color: #9c9c9c;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     &.Input {
