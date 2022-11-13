@@ -29,6 +29,26 @@
     }
   }
 
+  &.InsetShadow {
+    background-color: #f5f5f5;
+
+    &:not(.IsOpen) {
+      box-shadow: inset -3px -3px 6px #ffffffdb, inset 3px 3px 6px #00000029;
+    }
+  }
+
+  &.ShadowWithoutBg {
+    &:not(.IsOpen) {
+      box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
+    }
+  }
+
+  &.InsetShadowWithoutBg {
+    &:not(.IsOpen) {
+      box-shadow: inset -3px -3px 6px #ffffffdb, inset 3px 3px 6px #00000029;
+    }
+  }
+
   .Text {
     flex: 1;
     position: relative;

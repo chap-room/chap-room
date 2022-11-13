@@ -152,7 +152,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div>
+        <div className={styles.ReadMore}>
           بیشتر بخوانید
           <ExpandMoreIcon />
         </div>
@@ -192,7 +192,7 @@ export default function Home() {
               value={null}
               onChange={() => {}}
               options={{}}
-              varient="shadow"
+              varient="shadow-without-bg"
               placeholder="قطع کتاب"
               readOnly
             />
@@ -200,7 +200,7 @@ export default function Home() {
               value={null}
               onChange={() => {}}
               options={{}}
-              varient="shadow"
+              varient="shadow-without-bg"
               placeholder="جنس کاغذ"
               readOnly
             />
@@ -208,21 +208,21 @@ export default function Home() {
               value={null}
               onChange={() => {}}
               options={{}}
-              varient="shadow"
+              varient="shadow-without-bg"
               placeholder="نوع صحافی"
               readOnly
             />
             <div className={styles.Row}>
               <TextInput
                 inputProps={{ type: "number", placeholder: "تعداد صفحه" }}
-                varient="shadow"
+                varient="shadow-without-bg"
               />
               <TextInput
                 inputProps={{
                   type: "number",
                   placeholder: "تیراژ (حداقل 50 نسخه)",
                 }}
-                varient="shadow"
+                varient="shadow-without-bg"
               />
             </div>
             <div className={styles.Row}>
@@ -338,6 +338,7 @@ export default function Home() {
             <div>
               <TextInput
                 inputProps={{ type: "number", placeholder: "09xxxxxxxxx" }}
+                varient="shadow"
                 value={cooperationPhoneNumber}
                 onChange={(newValue) =>
                   setCooperationPhoneNumber(newValue.substring(0, 11))

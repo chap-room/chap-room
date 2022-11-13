@@ -75,7 +75,7 @@ export default function PrintPriceCalculator({
       </div>
       <div>
         <Select
-          varient="shadow"
+          varient="shadow-without-bg"
           placeholder="سیاه و سفید / رنگی "
           value={printSize}
           onChange={setPrintSize}
@@ -89,7 +89,7 @@ export default function PrintPriceCalculator({
       </div>
       <div>
         <Select
-          varient="shadow"
+          varient="shadow-without-bg"
           placeholder="اندازه کاغذ"
           options={{
             blackAndWhite: "سیاه و سفید",
@@ -103,7 +103,7 @@ export default function PrintPriceCalculator({
       </div>
       <div>
         <Select
-          varient="shadow"
+          varient="shadow-without-bg"
           placeholder="یک رو / دو رو"
           options={{
             singleSided: "یک رو",
@@ -118,7 +118,7 @@ export default function PrintPriceCalculator({
         <div>
           <TextInput
             inputProps={{ type: "number", placeholder: "تعداد برگ" }}
-            varient="shadow"
+            varient="shadow-without-bg"
             value={countOfPages}
             onChange={setCountOfPages}
           />

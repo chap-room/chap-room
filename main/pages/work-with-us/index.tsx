@@ -2,6 +2,7 @@ import styles from "./style.module.scss";
 import { ReactElement } from "react";
 import Head from "next/head";
 import Layout from "@/main/components/Layout";
+import ExpandMoreIcon from "@/shared/assets/icons/expandMore.svg";
 import HappyPeopleImage from "@/main/assets/images/happyPeople.svg";
 import MobileMarketingImage from "@/main/assets/images/mobileMarketing.svg";
 import SocialMediaImage from "@/main/assets/images/socialMedia.svg";
@@ -28,6 +29,10 @@ export default function WorkWithUs() {
         <div>
           <HappyPeopleImage />
         </div>
+      </div>
+      <div className={styles.ReadMore}>
+        بیشتر بخوانید
+        <ExpandMoreIcon />
       </div>
       <div className={styles.Section}>
         <h1>پنل بازاریابی برای چه کسانی مناسب است؟</h1>

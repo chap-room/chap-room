@@ -5,7 +5,12 @@ interface ContentSelectProps {
   options: string[];
   value: string | null;
   onChange: (newValue: any) => void;
-  varient?: "outlined" | "shadow";
+  varient?:
+    | "outlined"
+    | "shadow"
+    | "inset-shadow"
+    | "shadow-without-bg"
+    | "inset-shadow-without-bg";
   readOnly?: boolean;
 }
 

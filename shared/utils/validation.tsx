@@ -106,7 +106,8 @@ export function validatePhoneNumber(): Validator {
 
 export function validateNotEmpty(options?: { message?: string }): Validator {
   return (value: any) => {
-    if (!value) return options?.message || "نباید خالی باشد";
+    if (Array.isArray(value) ? !value.length : !value)
+      return options?.message || "نباید خالی باشد";
   };
 }
 

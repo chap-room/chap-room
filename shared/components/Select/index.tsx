@@ -26,7 +26,12 @@ interface SelectProps {
   options: Record<string, string>;
   value: string | null;
   onChange: (newValue: any) => void;
-  varient?: "outlined" | "shadow";
+  varient?:
+    | "outlined"
+    | "shadow"
+    | "inset-shadow"
+    | "shadow-without-bg"
+    | "inset-shadow-without-bg";
   readOnly?: boolean;
 }
 
@@ -150,6 +155,15 @@ export default function Select({
     case "shadow":
       selectClassName.push(styles.Shadow);
       break;
+    case "inset-shadow":
+      selectClassName.push(styles.InsetShadow);
+      break;
+    case "shadow-without-bg":
+      selectClassName.push(styles.ShadowWithoutBg);
+      break;
+    case "inset-shadow-without-bg":
+      selectClassName.push(styles.InsetShadowWithoutBg);
+      break;
   }
   if (readOnly) {
     selectClassName.push(styles.ReadOnly);
@@ -164,6 +178,9 @@ export default function Select({
       dropdownClassName.push(styles.Outlined);
       break;
     case "shadow":
+    case "inset-shadow":
+    case "shadow-without-bg":
+    case "inset-shadow-without-bg":
       dropdownClassName.push(styles.Shadow);
       break;
   }

@@ -1,4 +1,3 @@
-// import styles from "./style.module.scss";
 import "chart.js/auto";
 import { ChartArea, ChartData } from "chart.js/auto";
 import { useEffect, useRef, useState } from "react";

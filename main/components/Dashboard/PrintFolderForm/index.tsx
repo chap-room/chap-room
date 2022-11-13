@@ -106,12 +106,14 @@ export default function PrintFolderForm({
 
   const step1FormValidation = useValidation(
     {
+      printFiles: [validateNotEmpty()],
       printColor: [validateNotEmpty()],
       printSize: [validateNotEmpty()],
       printSide: [validateNotEmpty()],
       countOfPages: [validateInt({ unsigned: true, min: 1 })],
     },
     {
+      printFiles,
       printColor,
       printSize,
       printSide,
@@ -255,7 +257,7 @@ export default function PrintFolderForm({
                     <div>
                       <div>
                         <Select
-                          varient="shadow"
+                          varient="shadow-without-bg"
                           placeholder="سیاه و سفید / رنگی "
                           options={{
                             blackAndWhite: "سیاه و سفید",
@@ -271,7 +273,7 @@ export default function PrintFolderForm({
                       </div>
                       <div>
                         <Select
-                          varient="shadow"
+                          varient="shadow-without-bg"
                           placeholder="اندازه کاغذ"
                           options={{
                             a4: "A4",
@@ -287,7 +289,7 @@ export default function PrintFolderForm({
                       </div>
                       <div>
                         <Select
-                          varient="shadow"
+                          varient="shadow-without-bg"
                           placeholder="یک رو / دو رو"
                           options={{
                             singleSided: "یک رو",
@@ -307,7 +309,7 @@ export default function PrintFolderForm({
                               type: "number",
                               placeholder: "تعداد برگ",
                             }}
-                            varient="shadow"
+                            varient="shadow-without-bg"
                             value={countOfPages}
                             onChange={setCountOfPages}
                           />
@@ -421,7 +423,7 @@ export default function PrintFolderForm({
                                     type: "number",
                                     placeholder: "تعداد",
                                   }}
-                                  varient="shadow"
+                                  varient="shadow-without-bg"
                                   value={countOfFiles}
                                   onChange={setCountOfFiles}
                                   readOnly={bindingMethod !== "countOfFiles"}
@@ -493,7 +495,7 @@ export default function PrintFolderForm({
                             type: "number",
                             placeholder: "تعداد کپی ها",
                           }}
-                          varient="shadow"
+                          varient="shadow-without-bg"
                           value={countOfCopies}
                           onChange={setCountOfCopies}
                         />
@@ -508,7 +510,10 @@ export default function PrintFolderForm({
                   start={
                     <DataLoader
                       load={() => {
-                        if (step2FormValidation.isValid) {
+                        if (
+                          step1FormValidation.isValid &&
+                          step2FormValidation.isValid
+                        ) {
                           const abortController = new AbortController();
                           return [
                             calculatePrintFolderPrice(

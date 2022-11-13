@@ -54,7 +54,7 @@ export default function WithdrawBalanceDialog({
               type: "number",
               placeholder: "شماره شبا",
             }}
-            varient="shadow"
+            varient="shadow-without-bg"
             value={iban}
             onChange={(newValue) => setIban(newValue.substring(0, 24))}
           />
@@ -64,7 +64,7 @@ export default function WithdrawBalanceDialog({
         <div className={styles.Input}>
           <TextInput
             inputProps={{ placeholder: "صاحب حساب" }}
-            varient="shadow"
+            varient="shadow-without-bg"
             value={accountHolderName}
             onChange={setAccountHolder}
           />

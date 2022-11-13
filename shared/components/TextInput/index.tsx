@@ -6,7 +6,7 @@ interface TextInputProps {
   value?: string;
   suffix?: ReactNode;
   onChange?: (newValue: string) => void;
-  varient?: "outlined" | "shadow";
+  varient?: "outlined" | "shadow" | "shadow-without-bg";
   boxProps?: InputHTMLAttributes<HTMLDivElement>;
   inputProps?: InputHTMLAttributes<HTMLInputElement>;
   inputRef?: Ref<HTMLInputElement>;
@@ -35,6 +35,9 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
         break;
       case "shadow":
         className.push(styles.Shadow);
+        break;
+      case "shadow-without-bg":
+        className.push(styles.ShadowWithoutBg);
         break;
     }
     if (readOnly) {

@@ -2,6 +2,7 @@ import styles from "./style.module.scss";
 import { ReactElement } from "react";
 import Head from "next/head";
 import Layout from "@/main/components/Layout";
+import ExpandMoreIcon from "@/shared/assets/icons/expandMore.svg";
 import HappyPeopleImage from "@/main/assets/images/happyPeople.svg";
 import PrintImage from "@/main/assets/images/print.svg";
 import OnlineOrderImage from "@/main/assets/images/onlineOrder.svg";
@@ -34,6 +35,10 @@ export default function AboutUs() {
             باید از بابت کیفیت و امنیت کار راحت باشد.
           </p>
         </div>
+      </div>
+      <div className={styles.ReadMore}>
+        بیشتر بخوانید
+        <ExpandMoreIcon />
       </div>
       <div className={styles.Section1}>
         <div>

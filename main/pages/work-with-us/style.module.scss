@@ -20,6 +20,7 @@
     grid-template-columns: 1fr 1fr;
     gap: 30px;
     align-items: center;
+    margin-bottom: -100px;
 
     @media (max-width: 896px) {
       grid-template-columns: 1fr;
@@ -51,6 +52,21 @@
         max-width: 512px;
         margin: 0 auto;
       }
+    }
+  }
+    
+  .ReadMore {
+    grid-column: span 3;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 16px;
+    color: #8770b8;
+    fill: #8770b8;
+
+    @media (max-width: 1024px) {
+      grid-column: unset;
     }
   }
 

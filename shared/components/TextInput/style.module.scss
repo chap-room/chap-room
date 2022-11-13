@@ -25,6 +25,10 @@
     box-shadow: inset -3px -3px 6px #ffffffdb, inset 3px 3px 6px #00000029;
   }
 
+  &.ShadowWithoutBg {
+    box-shadow: inset -3px -3px 6px #ffffffdb, inset 3px 3px 6px #00000029;
+  }
+
   > input {
     background: transparent;
     border: none;

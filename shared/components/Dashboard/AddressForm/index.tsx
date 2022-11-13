@@ -126,7 +126,7 @@ export default function AddressForm({
             <ContentSelect
               placeholder="استان"
               options={Object.keys(iranProvincesAndCities)}
-              varient={inputsVarient}
+              varient={inputsVarient === "outlined" ? "outlined" : "inset-shadow"}
               value={recipientDeliveryProvince}
               onChange={(newValue) => {
                 setRecipientDeliveryProvince(newValue);
@@ -141,7 +141,7 @@ export default function AddressForm({
               options={
                 iranProvincesAndCities[recipientDeliveryProvince || ""] || []
               }
-              varient={inputsVarient}
+              varient={inputsVarient === "outlined" ? "outlined" : "inset-shadow"}
               value={recipientDeliveryCity}
               onChange={(newValue) => setRecipientDeliveryCity(newValue)}
               readOnly={
