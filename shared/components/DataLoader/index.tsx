@@ -26,11 +26,15 @@ export default function DataLoader<DT>({
   reloadRef,
   children,
 }: PropsWithChildren<DataLoaderProps<DT>>) {
+  const [isFirstRender, setIsFirstRender] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
   function fetchData() {
-    if (isLoading) return;
+    if (!isFirstRender && isLoading) {
+      if (isFirstRender) setIsFirstRender(false);
+      return;
+    }
     
     const funcReturn = load();
     if (funcReturn) {
