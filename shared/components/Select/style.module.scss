@@ -72,6 +72,10 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+
+        &.Placeholder {
+          color: #9c9c9c;
+        }
       }
     }
   }
@@ -112,7 +116,7 @@
     > div {
       box-sizing: border-box;
       padding: 0 15px;
-      height: 35px;
+      height: 40px;
       display: flex;
       flex-direction: row;
       align-items: center;

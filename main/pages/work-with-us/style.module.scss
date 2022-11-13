@@ -20,24 +20,45 @@
     grid-template-columns: 1fr 1fr;
     gap: 30px;
     align-items: center;
-    margin-bottom: -100px;
 
     @media (max-width: 896px) {
       grid-template-columns: 1fr;
-      text-align: center;
+      gap: 50px;
     }
 
     > div:first-child {
       > h1 {
         margin: 0;
-        margin-bottom: 20px;
+        margin-bottom: 50px;
         color: #5800b3;
+        font-size: 48px;
+    
+        @media (max-width: 896px) {
+          text-align: center;
+          font-size: 32px;
+          margin-bottom: 30px;
+        }
+
+        @media (max-width: 512px) {
+          font-size: 22px;
+          margin-bottom: 20px;
+        }
       }
 
       > p {
         color: #464646;
-        font-size: 16px;
-        line-height: 30px;
+        line-height: 1.8;
+        text-align: justify;
+        font-size: 18px;
+    
+        @media (max-width: 896px) {
+          text-align-last: center;
+          font-size: 16px;
+        }
+
+        @media (max-width: 512px) {
+          font-size: 14px;
+        }
       }
     }
 
@@ -57,13 +78,17 @@
     
   .ReadMore {
     grid-column: span 3;
-    margin-top: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
     font-size: 16px;
     color: #8770b8;
     fill: #8770b8;
+    margin-top: -50px;
+
+    @media (max-width: 896px) {
+      margin-top: 0;
+    }
 
     @media (max-width: 1024px) {
       grid-column: unset;
@@ -77,6 +102,11 @@
     > h1 {
       text-align: center;
       color: #5800b3;
+      font-size: 30px;
+
+      @media (max-width: 512px) {
+        font-size: 22px;
+      }
     }
 
     > div {
@@ -84,6 +114,7 @@
       grid-template-columns: 1fr 1fr;
       gap: 30px;
       align-items: center;
+      text-align: justify;
 
       @media (max-width: 896px) {
         grid-template-columns: 1fr;
@@ -91,8 +122,12 @@
 
       > div:first-child {
         color: #464646;
+        line-height: 1.8;
         font-size: 16px;
-        line-height: 30px;
+  
+        @media (max-width: 512px) {
+          font-size: 14px;
+        }
       }
 
       > div:last-child {
@@ -124,12 +159,12 @@
       max-width: 700px;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr 1fr;
-      row-gap: 30px;
-      column-gap: 10px;
+      gap: 30px;
       position: relative;
 
       @media (max-width: 512px) {
         grid-template-columns: 1fr 1fr;
+        column-gap: 10px;
       }
 
       > div {
@@ -150,6 +185,15 @@
           align-items: center;
           box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
           margin-bottom: 10px;
+        }
+
+        > div:last-child {
+          color: #464646;
+          font-size: 16px;
+    
+          @media (max-width: 512px) {
+            font-size: 14px;
+          }
         }
       }
     }

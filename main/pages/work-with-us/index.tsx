@@ -85,7 +85,7 @@ export default function WorkWithUs() {
               <FormattedNumber value={0.1} style="percent" /> از مبلغ سفارش به
               کیف پول شما واریز می‌گردد.
             </p>
-            <p>.توجه : فروش پکیج‌ها در پنل بازاریابی لحاظ نمیگردد *</p>
+            <p>* توجه: فروش پکیج‌ها در پنل بازاریابی لحاظ نمیگردد.</p>
           </div>
           <div>
             <MarketingBenefitImage />

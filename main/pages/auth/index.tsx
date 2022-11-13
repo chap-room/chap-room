@@ -1,10 +1,9 @@
 import styles from "./style.module.scss";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
-import { isLoggedIn, login } from "@/main/api";
+import { isLoggedIn } from "@/main/api";
 import LogoWithName from "@/shared/assets/images/logoWithName.svg";
 import ArrowForwardIcon from "@/shared/assets/icons/arrowForward.svg";
 import Image from "@/main/assets/images/auth.svg";

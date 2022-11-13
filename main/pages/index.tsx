@@ -92,7 +92,7 @@ export default function Home() {
           <p>
             استارت آپ چاپ روم با بهره گیری از دستگاه های صنعتی روز دنیا، خدمات
             چاپ آنلاین را با کیفیت بالا و قیمت باور نکردنی به سراسر کشور ارائه
-            می کند.
+            میکند.
           </p>
           <div>
             <Link href={isUserLoggedIn ? "/dashboard/orders/new" : "/auth"}>

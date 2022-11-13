@@ -44,25 +44,17 @@ export default function Select({
   readOnly,
 }: SelectProps) {
   const listElementsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const listValueRef = useRef<(string | null)[]>(
-    placeholder ? [null, ...Object.keys(options)] : Object.keys(options)
-  );
-  const listLabelsRef = useRef<string[]>(
-    placeholder
-      ? [placeholder, ...Object.values(options)]
-      : Object.values(options)
-  );
+  const listValueRef = useRef<string[]>([]);
+  const listLabelsRef = useRef<string[]>([]);
 
   useMemo(() => {
     const newListElements: (HTMLDivElement | null)[] = [];
-    const newListValue: (string | null)[] = placeholder ? [null] : [];
-    const newListLabels: string[] = placeholder ? [placeholder] : [];
+    const newListValue: string[] = [];
+    const newListLabels: string[] = [];
 
     const existingElements: Record<string, HTMLDivElement | null> = {};
     listValueRef.current.forEach((itemValue, index) => {
-      if (itemValue !== null) {
-        existingElements[itemValue] = listElementsRef.current[index];
-      }
+      existingElements[itemValue] = listElementsRef.current[index];
     });
 
     Object.entries(options).forEach(([itemValue, itemLabel]) => {
@@ -76,10 +68,11 @@ export default function Select({
     listElementsRef.current = newListElements;
     listValueRef.current = newListValue;
     listLabelsRef.current = newListLabels;
-  }, [options, placeholder]);
+  }, [options]);
 
   const [open, setOpen] = useState(false);
-  const selectedIndex = Math.max(0, listValueRef.current.indexOf(value));
+  const selectedIndex =
+    value !== null ? Math.max(0, listValueRef.current.indexOf(value)) : value;
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [pointer, setPointer] = useState(false);
 
@@ -124,13 +117,7 @@ export default function Select({
         listRef: listLabelsRef,
         onMatch: open
           ? setActiveIndex
-          : (index) => {
-              if (placeholder) {
-                onChange(listValueRef.current[index]);
-              } else {
-                onChange(listValueRef.current[index]!);
-              }
-            },
+          : (index) => onChange(listValueRef.current[index]),
         activeIndex,
         selectedIndex,
       }),
@@ -219,7 +206,11 @@ export default function Select({
       >
         <div className={styles.Text}>
           <div>
-            <div>{listLabelsRef.current[selectedIndex]}</div>
+            {selectedIndex !== null ? (
+              <div>{listLabelsRef.current[selectedIndex]}</div>
+            ) : (
+              <div className={styles.Placeholder}>{placeholder}</div>
+            )}
           </div>
         </div>
         <ExpandMoreIcon className={styles.ExpandMore} />

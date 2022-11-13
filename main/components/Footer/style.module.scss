@@ -138,6 +138,8 @@
       }
 
       .AnoutUs {
+        text-align: justify;
+        
         @media (max-width: 768px) {
           grid-column: span 2;
         }

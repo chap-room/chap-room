@@ -50,27 +50,22 @@ export default function Footer() {
               <h3>راهنما</h3>
               <ul>
                 <li>
-                  <Link href="/">
-                    <a>راهنمای ثبت نام</a>
+                  <Link href="/blog">
+                    <a>وبلاگ</a>
                   </Link>
                 </li>
                 <li>
+                  <Link href="/terms-and-conditions">
+                    <a>قوانین و مقررات</a>
+                  </Link>
+                </li>
+                <li>{/* TODO */}
                   <Link href="/">
-                    <a>ویدیو راهنمای خرید</a>
+                    <a>راهنمای ثبت سفارش</a>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/">
-                    <a>روند ارسال پستی</a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <a>حریم خصوصی</a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
+                  <Link href="/faq">
                     <a>پاسخ به پرسش‌های متداول</a>
                   </Link>
                 </li>
