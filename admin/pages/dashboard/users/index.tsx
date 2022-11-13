@@ -1,4 +1,4 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
@@ -45,7 +45,7 @@ export default function DashboardUserList() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
 
-  const [reload, setRelaod] = useState(true);
+  const reloadRef = useRef<(() => void) | null>(null);
 
   return (
     <>
@@ -85,14 +85,10 @@ export default function DashboardUserList() {
           }
         />
         <DataLoader
-          load={() => {
-            if (reload) {
-              setRelaod(false);
-              return getUsers(search, page);
-            }
-          }}
-          deps={[reload]}
+          load={() => getUsers(search, page)}
+          deps={[search, page]}
           setData={setData}
+          reloadRef={reloadRef}
         >
           <UserTable
             users={data.users}
@@ -129,7 +125,7 @@ export default function DashboardUserList() {
                 .then((message) => {
                   toast.success(message);
                   setPendingUserDeleteRequest(null);
-                  setRelaod(true);
+                  if (reloadRef.current) reloadRef.current();
                 })
                 .catch(toast.error)
             }

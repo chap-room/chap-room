@@ -1,4 +1,4 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
@@ -32,7 +32,7 @@ export default function DashboardAddresseList() {
     number | null
   >(null);
 
-  const [reload, setRelaod] = useState(true);
+  const reloadRef = useRef<(() => void) | null>(null);
 
   return (
     <>
@@ -66,14 +66,10 @@ export default function DashboardAddresseList() {
           }
         />
         <DataLoader
-          load={() => {
-            if (reload) {
-              setRelaod(false);
-              return getAddresses(page);
-            }
-          }}
-          deps={[reload]}
+          load={() => getAddresses(page)}
+          deps={[page]}
           setData={setData}
+          reloadRef={reloadRef}
         >
           <AddressList
             addresses={data.addresses}
@@ -96,7 +92,7 @@ export default function DashboardAddresseList() {
               .then((message) => {
                 toast.success(message);
                 setPendingDeleteRequest(null);
-                setRelaod(true);
+                if (reloadRef.current) reloadRef.current();
               })
               .catch(toast.error)
           }

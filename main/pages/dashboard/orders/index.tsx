@@ -1,4 +1,4 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
@@ -34,7 +34,7 @@ export default function DashboardOrderList() {
     number | null
   >(null);
 
-  const [reload, setRelaod] = useState(true);
+  const reloadRef = useRef<(() => void) | null>(null);
 
   return (
     <>
@@ -68,14 +68,10 @@ export default function DashboardOrderList() {
           }
         />
         <DataLoader
-          load={() => {
-            if (reload) {
-              setRelaod(false);
-              return getOrders(page);
-            }
-          }}
-          deps={[reload]}
+          load={() => getOrders(page)}
+          deps={[page]}
           setData={setData}
+          reloadRef={reloadRef}
         >
           <OrderTable
             orders={data.orders}
@@ -94,8 +90,8 @@ export default function DashboardOrderList() {
               cancelOrder(pendingOrderCancelRequest!)
                 .then((message) => {
                   toast.success(message);
-                  setRelaod(true);
                   setPendingOrderCancelRequest(null);
+                  if (reloadRef.current) reloadRef.current();
                 })
                 .catch(toast.error)
             }

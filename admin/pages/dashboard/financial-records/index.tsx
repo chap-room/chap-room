@@ -1,4 +1,4 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
@@ -38,7 +38,7 @@ export default function DashboardFinancialRecordList() {
     setPendingFinancialRecordCodeDeleteRequest,
   ] = useState<number | null>(null);
 
-  const [reload, setRelaod] = useState(true);
+  const reloadRef = useRef<(() => void) | null>(null);
 
   return (
     <>
@@ -78,14 +78,10 @@ export default function DashboardFinancialRecordList() {
           }
         />
         <DataLoader
-          load={() => {
-            if (reload) {
-              setRelaod(false);
-              return getFinancialRecords(search, page, null);
-            }
-          }}
-          deps={[reload]}
+          load={() => getFinancialRecords(search, page, null)}
+          deps={[search, page]}
           setData={setData}
+          reloadRef={reloadRef}
         >
           <FinancialRecordTable
             financialRecords={data.records}
@@ -110,7 +106,7 @@ export default function DashboardFinancialRecordList() {
                 .then((message) => {
                   toast.success(message);
                   setPendingFinancialRecordCodeDeleteRequest(null);
-                  setRelaod(true);
+                  if (reloadRef.current) reloadRef.current();
                 })
                 .catch(toast.error)
             }

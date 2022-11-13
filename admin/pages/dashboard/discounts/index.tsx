@@ -1,4 +1,4 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
@@ -33,7 +33,7 @@ export default function DashboardDiscountList() {
     number | null
   >(null);
 
-  const [reload, setRelaod] = useState(true);
+  const reloadRef = useRef<(() => void) | null>(null);
 
   return (
     <>
@@ -68,14 +68,10 @@ export default function DashboardDiscountList() {
           }
         />
         <DataLoader
-          load={() => {
-            if (reload) {
-              setRelaod(false);
-              return getDiscounts(search, page);
-            }
-          }}
-          deps={[reload]}
+          load={() => getDiscounts(search, page)}
+          deps={[search, page]}
           setData={setData}
+          reloadRef={reloadRef}
         >
           <DiscountTable
             discounts={data.discounts}
@@ -97,7 +93,7 @@ export default function DashboardDiscountList() {
                 .then((message) => {
                   toast.success(message);
                   setPendingDeleteRequest(null);
-                  setRelaod(true);
+                  if (reloadRef.current) reloadRef.current();
                 })
                 .catch(toast.error)
             }

@@ -1,5 +1,10 @@
 import styles from "./style.module.scss";
-import { PropsWithChildren, useEffect, useState } from "react";
+import {
+  MutableRefObject,
+  PropsWithChildren,
+  useEffect,
+  useState,
+} from "react";
 import toast from "react-hot-toast";
 import Button from "@/shared/components/Button";
 import Loader from "@/shared/components/Loader";
@@ -10,6 +15,7 @@ interface DataLoaderProps<DT> {
   setData: (data: DT) => void;
   deps?: unknown[];
   size?: "small" | "larg";
+  reloadRef?: MutableRefObject<(() => void) | null>;
 }
 
 export default function DataLoader<DT>({
@@ -17,12 +23,15 @@ export default function DataLoader<DT>({
   setData,
   deps = [],
   size = "larg",
+  reloadRef,
   children,
 }: PropsWithChildren<DataLoaderProps<DT>>) {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
   function fetchData() {
+    if (isLoading) return;
+    
     const funcReturn = load();
     if (funcReturn) {
       setIsLoading(true);
@@ -48,6 +57,8 @@ export default function DataLoader<DT>({
   }
 
   useEffect(fetchData, deps);
+
+  if (reloadRef) reloadRef.current = fetchData;
 
   if (isLoading) return size === "small" ? <SmallLoader /> : <Loader />;
 

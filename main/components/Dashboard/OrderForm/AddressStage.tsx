@@ -1,5 +1,5 @@
 import styles from "./style.module.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { Address } from "@/shared/types";
 import { deleteAddress, getAddresses } from "@/main/api";
@@ -36,18 +36,13 @@ export default function AddressStage({
     if (selectedAddressId === null && data[0]) setSelectedAddressId(data[0].id);
   }, [data]);
 
-  const [reload, setRelaod] = useState(true);
+  const reloadRef = useRef<(() => void) | null>(null);
 
   return (
     <DataLoader
-      load={() => {
-        if (reload) {
-          setRelaod(false);
-          return getAddresses(0);
-        }
-      }}
-      deps={[reload]}
+      load={() => getAddresses(0)}
       setData={({ addresses }) => setData(addresses)}
+      reloadRef={reloadRef}
     >
       <div className={styles.AddressSelect}>
         {data.map((address) => (
@@ -74,7 +69,7 @@ export default function AddressStage({
             .then((message) => {
               toast.success(message);
               setPendingAddressDeleteRequest(null);
-              setRelaod(true);
+              if (reloadRef.current) reloadRef.current();
             })
             .catch(toast.error)
         }

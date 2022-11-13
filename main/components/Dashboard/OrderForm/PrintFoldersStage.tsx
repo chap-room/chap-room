@@ -1,5 +1,5 @@
 import styles from "./style.module.scss";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { PrintFolder } from "@/shared/types";
 import { deletePrintFolder, getPrintFolders } from "@/main/api";
@@ -24,17 +24,12 @@ export default function PrintFoldersStage({ actions }: PrintFoldersStageProps) {
   const [pendingPrintFolderDeleteRequest, setPendingPrintFolderDeleteRequest] =
     useState<number | null>(null);
 
-  const [reload, setRelaod] = useState(true);
+  const reloadRef = useRef<(() => void) | null>(null);
 
   return (
     <DataLoader
-      load={() => {
-        if (reload) {
-          setRelaod(false);
-          return getPrintFolders();
-        }
-      }}
-      deps={[reload]}
+      load={() => getPrintFolders()}
+      reloadRef={reloadRef}
       setData={setData}
     >
       <div className={styles.PrintFolder}>
@@ -53,7 +48,7 @@ export default function PrintFoldersStage({ actions }: PrintFoldersStageProps) {
               .then((message) => {
                 toast.success(message);
                 setPendingPrintFolderDeleteRequest(null);
-                setRelaod(true);
+                if (reloadRef.current) reloadRef.current();
               })
               .catch(toast.error)
           }

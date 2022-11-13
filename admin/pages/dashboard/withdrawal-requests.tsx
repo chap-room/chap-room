@@ -1,4 +1,4 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import { WithdrawalRequest } from "@/shared/types";
@@ -41,7 +41,7 @@ export default function DashboardWithdrawalRequests() {
     setPendingWithdrawalRequestRejectRequest,
   ] = useState<number | null>(null);
 
-  const [reload, setRelaod] = useState(true);
+  const reloadRef = useRef<(() => void) | null>(null);
 
   return (
     <>
@@ -76,14 +76,10 @@ export default function DashboardWithdrawalRequests() {
         />
         <MobileContentHeader backTo="/dashboard" title="همه درخواست ها" />
         <DataLoader
-          load={() => {
-            if (reload) {
-              setRelaod(false);
-              return getWithdrawalRequests(search, page);
-            }
-          }}
-          deps={[reload]}
+          load={() => getWithdrawalRequests(search, page)}
+          deps={[search, page]}
           setData={setData}
+          reloadRef={reloadRef}
         >
           <WithdrawalRequestTable
             withdrawalRequests={data.withdrawals}
@@ -105,7 +101,7 @@ export default function DashboardWithdrawalRequests() {
                 .then((message) => {
                   toast.success(message);
                   setPendingWithdrawalRequestDoneRequest(null);
-                  setRelaod(true);
+                  if (reloadRef.current) reloadRef.current();
                 })
                 .catch(toast.error)
             }
@@ -121,7 +117,7 @@ export default function DashboardWithdrawalRequests() {
                 .then((message) => {
                   toast.success(message);
                   setPendingWithdrawalRequestRejectRequest(null);
-                  setRelaod(true);
+                  if (reloadRef.current) reloadRef.current();
                 })
                 .catch(toast.error)
             }

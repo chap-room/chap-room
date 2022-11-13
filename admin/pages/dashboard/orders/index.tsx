@@ -1,4 +1,4 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -45,7 +45,7 @@ export default function DashboardOrderList() {
   const [pendingMarkOrderSentRequest, setPendingMarkOrderSentRequest] =
     useState<number | null>(null);
 
-  const [reload, setRelaod] = useState(true);
+  const reloadRef = useRef<(() => void) | null>(null);
 
   return (
     <>
@@ -88,14 +88,10 @@ export default function DashboardOrderList() {
         />
         <MobileContentHeader backTo="/dashboard" title="همه سفارش ها" />
         <DataLoader
-          load={() => {
-            if (reload) {
-              setRelaod(false);
-              return getOrders(search, page);
-            }
-          }}
-          deps={[reload]}
+          load={() => getOrders(search, page)}
+          deps={[search, page]}
           setData={setData}
+          reloadRef={reloadRef}
         >
           <OrderTable
             orders={data.orders}
@@ -118,7 +114,7 @@ export default function DashboardOrderList() {
                 .then((message) => {
                   toast.success(message);
                   setPendingOrderCancelRequest(null);
-                  setRelaod(true);
+                  if (reloadRef.current) reloadRef.current();
                 })
                 .catch(toast.error)
             }
@@ -133,7 +129,7 @@ export default function DashboardOrderList() {
                 .then((message) => {
                   toast.success(message);
                   setPendingOrderConfirmRequest(null);
-                  setRelaod(true);
+                  if (reloadRef.current) reloadRef.current();
                 })
                 .catch(toast.error)
             }
@@ -148,7 +144,7 @@ export default function DashboardOrderList() {
                 .then((message) => {
                   toast.success(message);
                   setPendingMarkOrderSentRequest(null);
-                  setRelaod(true);
+                  if (reloadRef.current) reloadRef.current();
                 })
                 .catch(toast.error)
             }

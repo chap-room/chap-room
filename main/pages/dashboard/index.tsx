@@ -1,5 +1,5 @@
 import styles from "./style.module.scss";
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -55,7 +55,7 @@ export default function DashboardMain() {
     number | null
   >(null);
 
-  const [reload, setRelaod] = useState(true);
+  const reloadRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     if (router.isReady) {
@@ -78,14 +78,9 @@ export default function DashboardMain() {
       </Head>
       <SectionHeader title="داشبورد" />
       <DataLoader
-        load={() => {
-          if (reload) {
-            setRelaod(false);
-            return getDashboard();
-          }
-        }}
-        deps={[reload]}
+        load={() => getDashboard()}
         setData={setData}
+        reloadRef={reloadRef}
       >
         <div className={styles.NonMobile}>
           <div className={styles.ContentContainer}>
@@ -195,7 +190,7 @@ export default function DashboardMain() {
                     .then((message) => {
                       toast.success(message);
                       setPendingOrderCancelRequest(null);
-                      setRelaod(true);
+                      if (reloadRef.current) reloadRef.current();
                     })
                     .catch(toast.error)
                 }

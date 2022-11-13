@@ -79,6 +79,11 @@
         @media (max-width: 896px) {
           display: none;
         }
+
+        > button {
+          width: 100%;
+          max-width: 170px;
+        }
       }
     }
     
@@ -819,7 +824,8 @@
       max-width: 1360px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: grid;
+      grid-template-columns: 30% 70%;
       gap: 30px;
       align-items: center;
 

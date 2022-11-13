@@ -1,4 +1,4 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
@@ -39,7 +39,7 @@ export default function DashboardAdminList() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
 
-  const [reload, setRelaod] = useState(true);
+  const reloadRef = useRef<(() => void) | null>(null);
 
   return (
     <>
@@ -79,14 +79,10 @@ export default function DashboardAdminList() {
           }
         />
         <DataLoader
-          load={() => {
-            if (reload) {
-              setRelaod(false);
-              return getAdmins(search, page);
-            }
-          }}
-          deps={[reload]}
+          load={() => getAdmins(search, page)}
+          deps={[search, page]}
           setData={setData}
+          reloadRef={reloadRef}
         >
           <AdminTable
             admins={data.admins}
@@ -109,7 +105,7 @@ export default function DashboardAdminList() {
                 .then((message) => {
                   toast.success(message);
                   setPendingAdminDeleteRequest(null);
-                  setRelaod(true);
+                  if (reloadRef.current) reloadRef.current();
                 })
                 .catch(toast.error)
             }
