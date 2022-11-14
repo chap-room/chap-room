@@ -13,11 +13,13 @@ import {
   autoUpdate,
   size,
 } from "@floating-ui/react-dom-interactions";
-import ExpandMoreIcon from "@/shared/assets/icons/expandMore.svg";
-import { User } from "@/shared/types";
-import TextInput from "@/shared/components/TextInput";
-import { request } from "@/admin/api";
 import axios from "axios";
+import { User } from "@/shared/types";
+import { request } from "@/admin/api";
+import ExpandMoreIcon from "@/shared/assets/icons/expandMore.svg";
+import TextInput from "@/shared/components/TextInput";
+import SmallLoader from "@/shared/components/SmallLoader";
+import EmptyNote from "@/shared/components/Dashboard/EmptyNote";
 
 type UserSelectProps =
   | {
@@ -42,9 +44,12 @@ export default function UserSelect({
   const listElementsRef = useRef<(HTMLDivElement | null)[]>([]);
   const listUsersRef = useRef<User[]>([]);
   const [search, setSearch] = useState("");
+  const loaderRef = useRef<HTMLDivElement | null>(null);
 
-  const { users, hasMore, loadMore, loading, error } = useUsersSearch(search);
+  const { users, hasMore, loadMore, retry, loading, error } =
+    useUsersSearch(search);
   listUsersRef.current = users;
+  useEffect(loadMore, []);
 
   const [open, setOpen] = useState(false);
   const selectedIndex = listUsersRef.current.includes(value!)
@@ -164,7 +169,20 @@ export default function UserSelect({
                 onChange={setSearch}
               />
             </div>
-            <div>
+            <div
+              onScroll={(event) => {
+                if (loading || !hasMore) return;
+
+                const itemsContainer = event.target as HTMLDivElement;
+                if (
+                  itemsContainer.scrollHeight -
+                    (itemsContainer.clientHeight + itemsContainer.scrollTop) -
+                    (loaderRef.current?.clientHeight || 0) <= 0
+                ) {
+                  loadMore();
+                }
+              }}
+            >
               {listUsersRef.current.map((user, index) => (
                 <div
                   key={user.id}
@@ -193,7 +211,14 @@ export default function UserSelect({
                   <div>{user.phoneNumber}</div>
                 </div>
               ))}
-              <div className={styles.Loader}></div>
+              {hasMore && (
+                <div className={styles.Loader} ref={loaderRef}>
+                  <SmallLoader />
+                </div>
+              )}
+              {!loading && !hasMore && !users.length && (
+                <EmptyNote>هیچ کاربری وجود ندارد</EmptyNote>
+              )}
             </div>
           </div>
         </FloatingFocusManager>
@@ -207,24 +232,22 @@ function useUsersSearch(searchQuery: string) {
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  function loadMore() {
-    setPage(page + 1);
-  }
+  const [error, setError] = useState(false);
 
   useEffect(() => {
+    if (page === 0) return;
+
     setPage(1);
     setUsers([]);
+    setHasMore(true);
   }, [searchQuery]);
 
-  useEffect(() => {
+  function fetchUsers() {
     if (page === 0) return;
 
     const abortController = new AbortController();
 
     setLoading(true);
-    setError(null);
     request({
       method: "GET",
       url: "/admins/users",
@@ -236,21 +259,40 @@ function useUsersSearch(searchQuery: string) {
       signal: abortController.signal,
     })
       .then(({ data }) => {
-        setUsers([...users, ...data.users]);
+        const ids: string[] = [];
+        setUsers(
+          [...users, ...data.users].filter((user) => {
+            if (ids.includes(user.id)) return false;
+            ids.push(user.id);
+            return true;
+          })
+        );
         setHasMore(data.totalCountLeft > 0);
       })
       .catch((error) => {
         if (axios.isCancel(error)) return;
       })
-      .finally(() => setLoading(true));
+      .finally(() => setLoading(false));
 
     return () => abortController.abort();
-  }, [searchQuery, page]);
+  }
+
+  useEffect(fetchUsers, [searchQuery, page]);
+
+  function loadMore() {
+    setPage(page + 1);
+  }
+
+  function retry() {
+    setError(false);
+    fetchUsers();
+  }
 
   return {
     users,
     hasMore,
     loadMore,
+    retry,
     loading,
     error,
   };

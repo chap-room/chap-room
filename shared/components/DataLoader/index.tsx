@@ -32,8 +32,9 @@ export default function DataLoader<DT>({
 
   function fetchData() {
     if (!isFirstRender && isLoading) {
-      if (isFirstRender) setIsFirstRender(false);
       return;
+    } else {
+      if (isFirstRender) setIsFirstRender(false);
     }
     
     const funcReturn = load();
