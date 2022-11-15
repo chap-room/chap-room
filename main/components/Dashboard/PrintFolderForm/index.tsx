@@ -9,6 +9,12 @@ import {
   getTariffs,
   calculatePrintFolderPrice,
 } from "@/main/api";
+import {
+  optionalValidate,
+  useValidation,
+  validateInt,
+  validateNotEmpty,
+} from "@/shared/utils/validation";
 import DeleteIcon from "@/shared/assets/icons/delete.svg";
 import CloseIcon from "@/shared/assets/icons/close.svg";
 import Button from "@/shared/components/Button";
@@ -20,16 +26,10 @@ import TextInput from "@/shared/components/TextInput";
 import DataLoader from "@/shared/components/DataLoader";
 import TextArea from "@/shared/components/TextArea";
 import BottomActions from "@/shared/components/Dashboard/BottomActions";
-import UploadArea from "@/shared/components/Dashboard/UploadArea";
+import UploadArea from "@/main/components/Dashboard/UploadArea";
 import Radio from "@/shared/components/Radio";
 import ProgressBar from "@/shared/components/ProgressBar";
 import IconButton from "@/shared/components/IconButton";
-import {
-  optionalValidate,
-  useValidation,
-  validateInt,
-  validateNotEmpty,
-} from "@/shared/utils/validation";
 
 interface PrintFolderFormData {
   printFiles: PrintFile[];

@@ -25,12 +25,12 @@ export default function PostGrid({
             </div>
           )}
           <div className={styles.PostTitle}>{post.title}</div>
-          <div className={styles.PostAuthor}>نویسنده: {post.author.name}</div>
+          <div className={styles.PostAuthor}>نویسنده: {post.admin.name}</div>
           <div className={styles.PostCategories}>
             دسته بندی ها:{" "}
             {post.categories.map((category) => category.name).join("، ")}
           </div>
-          <div className={styles.PostExcerpt}>{post.excerpt}</div>
+          <div className={styles.PostExcerpt}>{post.metaDescription}</div>
           <div className={styles.PostBottom}>
             <div className={styles.PostMetaData}>
               <div>

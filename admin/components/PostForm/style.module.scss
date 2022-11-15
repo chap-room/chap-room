@@ -1,6 +1,7 @@
 .Container {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  align-items: flex-start;
 
   .Form {
     display: grid;
@@ -27,6 +28,20 @@
   
           @media (max-width: 512px) {
             max-width: unset;
+          }
+        }
+
+        div.RadioList {
+          display: flex;
+          flex-direction: row;
+          gap: 20px;
+          flex-wrap: wrap;
+          margin-bottom: 10px;
+      
+          > div {
+            display: flex;
+            flex-direction: row;
+            gap: 5px;
           }
         }
       }

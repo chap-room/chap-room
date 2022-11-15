@@ -1,9 +1,7 @@
-import { ReactElement, useContext } from "react";
+import { ReactElement } from "react";
 import { useRouter } from "next/router";
-import { v4 as uuidv4 } from "uuid";
 import Head from "next/head";
 import Link from "next/link";
-// import { DataContext } from "@/admin/context/Data";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
@@ -11,17 +9,17 @@ import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
 import Button from "@/shared/components/Button";
-import DiscountForm from "@/admin/components/DiscountForm";
 import PostForm from "@/admin/components/PostForm";
+import { newBlogPost } from "@/admin/api";
+import toast from "react-hot-toast";
 
 export default function DashboardNewPost() {
-  // const data = useContext(DataContext);
   const router = useRouter();
 
   return (
     <>
       <Head>
-        <title>داشبورد - ایجاد نوشته</title>
+        <title>داشبورد - ایجاد بلاگ</title>
       </Head>
       <SectionHeader
         title="وبلاگ"
@@ -44,9 +42,10 @@ export default function DashboardNewPost() {
           title="ایجاد بلاگ جدید"
         />
         <PostForm
-          onSave={(postFormData) => {
+          onSave={(postFormData) => newBlogPost(postFormData).then((message) => {
+            toast.success(message);
             router.push("/dashboard/blog");
-          }}
+          }).catch(toast.error)}
         />
       </SectionContent>
     </>

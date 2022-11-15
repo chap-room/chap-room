@@ -127,6 +127,13 @@ export function submitContactUs(
   }).then(({ data }) => data.message);
 }
 
+export function getBlogCategories() {
+  return request({
+    method: "GET",
+    url: "/public/blogs/categories",
+  }).then(({ data }) => data);
+}
+
 export function login(phoneNumber: string, password: string) {
   return request({
     method: "POST",

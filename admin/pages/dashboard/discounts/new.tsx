@@ -19,7 +19,7 @@ export default function DashboardNewDiscount() {
   return (
     <>
       <Head>
-        <title>داشبورد - ایجاد کد تخفیف</title>
+        <title>داشبورد - ایجاد بلاگ</title>
       </Head>
       <SectionHeader
         title="کدهای تخفیف"
@@ -28,7 +28,7 @@ export default function DashboardNewDiscount() {
       />
       <SectionContent>
         <ContentHeader
-          title="ایجاد کد تخفیف جدید"
+          title="ایجاد بلاگ جدید"
           end={
             <Link href="/dashboard/discounts">
               <Button style={{ padding: 0 }}>

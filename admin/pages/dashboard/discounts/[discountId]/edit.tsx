@@ -24,16 +24,16 @@ export default function DashboardEditUser() {
   return (
     <>
       <Head>
-        <title>داشبورد - ویرایش کد تخفیف</title>
+        <title>داشبورد - ویرایش بلاگ</title>
       </Head>
       <SectionHeader
-        title="کدهای تخفیف"
-        description="کدهای تخفیف را از این بخش مدیریت کنید"
+        title="وبلاگ"
+        description="وبلاگ را از این بخش مدیریت کنید"
         hideBackToSiteButton
       />
       <SectionContent>
         <ContentHeader
-          title="ویرایش کردن کد تخفیف"
+          title="ویرایش کردن بلاگ"
           end={
             <Link href="/dashboard/discounts">
               <Button style={{ padding: 0 }}>

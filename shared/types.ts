@@ -185,18 +185,17 @@ export interface BindingTariffs {
 export interface Post {
   id: number;
   countOfViews: number;
-  author: User;
-  pageSlug: string;
+  admin: User;
+  slug: string;
   pageTitle: string;
   title: string;
   categories: { id: number; name: string }[];
-  keywords: string[];
+  keywords: string;
   metaDescription: string;
   thumbnailUrl: string | null;
   thumbnailAlt: string | null;
   display: boolean;
-  excerpt: string;
-  content: string;
+  body: string;
   createDate: string;
   lastUpdateDate: string;
 }

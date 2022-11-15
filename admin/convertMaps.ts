@@ -12,6 +12,11 @@ export const financialRecordConvertMap: ConvertMap = [
   [["createdAt", "date"], convertDate],
 ];
 
+export const blogPostConvertMap: ConvertMap = [
+  [["createdAt", "createDate"], convertDate],
+  [["updatedAt", "lastUpdateDate"], convertDate],
+];
+
 export const dedicatedDiscountCodeReportConvertMap: ConvertMap = [
   [["createdAt", "date"], convertDate],
 ];

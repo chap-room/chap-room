@@ -1,4 +1,5 @@
 import {
+  blogPostConvertMap,
   cooperationRequestConvertMap,
   customerReportConvertMap,
   dedicatedDiscountCodeReportConvertMap,
@@ -16,6 +17,7 @@ import {
   Discount,
   FinancialRecord,
   Order,
+  Post,
   PrintTariffs,
   WithdrawalRequest,
 } from "@/shared/types";
@@ -785,6 +787,82 @@ export function updateBindingTariffs(data: BindingTariffs) {
     url: "/admins/tariffs/binding",
     needAuth: true,
     data,
+  }).then(({ data }) => data.message);
+}
+
+export function getBlogPosts(page: number) {
+  return request({
+    method: "GET",
+    url: "/admins/blogs",
+    needAuth: true,
+    params: {
+      page,
+    },
+  }).then(({ data }) => ({
+    countOfItems: data.totalCount,
+    pageSize: data.pageSize,
+    posts: data.blogs.map((item: any) =>
+      convert(blogPostConvertMap, item, "a2b")
+    ) as Post[],
+  }));
+}
+
+export function getBlogPost(postId: number) {
+  return request({
+    method: "GET",
+    url: `/admins/blogs/id/${postId}`,
+    needAuth: true,
+  }).then(({ data }) => convert(blogPostConvertMap, data, "a2b") as Post);
+}
+
+export function newBlogPost(data: {
+  slug: string;
+  pageTitle: string;
+  title: string;
+  categories: { id: number; name: string }[];
+  keywords: string;
+  metaDescription: string;
+  thumbnailUrl: string | null;
+  thumbnailAlt: string | null;
+  display: boolean;
+  body: string;
+}) {
+  return request({
+    method: "POST",
+    url: "/admins/blogs",
+    needAuth: true,
+    data,
+  }).then(({ data }) => data.message);
+}
+
+export function updateBlogPost(
+  postId: number,
+  data: {
+    slug: string;
+    pageTitle: string;
+    title: string;
+    categories: { id: number; name: string }[];
+    keywords: string;
+    metaDescription: string;
+    thumbnailUrl: string | null;
+    thumbnailAlt: string | null;
+    display: boolean;
+    body: string;
+  }
+) {
+  return request({
+    method: "PUT",
+    url: `/admins/blogs/id/${postId}`,
+    needAuth: true,
+    data,
+  }).then(({ data }) => data.message);
+}
+
+export function deleteBlogPost(postId: number) {
+  return request({
+    method: "DELETE",
+    url: `/admins/blogs/id/${postId}`,
+    needAuth: true,
   }).then(({ data }) => data.message);
 }
 

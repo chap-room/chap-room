@@ -8,16 +8,16 @@ import Radio from "@/shared/components/Radio";
 import Editor from "@/admin/components/PostForm/Editor";
 
 interface PostFormData {
-  pageSlug: string;
+  slug: string;
   pageTitle: string;
   title: string;
   categories: { id: number; name: string }[];
-  keywords: string[];
+  keywords: string;
   metaDescription: string;
   thumbnailUrl: string | null;
   thumbnailAlt: string | null;
   display: boolean;
-  content: string;
+  body: string;
 }
 
 interface PostFormProps {
@@ -26,11 +26,11 @@ interface PostFormProps {
 }
 
 export default function PostForm({ defaultValues, onSave }: PostFormProps) {
-  const [pageSlug, setPageSlug] = useState(defaultValues?.pageSlug || "");
+  const [slug, setSlug] = useState(defaultValues?.slug || "");
   const [pageTitle, setPageTitle] = useState(defaultValues?.pageTitle || "");
   const [title, setTitle] = useState(defaultValues?.title || "");
   const [categories, setCategories] = useState(defaultValues?.categories || []);
-  const [keywords, setKeywords] = useState(defaultValues?.keywords || []);
+  const [keywords, setKeywords] = useState(defaultValues?.keywords || "");
   const [metaDescription, setMetaDescription] = useState(
     defaultValues?.metaDescription || ""
   );
@@ -41,7 +41,7 @@ export default function PostForm({ defaultValues, onSave }: PostFormProps) {
     defaultValues?.thumbnailAlt || ""
   );
   const [display, setDisplay] = useState(defaultValues?.display || false);
-  const getPostContentRef = useRef<(() => string | null) | null>(null);
+  const getPostBodyRef = useRef<(() => string | null) | null>(null);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -69,8 +69,16 @@ export default function PostForm({ defaultValues, onSave }: PostFormProps) {
           <div className={styles.Input}>
             <TextInput
               inputProps={{ placeholder: "لینک صفحه" }}
-              value={pageSlug}
-              onChange={setPageSlug}
+              value={slug}
+              onChange={setSlug}
+            />
+          </div>
+          <div className={styles.Label}>کلمات کلیدی:</div>
+          <div className={styles.Input}>
+            <TextInput
+              inputProps={{ placeholder: "کلمات کلیدی" }}
+              value={keywords}
+              onChange={setKeywords}
             />
           </div>
           <div className={styles.Label}>توضیحات متا:</div>
@@ -84,7 +92,15 @@ export default function PostForm({ defaultValues, onSave }: PostFormProps) {
           </div>
         </div>
         <div className={styles.Form}>
-          <div className={styles.Label}>Alt تصویر:</div>
+          <div className={styles.Label}>تصویر:</div>
+          <div className={styles.Input}>
+            <TextInput
+              inputProps={{ placeholder: "تصویر" }}
+              value={thumbnailAlt}
+              onChange={setThumbnailAlt}
+            />
+          </div>
+          <div className={styles.Label}>تصویر Alt:</div>
           <div className={styles.Input}>
             <TextInput
               inputProps={{ placeholder: "Alt تصویر" }}
@@ -93,13 +109,30 @@ export default function PostForm({ defaultValues, onSave }: PostFormProps) {
             />
           </div>
           <div className={styles.Label}>نوع:</div>
-          <div className={styles.Input}>{/* <Radio /> */}</div>
+          <div className={styles.Input}>
+            <div className={styles.RadioList}>
+              <div>
+                <Radio
+                  checked={display === false}
+                  onChecked={() => setDisplay(false)}
+                />
+                پیش نویس
+              </div>
+              <div>
+                <Radio
+                  checked={display === true}
+                  onChecked={() => setDisplay(true)}
+                />
+                انتشار
+              </div>
+            </div>
+          </div>
         </div>
         <div>
           <Editor
-            id="PostContent"
-            initialContent={defaultValues?.content}
-            getContentRef={getPostContentRef}
+            id="PostBody"
+            initialContent={defaultValues?.body}
+            getContentRef={getPostBodyRef}
           />
         </div>
       </div>
@@ -108,16 +141,21 @@ export default function PostForm({ defaultValues, onSave }: PostFormProps) {
           varient="filled"
           style={{ minWidth: 100 }}
           onClick={() => {
-            // setIsSubmitting(true);
-            // onSave({
-            //   label,
-            //   recipientName,
-            //   recipientPhoneNumber,
-            //   recipientPostalCode,
-            //   recipientDeliveryProvince,
-            //   recipientDeliveryCity,
-            //   recipientDeliveryAddress,
-            // }).finally(() => setIsSubmitting(false));
+            setIsSubmitting(true);
+            onSave({
+              slug,
+              pageTitle,
+              title,
+              categories,
+              keywords,
+              metaDescription,
+              thumbnailUrl,
+              thumbnailAlt,
+              display,
+              body: getPostBodyRef.current
+                ? getPostBodyRef.current() || ""
+                : "",
+            }).finally(() => setIsSubmitting(false));
           }}
           loading={isSubmitting}
           disabled={isSubmitting}
