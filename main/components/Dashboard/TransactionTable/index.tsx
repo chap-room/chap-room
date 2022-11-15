@@ -28,7 +28,7 @@ export default function TransactionTable({
               <span className={styles.MobileLabel}>تاریخ:</span>
               <span className={styles.Date}>
                 <span>
-                  <FormattedDate value={transaction.date} dateStyle="medium" />
+                  <FormattedDate value={transaction.date} />
                 </span>
                 <span>
                   <FormattedTime value={transaction.date} hour12 />

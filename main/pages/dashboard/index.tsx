@@ -88,7 +88,7 @@ export default function DashboardMain() {
               <SectionContent>
                 <div className={styles.WelcomeUser}>سلام {data!.name}</div>
                 <div className={styles.DashboardDescription}>
-                  خلاصه‌ای از همه چیز را ببینید
+                  خلاصه‌ای از همه چیز را ببینید در چاپ روم
                 </div>
                 <div className={styles.Printing}>
                   <PrintingImage />
@@ -160,7 +160,7 @@ export default function DashboardMain() {
             </div>
             <SectionContent>
               <ContentHeader
-                title="سفارش های در حال انجام"
+                title="سفارش های در حال انجام من"
                 end={
                   <Button
                     style={{ padding: 0 }}

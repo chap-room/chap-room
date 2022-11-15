@@ -16,7 +16,7 @@ import {
 } from "@/shared/utils/validation";
 import LogoWithName from "@/shared/assets/images/logoWithName.svg";
 import ArrowForwardIcon from "@/shared/assets/icons/arrowForward.svg";
-import Thumbnail from "@/shared/assets/images/printing.svg";
+import Image from "@/shared/assets/images/printing.svg";
 import TextInput from "@/shared/components/TextInput";
 import ErrorList from "@/shared/components/ErrorList";
 import Button from "@/shared/components/Button";
@@ -185,7 +185,7 @@ export default function Register() {
                     !agreeTermsAndConditions
                   }
                 >
-                  ارسال کد تائیید
+                  ارسال کد تأیید
                 </Button>
                 <div className={styles.BottomNote}>
                   حساب کاربری دارید؟{" "}
@@ -211,7 +211,7 @@ export default function Register() {
               </div>
               <div className={styles.Column}>
                 <TextInput
-                  inputProps={{ type: "number", placeholder: "کد تائیید" }}
+                  inputProps={{ type: "number", placeholder: "کد تأیید" }}
                   varient="shadow"
                   value={confirmCode}
                   onChange={(newValue) =>
@@ -263,8 +263,8 @@ export default function Register() {
             </>
           )}
         </div>
-        <div className={styles.Thumbnail}>
-          <Thumbnail />
+        <div className={styles.Image}>
+          <Image />
         </div>
       </div>
     </div>

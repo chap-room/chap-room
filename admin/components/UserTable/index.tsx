@@ -50,7 +50,13 @@ export default function UserTable({
               <span className={styles.MobileLabel}>کاربر:</span>
               <div>
                 <div className={styles.UserName}>{user.name}</div>
-                <div>{user.phoneNumber}</div>
+                <div>
+                  <FormattedNumber
+                    value={parseInt(user.phoneNumber)}
+                    useGrouping={false}
+                    minimumIntegerDigits={11}
+                  />
+                </div>
               </div>
             </td>
             <td>
@@ -107,7 +113,7 @@ export default function UserTable({
             <td>
               <span className={styles.MobileLabel}>عملیات:</span>
               <div className={styles.OperationButtons}>
-                <div className={styles.LogoutButton}>
+                <div className={styles.LoginButton}>
                   <IconButton
                     varient="none"
                     size={34}

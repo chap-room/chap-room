@@ -3,7 +3,6 @@ import { FormattedNumber } from "react-intl";
 import { PrintPrice, Tariffs } from "@/shared/types";
 import Tabs from "@/main/components/Dashboard/Tabs";
 import { useRef, useState } from "react";
-import Switch from "@/shared/components/Switch";
 
 interface TariffsTableProps {
   tariffs: Tariffs;

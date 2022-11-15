@@ -54,13 +54,13 @@ export default function Header() {
               <a>خانه</a>
             </NavLink>
             <NavLink href="/tariffs" end>
-              <a>تعرفه پرینت</a>
-            </NavLink>
-            <NavLink href="/contact-us" end>
-              <a>تماس با ما</a>
+              <a>تعرفه و سفارش پرینت</a>
             </NavLink>
             <NavLink href="/about-us" end>
               <a>درباره ما</a>
+            </NavLink>
+            <NavLink href="/contact-us" end>
+              <a>تماس با ما</a>
             </NavLink>
             <NavLink href="/work-with-us" end>
               <a>همکاری با ما</a>

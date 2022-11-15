@@ -133,8 +133,8 @@ export default function DashboardOrderList() {
                 })
                 .catch(toast.error)
             }
-            message="از تائیید کردن این سفارش مطمئن هستید؟"
-            confirmButtonText="تائیید"
+            message="از تأیید کردن این سفارش مطمئن هستید؟"
+            confirmButtonText="تأیید"
           />
           <OrderSentDialog
             open={pendingMarkOrderSentRequest !== null}

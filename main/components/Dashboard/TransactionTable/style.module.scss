@@ -26,13 +26,15 @@
 
     > tr {
       @media (max-width: 800px) {
-        border-radius: 20px;
-        box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
-        padding: 20px;
         display: grid;
         grid-auto-flow: row;
         font-size: 14px;
         gap: 10px;
+
+        &:not(:first-child) {
+          border-top: 1px solid #cccccc;
+          padding-top: 10px;
+        }
       }
 
       > td {

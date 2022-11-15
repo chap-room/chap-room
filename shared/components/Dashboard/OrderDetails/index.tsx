@@ -80,7 +80,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
         <div className={styles.Label}>تاریخ سفارش:</div>
         <div>
           <span>
-            <FormattedDate value={order.date} dateStyle="medium" />
+            <FormattedDate value={order.date} />
           </span>
           <span>
             <FormattedTime value={order.date} hour12 />
@@ -160,7 +160,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
           </div>
           <div>
             <div>
-              <FormattedDate value={order.lastUpdateDate} dateStyle="medium" />
+              <FormattedDate value={order.lastUpdateDate} />
             </div>
             <div>
               <FormattedTime value={order.lastUpdateDate} hour12 />
@@ -178,7 +178,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
           {order.postageDate ? (
             <>
               <span>
-                <FormattedDate value={order.postageDate} dateStyle="medium" />
+                <FormattedDate value={order.postageDate} />
               </span>
               <span>
                 <FormattedTime value={order.postageDate} hour12 />

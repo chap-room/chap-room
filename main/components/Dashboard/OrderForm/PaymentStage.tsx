@@ -50,6 +50,24 @@ export default function PaymentStage({ actions }: PaymentStageProps) {
   const [isCheckingDiscountCode, setIsCheckingDiscountCode] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const amountPayableView = (
+    <div className={styles.AmountPayable}>
+      <div>مبلغ قابل پرداخت:</div>
+      <div>
+        {payable ? (
+          <>
+            <span>
+              <FormattedNumber value={payable} />
+            </span>{" "}
+            تومان
+          </>
+        ) : (
+          "رایگان"
+        )}
+      </div>
+    </div>
+  );
+
   return (
     <DataLoader
       load={() => calculateOrderPrice(discountCode)}
@@ -161,22 +179,13 @@ export default function PaymentStage({ actions }: PaymentStageProps) {
           </div>
         </div>
       </div>
+      <div className={styles.AmountPayableMobileContainer}>
+        {amountPayableView}
+      </div>
       <BottomActions
         start={
-          <div className={styles.AmountPayable}>
-            <div>مبلغ قابل پرداخت:</div>
-            <div>
-              {payable ? (
-                <>
-                  <span>
-                    <FormattedNumber value={payable} />
-                  </span>{" "}
-                  تومان
-                </>
-              ) : (
-                "رایگان"
-              )}
-            </div>
+          <div className={styles.AmountPayableContainer}>
+            {amountPayableView}
           </div>
         }
       >

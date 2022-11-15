@@ -30,7 +30,7 @@ import VideoGalleryBG from "@/main/assets/images/videoGalleryBG.svg";
 import MonitorImage from "@/main/assets/images/monitor.svg";
 import CirclePauseIcon from "@/main/assets/icons/circlePause.svg";
 import CirclePlayIcon from "@/main/assets/icons/circlePlay.svg";
-import CustomerList from "@/main/assets/json/customers.json";
+import OurCustomers from "@/main/components/OurCustomers";
 
 export default function Home() {
   const router = useRouter();
@@ -79,95 +79,6 @@ export default function Home() {
   const [cooperationPhoneNumber, setCooperationPhoneNumber] = useState("");
   const [isSendingCooperationRequest, setIsSendingCooperationRequest] =
     useState(false);
-
-  const customerListContainerRef = useRef<HTMLDivElement | null>(null);
-  useEffect(() => {
-    if (!customerListContainerRef.current) return;
-    const customerListContainer = customerListContainerRef.current;
-    const customerListItems = Array.from(customerListContainer.children);
-    let currentIndex = 0;
-    const startCloneItems: HTMLElement[] = [];
-    const endCloneItems: HTMLElement[] = [];
-    let currentCloneIndex;
-
-    currentCloneIndex = customerListItems.length - 1;
-    do {
-      const cloneElement = document.createElement("div");
-      cloneElement.innerHTML = customerListItems[currentCloneIndex].innerHTML;
-      startCloneItems.push(cloneElement);
-      customerListContainer.prepend(cloneElement);
-
-      currentCloneIndex -= 1;
-    } while (
-      startCloneItems.reduce(
-        (result, child, index) =>
-          index === 0 ? result : result + child.clientWidth + 50,
-        0
-      ) < 682.5 &&
-      currentCloneIndex >= 0
-    );
-
-    currentCloneIndex = 0;
-    do {
-      const cloneElement = document.createElement("div");
-      cloneElement.innerHTML = customerListItems[currentCloneIndex].innerHTML;
-      endCloneItems.push(cloneElement);
-      customerListContainer.append(cloneElement);
-
-      currentCloneIndex += 1;
-    } while (
-      endCloneItems.reduce(
-        (result, child, index) =>
-          index === 0 ? result : result + child.clientWidth + 50,
-        0
-      ) < 682.5 &&
-      currentCloneIndex < customerListItems.length
-    );
-
-    function setCurrentItem(itemIndex: number) {
-      currentIndex = itemIndex;
-
-      let itemOffset = 0;
-      startCloneItems.forEach((child, index) => {
-        if (-(index + 1) < itemIndex) {
-          itemOffset += child.clientWidth + 50;
-        }
-      });
-      customerListItems.forEach((child, index) => {
-        if (index < itemIndex) {
-          itemOffset += child.clientWidth + 50;
-        }
-      });
-
-      const offset =
-        itemOffset -
-        (customerListContainer.parentElement?.clientWidth || 0) / 2 +
-        (itemIndex >= 0
-          ? customerListItems[itemIndex].clientWidth / 2
-          : startCloneItems[-(itemIndex + 1)].clientWidth / 2);
-      customerListContainer.style.transform = `translateX(${offset}px)`;
-    }
-    customerListContainer.style.transition = "none";
-    setCurrentItem(0);
-    console.log(setCurrentItem);
-    setTimeout(() => customerListContainer.style.removeProperty("transition"));
-
-    const interval = setInterval(() => {
-      setCurrentItem(currentIndex + 1);
-
-      if (currentIndex + 1 >= customerListItems.length) {
-        setTimeout(() => {
-          customerListContainer.style.transition = "none";
-          setCurrentItem(currentIndex - customerListItems.length);
-          setTimeout(() => {
-            customerListContainer.style.removeProperty("transition");
-          }, 100);
-        }, 1000);
-      }
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <div className={styles.Container}>
@@ -286,6 +197,7 @@ export default function Home() {
                 varient="shadow-without-bg"
                 placeholder="قطع کتاب"
                 readOnly
+                height={48}
               />
             </div>
             <div className={styles.Input}>
@@ -296,6 +208,7 @@ export default function Home() {
                 varient="shadow-without-bg"
                 placeholder="جنس کاغذ"
                 readOnly
+                height={48}
               />
             </div>
             <div className={styles.Input}>
@@ -306,6 +219,7 @@ export default function Home() {
                 varient="shadow-without-bg"
                 placeholder="نوع صحافی"
                 readOnly
+                height={48}
               />
             </div>
             <div className={styles.Row}>
@@ -313,6 +227,7 @@ export default function Home() {
                 <TextInput
                   inputProps={{ type: "number", placeholder: "تعداد صفحه" }}
                   varient="shadow-without-bg"
+                  height={48}
                 />
               </div>
               <div className={styles.Input}>
@@ -466,18 +381,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className={styles.Customers}>
-        <h1>مشتریان چاپ روم</h1>
-        <div>
-          <div ref={customerListContainerRef}>
-            {CustomerList.map(({ title, image }, index) => (
-              <div key={index}>
-                <img src={image} alt={title} title={title} />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      <OurCustomers />
     </div>
   );
 }

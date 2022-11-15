@@ -37,10 +37,7 @@ export default function WithdrawalRequestTable({
               <span className={styles.MobileLabel}>تاریخ:</span>
               <span className={styles.Date}>
                 <span>
-                  <FormattedDate
-                    value={withdrawalRequest.date}
-                    dateStyle="medium"
-                  />
+                  <FormattedDate value={withdrawalRequest.date} />
                 </span>
                 <span>
                   <FormattedTime value={withdrawalRequest.date} hour12 />
@@ -53,7 +50,13 @@ export default function WithdrawalRequestTable({
                 <div className={styles.UserName}>
                   {withdrawalRequest.user.name}
                 </div>
-                <div>{withdrawalRequest.user.phoneNumber}</div>
+                <div>
+                  <FormattedNumber
+                    value={parseInt(withdrawalRequest.user.phoneNumber)}
+                    useGrouping={false}
+                    minimumIntegerDigits={11}
+                  />
+                </div>
               </div>
             </td>
             <td>

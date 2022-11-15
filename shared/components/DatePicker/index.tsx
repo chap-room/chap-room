@@ -39,7 +39,6 @@ export default function DatePicker({
   inputProps = { placeholder: "1400/01/01" },
   setIsValid,
 }: DatePickerProps) {
-  console.log("DatePicker render");
   const momentValue = useMemo(
     () => (moment.isMoment(value) ? value : value ? moment(value) : null),
     [value]
@@ -127,7 +126,6 @@ interface CalendarProps {
 }
 
 function Calendar({ min, max, value, onChange }: CalendarProps) {
-  console.log("Calendar render");
   const [year, setYear] = useState<Moment>(value || moment());
   const [month, setMonth] = useState<Moment>(year.clone());
 
@@ -199,7 +197,6 @@ function MonthPicker({
   selectedMonth,
   onSelectMonth,
 }: MonthPickerProps) {
-  console.log("MonthPicker render");
   return (
     <div className={styles.MonthPicker}>
       <div className={styles.Heading}>
@@ -251,7 +248,6 @@ function DayPicker({
   selectedDay,
   onSelectDay,
 }: DayPickerProps) {
-  console.log("DayPicker render");
   const days = useMemo(() => {
     const result = [];
 

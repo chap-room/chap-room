@@ -28,7 +28,7 @@ export default function DashboardNavLinks() {
       <NavLink href="/dashboard/orders">
         <a className={styles.NavLink}>
           <OrdersIcon />
-          <div className={styles.Text}>سفارش ها</div>
+          <div className={styles.Text}>سفارش ها من</div>
           <div className={styles.Arrow}>
             <NavigateBeforeIcon />
           </div>
@@ -37,7 +37,7 @@ export default function DashboardNavLinks() {
       <NavLink href="/dashboard/addresses">
         <a className={styles.NavLink}>
           <AddressesIcon />
-          <div className={styles.Text}>آدرس ها</div>
+          <div className={styles.Text}>آدرس ها من</div>
           <div className={styles.Arrow}>
             <NavigateBeforeIcon />
           </div>
@@ -46,7 +46,7 @@ export default function DashboardNavLinks() {
       <NavLink href="/dashboard/transactions">
         <a className={styles.NavLink}>
           <TransactionsIcon />
-          <div className={styles.Text}>تراکنش ها</div>
+          <div className={styles.Text}>تراکنش های انجام شده</div>
           <div className={styles.Arrow}>
             <NavigateBeforeIcon />
           </div>
@@ -55,7 +55,7 @@ export default function DashboardNavLinks() {
       <NavLink href="/dashboard/marketing">
         <a className={styles.NavLink}>
           <MarketingIcon />
-          <div className={styles.Text}>بازاریابی</div>
+          <div className={styles.Text}>پنل بازاریابی</div>
           <div className={styles.Arrow}>
             <NavigateBeforeIcon />
           </div>

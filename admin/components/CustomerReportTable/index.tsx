@@ -31,17 +31,20 @@ export default function CustomerReportTable({
               <span className={styles.MobileLabel}>کاربر:</span>
               <div>
                 <div className={styles.UserName}>{customerReport.name}</div>
-                <div>{customerReport.phoneNumber}</div>
+                <div>
+                  <FormattedNumber
+                    value={parseInt(customerReport.phoneNumber)}
+                    useGrouping={false}
+                    minimumIntegerDigits={11}
+                  />
+                </div>
               </div>
             </td>
             <td>
               <span className={styles.MobileLabel}>تاریخ ثبت نام:</span>
               <span className={styles.Date}>
                 <span>
-                  <FormattedDate
-                    value={customerReport.registrationDate}
-                    dateStyle="medium"
-                  />
+                  <FormattedDate value={customerReport.registrationDate} />
                 </span>
                 <span>
                   <FormattedTime
@@ -55,10 +58,7 @@ export default function CustomerReportTable({
               <span className={styles.MobileLabel}>تاریخ اولین سفارش:</span>
               <span className={styles.Date}>
                 <span>
-                  <FormattedDate
-                    value={customerReport.firstOrderDate}
-                    dateStyle="medium"
-                  />
+                  <FormattedDate value={customerReport.firstOrderDate} />
                 </span>
                 <span>
                   <FormattedTime value={customerReport.firstOrderDate} hour12 />
@@ -69,10 +69,7 @@ export default function CustomerReportTable({
               <span className={styles.MobileLabel}>تاریخ آخرین سفارش:</span>
               <span className={styles.Date}>
                 <span>
-                  <FormattedDate
-                    value={customerReport.lastOrderDate}
-                    dateStyle="medium"
-                  />
+                  <FormattedDate value={customerReport.lastOrderDate} />
                 </span>
                 <span>
                   <FormattedTime value={customerReport.lastOrderDate} hour12 />

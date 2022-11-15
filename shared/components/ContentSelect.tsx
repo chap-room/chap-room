@@ -12,6 +12,7 @@ interface ContentSelectProps {
     | "shadow-without-bg"
     | "inset-shadow-without-bg";
   readOnly?: boolean;
+  height?: number;
 }
 
 export default function ContentSelect({
@@ -21,6 +22,7 @@ export default function ContentSelect({
   onChange,
   varient,
   readOnly,
+  height,
 }: ContentSelectProps) {
   const optionsObject: Record<string, string> = {};
   options.forEach((option) => (optionsObject[option] = option));
@@ -33,6 +35,7 @@ export default function ContentSelect({
       onChange={onChange}
       varient={varient}
       readOnly={readOnly}
+      height={height}
     />
   );
 }

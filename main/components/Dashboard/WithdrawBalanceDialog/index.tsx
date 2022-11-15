@@ -30,10 +30,7 @@ export default function WithdrawBalanceDialog({
 
   const formValidation = useValidation(
     {
-      iban: [
-        validateLength({ length: 24 }),
-        validateInt({ unsigned: true }),
-      ],
+      iban: [validateLength({ length: 24 }), validateInt({ unsigned: true })],
       accountHolderName: [validateNotEmpty()],
     },
     {
@@ -43,50 +40,59 @@ export default function WithdrawBalanceDialog({
   );
 
   return (
-    <Dialog title="برداشت موجودی" open={open} onClose={onClose}>
+    <Dialog
+      title="برداشت موجودی"
+      open={open}
+      onClose={onClose}
+      fullScreenInMobile
+      hideTitleInMobile
+    >
       <div className={styles.DialogContent}>
-        <div className={styles.Label}>شماره شبا:</div>
-        <div className={styles.Input}>
-          <TextInput
-            prefix="IR"
-            boxProps={{ dir: "ltr" }}
-            inputProps={{
-              type: "number",
-              placeholder: "شماره شبا",
+        <div className={styles.MobileTitle}>برداشت موجودی</div>
+        <div>
+          <div className={styles.Label}>شماره شبا:</div>
+          <div className={styles.Input}>
+            <TextInput
+              prefix="IR"
+              boxProps={{ dir: "ltr" }}
+              inputProps={{
+                type: "number",
+                placeholder: "شماره شبا",
+              }}
+              varient="shadow-without-bg"
+              value={iban}
+              onChange={(newValue) => setIban(newValue.substring(0, 24))}
+            />
+            <ErrorList errors={formValidation.errors.iban} />
+          </div>
+          <div className={styles.Label}>نام صاحب حساب:</div>
+          <div className={styles.Input}>
+            <TextInput
+              inputProps={{ placeholder: "صاحب حساب" }}
+              varient="shadow-without-bg"
+              value={accountHolderName}
+              onChange={setAccountHolder}
+            />
+            <ErrorList errors={formValidation.errors.accountHolderName} />
+          </div>
+        </div>
+        <BottomActions>
+          <Button
+            varient="filled"
+            style={{ minWidth: 100 }}
+            onClick={() => {
+              setIsSubmitting(true);
+              onSubmit(accountHolderName, iban).finally(() =>
+                setIsSubmitting(false)
+              );
             }}
-            varient="shadow-without-bg"
-            value={iban}
-            onChange={(newValue) => setIban(newValue.substring(0, 24))}
-          />
-          <ErrorList errors={formValidation.errors.iban} />
-        </div>
-        <div className={styles.Label}>نام صاحب حساب:</div>
-        <div className={styles.Input}>
-          <TextInput
-            inputProps={{ placeholder: "صاحب حساب" }}
-            varient="shadow-without-bg"
-            value={accountHolderName}
-            onChange={setAccountHolder}
-          />
-          <ErrorList errors={formValidation.errors.accountHolderName} />
-        </div>
+            loading={isSubmitting}
+            disabled={isSubmitting || !formValidation.isValid}
+          >
+            ثبت درخواست
+          </Button>
+        </BottomActions>
       </div>
-      <BottomActions>
-        <Button
-          varient="filled"
-          style={{ minWidth: 100 }}
-          onClick={() => {
-            setIsSubmitting(true);
-            onSubmit(accountHolderName, iban).finally(() =>
-              setIsSubmitting(false)
-            );
-          }}
-          loading={isSubmitting}
-          disabled={isSubmitting || !formValidation.isValid}
-        >
-          ثبت درخواست
-        </Button>
-      </BottomActions>
     </Dialog>
   );
 }

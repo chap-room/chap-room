@@ -5,8 +5,9 @@ import Head from "next/head";
 import DashboardLayout from "@/main/components/Dashboard/Layout";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
+import LogoWithName from "@/shared/assets/images/logoWithName.svg";
+import SuccessfulOrderImage from "@/main/assets/images/successfulOrder.svg";
 import Button from "@/shared/components/Button";
-import ButtonList from "@/shared/components/ButtonList";
 import Link from "next/link";
 
 export default function DashboardOrderPaymentResult() {
@@ -26,20 +27,30 @@ export default function DashboardOrderPaymentResult() {
       />
       <SectionContent>
         <div className={styles.Container}>
+          <div className={styles.SiteLogo}>
+            <LogoWithName />
+          </div>
+          <div className={styles.Image}>
+            {isSuccessful === "true" ? (
+              <SuccessfulOrderImage />
+            ) : (
+              <SuccessfulOrderImage />
+            )}
+          </div>
           <h2>
             {isSuccessful === "true"
               ? "سفارش شما با موفقیت تکمیل شد"
               : "سفارش شما با موفقیت تکمیل نشد"}
           </h2>
           <p>شماره سفارش: {orderId}</p>
-          <ButtonList>
-            <Link href="/dashboard/orders">
-              <Button>بازگشت به سفارش ها</Button>
-            </Link>
+          <div className={styles.ButtonList}>
             <Link href={`/dashboard/orders/${orderId}/details`}>
-              <Button varient="filled">مشاهده جزئیات سفارش</Button>
+              <Button varient="gradient">مشاهده جزئیات سفارش</Button>
             </Link>
-          </ButtonList>
+            <Link href="/dashboard/orders">
+              <Button varient="outlined">بازگشت به سفارش ها</Button>
+            </Link>
+          </div>
         </div>
       </SectionContent>
     </>

@@ -33,6 +33,7 @@ interface SelectProps {
     | "shadow-without-bg"
     | "inset-shadow-without-bg";
   readOnly?: boolean;
+  height?: number;
 }
 
 export default function Select({
@@ -42,6 +43,7 @@ export default function Select({
   varient = "outlined",
   value,
   readOnly,
+  height = 40,
 }: SelectProps) {
   const listElementsRef = useRef<(HTMLDivElement | null)[]>([]);
   const listValueRef = useRef<string[]>([]);
@@ -85,7 +87,7 @@ export default function Select({
     onOpenChange: setOpen,
     whileElementsMounted: autoUpdate,
     middleware: [
-      offset(-40),
+      offset(-height),
       flip({ padding: 8 }),
       size({
         apply({ rects, elements, availableHeight }) {
@@ -202,6 +204,10 @@ export default function Select({
           ref: reference,
           className: selectClassName.join(" "),
           tabIndex: 0,
+          style: {
+            height,
+            borderRadius: Math.round(height / 2),
+          },
         })}
       >
         <div className={styles.Text}>
@@ -225,6 +231,7 @@ export default function Select({
                 position: strategy,
                 top: y ?? 0,
                 left: x ?? 0,
+                borderRadius: Math.round(height / 2),
               },
               onPointerMove() {
                 setPointer(true);
@@ -251,6 +258,9 @@ export default function Select({
                     onClick: handleSelect.bind(null, index),
                     onKeyDown: handleKeyDown.bind(null, index),
                     onKeyUp: handleKeyUp.bind(null, index),
+                    style: {
+                      height,
+                    },
                   })}
                 >
                   <div>{label}</div>

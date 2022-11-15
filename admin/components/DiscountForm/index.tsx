@@ -24,8 +24,8 @@ interface DiscountFormData {
   description: string;
   user: User | null;
   phoneNumber: string | null;
-  discountType: "fixed" | "percentage" | "page";
-  discountValue: number;
+  type: "fixed" | "percentage" | "page";
+  value: number;
   usageLimit: number | null;
   expireDate: Date | null;
 }
@@ -58,12 +58,8 @@ export default function DiscountForm({
   const [phoneNumber, setPhoneNumber] = useState(
     defaultValues?.phoneNumber?.toString() || ""
   );
-  const [discountType, setDiscountType] = useState(
-    defaultValues?.discountType || "page"
-  );
-  const [discountValue, setDiscountValue] = useState(
-    defaultValues?.discountValue?.toString() || ""
-  );
+  const [type, setType] = useState(defaultValues?.type || "percentage");
+  const [value, setValue] = useState(defaultValues?.value?.toString() || "");
   const [hasUsageLimit, setHasUsageLimit] = useState(
     defaultValues ? defaultValues.usageLimit !== null : false
   );
@@ -97,10 +93,10 @@ export default function DiscountForm({
           validator: validatePhoneNumber(),
         }),
       ],
-      discountValue: [
+      value: [
         validateInt({
           unsigned: true,
-          max: discountType === "percentage" ? 100 : undefined,
+          max: type === "percentage" ? 100 : undefined,
         }),
       ],
       usageLimit: [
@@ -120,7 +116,7 @@ export default function DiscountForm({
       code,
       user,
       phoneNumber,
-      discountValue,
+      value,
       usageLimit,
       isExpireDateValid,
     }
@@ -204,8 +200,8 @@ export default function DiscountForm({
               percentage: "درصدی",
               page: "تعدادی از صفحات",
             }}
-            value={discountType}
-            onChange={setDiscountType}
+            value={type}
+            onChange={setType}
           />
         </div>
         <div className={styles.Label}>مقدار تخفیف:</div>
@@ -216,16 +212,12 @@ export default function DiscountForm({
               placeholder: "مقدار تخفیف",
             }}
             suffix={
-              discountType === "fixed"
-                ? "تومان"
-                : discountType === "page"
-                ? "صفحه"
-                : "درصد"
+              type === "fixed" ? "تومان" : type === "page" ? "صفحه" : "درصد"
             }
-            value={discountValue}
-            onChange={setDiscountValue}
+            value={value}
+            onChange={setValue}
           />
-          <ErrorList errors={formValidation.errors.discountValue} />
+          <ErrorList errors={formValidation.errors.value} />
         </div>
         <div className={styles.Separator} />
         <div className={styles.OptionalInput}>
@@ -281,8 +273,8 @@ export default function DiscountForm({
               user: forOneUser && userMode === "user" ? user : null,
               phoneNumber:
                 forOneUser && userMode === "phoneNumber" ? phoneNumber : null,
-              discountType,
-              discountValue: parseInt(discountValue),
+              type,
+              value: parseInt(value),
               usageLimit: hasUsageLimit ? parseInt(usageLimit) : null,
               expireDate: hasExpireDate
                 ? new Date("2022-07-13T07:24:52")

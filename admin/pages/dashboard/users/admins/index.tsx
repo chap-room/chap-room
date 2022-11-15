@@ -87,9 +87,6 @@ export default function DashboardAdminList() {
           <AdminTable
             admins={data.admins}
             onDeleteAdmin={setPendingAdminDeleteRequest}
-            onLoginAsAdmin={(adminId) =>
-              router.push(`/dashboard/users/admins/${adminId}/edit`)
-            }
             onEditAdmin={(adminId) =>
               router.push(`/dashboard/users/admins/${adminId}/edit`)
             }

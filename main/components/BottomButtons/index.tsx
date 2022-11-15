@@ -1,6 +1,5 @@
 import styles from "./styles.module.scss";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import Link from "next/link";
 import { isLoggedIn } from "@/main/api";
 import NavLink from "@/shared/components/NavLink";
@@ -9,7 +8,6 @@ import Logo from "@/shared/assets/images/logo.svg";
 import PricesIcon from "@/shared/assets/icons/money.svg";
 
 export default function BottomButtons() {
-  const router = useRouter();
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
   useEffect(() => {

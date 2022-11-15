@@ -92,8 +92,8 @@ export interface Discount {
   description: string;
   user: User | null;
   phoneNumber: string | null;
-  discountType: "fixed" | "percentage" | "page";
-  discountValue: number;
+  type: "fixed" | "percentage" | "page";
+  value: number;
   usageLimit: number | null;
   timesUsed: number | null;
   expireDate: Date | null;

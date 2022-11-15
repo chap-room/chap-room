@@ -14,7 +14,7 @@ import {
 } from "@/shared/utils/validation";
 import LogoWithName from "@/shared/assets/images/logoWithName.svg";
 import ArrowForwardIcon from "@/shared/assets/icons/arrowForward.svg";
-import Thumbnail from "@/shared/assets/images/printing.svg";
+import Image from "@/shared/assets/images/printing.svg";
 import TextInput from "@/shared/components/TextInput";
 import ErrorList from "@/shared/components/ErrorList";
 import Button from "@/shared/components/Button";
@@ -109,29 +109,27 @@ export default function Login() {
                   onChange={setPassword}
                 />
                 <ErrorList errors={formValidation.errors.password} />
-              </div>
-              <div className={styles.Column}>
                 <Link href="/forgot-password">
                   <a>فراموشی رمز عبور</a>
                 </Link>
-                <Button
-                  varient="gradient"
-                  onClick={() => {
-                    setIsSubmitting(true);
-                    login(phoneNumber, password)
-                      .then(({ message, expireAt }) => {
-                        toast.success(message);
-                        setConfirmCodeExpirationDate(expireAt);
-                      })
-                      .catch(toast.error)
-                      .finally(() => setIsSubmitting(false));
-                  }}
-                  loading={isSubmitting}
-                  disabled={isSubmitting || !formValidation.isValid}
-                >
-                  ارسال کد تائیید
-                </Button>
               </div>
+              <Button
+                varient="gradient"
+                onClick={() => {
+                  setIsSubmitting(true);
+                  login(phoneNumber, password)
+                    .then(({ message, expireAt }) => {
+                      toast.success(message);
+                      setConfirmCodeExpirationDate(expireAt);
+                    })
+                    .catch(toast.error)
+                    .finally(() => setIsSubmitting(false));
+                }}
+                loading={isSubmitting}
+                disabled={isSubmitting || !formValidation.isValid}
+              >
+                ارسال کد تأیید
+              </Button>
             </>
           ) : (
             <>
@@ -149,7 +147,7 @@ export default function Login() {
               </div>
               <div className={styles.Column}>
                 <TextInput
-                  inputProps={{ type: "number", placeholder: "کد تائیید" }}
+                  inputProps={{ type: "number", placeholder: "کد تأیید" }}
                   value={confirmCode}
                   onChange={(newValue) =>
                     setConfirmCode(newValue.substring(0, 6))
@@ -204,8 +202,8 @@ export default function Login() {
             </>
           )}
         </div>
-        <div className={styles.Thumbnail}>
-          <Thumbnail />
+        <div className={styles.Image}>
+          <Image />
         </div>
       </div>
     </div>

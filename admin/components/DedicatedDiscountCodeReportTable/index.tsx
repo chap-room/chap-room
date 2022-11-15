@@ -30,10 +30,7 @@ export default function DedicatedDiscountCodeReportTable({
               <span className={styles.MobileLabel}>تاریخ:</span>
               <span className={styles.Date}>
                 <span>
-                  <FormattedDate
-                    value={dedicatedDiscountCodeReport.date}
-                    dateStyle="medium"
-                  />
+                  <FormattedDate value={dedicatedDiscountCodeReport.date} />
                 </span>
                 <span>
                   <FormattedTime
@@ -49,7 +46,15 @@ export default function DedicatedDiscountCodeReportTable({
                 <div className={styles.UserName}>
                   {dedicatedDiscountCodeReport.user.name}
                 </div>
-                <div>{dedicatedDiscountCodeReport.user.phoneNumber}</div>
+                <div>
+                  <FormattedNumber
+                    value={parseInt(
+                      dedicatedDiscountCodeReport.user.phoneNumber
+                    )}
+                    useGrouping={false}
+                    minimumIntegerDigits={11}
+                  />
+                </div>
               </div>
             </td>
             <td>
@@ -58,7 +63,15 @@ export default function DedicatedDiscountCodeReportTable({
                 <div className={styles.UserName}>
                   {dedicatedDiscountCodeReport.buyer.name}
                 </div>
-                <div>{dedicatedDiscountCodeReport.buyer.phoneNumber}</div>
+                <div>
+                  <FormattedNumber
+                    value={parseInt(
+                      dedicatedDiscountCodeReport.buyer.phoneNumber
+                    )}
+                    useGrouping={false}
+                    minimumIntegerDigits={11}
+                  />
+                </div>
               </div>
             </td>
             <td>

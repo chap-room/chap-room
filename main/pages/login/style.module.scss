@@ -2,6 +2,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 
   .Header {
     box-sizing: border-box;
@@ -95,19 +96,20 @@
       }
     }
 
-    .Thumbnail {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 30px;
+    .Image {
+      position: relative;
 
       @media (max-width: 896px) {
         display: none;
       }
 
       svg {
-        width: 100%;
-        height: auto;
+        width: auto;
+        height: 500px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
       }
     }
   }

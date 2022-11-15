@@ -12,7 +12,7 @@ import {
 } from "@/shared/utils/validation";
 import LogoWithName from "@/shared/assets/images/logoWithName.svg";
 import ArrowForwardIcon from "@/shared/assets/icons/arrowForward.svg";
-import Thumbnail from "@/shared/assets/images/printing.svg";
+import Image from "@/shared/assets/images/printing.svg";
 import TextInput from "@/shared/components/TextInput";
 import ErrorList from "@/shared/components/ErrorList";
 import Button from "@/shared/components/Button";
@@ -89,11 +89,11 @@ export default function Login() {
               onChange={setPassword}
             />
             <ErrorList errors={formValidation.errors.password} />
-          </div>
-          <div className={styles.Column}>
             <Link href="/forgot-password">
               <a>فراموشی رمز عبور</a>
             </Link>
+          </div>
+          <div className={styles.Column}>
             <Button
               varient="gradient"
               onClick={() => {
@@ -120,8 +120,8 @@ export default function Login() {
             </div>
           </div>
         </div>
-        <div className={styles.Thumbnail}>
-          <Thumbnail />
+        <div className={styles.Image}>
+          <Image />
         </div>
       </div>
     </div>

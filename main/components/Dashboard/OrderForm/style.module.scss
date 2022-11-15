@@ -116,7 +116,7 @@
       > div:first-child {
         flex: 1;
         max-width: unset;
-        border-radius: 5px;
+        border-radius: 5px !important;
       }
 
       > button {
@@ -128,17 +128,17 @@
   .PaymentMethod {
     display: flex;
     flex-direction: column;
-    background-color: #ffffff;
-    border: 1px solid #cccccc;
+    background-color: #f5f5f5;
+    box-shadow: inset -3px -3px 6px #ffffffdb, inset 3px 3px 6px #00000029;
     border-radius: 20px;
     padding: 20px;
     align-items: center;
     gap: 30px;
-    height: 200px;
 
     @media (min-width: 769px) {
       flex: 1;
       max-width: 400px;
+      height: 200px;
     }
 
     .Title {
@@ -189,14 +189,34 @@
   }
 }
 
+.AmountPayableMobileContainer {
+  @media (min-width: 897px) {
+    display: none;
+  }
+}
+
+.AmountPayableContainer {
+  @media (max-width: 896px) {
+    display: none;
+  }
+}
+
 .AmountPayable {
   display: flex;
   flex-direction: row;
-  gap: 30px;
+  gap: 15px;
+  padding: 5px 0;
+  width: 100%;
+  max-width: 300px;
   align-items: center;
   font-size: 16px;
 
+  @media (max-width: 896px) {
+    max-width: unset;
+  }
+
   > div:first-child {
+    flex: 1;
     color: #707070;
   }
 

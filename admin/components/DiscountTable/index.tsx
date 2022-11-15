@@ -41,9 +41,19 @@ export default function DiscountTable({
               <span className={styles.MobileLabel}>نوع:</span>
               {discount.user !== null ? (
                 <span>
-                  <span>{discount.user!.name}</span>
+                  <span>{discount.user.name}</span>
                   <br />
-                  <span>{discount.user!.phoneNumber}</span>
+                  <span>
+                    <FormattedNumber
+                      value={parseInt(discount.user.phoneNumber)}
+                      useGrouping={false}
+                      minimumIntegerDigits={11}
+                    />
+                  </span>
+                </span>
+              ) : discount.phoneNumber !== null ? (
+                <span>
+                  <FormattedNumber value={parseInt(discount.phoneNumber)} />
                 </span>
               ) : (
                 <span>عمومی</span>
@@ -55,17 +65,17 @@ export default function DiscountTable({
                 <span>
                   <span>مقدار:</span>
                   <span>
-                    {discount.discountType === "fixed" ? (
+                    {discount.type === "fixed" ? (
                       <>
-                        <FormattedNumber value={discount.discountValue} /> تومان
+                        <FormattedNumber value={discount.value} /> تومان
                       </>
-                    ) : discount.discountType === "percentage" ? (
+                    ) : discount.type === "percentage" ? (
                       <>
-                        <FormattedNumber value={discount.discountValue} /> درصد
+                        <FormattedNumber value={discount.value} /> درصد
                       </>
-                    ) : discount.discountType === "page" ? (
+                    ) : discount.type === "page" ? (
                       <>
-                        <FormattedNumber value={discount.discountValue} /> صفحه
+                        <FormattedNumber value={discount.value} /> صفحه
                       </>
                     ) : (
                       <></>
@@ -85,10 +95,7 @@ export default function DiscountTable({
                   <span>
                     <span>تاریخ انقضا:</span>
                     <span>
-                      <FormattedDate
-                        value={discount.expireDate}
-                        dateStyle="medium"
-                      />{" "}
+                      <FormattedDate value={discount.expireDate} />{" "}
                       <FormattedTime value={discount.expireDate} hour12 />
                     </span>
                   </span>

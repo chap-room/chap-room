@@ -29,10 +29,7 @@ export default function DedicatedLinkReportTable({
               <span className={styles.MobileLabel}>تاریخ:</span>
               <span className={styles.Date}>
                 <span>
-                  <FormattedDate
-                    value={dedicatedLinkReport.date}
-                    dateStyle="medium"
-                  />
+                  <FormattedDate value={dedicatedLinkReport.date} />
                 </span>
                 <span>
                   <FormattedTime value={dedicatedLinkReport.date} hour12 />
@@ -45,7 +42,13 @@ export default function DedicatedLinkReportTable({
                 <div className={styles.UserName}>
                   {dedicatedLinkReport.user.name}
                 </div>
-                <div>{dedicatedLinkReport.user.phoneNumber}</div>
+                <div>
+                  <FormattedNumber
+                    value={parseInt(dedicatedLinkReport.user.phoneNumber)}
+                    useGrouping={false}
+                    minimumIntegerDigits={11}
+                  />
+                </div>
               </div>
             </td>
             <td>
@@ -54,7 +57,13 @@ export default function DedicatedLinkReportTable({
                 <div className={styles.UserName}>
                   {dedicatedLinkReport.buyer.name}
                 </div>
-                <div>{dedicatedLinkReport.buyer.phoneNumber}</div>
+                <div>
+                  <FormattedNumber
+                    value={parseInt(dedicatedLinkReport.buyer.phoneNumber)}
+                    useGrouping={false}
+                    minimumIntegerDigits={11}
+                  />
+                </div>
               </div>
             </td>
             <td>

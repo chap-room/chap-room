@@ -11,6 +11,7 @@ import PostageImage from "@/main/assets/images/postage.svg";
 import QualityImage from "@/main/assets/images/quality.svg";
 import SupportImage from "@/main/assets/images/support.svg";
 import BookImage from "@/main/assets/images/book.svg";
+import OurCustomers from "@/main/components/OurCustomers";
 
 export default function AboutUs() {
   return (
@@ -157,6 +158,9 @@ export default function AboutUs() {
           ضمن توانسته ایم با شرکت ها و کارخانجات تولیدی داخل کشور همکاری داشته
           باشیم و همواره اعتقاد داریم بزرگترین افتخار ما، رضایت مشتری است.
         </p>
+      </div>
+      <div className={styles.OurCustomersContainer}>
+        <OurCustomers />
       </div>
     </div>
   );

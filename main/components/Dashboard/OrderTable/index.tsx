@@ -30,13 +30,13 @@ export default function OrderTable({
           <tr key={order.id}>
             <td>
               <span className={styles.MobileLabel}>شماره سفارش:</span>
-              {order.id}
+              <FormattedNumber value={order.id} useGrouping={false} />
             </td>
             <td>
               <span className={styles.MobileLabel}>تاریخ سفارش:</span>
               <span className={styles.Date}>
                 <span>
-                  <FormattedDate value={order.date} dateStyle="medium" />
+                  <FormattedDate value={order.date} />
                 </span>
                 <span>
                   <FormattedTime value={order.date} hour12 />

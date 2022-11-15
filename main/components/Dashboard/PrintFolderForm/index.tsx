@@ -30,6 +30,7 @@ import UploadArea from "@/main/components/Dashboard/UploadArea";
 import Radio from "@/shared/components/Radio";
 import ProgressBar from "@/shared/components/ProgressBar";
 import IconButton from "@/shared/components/IconButton";
+import SmallLoader from "@/shared/components/SmallLoader";
 
 interface PrintFolderFormData {
   printFiles: PrintFile[];
@@ -150,7 +151,15 @@ export default function PrintFolderForm({
   );
 
   let pagePrice = null;
-  if (step1FormValidation.isValid && tariffs) {
+  if (
+    printColor &&
+    printSize &&
+    printSide &&
+    parseInt(countOfPages) &&
+    !isNaN(parseInt(countOfPages)) &&
+    parseInt(countOfPages) > 0 &&
+    tariffs
+  ) {
     const printPrice = tariffs!.print[printSize!][printColor!];
     const breakpoints = [
       {
@@ -171,9 +180,72 @@ export default function PrintFolderForm({
     pagePrice = breakpoint[printSide!];
   }
 
-  const [printFolderPrice, setPrintFolderPrice] = useState<number | null>(null);
-
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const pagePriceView = usePrintFolderPrice({
+    isValid: step1FormValidation.isValid && step2FormValidation.isValid,
+    printFiles,
+    printColor: printColor!,
+    printSize: printSize!,
+    printSide: printSide!,
+    countOfPages: parseInt(countOfPages),
+    bindingOptions: needBinding
+      ? {
+          bindingType,
+          bindingMethod,
+          countOfFiles:
+            bindingMethod === "countOfFiles" ? parseInt(countOfFiles) : null,
+          coverColor,
+        }
+      : null,
+    countOfCopies: toBePrintedInSeveralCopies ? parseInt(countOfCopies) : null,
+  });
+
+  const cancelButton = (
+    <Button varient="none" onClick={() => onCancel()}>
+      بازگشت
+    </Button>
+  );
+
+  const submitButton = (
+    <Button
+      varient="gradient"
+      style={{ minWidth: 150 }}
+      onClick={() => {
+        setIsSubmitting(true);
+        onFinish({
+          printFiles,
+          printColor: printColor!,
+          printSize: printSize!,
+          printSide: printSide!,
+          countOfPages: parseInt(countOfPages),
+          bindingOptions: needBinding
+            ? {
+                bindingType,
+                bindingMethod,
+                countOfFiles:
+                  bindingMethod === "countOfFiles"
+                    ? parseInt(countOfFiles)
+                    : null,
+                coverColor,
+              }
+            : null,
+          description: needSpecialDescription ? description : null,
+          countOfCopies: toBePrintedInSeveralCopies
+            ? parseInt(countOfCopies)
+            : null,
+        }).finally(() => setIsSubmitting(false));
+      }}
+      loading={isSubmitting}
+      disabled={
+        isSubmitting ||
+        !step1FormValidation.isValid ||
+        !step2FormValidation.isValid
+      }
+    >
+      ثبت پوشه
+    </Button>
+  );
 
   return (
     <div className={styles.PrintFolderForm}>
@@ -266,6 +338,7 @@ export default function PrintFolderForm({
                           }}
                           value={printColor}
                           onChange={setPrintColor}
+                          height={48}
                         />
                         <ErrorList
                           errors={step1FormValidation.errors.printColor}
@@ -282,6 +355,7 @@ export default function PrintFolderForm({
                           }}
                           value={printSize}
                           onChange={setPrintSize}
+                          height={48}
                         />
                         <ErrorList
                           errors={step1FormValidation.errors.printSize}
@@ -297,6 +371,7 @@ export default function PrintFolderForm({
                           }}
                           value={printSide}
                           onChange={setPrintSide}
+                          height={48}
                         />
                         <ErrorList
                           errors={step1FormValidation.errors.printSide}
@@ -312,6 +387,7 @@ export default function PrintFolderForm({
                             varient="shadow-without-bg"
                             value={countOfPages}
                             onChange={setCountOfPages}
+                            height={48}
                           />
                           <ErrorList
                             errors={step1FormValidation.errors.countOfPages}
@@ -335,19 +411,19 @@ export default function PrintFolderForm({
                     </div>
                   </div>
                 </div>
-                <BottomActions>
-                  <Button varient="none" onClick={() => onCancel()}>
-                    بازگشت
-                  </Button>
-                  <Button
-                    varient="filled"
-                    style={{ minWidth: 150 }}
-                    onClick={() => setCurrentStep("2")}
-                    disabled={!step1FormValidation.isValid}
-                  >
-                    مرحله بعد
-                  </Button>
-                </BottomActions>
+                <div className={styles.StepBottomActionsContainer}>
+                  <BottomActions>
+                    {cancelButton}
+                    <Button
+                      varient="gradient"
+                      style={{ minWidth: 150 }}
+                      onClick={() => setCurrentStep("2")}
+                      disabled={!step1FormValidation.isValid}
+                    >
+                      مرحله بعد
+                    </Button>
+                  </BottomActions>
+                </div>
               </>
             ),
           },
@@ -358,7 +434,7 @@ export default function PrintFolderForm({
                 <div className={styles.Step2}>
                   <div className={styles.CheckBoxWithLabel}>
                     <CheckBox checked={needBinding} onChange={setNeedBinding} />
-                    نیاز به صحافی دارد نیاز به صحافی دارد
+                    صحافی نیاز دارم.
                   </div>
                   {needBinding && (
                     <div className={styles.BindingOtions}>
@@ -463,7 +539,7 @@ export default function PrintFolderForm({
                       checked={needSpecialDescription}
                       onChange={setNeedSpecialDescription}
                     />
-                    نیاز به توضیحات خاصی دارد
+                    سفارش من نیاز به توضیح خاصی دارد.
                   </div>
                   {needSpecialDescription && (
                     <div className={styles.InputContainer}>
@@ -471,7 +547,7 @@ export default function PrintFolderForm({
                         varient="shadow"
                         value={description}
                         onTextChange={setDescription}
-                        placeholder="توضیحات"
+                        placeholder="توضیحات سفارش"
                         rows={3}
                       />
                       <ErrorList
@@ -485,7 +561,7 @@ export default function PrintFolderForm({
                       checked={toBePrintedInSeveralCopies}
                       onChange={setToBePrintedInSeveralCopies}
                     />
-                    در چند نسخه چاپ شود
+                    در چند سری ( نسخه ) چاپ شود.
                   </div>
                   {toBePrintedInSeveralCopies && (
                     <div className={styles.InputContainer}>
@@ -493,7 +569,7 @@ export default function PrintFolderForm({
                         <TextInput
                           inputProps={{
                             type: "number",
-                            placeholder: "تعداد کپی ها",
+                            placeholder: "تعداد سری ( نسخه )",
                           }}
                           varient="shadow-without-bg"
                           value={countOfCopies}
@@ -506,115 +582,26 @@ export default function PrintFolderForm({
                     </div>
                   )}
                 </div>
-                <BottomActions
-                  start={
-                    <DataLoader
-                      load={() => {
-                        if (
-                          step1FormValidation.isValid &&
-                          step2FormValidation.isValid
-                        ) {
-                          const abortController = new AbortController();
-                          return [
-                            calculatePrintFolderPrice(
-                              {
-                                printFiles,
-                                printColor: printColor!,
-                                printSize: printSize!,
-                                printSide: printSide!,
-                                countOfPages: parseInt(countOfPages),
-                                bindingOptions: needBinding
-                                  ? {
-                                      bindingType,
-                                      bindingMethod,
-                                      countOfFiles:
-                                        bindingMethod === "countOfFiles"
-                                          ? parseInt(countOfFiles)
-                                          : null,
-                                      coverColor,
-                                    }
-                                  : null,
-                                countOfCopies: toBePrintedInSeveralCopies
-                                  ? parseInt(countOfCopies)
-                                  : null,
-                              },
-                              abortController
-                            ),
-                            abortController,
-                          ];
-                        }
-                      }}
-                      setData={setPrintFolderPrice}
-                      deps={[
-                        printFiles,
-                        printColor,
-                        printSize,
-                        printSide,
-                        countOfPages,
-                        needBinding && bindingType,
-                        needBinding && bindingMethod,
-                        needBinding &&
-                          bindingMethod === "countOfFiles" &&
-                          parseInt(countOfFiles),
-                        needBinding && coverColor,
-                        toBePrintedInSeveralCopies && parseInt(countOfCopies),
-                      ]}
-                      size="small"
-                    >
-                      {step2FormValidation.isValid && (
-                        <div className={styles.PrintPriceView}>
-                          مبلغ:{" "}
-                          <FormattedNumber value={printFolderPrice || 0} />{" "}
-                          تومان
-                        </div>
-                      )}
-                    </DataLoader>
-                  }
-                >
-                  <Button varient="none" onClick={() => setCurrentStep("1")}>
-                    مرحله قبل
-                  </Button>
-                  <Button
-                    varient="filled"
-                    style={{ minWidth: 150 }}
-                    onClick={() => {
-                      setIsSubmitting(true);
-                      onFinish({
-                        printFiles,
-                        printColor: printColor!,
-                        printSize: printSize!,
-                        printSide: printSide!,
-                        countOfPages: parseInt(countOfPages),
-                        bindingOptions: needBinding
-                          ? {
-                              bindingType,
-                              bindingMethod,
-                              countOfFiles:
-                                bindingMethod === "countOfFiles"
-                                  ? parseInt(countOfFiles)
-                                  : null,
-                              coverColor,
-                            }
-                          : null,
-                        description: needSpecialDescription
-                          ? description
-                          : null,
-                        countOfCopies: toBePrintedInSeveralCopies
-                          ? parseInt(countOfCopies)
-                          : null,
-                      }).finally(() => setIsSubmitting(false));
-                    }}
-                    loading={isSubmitting}
-                    disabled={isSubmitting || !step2FormValidation.isValid}
-                  >
-                    ثبت پوشه
-                  </Button>
-                </BottomActions>
+                <div className={styles.StepBottomActionsContainer}>
+                  <BottomActions start={pagePriceView}>
+                    <Button varient="none" onClick={() => setCurrentStep("1")}>
+                      مرحله قبل
+                    </Button>
+                    {submitButton}
+                  </BottomActions>
+                </div>
               </>
             ),
           },
         ]}
       />
+      <div className={styles.BottomActionsContainer}>
+        {pagePriceView}
+        <BottomActions>
+          {cancelButton}
+          {submitButton}
+        </BottomActions>
+      </div>
     </div>
   );
 }
@@ -713,6 +700,96 @@ function UploadPrintFile({
         <FormattedNumber value={progress} style="percent" />
         <ProgressBar progress={progress} />
       </div>
+    </div>
+  );
+}
+
+function usePrintFolderPrice({
+  isValid,
+  printColor,
+  printSize,
+  printSide,
+  countOfPages,
+  bindingOptions,
+  countOfCopies,
+  printFiles,
+}: {
+  isValid: boolean;
+  printFiles: PrintFile[];
+  printColor: "blackAndWhite" | "normalColor" | "fullColor";
+  printSize: "a4" | "a5" | "a3";
+  printSide: "singleSided" | "doubleSided";
+  countOfPages: number;
+  bindingOptions: BindingOptions | null;
+  countOfCopies: number | null;
+}) {
+  const [isFirstRender, setIsFirstRender] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [price, setPrice] = useState<number | null>(null);
+
+  function fetchData() {
+    if (!isFirstRender && isLoading) {
+      return;
+    } else {
+      if (isFirstRender) setIsFirstRender(false);
+    }
+
+    setIsLoading(true);
+    setIsError(false);
+    const abortController = new AbortController();
+    calculatePrintFolderPrice(
+      {
+        printFiles,
+        printColor,
+        printSize,
+        printSide,
+        countOfPages,
+        bindingOptions,
+        countOfCopies,
+      },
+      abortController
+    )
+      .then(setPrice)
+      .catch((message) => {
+        if (message === "لغو شده") return;
+        toast.error(message);
+        setIsError(true);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+
+    return () => abortController.abort();
+  }
+
+  useEffect(
+    () => (isValid ? fetchData() : undefined),
+    [
+      printFiles,
+      printColor,
+      printSize,
+      printSide,
+      countOfPages,
+      bindingOptions?.bindingType,
+      bindingOptions?.bindingMethod,
+      bindingOptions?.countOfFiles || null,
+      bindingOptions?.coverColor,
+      countOfCopies,
+    ]
+  );
+
+  return !isValid ? (
+    <></>
+  ) : isLoading ? (
+    <SmallLoader />
+  ) : isError ? (
+    <Button varient="filled" onClick={fetchData}>
+      سعی مجدد
+    </Button>
+  ) : (
+    <div className={styles.PrintPriceView}>
+      مبلغ: <FormattedNumber value={price || 0} /> تومان
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import styles from "./style.module.scss";
+import { FormattedNumber } from "react-intl";
 import { AdminUserRole } from "@/shared/types";
-import LoginIcon from "@/admin/assets/icons/login.svg";
 import EditIcon from "@/shared/assets/icons/edit.svg";
 import DeletetIcon from "@/shared/assets/icons/delete.svg";
 import IconButton from "@/shared/components/IconButton";
@@ -13,14 +13,12 @@ interface AdminTableProps {
     role: AdminUserRole;
   }[];
   onDeleteAdmin: (adminId: number) => void;
-  onLoginAsAdmin: (adminId: number) => void;
   onEditAdmin: (adminId: number) => void;
 }
 
 export default function AdminTable({
   admins,
   onDeleteAdmin,
-  onLoginAsAdmin,
   onEditAdmin,
 }: AdminTableProps) {
   return (
@@ -39,7 +37,13 @@ export default function AdminTable({
               <span className={styles.MobileLabel}>ادمین:</span>
               <div>
                 <div className={styles.UserName}>{admin.name}</div>
-                <div>{admin.phoneNumber}</div>
+                <div>
+                  <FormattedNumber
+                    value={parseInt(admin.phoneNumber)}
+                    useGrouping={false}
+                    minimumIntegerDigits={11}
+                  />
+                </div>
               </div>
             </td>
             <td>
@@ -57,15 +61,6 @@ export default function AdminTable({
             <td>
               <span className={styles.MobileLabel}>عملیات:</span>
               <div className={styles.OperationButtons}>
-                <div className={styles.LogoutButton}>
-                  <IconButton
-                    varient="none"
-                    size={34}
-                    onClick={() => onLoginAsAdmin(admin.id)}
-                  >
-                    <LoginIcon />
-                  </IconButton>
-                </div>
                 <div className={styles.EditButton}>
                   <IconButton
                     varient="none"

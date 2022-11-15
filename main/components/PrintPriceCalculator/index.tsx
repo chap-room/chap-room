@@ -1,5 +1,5 @@
 import styles from "./styles.module.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormattedNumber } from "react-intl";
 import Link from "next/link";
 import { PrintTariffs } from "@/shared/types";
@@ -12,6 +12,7 @@ import Button from "@/shared/components/Button";
 import Select from "@/shared/components/Select";
 import TextInput from "@/shared/components/TextInput";
 import ErrorList from "@/shared/components/ErrorList";
+import { isLoggedIn } from "@/main/api";
 
 interface PrintPriceCalculatorProps {
   printTariffs: PrintTariffs;
@@ -68,6 +69,19 @@ export default function PrintPriceCalculator({
     calculatedPrice = (parseInt(countOfPages) || 0) * pagePrice;
   }
 
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+
+  useEffect(() => {
+    try {
+      const userData = JSON.parse(localStorage.getItem("userData") || "");
+      if (userData) setIsUserLoggedIn(true);
+    } catch {}
+
+    isLoggedIn()
+      .then((userData) => setIsUserLoggedIn(!!userData))
+      .catch(() => {});
+  }, []);
+
   return (
     <div className={styles.Calculator}>
       <div className={styles.Title}>
@@ -77,13 +91,14 @@ export default function PrintPriceCalculator({
         <Select
           varient="shadow-without-bg"
           placeholder="سیاه و سفید / رنگی "
-          value={printSize}
-          onChange={setPrintSize}
           options={{
             a4: "A4",
             a5: "A5",
             a3: "A3",
           }}
+          value={printSize}
+          onChange={setPrintSize}
+          height={48}
         />
         <ErrorList errors={formValidation.errors.printSize} />
       </div>
@@ -98,6 +113,7 @@ export default function PrintPriceCalculator({
           }}
           value={printColor}
           onChange={setPrintColor}
+          height={48}
         />
         <ErrorList errors={formValidation.errors.printColor} />
       </div>
@@ -111,6 +127,7 @@ export default function PrintPriceCalculator({
           }}
           value={printSide}
           onChange={setPrintSide}
+          height={48}
         />
         <ErrorList errors={formValidation.errors.printSide} />
       </div>
@@ -121,6 +138,7 @@ export default function PrintPriceCalculator({
             varient="shadow-without-bg"
             value={countOfPages}
             onChange={setCountOfPages}
+            height={48}
           />
           <ErrorList errors={formValidation.errors.countOfPages} />
         </div>
@@ -141,7 +159,7 @@ export default function PrintPriceCalculator({
             <FormattedNumber value={calculatedPrice} /> تومان
           </div>
         )}
-        <Link href="/login">
+        <Link href={isUserLoggedIn ? "/dashboard/orders/new" : "/auth"}>
           <Button varient="gradient">سفارش پرینت</Button>
         </Link>
       </div>

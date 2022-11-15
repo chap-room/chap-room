@@ -560,8 +560,8 @@ export function newDiscount(data: {
     phoneNumber: string;
   } | null;
   phoneNumber: string | null;
-  discountType: "fixed" | "percentage" | "page";
-  discountValue: number;
+  type: "fixed" | "percentage" | "page";
+  value: number;
   usageLimit: number | null;
   expireDate: Date | null;
 }) {
@@ -593,8 +593,8 @@ export function updateDiscount(
       phoneNumber: string;
     } | null;
     phoneNumber: string | null;
-    discountType: "fixed" | "percentage" | "page";
-    discountValue: number;
+    type: "fixed" | "percentage" | "page";
+    value: number;
     usageLimit: number | null;
     expireDate: Date | null;
   }

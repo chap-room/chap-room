@@ -312,4 +312,12 @@
       }
     }
   }
+
+  .OurCustomersContainer {
+    margin: 0 -50px;
+
+    @media (max-width: 896px) {
+      margin: 0 -30px;
+    }
+  }
 }

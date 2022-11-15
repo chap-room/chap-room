@@ -34,49 +34,58 @@ export default function IncreasBalanceDialog({
   );
 
   return (
-    <Dialog title="افزایش موجودی" open={open} onClose={onClose}>
+    <Dialog
+      title="افزایش موجودی"
+      open={open}
+      onClose={onClose}
+      fullScreenInMobile
+      hideTitleInMobile
+    >
       <div className={styles.DialogContent}>
-        <div className={styles.Label}>مبلغ مورد نظر:</div>
-        <div className={styles.Input}>
-          <TextInput
-            inputProps={{
-              type: "number",
-              placeholder: "مبلغ",
-            }}
-            varient="shadow-without-bg"
-            value={amount}
-            onChange={setAmount}
-            suffix="تومان"
-          />
-          <ErrorList errors={formValidation.errors.amount} />
+        <div className={styles.MobileTitle}>افزایش موجودی</div>
+        <div>
+          <div className={styles.Label}>مبلغ مورد نظر:</div>
+          <div className={styles.Input}>
+            <TextInput
+              inputProps={{
+                type: "number",
+                placeholder: "مبلغ",
+              }}
+              varient="shadow-without-bg"
+              value={amount}
+              onChange={setAmount}
+              suffix="تومان"
+            />
+            <ErrorList errors={formValidation.errors.amount} />
+          </div>
+          <div className={styles.Label}>انتخاب درگاه:</div>
+          <div className={styles.Input}>
+            <Select
+              options={{
+                zarinPalGate: "زرین پال",
+              }}
+              varient="inset-shadow-without-bg"
+              value={gate}
+              onChange={setGate}
+              readOnly
+            />
+          </div>
         </div>
-        <div className={styles.Label}>انتخاب درگاه:</div>
-        <div className={styles.Input}>
-          <Select
-            options={{
-              zarinPalGate: "زرین پال",
+        <BottomActions>
+          <Button
+            varient="filled"
+            style={{ minWidth: 100 }}
+            onClick={() => {
+              setIsSubmitting(true);
+              onSubmit(parseInt(amount)).finally(() => setIsSubmitting(false));
             }}
-            varient="inset-shadow-without-bg"
-            value={gate}
-            onChange={setGate}
-            readOnly
-          />
-        </div>
+            loading={isSubmitting}
+            disabled={isSubmitting || !formValidation.isValid}
+          >
+            پرداخت
+          </Button>
+        </BottomActions>
       </div>
-      <BottomActions>
-        <Button
-          varient="filled"
-          style={{ minWidth: 100 }}
-          onClick={() => {
-            setIsSubmitting(true);
-            onSubmit(parseInt(amount)).finally(() => setIsSubmitting(false));
-          }}
-          loading={isSubmitting}
-          disabled={isSubmitting || !formValidation.isValid}
-        >
-          پرداخت
-        </Button>
-      </BottomActions>
     </Dialog>
   );
 }

@@ -37,10 +37,7 @@ export default function FinancialRecordTable({
               <span className={styles.MobileLabel}>تاریخ:</span>
               <span className={styles.Date}>
                 <span>
-                  <FormattedDate
-                    value={financialRecord.date}
-                    dateStyle="medium"
-                  />
+                  <FormattedDate value={financialRecord.date} />
                 </span>
                 <span>
                   <FormattedTime value={financialRecord.date} hour12 />
@@ -53,7 +50,13 @@ export default function FinancialRecordTable({
                 <div className={styles.UserName}>
                   {financialRecord.user.name}
                 </div>
-                <div>{financialRecord.user.phoneNumber}</div>
+                <div>
+                  <FormattedNumber
+                    value={parseInt(financialRecord.user.phoneNumber)}
+                    useGrouping={false}
+                    minimumIntegerDigits={11}
+                  />
+                </div>
               </div>
             </td>
             <td>

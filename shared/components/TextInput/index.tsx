@@ -11,6 +11,7 @@ interface TextInputProps {
   inputProps?: InputHTMLAttributes<HTMLInputElement>;
   inputRef?: Ref<HTMLInputElement>;
   readOnly?: boolean;
+  height?: number;
 }
 
 const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
@@ -25,6 +26,7 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
       inputProps,
       inputRef,
       readOnly = false,
+      height = 40,
     }: TextInputProps,
     ref
   ) => {
@@ -48,7 +50,16 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
     }
 
     return (
-      <div ref={ref} className={className.join(" ")} {...boxProps}>
+      <div
+        ref={ref}
+        {...boxProps}
+        className={className.join(" ")}
+        style={{
+          height,
+          borderRadius: Math.round(height / 2),
+          ...boxProps?.style,
+        }}
+      >
         {prefix}
         <input
           ref={inputRef}
