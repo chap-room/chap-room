@@ -162,7 +162,7 @@ export default function DashboardMain() {
               <div className={styles.Name}>{data.state.currentUser.name}</div>
             </div> */}
           </div>
-          <div className={styles.Welcome}>!خوش‌آمدی</div>
+          <div className={styles.Welcome}>خوش‌آمدی!</div>
           <DashboardNavLinks />
         </div>
       </div>

@@ -76,7 +76,7 @@ export default function AddressStage({
         message="از حذف این آدرس مطمئن هستید؟"
         confirmButtonText="حذف"
       />
-      <AreaButton title="افزودن آدرس +" onClick={actions.new} />
+      <AreaButton title="ایجاد آدرس جدید +" onClick={actions.new} />
       <BottomActions>
         <Button onClick={actions.back}>مرحله قبل</Button>
         <Button

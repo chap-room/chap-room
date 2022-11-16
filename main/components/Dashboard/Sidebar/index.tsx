@@ -1,5 +1,6 @@
 import styles from "./style.module.scss";
 import { useState } from "react";
+import { FormattedNumber } from "react-intl";
 import { getProfile } from "@/main/api";
 import DataLoader from "@/shared/components/DataLoader";
 import DashboardNavLinks from "@/main/components/Dashboard/NavLinks";
@@ -32,7 +33,7 @@ export default function DashboardSidebar() {
               ...data,
               walletBalance,
               marketingBalance,
-            })
+            });
           }}
         />
         <DashboardNavLinks />
@@ -40,7 +41,13 @@ export default function DashboardSidebar() {
           <Avatar user={{ name: data.name, avatar: data.avatar }} />
           <div className={styles.Meta}>
             <div>{data.name}</div>
-            <div className={styles.PhoneNumber}>{data.phoneNumber}</div>
+            <div className={styles.PhoneNumber}>
+              <FormattedNumber
+                value={parseInt(data.phoneNumber)}
+                useGrouping={false}
+                minimumIntegerDigits={11}
+              />
+            </div>
           </div>
         </div>
       </DataLoader>

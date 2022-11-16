@@ -27,7 +27,7 @@ export default function DashboardOrderDetails() {
         <title>داشبورد - جزئیات سفارش</title>
       </Head>
       <SectionHeader
-        title="سفارش ها"
+        title="سفارش های من"
         description="تاریخچه سفارشات خود را از این بخش مشاهده کنید"
       />
       <SectionContent>

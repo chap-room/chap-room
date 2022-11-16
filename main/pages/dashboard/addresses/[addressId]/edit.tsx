@@ -27,7 +27,7 @@ export default function DashboardEditAddresse() {
         <title>داشبورد - ویرایش آدرس</title>
       </Head>
       <SectionHeader
-        title="آدرس ها"
+        title="آدرس ها من"
         description="آدرس های خود را از این بخش مدیریت کنید"
       />
       <SectionContent>

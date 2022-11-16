@@ -25,10 +25,10 @@ export default function DashboardTransactions() {
   return (
     <>
       <Head>
-        <title>داشبورد - تراکنش ها</title>
+        <title>داشبورد - تراکنش های انجام شده</title>
       </Head>
       <SectionHeader
-        title="تراکنش ها"
+        title="تراکنش های انجام شده"
         description="سوابق مالی خود را از این بخش مشاهده کنید"
       />
       <SectionContent>

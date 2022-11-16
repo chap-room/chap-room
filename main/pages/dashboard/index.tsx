@@ -1,5 +1,6 @@
 import styles from "./style.module.scss";
 import { ReactElement, useEffect, useRef, useState } from "react";
+import { FormattedNumber } from "react-intl";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -204,11 +205,17 @@ export default function DashboardMain() {
           <div className={styles.User}>
             <Avatar user={data!} />
             <div className={styles.Meta}>
-              <div className={styles.PhoneNumber}>{data!.phoneNumber}</div>
+              <div className={styles.PhoneNumber}>
+                <FormattedNumber
+                  value={parseInt(data!.phoneNumber)}
+                  useGrouping={false}
+                  minimumIntegerDigits={11}
+                />
+              </div>
               <div className={styles.Name}>{data!.name}</div>
             </div>
           </div>
-          <div className={styles.Welcome}>!خوش‌آمدی</div>
+          <div className={styles.Welcome}>خوش‌آمدی!</div>
           <Wallet
             marketingBalance={data!.marketingBalance}
             walletBalance={data!.walletBalance}

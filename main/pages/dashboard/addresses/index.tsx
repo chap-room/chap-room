@@ -37,10 +37,10 @@ export default function DashboardAddresseList() {
   return (
     <>
       <Head>
-        <title>داشبورد - آدرس ها</title>
+        <title>داشبورد - آدرس ها من</title>
       </Head>
       <SectionHeader
-        title="آدرس ها"
+        title="آدرس ها من"
         description="آدرس های خود را از این بخش مدیریت کنید"
       />
       <SectionContent>

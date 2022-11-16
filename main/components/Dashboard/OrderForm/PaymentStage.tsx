@@ -176,6 +176,7 @@ export default function PaymentStage({ actions }: PaymentStageProps) {
                 موجودی: <FormattedNumber value={data.userBalance} /> تومان
               </div>
             </div>
+            <div className={styles.Separator}></div>
           </div>
         </div>
       </div>
@@ -192,7 +193,7 @@ export default function PaymentStage({ actions }: PaymentStageProps) {
         <Button onClick={actions.back}>مرحله قبل</Button>
         <Button
           varient="filled"
-          style={{ minWidth: 150 }}
+          style={{ minWidth: 110 }}
           onClick={() => {
             setIsSubmitting(true);
             actions

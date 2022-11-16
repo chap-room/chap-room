@@ -255,7 +255,9 @@ export default function Home() {
               </div>
             </div>
             <div className={styles.SubmitButton}>
-              <Button varient="gradient">مشاوره رایگان</Button>
+              <Button varient="gradient" style={{ padding: "0 30px" }}>
+                مشاوره رایگان
+              </Button>
             </div>
           </div>
         </div>

@@ -22,7 +22,7 @@ export default function DashboardNewAddresse() {
         <title>داشبورد - افزودن آدرس</title>
       </Head>
       <SectionHeader
-        title="آدرس ها"
+        title="آدرس ها من"
         description="آدرس های خود را از این بخش مدیریت کنید"
       />
       <SectionContent>

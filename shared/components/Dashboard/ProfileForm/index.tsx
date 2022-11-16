@@ -1,5 +1,6 @@
 import styles from "./style.module.scss";
 import { useState } from "react";
+import { FormattedNumber } from "react-intl";
 import TextInput from "@/shared/components/TextInput";
 import Button from "@/shared/components/Button";
 import BottomActions from "@/shared/components/Dashboard/BottomActions";
@@ -66,7 +67,13 @@ export default function ProfileForm({
     <>
       <div className={styles.Form}>
         <div className={styles.Label}>شماره موبایل:</div>
-        <div className={styles.Input}>{phoneNumber}</div>
+        <div className={styles.Input}>
+          <FormattedNumber
+            value={parseInt(phoneNumber)}
+            useGrouping={false}
+            minimumIntegerDigits={11}
+          />
+        </div>
         <div className={styles.Label}>نام کامل:</div>
         <div className={styles.Input}>
           <TextInput

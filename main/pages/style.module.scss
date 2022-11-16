@@ -522,8 +522,13 @@
         .Title {
           text-align: center;
           color: #9c9c9c;
+          font-size: 18px;
           margin-top: 20px;
           margin-bottom: 30px;
+    
+          @media (max-width: 512px) {
+            font-size: 16px;
+          }
         }
 
         .Input {

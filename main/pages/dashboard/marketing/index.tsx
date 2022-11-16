@@ -51,10 +51,10 @@ export default function DashboardMarketing() {
   return (
     <>
       <Head>
-        <title>داشبورد - بازاریابی</title>
+        <title>داشبورد - پنل بازاریابی</title>
       </Head>
       <SectionHeader
-        title="بازاریابی"
+        title="پنل بازاریابی"
         description="با استفاده از این سیستم می توانید به راحتی برای خود درآمدزایی کنید"
       />
       <SectionContent>
