@@ -89,7 +89,9 @@ export default function DashboardMain() {
               <SectionContent>
                 <div className={styles.WelcomeUser}>سلام {data!.name}</div>
                 <div className={styles.DashboardDescription}>
-                  خلاصه‌ای از همه چیز را ببینید در چاپ روم
+                  خلاصه‌ای از همه چیز را ببینید در
+                  <br />
+                  چاپ روم
                 </div>
                 <div className={styles.Printing}>
                   <PrintingImage />
