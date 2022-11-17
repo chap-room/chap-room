@@ -178,86 +178,92 @@ export default function Home() {
               <PrintPriceCalculator printTariffs={tariffs.print} />
             </DataLoader>
           </div>
-          <CalculatorImage />
+          <div>
+            <CalculatorImage />
+          </div>
         </div>
       </div>
       <div className={styles.BookPrinting}>
         <h1>سفارش چاپ کتاب</h1>
         <div>
-          <BookPrintingImage />
           <div>
-            <div className={styles.Title}>
-              از منوی زیر خدمات مورد نظر خود را انتخاب کنید
-            </div>
-            <div className={styles.Input}>
-              <Select
-                value={null}
-                onChange={() => {}}
-                options={{}}
-                varient="shadow-without-bg"
-                placeholder="قطع کتاب"
-                readOnly
-                height={48}
-              />
-            </div>
-            <div className={styles.Input}>
-              <Select
-                value={null}
-                onChange={() => {}}
-                options={{}}
-                varient="shadow-without-bg"
-                placeholder="جنس کاغذ"
-                readOnly
-                height={48}
-              />
-            </div>
-            <div className={styles.Input}>
-              <Select
-                value={null}
-                onChange={() => {}}
-                options={{}}
-                varient="shadow-without-bg"
-                placeholder="نوع صحافی"
-                readOnly
-                height={48}
-              />
-            </div>
-            <div className={styles.Row}>
+            <BookPrintingImage />
+          </div>
+          <div>
+            <div>
+              <div className={styles.Title}>
+                از منوی زیر خدمات مورد نظر خود را انتخاب کنید
+              </div>
               <div className={styles.Input}>
-                <TextInput
-                  inputProps={{ type: "number", placeholder: "تعداد صفحه" }}
+                <Select
+                  value={null}
+                  onChange={() => {}}
+                  options={{}}
                   varient="shadow-without-bg"
+                  placeholder="قطع کتاب"
+                  readOnly
                   height={48}
                 />
               </div>
               <div className={styles.Input}>
-                <TextInput
-                  inputProps={{
-                    type: "number",
-                    placeholder: "تیراژ (حداقل 50 نسخه)",
-                  }}
+                <Select
+                  value={null}
+                  onChange={() => {}}
+                  options={{}}
                   varient="shadow-without-bg"
+                  placeholder="جنس کاغذ"
+                  readOnly
+                  height={48}
                 />
               </div>
-            </div>
-            <div className={styles.Row}>
-              <div>
-                <span>قیمت هر کتاب: </span>
-                <span>
-                  <FormattedNumber value={56000} /> تومان
-                </span>
+              <div className={styles.Input}>
+                <Select
+                  value={null}
+                  onChange={() => {}}
+                  options={{}}
+                  varient="shadow-without-bg"
+                  placeholder="نوع صحافی"
+                  readOnly
+                  height={48}
+                />
               </div>
-              <div>
-                <span>قیمت کل: </span>
-                <span>
-                  <FormattedNumber value={560000} /> تومان
-                </span>
+              <div className={styles.Row}>
+                <div className={styles.Input}>
+                  <TextInput
+                    inputProps={{ type: "number", placeholder: "تعداد صفحه" }}
+                    varient="shadow-without-bg"
+                    height={48}
+                  />
+                </div>
+                <div className={styles.Input}>
+                  <TextInput
+                    inputProps={{
+                      type: "number",
+                      placeholder: "تیراژ (حداقل 50 نسخه)",
+                    }}
+                    varient="shadow-without-bg"
+                  />
+                </div>
               </div>
-            </div>
-            <div className={styles.SubmitButton}>
-              <Button varient="gradient" style={{ padding: "0 30px" }}>
-                مشاوره رایگان
-              </Button>
+              <div className={styles.Row}>
+                <div>
+                  <span>قیمت هر کتاب: </span>
+                  <span>
+                    <FormattedNumber value={56000} /> تومان
+                  </span>
+                </div>
+                <div>
+                  <span>قیمت کل: </span>
+                  <span>
+                    <FormattedNumber value={560000} /> تومان
+                  </span>
+                </div>
+              </div>
+              <div className={styles.SubmitButton}>
+                <Button varient="gradient" style={{ padding: "0 30px" }}>
+                  مشاوره رایگان
+                </Button>
+              </div>
             </div>
           </div>
         </div>

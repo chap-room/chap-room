@@ -408,6 +408,11 @@
     max-width: 1360px;
     margin: 0 auto;
     box-sizing: border-box;
+    padding: 0 50px;
+
+    @media (max-width: 896px) {
+      padding: 0 30px;
+    }
 
     > h1 {
       margin: 30px 0;
@@ -421,39 +426,47 @@
     }
 
     > div {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      align-items: center;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 30px;
+      
+      @media (max-width: 1024px) {
+        grid-template-columns: 1fr;
+      }
 
-      > svg {
-        width: 100%;
-        max-width: 500px;
+      > div:first-child {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
 
-        @media (min-width: 897px) {
-          transform: translateX(-150px);
-        }
-
-        @media (max-width: 1024px) {
-          display: none;
+        > div {
+          width: 100%;
+          max-width: 440px;
+          box-sizing: border-box;
+          
+          @media (max-width: 896px) {
+            box-shadow: none;
+            padding: 0 30px;
+            margin-top: -30px;
+          }
         }
       }
 
-      > div {
-        width: 100%;
-        max-width: 440px;
-        box-sizing: border-box;
-  
-        @media (max-width: 896px) {
-          padding: 0 30px;
-        }
+      > div:last-child {
+        position: relative;
+        height: 670px;
 
-        > div {
-          @media (max-width: 896px) {
-            box-shadow: none;
-            padding: 0;
-            margin-top: -30px;
+        > svg {
+          width: 650px;
+          height: auto;
+          position: absolute;
+          left: -100px;
+          top: 50%;
+          transform: translate(0, -50%);
+
+          @media (max-width: 1024px) {
+            display: none;
           }
         }
       }
@@ -483,92 +496,106 @@
     }
 
     > div {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      align-items: center;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 30px;
+      
+      @media (max-width: 1024px) {
+        grid-template-columns: 1fr;
+      }
 
-      > svg {
-        width: 100%;
-        max-width: 500px;
+      > div:first-child {
+        position: relative;
+        height: 450px;
 
-        @media (min-width: 897px) {
-          transform: translateX(150px);
-        }
+        > svg {
+          width: 650px;
+          height: auto;
+          position: absolute;
+          right: -100px;
+          top: 50%;
+          transform: translate(0, -50%);
 
-        @media (max-width: 1024px) {
-          display: none;
+          @media (max-width: 1024px) {
+            display: none;
+          }
         }
       }
 
-      > div {
-        width: 100%;
-        max-width: 440px;
-        box-sizing: border-box;
-        box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
-        border-radius: 20px;
-        padding: 20px;
+      > div:last-child {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        justify-content: center;
+        align-items: center;
 
-        @media (max-width: 896px) {
-          box-shadow: none;
-          padding: 0;
-          margin-top: -30px;
-        }
-
-        .Title {
-          text-align: center;
-          color: #9c9c9c;
-          font-size: 18px;
-          margin-top: 20px;
-          margin-bottom: 30px;
-    
-          @media (max-width: 512px) {
-            font-size: 16px;
-          }
-        }
-
-        .Input {
-          > div:first-child {
-            max-width: unset;
-          }
-        }
-
-        .Row {
+        > div {
+          width: 100%;
+          max-width: 440px;
+          box-sizing: border-box;
+          box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
+          border-radius: 20px;
+          padding: 20px;
           display: flex;
-          flex-direction: row;
+          flex-direction: column;
           gap: 20px;
 
-          > div {
-            width: 100%;
+          @media (max-width: 896px) {
+            box-shadow: none;
+            padding: 0;
+            margin-top: -30px;
           }
 
-          &:nth-child(6) {
-            flex-wrap: wrap;
-            white-space: nowrap;
-            justify-content: space-between;
-
-            > div {
-              padding: 0 10px;
-              display: flex;
-              width: max-content;
-              flex-direction: row;
-              gap: 5px;
-              align-items: center;
-              color: #5d5d5d;
-              font-size: 12px;
+          .Title {
+            text-align: center;
+            color: #9c9c9c;
+            font-size: 18px;
+            margin-top: 20px;
+            margin-bottom: 30px;
+      
+            @media (max-width: 512px) {
+              font-size: 16px;
             }
           }
-        }
 
-        .SubmitButton {
-          display: flex;
-          flex-direction: row;
-          justify-content: flex-end;
-          margin-top: 30px;
+          .Input {
+            > div:first-child {
+              max-width: unset;
+            }
+          }
+
+          .Row {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+
+            > div {
+              width: 100%;
+            }
+
+            &:nth-child(6) {
+              flex-wrap: wrap;
+              white-space: nowrap;
+              justify-content: space-between;
+
+              > div {
+                padding: 0 10px;
+                display: flex;
+                width: max-content;
+                flex-direction: row;
+                gap: 5px;
+                align-items: center;
+                color: #5d5d5d;
+                font-size: 12px;
+              }
+            }
+          }
+
+          .SubmitButton {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            margin-top: 30px;
+          }
         }
       }
     }
