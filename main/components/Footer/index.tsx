@@ -1,4 +1,5 @@
 import styles from "./style.module.scss";
+import { FormattedNumber } from "react-intl";
 import Link from "next/link";
 import AddressesIcon from "@/main/assets/icons/addresses.svg";
 import CaillIcon from "@/main/assets/icons/call.svg";
@@ -30,10 +31,14 @@ export default function Footer() {
               <h3>تماس با ما</h3>
               <ul>
                 <li>
-                  <CaillIcon /> 021-91090772
+                  <CaillIcon />{" "}
+                  <FormattedNumber value={21} minimumIntegerDigits={3} />-
+                  <FormattedNumber value={91090772} useGrouping={false} />
                 </li>
                 <li>
-                  <CaillIcon /> 031-91090414
+                  <CaillIcon />{" "}
+                  <FormattedNumber value={31} minimumIntegerDigits={3} />-
+                  <FormattedNumber value={91090414} useGrouping={false} />
                 </li>
                 <li>
                   <MailIcon /> info@chaproom.com
@@ -59,7 +64,8 @@ export default function Footer() {
                     <a>قوانین و مقررات</a>
                   </Link>
                 </li>
-                <li>{/* TODO */}
+                <li>
+                  {/* TODO */}
                   <Link href="/">
                     <a>راهنمای ثبت سفارش</a>
                   </Link>

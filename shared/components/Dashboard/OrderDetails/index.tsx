@@ -1,12 +1,19 @@
 import styles from "./style.module.scss";
 import { Order } from "@/shared/types";
-import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
+import {
+  FormattedDate,
+  FormattedNumber,
+  FormattedTime,
+  useIntl,
+} from "react-intl";
 
 interface OrderDetailsProps {
   order: Order;
 }
 
 export default function OrderDetails({ order }: OrderDetailsProps) {
+  const intl = useIntl();
+
   return (
     <div className={styles.OrderDetails} key={order.id}>
       <div>
@@ -15,19 +22,41 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
           <div key={index}>
             <div>پوشه {index + 1}:</div>
             <div>
-              {
+              {[
                 {
                   blackAndWhite: "سیاه و سفید",
                   normalColor: "رنگی معمولی",
                   fullColor: "تمام رنگی",
-                }[printFolder.printColor]
-              }{" "}
-              / {{ a4: "A4", a5: "A5", a3: "A3" }[printFolder.printSize]} /{" "}
-              {
+                }[printFolder.printColor],
+                { a4: "A4", a5: "A5", a3: "A3" }[printFolder.printSize],
                 { singleSided: "یک رو", doubleSided: "دو رو" }[
                   printFolder.printSide
-                ]
-              }
+                ],
+                ...(printFolder.bindingOptions === null
+                  ? []
+                  : [
+                      "صحافی",
+                      {
+                        springNormal: "فنر با طلق معمولی",
+                        springPapco: "فنر با طلق پاپکو",
+                        stapler: "منگنه",
+                      }[printFolder.bindingOptions.bindingType],
+                      printFolder.bindingOptions.bindingMethod !==
+                      "countOfFiles"
+                        ? {
+                            allFilesTogether: "هر فایل جدا",
+                            eachFileSeparated: "همه فایل ها با هم",
+                          }[printFolder.bindingOptions.bindingMethod]
+                        : `${intl.formatNumber(
+                            printFolder.bindingOptions.countOfFiles || 0
+                          )} فایل`,
+                      {
+                        colorful: "جلد رنگی",
+                        blackAndWhite: "جلد سیاه و سفید",
+                      }[printFolder.bindingOptions.coverColor],
+                    ]),
+                `${intl.formatNumber(printFolder.countOfCopies || 1)} نسخه`,
+              ].join(" / ")}
             </div>
           </div>
         ))}

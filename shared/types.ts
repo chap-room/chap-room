@@ -60,7 +60,7 @@ export interface PrintFile {
 
 export interface BindingOptions {
   bindingType: "springNormal" | "springPapco" | "stapler";
-  bindingMethod: "eachFileSeparated" | "allFilesTogether" | "countOfFiles";
+  bindingMethod: "allFilesTogether" | "eachFileSeparated" | "countOfFiles";
   countOfFiles: number | null;
   coverColor: "colorful" | "blackAndWhite";
 }

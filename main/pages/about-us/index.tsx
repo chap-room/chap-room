@@ -12,6 +12,7 @@ import QualityImage from "@/main/assets/images/quality.svg";
 import SupportImage from "@/main/assets/images/support.svg";
 import BookImage from "@/main/assets/images/book.svg";
 import OurCustomers from "@/main/components/OurCustomers";
+import { FormattedNumber } from "react-intl";
 
 export default function AboutUs() {
   return (
@@ -94,10 +95,9 @@ export default function AboutUs() {
         </div>
       </div>
       <div className={styles.Services}>
-        <h2>خدمات چاپ روم</h2>
         <div>
+          <h2>خدمات چاپ روم</h2>
           <div>
-            <PrintImage />
             <h3>پرینت جزوه و کتاب</h3>
             <p>
               چاپ روم با استفاده از بهترین پرینترها و کاغذهای اورجینال، جزوه و
@@ -105,7 +105,6 @@ export default function AboutUs() {
             </p>
           </div>
           <div>
-            <OnlineOrderImage />
             <h3>سفارش آنلاین</h3>
             <p>
               چاپ و پرینت مطبوعات، کتب و مجلات و فایل های مربوط به مدارس و
@@ -114,15 +113,13 @@ export default function AboutUs() {
             </p>
           </div>
           <div>
-            <PostageImage />
             <h3>ارسال به سراسر کشور</h3>
             <p>
-              امکان ارسال سفارشات به کل کشور وجود دارد و همچنین سفارشات بالای
-              2000 برگ به صورت رایگان ارسال می شود.
+              امکان ارسال سفارشات به کل کشور وجود دارد و همچنین سفارشات بالای{" "}
+              <FormattedNumber value={2000} /> برگ به صورت رایگان ارسال می شود.
             </p>
           </div>
           <div>
-            <QualityImage />
             <h3>تضمین کیفیت</h3>
             <p>
               چاپ روم کیفیت چاپ را تضمین می کنید و در صورت هرگونه مشکل چاپی
@@ -130,15 +127,15 @@ export default function AboutUs() {
             </p>
           </div>
           <div>
-            <SupportImage />
-            <h3>پشتیبانی 24 ساعته</h3>
+            <h3>
+              پشتیبانی <FormattedNumber value={24} /> ساعته
+            </h3>
             <p>
               در صورت داشتن هرگونه سوال پشتیبانان چاپ روم آماده ارائه خدمات
               پشتیبانی به شما هستند.
             </p>
           </div>
           <div>
-            <BookImage />
             <h3>خدمات نشر و چاپ کتاب</h3>
             <p>
               کلیه خدمات نشر و چاپ کتاب اعم از ویراستاری، صفحه بندی و دریافت

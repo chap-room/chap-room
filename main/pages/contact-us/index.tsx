@@ -12,10 +12,11 @@ import Layout from "@/main/components/Layout";
 import TextInput from "@/shared/components/TextInput";
 import TextArea from "@/shared/components/TextArea";
 import Button from "@/shared/components/Button";
-import AddressesIcon from "@/main/assets/icons/addresses.svg";
-import CaillIcon from "@/main/assets/icons/call.svg";
-import MailIcon from "@/main/assets/icons/mail.svg";
 import ErrorList from "@/shared/components/ErrorList";
+import TelegramIcon from "@/main/assets/icons/telegram.svg";
+import InstagramIcon from "@/main/assets/icons/instagram.svg";
+import AparatIcon from "@/main/assets/icons/aparat.svg";
+import { FormattedNumber } from "react-intl";
 
 export default function ContactUs() {
   const [name, setName] = useState("");
@@ -42,8 +43,8 @@ export default function ContactUs() {
       <Head>
         <title>تماس با ما</title>
       </Head>
+      <h1 className={styles.Title}>تماس با ما</h1>
       <div className={styles.Form}>
-        <h1>تماس با ما</h1>
         <div className={styles.Row}>
           <div className={styles.NameInputContainer}>
             <TextInput
@@ -68,7 +69,6 @@ export default function ContactUs() {
           <TextArea
             placeholder="پیام خودتان را بنویسید ..."
             varient="shadow"
-            rows={5}
             value={message}
             onTextChange={setMessage}
           />
@@ -91,40 +91,60 @@ export default function ContactUs() {
             ارسال
           </Button>
         </div>
+      </div>
+      <div>
+        <div className={styles.Map}>
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d92388.97815863125!2d51.3890247582092!3d35.68383192377295!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f8dfe05732c2e91%3A0xfcbec017befd15f4!2z2KjYsdisINii2LLYp9iv2Yo!5e0!3m2!1sar!2str!4v1666358621694!5m2!1sar!2str"
+            allowFullScreen
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </div>
         <div className={styles.Details}>
-          <div>
-            <h2>تماس</h2>
-            <ul>
-              <li>
-                <CaillIcon /> 021-91090772
-              </li>
-              <li>
-                <CaillIcon /> 031-91090414
-              </li>
-              <li>
-                <MailIcon /> info@chaproom.com
-              </li>
-            </ul>
-          </div>
           <div>
             <h2>نشانی</h2>
             <ul>
+              <li>شعبه 1: تهران، خیابان فخر راضی</li>
+              <li>شعبه 2: اصفهان، خیابان پروین</li>
+            </ul>
+          </div>
+          <div>
+            <div>
+              <h2>تماس</h2>
+              <div>
+                (<FormattedNumber value={7} /> روز هفته{" "}
+                <FormattedNumber value={24} /> ساعته)
+              </div>
+            </div>
+            <ul>
+              <li>info@chaproom.com</li>
               <li>
-                <AddressesIcon /> شعبه 1: تهران، خیابان فخر راضی
+                +<FormattedNumber value={98} />{" "}
+                <FormattedNumber value={21} minimumIntegerDigits={3} />-
+                <FormattedNumber value={91090772} useGrouping={false} />
               </li>
               <li>
-                <AddressesIcon /> شعبه 2: اصفهان، خیابان پروین
+                +<FormattedNumber value={98} />{" "}
+                <FormattedNumber value={31} minimumIntegerDigits={3} />-
+                <FormattedNumber value={91090414} useGrouping={false} />
               </li>
             </ul>
           </div>
+          <div>
+            <h2>ما را دنبال کنید</h2>
+            <div className={styles.SocialMedia}>
+              <a href="https://www.instagram.com/chap.room/">
+                <TelegramIcon />
+              </a>
+              <a href="https://www.instagram.com/chap.room/">
+                <InstagramIcon />
+              </a>
+              <a href="https://www.aparat.com/chaproom">
+                <AparatIcon />
+              </a>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className={styles.Map}>
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d92388.97815863125!2d51.3890247582092!3d35.68383192377295!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f8dfe05732c2e91%3A0xfcbec017befd15f4!2z2KjYsdisINii2LLYp9iv2Yo!5e0!3m2!1sar!2str!4v1666358621694!5m2!1sar!2str"
-          allowFullScreen
-          referrerPolicy="no-referrer-when-downgrade"
-        />
       </div>
     </div>
   );
