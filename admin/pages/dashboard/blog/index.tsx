@@ -117,7 +117,7 @@ export default function DashboardBlog() {
                 })
                 .catch(toast.error)
             }
-            message="از حذف این کد تخفیف مطمئن هستید؟"
+            message="از حذف این بلاگ مطمئن هستید؟"
             confirmButtonText="حذف"
           />
         </DataLoader>

@@ -54,5 +54,15 @@
   
   > div:last-child {
     grid-column: span 2;
+    padding-top: 10px;
+    
+    :global(.tox-tinymce) {
+      border: 1px solid #cccccc;
+      
+      :global(.tox-editor-header) {
+        border-bottom: 1px solid #cccccc;
+        box-shadow: none;
+      }
+    }
   }
 }

@@ -129,7 +129,9 @@ export default function BlogThumbnailUpload({
       {value !== null && (
         <div className={styles.ImagePreview}>
           <img src={value} />
-          <Button varient="filled">حذف</Button>
+          <Button varient="filled" onClick={() => onChange(null)}>
+            حذف
+          </Button>
         </div>
       )}
     </div>

@@ -2,6 +2,7 @@ import { MutableRefObject, useRef } from "react";
 import { Editor as TinymceEditor } from "tinymce";
 import { Editor as TinymceReact } from "@tinymce/tinymce-react";
 import VazirMatnFontFace from "!!css-loader!vazirmatn/Vazirmatn-font-face.css";
+import IransansxFontFace from "!!css-loader!@/shared/assets/scss/iransansx.scss";
 
 interface EditorProps {
   id: string;
@@ -64,6 +65,7 @@ export default function Editor({
           "removeformat help",
         ].join(" | "),
         font_family_formats: [
+          "ایران سنس X=iransansx,Arial,sans-serif",
           "وزیر متن=Vazirmatn,Arial,sans-serif",
           "Andale Mono=andale mono,times",
           "Arial=arial,helvetica,sans-serif",
@@ -85,7 +87,8 @@ export default function Editor({
         ].join("; "),
         content_style: [
           VazirMatnFontFace.toString(),
-          "body { font-family: Vazirmatn,Arial,sans-serif; font-size:14px }",
+          IransansxFontFace.toString(),
+          "body { font-family: iransansx,Arial,sans-serif; font-size:14px }",
         ].join("\n"),
         directionality: "rtl",
         language: "fa",

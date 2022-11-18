@@ -121,10 +121,7 @@ export default function PostForm({ defaultValues, onSave }: PostFormProps) {
         <div className={styles.Form}>
           <div className={styles.Label}>تصویر:</div>
           <div className={styles.Input}>
-            <BlogThumbnailUpload
-              value={thumbnailUrl}
-              onChange={setThumbnailUrl}
-            />
+            <BlogThumbnailUpload value={thumbnailUrl} onChange={setThumbnailUrl} />
           </div>
           <div className={styles.Label}>تصویر Alt:</div>
           <div className={styles.Input}>
