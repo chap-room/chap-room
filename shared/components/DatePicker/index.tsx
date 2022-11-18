@@ -1,4 +1,4 @@
-import styles from "./styles.module.scss";
+import styles from "./style.module.scss";
 import { InputHTMLAttributes, useEffect, useMemo, useState } from "react";
 import {
   autoUpdate,

@@ -50,7 +50,7 @@ export default function DashboardOrderList() {
           title="همه سفارش ها"
           end={
             <Link href="/dashboard/orders/new">
-              <Button style={{ padding: 0 }}>
+              <Button varient="content-title-none">
                 سفارش جدید <AddIcon />
               </Button>
             </Link>

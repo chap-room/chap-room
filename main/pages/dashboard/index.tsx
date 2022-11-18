@@ -165,8 +165,7 @@ export default function DashboardMain() {
               <ContentHeader
                 title="سفارش های در حال انجام من"
                 end={
-                  <Button
-                    style={{ padding: 0 }}
+                  <Button varient="content-title-none"
                     onClick={() => router.push("/dashboard/orders/new")}
                   >
                     سفارش جدید <AddIcon />

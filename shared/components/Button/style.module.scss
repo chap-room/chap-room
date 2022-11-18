@@ -42,6 +42,7 @@
       justify-self: flex-end;
 
       animation: 1s infinite linear;
+
       @include animation {
         0% {
           transform: rotate(0deg);
@@ -94,5 +95,26 @@
     color: #2578fa;
     fill: #2578fa;
     background-color: #eeeeee;
+  }
+
+  &.ContentTitleOutlined {
+    height: 34px;
+    font-size: 14px;
+    font-weight: normal;
+    color: #0077b5;
+    fill: #0077b5;
+    background-color: #eeeeee;
+    border: 1px solid #0077b5;
+  }
+
+  &.ContentTitleNone {
+    height: 34px;
+    font-size: 14px;
+    font-weight: 500; // Medium
+    color: #0077b5;
+    fill: #0077b5;
+    background-color: transparent;
+    box-shadow: none;
+    padding: 0;
   }
 }

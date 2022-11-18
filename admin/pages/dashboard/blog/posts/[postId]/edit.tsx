@@ -31,15 +31,15 @@ export default function DashboardEditPost() {
         <ContentHeader
           title="ویرایش کردن بلاگ"
           end={
-            <Link href="/dashboard/discounts">
-              <Button style={{ padding: 0 }}>
+            <Link href="/dashboard/blog">
+              <Button varient="content-title-none">
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
             </Link>
           }
         />
         <MobileContentHeader
-          backTo="/dashboard/discounts"
+          backTo="/dashboard/blog"
           title="ویرایش کردن بلاگ"
         />
       </SectionContent>

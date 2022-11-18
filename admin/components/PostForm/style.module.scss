@@ -22,6 +22,10 @@
       }
   
       &.Input {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        
         & > * {
           width: 100%;
           max-width: 300px;
@@ -31,17 +35,17 @@
           }
         }
 
-        div.RadioList {
+        .RadioList {
           display: flex;
           flex-direction: row;
           gap: 20px;
           flex-wrap: wrap;
-          margin-bottom: 10px;
       
           > div {
             display: flex;
             flex-direction: row;
             gap: 5px;
+            align-items: center;
           }
         }
       }

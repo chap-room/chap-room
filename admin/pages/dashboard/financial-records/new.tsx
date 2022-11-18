@@ -29,7 +29,7 @@ export default function DashboardNewFinancialRecord() {
           title="ایجاد سند جدید"
           end={
             <Link href="/dashboard/financial-records">
-              <Button style={{ padding: 0 }}>
+              <Button varient="content-title-none">
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
             </Link>

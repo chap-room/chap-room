@@ -57,10 +57,15 @@ export default function DashboardAdminList() {
           end={
             <ButtonList>
               <Link href="/dashboard/users">
-                <Button varient="filled">کاربران</Button>
+                <Button
+                  varient="content-title-outlined"
+                  style={{ minWidth: 130 }}
+                >
+                  کاربران
+                </Button>
               </Link>
               <Link href="/dashboard/users/admins/new">
-                <Button style={{ padding: 0 }}>
+                <Button varient="content-title-none">
                   افزودن ادمین <AddIcon />
                 </Button>
               </Link>

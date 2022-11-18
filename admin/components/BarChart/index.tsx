@@ -1,12 +1,19 @@
-import "chart.js/auto";
-import { ChartArea, ChartData } from "chart.js/auto";
+import styles from "./style.module.scss";
 import { useEffect, useRef, useState } from "react";
+import { useIntl } from "react-intl";
 import { Bar } from "react-chartjs-2";
 import { ChartJSOrUndefined } from "react-chartjs-2/dist/types";
-import { useIntl } from "react-intl";
+import { ChartArea, ChartData } from "chart.js/auto";
+import "chart.js/auto";
 
-interface BarChartProps {
-  data: Record<string, number>;
+interface BaseData {
+  label: string;
+  value: number;
+}
+
+interface BarChartProps<DT extends BaseData = BaseData> {
+  data: DT[];
+  setTooltipData?: (data: DT | null) => void;
 }
 
 function createGradient(ctx: CanvasRenderingContext2D, area: ChartArea) {
@@ -18,17 +25,16 @@ function createGradient(ctx: CanvasRenderingContext2D, area: ChartArea) {
   return gradient;
 }
 
-export default function BarChart({ data }: BarChartProps) {
+export default function BarChart({ data, setTooltipData }: BarChartProps) {
   const intl = useIntl();
 
   const chartRef = useRef<ChartJSOrUndefined<"bar", number[], string>>();
   const [chartData, setChartData] = useState<ChartData<"bar">>({
-    labels: Object.keys(data),
+    labels: data.map((item) => item.label),
     datasets: [
       {
-        data: Object.values(data),
+        data: data.map((item) => item.value),
         borderRadius: 10,
-        // backgroundColor: "#6fd6ff",
       },
     ],
   });
@@ -59,7 +65,12 @@ export default function BarChart({ data }: BarChartProps) {
             display: false,
           },
           tooltip: {
-            enabled: false,
+            // enabled: false,
+            external: ({ tooltip }) => {
+              if (setTooltipData)
+                setTooltipData(tooltip.opacity === 0 ? null : null);
+              console.log(tooltip);
+            },
           },
         },
         scales: {
@@ -74,6 +85,15 @@ export default function BarChart({ data }: BarChartProps) {
           y: {
             grid: {
               display: false,
+            },
+            beginAtZero: true,
+            ticks: {
+              callback: function (tickValue) {
+                tickValue = tickValue as number;
+                if (Math.floor(tickValue) === tickValue) {
+                  return tickValue;
+                }
+              },
             },
           },
         },

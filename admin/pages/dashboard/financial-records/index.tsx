@@ -1,5 +1,6 @@
 import { ReactElement, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
 import { FinancialRecord } from "@/shared/types";
@@ -13,11 +14,12 @@ import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHead
 import IconButton from "@/shared/components/IconButton";
 import ButtonList from "@/shared/components/ButtonList";
 import Button from "@/shared/components/Button";
+import Controls from "@/admin/components/Controls";
+import SearchInput from "@/admin/components/SearchInput";
 import DataLoader from "@/shared/components/DataLoader";
 import FinancialRecordTable from "@/admin/components/FinancialRecordTable";
 import EmptyNote from "@/shared/components/Dashboard/EmptyNote";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
-import toast from "react-hot-toast";
 
 export default function DashboardFinancialRecordList() {
   const router = useRouter();
@@ -56,10 +58,15 @@ export default function DashboardFinancialRecordList() {
           end={
             <ButtonList>
               <Link href="/dashboard/financial-records/total-income">
-                <Button varient="filled">کل درآمد</Button>
+                <Button
+                  varient="content-title-outlined"
+                  style={{ minWidth: 130 }}
+                >
+                  کل درآمد
+                </Button>
               </Link>
               <Link href="/dashboard/financial-records/new">
-                <Button style={{ padding: 0 }}>
+                <Button varient="content-title-none">
                   ایجاد سند <AddIcon />
                 </Button>
               </Link>
@@ -75,6 +82,15 @@ export default function DashboardFinancialRecordList() {
                 <AddIcon />
               </IconButton>
             </Link>
+          }
+        />
+        <Controls
+          start={
+            <SearchInput
+              inputProps={{ placeholder: "جستجو کاربر با نام یا موبایل" }}
+              value={search}
+              setValue={setSearch}
+            />
           }
         />
         <DataLoader

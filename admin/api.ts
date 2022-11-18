@@ -18,6 +18,7 @@ import {
   FinancialRecord,
   Order,
   Post,
+  PostCategory,
   PrintTariffs,
   WithdrawalRequest,
 } from "@/shared/types";
@@ -790,12 +791,13 @@ export function updateBindingTariffs(data: BindingTariffs) {
   }).then(({ data }) => data.message);
 }
 
-export function getBlogPosts(page: number) {
+export function getBlogPosts(search: string, page: number) {
   return request({
     method: "GET",
     url: "/admins/blogs",
     needAuth: true,
     params: {
+      search,
       page,
     },
   }).then(({ data }) => ({
@@ -819,7 +821,7 @@ export function newBlogPost(data: {
   slug: string;
   pageTitle: string;
   title: string;
-  categories: { id: number; name: string }[];
+  categories: PostCategory[];
   keywords: string;
   metaDescription: string;
   thumbnailUrl: string | null;
@@ -862,6 +864,38 @@ export function deleteBlogPost(postId: number) {
   return request({
     method: "DELETE",
     url: `/admins/blogs/id/${postId}`,
+    needAuth: true,
+  }).then(({ data }) => data.message);
+}
+
+export function getBlogCategories(page: number) {
+  return request({
+    method: "GET",
+    url: "/admins/blogs/categories",
+    needAuth: true,
+    params: {
+      page,
+    },
+  }).then(({ data }) => ({
+    countOfItems: data.totalCount,
+    pageSize: data.pageSize,
+    categories: data.categories as PostCategory[],
+  }));
+}
+
+export function newBlogCategory(data: { name: string }) {
+  return request({
+    method: "POST",
+    url: "/admins/blogs/categories",
+    needAuth: true,
+    data,
+  }).then(({ data }) => data.message);
+}
+
+export function deleteBlogCategory(categoryId: number) {
+  return request({
+    method: "DELETE",
+    url: `/admins/blogs/categories/id/${categoryId}`,
     needAuth: true,
   }).then(({ data }) => data.message);
 }

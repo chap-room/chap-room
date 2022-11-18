@@ -31,7 +31,7 @@ export default function DashboardNewDiscount() {
           title="ایجاد بلاگ جدید"
           end={
             <Link href="/dashboard/discounts">
-              <Button style={{ padding: 0 }}>
+              <Button varient="content-title-none">
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
             </Link>

@@ -1,4 +1,4 @@
-import styles from "./styles.module.scss";
+import styles from "./style.module.scss";
 import { useEffect, useState } from "react";
 import { FormattedNumber } from "react-intl";
 import Link from "next/link";

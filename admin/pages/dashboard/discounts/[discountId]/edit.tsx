@@ -36,7 +36,7 @@ export default function DashboardEditUser() {
           title="ویرایش کردن بلاگ"
           end={
             <Link href="/dashboard/discounts">
-              <Button style={{ padding: 0 }}>
+              <Button varient="content-title-none">
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
             </Link>

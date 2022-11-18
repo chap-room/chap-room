@@ -11,6 +11,8 @@ import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
 import IconButton from "@/shared/components/IconButton";
 import Button from "@/shared/components/Button";
+import Controls from "@/admin/components/Controls";
+import SearchInput from "@/admin/components/SearchInput";
 import DataLoader from "@/shared/components/DataLoader";
 import CustomerReportTable from "@/admin/components/CustomerReportTable";
 import EmptyNote from "@/shared/components/Dashboard/EmptyNote";
@@ -44,6 +46,7 @@ export default function DashboardCustomerReport() {
           title="همه گزارش ها"
           end={
             <Button
+              varient="content-title-none"
               style={{ padding: 0 }}
               disabled={isGeneratingExcel}
               onClick={() => {
@@ -56,6 +59,15 @@ export default function DashboardCustomerReport() {
             >
               دانلود اکسل براساس فیلتر <DownloadIcon />
             </Button>
+          }
+        />
+        <Controls
+          start={
+            <SearchInput
+              inputProps={{ placeholder: "جستجو کاربر با نام یا موبایل" }}
+              value={search}
+              setValue={setSearch}
+            />
           }
         />
         <MobileContentHeader
@@ -79,6 +91,7 @@ export default function DashboardCustomerReport() {
         />
         <DataLoader
           load={() => getCustomerReports(search, page)}
+          deps={[search, page]}
           setData={setData}
         >
           <CustomerReportTable
