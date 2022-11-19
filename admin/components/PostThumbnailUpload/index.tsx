@@ -9,15 +9,15 @@ import toast from "react-hot-toast";
 import { request } from "@/admin/api";
 import Button from "@/shared/components/Button";
 
-interface BlogThumbnailUploadProps {
+interface PostThumbnailUploadProps {
   value: string | null;
   onChange: (newValue: string | null) => void;
 }
 
-export default function BlogThumbnailUpload({
+export default function PostThumbnailUpload({
   value,
   onChange,
-}: BlogThumbnailUploadProps) {
+}: PostThumbnailUploadProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const [dragActive, setDragActive] = useState(false);

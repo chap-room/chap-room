@@ -82,6 +82,7 @@ export default function DashboardBlogCategories() {
                     newBlogCategory({ name: newCategoryName })
                       .then((message) => {
                         toast.success(message);
+                        setNewCategoryName("");
                         if (reloadRef.current) reloadRef.current();
                       })
                       .catch(toast.error)

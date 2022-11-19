@@ -9,7 +9,7 @@ import Editor from "@/admin/components/PostForm/Editor";
 import Button from "@/shared/components/Button";
 import BottomActions from "@/shared/components/Dashboard/BottomActions";
 import PostCategoryMultiSelect from "@/admin/components/PostCategoryMultiSelect";
-import BlogThumbnailUpload from "@/admin/components/BlogThumbnailUpload";
+import PostThumbnailUpload from "@/admin/components/PostThumbnailUpload";
 
 interface PostFormData {
   slug: string;
@@ -121,7 +121,10 @@ export default function PostForm({ defaultValues, onSave }: PostFormProps) {
         <div className={styles.Form}>
           <div className={styles.Label}>تصویر:</div>
           <div className={styles.Input}>
-            <BlogThumbnailUpload value={thumbnailUrl} onChange={setThumbnailUrl} />
+            <PostThumbnailUpload
+              value={thumbnailUrl}
+              onChange={setThumbnailUrl}
+            />
           </div>
           <div className={styles.Label}>تصویر Alt:</div>
           <div className={styles.Input}>

@@ -9,6 +9,7 @@ import {
 } from "./convertMaps";
 import {
   Address,
+  AdminUserRole,
   BindingTariffs,
   CooperationRequest,
   CustomerReport,
@@ -228,13 +229,63 @@ export function getDashboard() {
     method: "GET",
     url: "/admins/dashboard",
     needAuth: true,
-  }).then(({ data }) => ({
-    marketingBalance: data.marketingBalance,
-    walletBalance: data.walletBalance,
-    avatar: data.avatar,
-    name: data.name,
-    phoneNumber: data.name,
-  }));
+  }).then(
+    ({ data }) =>
+      data as {
+        admin: {
+          marketingBalance: number;
+          walletBalance: number;
+          avatar: string | null;
+          name: string;
+          phoneNumber: string;
+          role: AdminUserRole;
+        };
+        sidebarData: {
+          countOfInProgressOrders: number;
+          countOfPendingCooperations: number;
+          countOfPendingWithdrawals: number;
+        };
+        sales: {
+          totalSales: number;
+          chart: {
+            time: string;
+            debtor: number;
+            creditor: number;
+          }[];
+        };
+        users: {
+          totalUsers: number;
+          chart: {
+            time: string;
+            count: number;
+          }[];
+        };
+        orders: {
+          totalOrders: number;
+          chart: {
+            time: string;
+            count: number;
+          }[];
+        };
+        usersOrders: {
+          totalUsersWithOneOrder: number;
+          totalUsersWithTwoOrder: number;
+          totalUsersWithThreeOrder: number;
+          chart: {
+            time: string;
+            count: number;
+          }[];
+        };
+        provincesOrders: Record<
+          string,
+          {
+            sale: number;
+            totalOrders: number;
+            totalUsers: number;
+          }
+        >;
+      }
+  );
 }
 
 export function getUsers(search: string, page: number) {

@@ -208,7 +208,9 @@ export default function OrderForm() {
                 .then(({ message, paymentUrl }) => {
                   if (message) {
                     toast.success(message);
-                    router.push("/dashboard/orders");
+                    router.push("/dashboard/orders", undefined, {
+                      unstable_skipClientCache: true,
+                    });
                   }
                   if (paymentUrl) window.location.href = paymentUrl;
                 })

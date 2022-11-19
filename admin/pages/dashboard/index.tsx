@@ -10,7 +10,7 @@ import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import BarChart from "@/admin/components/BarChart";
 import IranMap from "@/admin/components/IranMap";
 import DataLoader from "@/shared/components/DataLoader";
-import { request } from "@/admin/api";
+import { getDashboard, request } from "@/admin/api";
 import { AdminUserRole } from "@/shared/types";
 import Controls from "@/admin/components/Controls";
 import Select from "@/shared/components/Select";
@@ -30,6 +30,16 @@ export default function DashboardMain() {
     role: {
       name: "admin",
     },
+  });
+
+  const [sidebarData, setSidebarData] = useState<{
+    countOfInProgressOrders: number;
+    countOfPendingCooperations: number;
+    countOfPendingWithdrawals: number;
+  }>({
+    countOfInProgressOrders: 0,
+    countOfPendingCooperations: 0,
+    countOfPendingWithdrawals: 0,
   });
 
   const [salesTicker, setSalesTicker] = useState<
@@ -111,15 +121,10 @@ export default function DashboardMain() {
       </Head>
       <SectionHeader title="داشبورد" hideBackToSiteButton />
       <DataLoader
-        load={() =>
-          request({
-            method: "GET",
-            url: "/admins/dashboard/",
-            needAuth: true,
-          }).then(({ data }) => data)
-        }
+        load={() => getDashboard()}
         setData={(data) => {
           setAdminData(data.admin);
+          setSidebarData(data.sidebarData);
           setSalesData(data.sales);
           setUsersData(data.users);
           setOrdersData(data.orders);
@@ -309,7 +314,7 @@ export default function DashboardMain() {
               </div>
             </div>
             <div className={styles.Welcome}>خوش‌آمدی!</div>
-            <DashboardNavLinks />
+            <DashboardNavLinks sidebarData={sidebarData} />
           </div>
         </div>
       </DataLoader>
