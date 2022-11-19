@@ -175,7 +175,7 @@ export default function DashboardMain() {
               <OrderTable
                 orders={data!.inProgressOrders}
                 onSeeOrderDetails={(orderId) =>
-                  router.push(`/dashboard/orders/${orderId}/details`)
+                  router.push(`/dashboard/orders/${orderId}/details?fromDashboard=true`)
                 }
                 onCancelOrder={setPendingOrderCancelRequest}
               />
@@ -229,7 +229,9 @@ export default function DashboardMain() {
             }}
           />
           <DashboardNavLinks />
-          <BottomButtons />
+          <div className={styles.BottomButtonsPlaceholder}>
+            <BottomButtons />
+          </div>
         </div>
       </DataLoader>
     </div>

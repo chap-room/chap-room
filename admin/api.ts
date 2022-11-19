@@ -555,11 +555,7 @@ export function newDiscount(data: {
   active: boolean;
   code: string;
   description: string;
-  user: {
-    id: number;
-    name: string;
-    phoneNumber: string;
-  } | null;
+  userId: number | null;
   phoneNumber: string | null;
   type: "fixed" | "percentage" | "page";
   value: number;
@@ -588,11 +584,7 @@ export function updateDiscount(
     active: boolean;
     code: string;
     description: string;
-    user: {
-      id: number;
-      name: string;
-      phoneNumber: string;
-    } | null;
+    userId: number | null;
     phoneNumber: string | null;
     type: "fixed" | "percentage" | "page";
     value: number;
@@ -671,6 +663,20 @@ export function getFinancialRecords(
       convert(financialRecordConvertMap, item, "a2b")
     ) as FinancialRecord[],
   }));
+}
+
+export function newFinancialRecord(data: {
+  userId: number;
+  type: "debtor" | "creditor";
+  amount: number;
+  description: string;
+}) {
+  return request({
+    method: "POST",
+    url: "/admins/transactions",
+    needAuth: true,
+    data: convert(financialRecordConvertMap, data, "b2a"),
+  }).then(({ data }) => data.message);
 }
 
 export function getFinancialRecord(financialRecordId: number) {

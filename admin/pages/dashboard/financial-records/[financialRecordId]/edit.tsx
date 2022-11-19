@@ -56,7 +56,10 @@ export default function DashboardFinancialRecordEdit() {
           <FinancialRecordForm
             defaultValues={data}
             onSave={(financialRecordData) => {
-              updateFinancialRecord(financialRecordId, financialRecordData)
+              updateFinancialRecord(financialRecordId, {
+                ...financialRecordData,
+                userId: financialRecordData.user.id,
+              })
                 .then((message) => {
                   toast.success(message);
                   router.push("/dashboard/financial-records");

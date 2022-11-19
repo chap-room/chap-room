@@ -114,5 +114,11 @@
       justify-content: center;
       align-items: center;
     }
+
+    .BottomButtonsPlaceholder {
+      @media (min-width: 897px) {
+        display: none;
+      }
+    }
   }
 }

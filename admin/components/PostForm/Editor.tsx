@@ -3,6 +3,7 @@ import { Editor as TinymceEditor } from "tinymce";
 import { Editor as TinymceReact } from "@tinymce/tinymce-react";
 import VazirMatnFontFace from "!!css-loader!vazirmatn/Vazirmatn-font-face.css";
 import IransansxFontFace from "!!css-loader!@/shared/assets/scss/iransansx.scss";
+import { request } from "@/admin/api";
 
 interface EditorProps {
   id: string;
@@ -92,6 +93,26 @@ export default function Editor({
         ].join("\n"),
         directionality: "rtl",
         language: "fa",
+        image_title: true,
+        automatic_uploads: true,
+        file_picker_types: "image",
+        images_upload_handler: (blobInfo, progress) => {
+          const data = new FormData();
+          data.append("attachment", blobInfo.blob(), blobInfo.filename());
+
+          return request({
+            method: "POST",
+            url: "/admins/blogs-uploader",
+            needAuth: true,
+            data,
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            onUploadProgress: function (progressEvent) {
+              progress(progressEvent.progress || 0);
+            },
+          }).then(({ data }) => data.url);
+        },
       }}
     />
   );

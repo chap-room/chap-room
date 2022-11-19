@@ -447,7 +447,7 @@
           
           @media (max-width: 896px) {
             box-shadow: none;
-            padding: 0 30px;
+            padding: 0;
             margin-top: -30px;
           }
         }
@@ -457,6 +457,10 @@
         position: relative;
         height: 670px;
 
+        @media (max-width: 1024px) {
+          display: none;
+        }
+
         > svg {
           width: 650px;
           height: auto;
@@ -464,10 +468,6 @@
           left: -100px;
           top: 50%;
           transform: translate(0, -50%);
-
-          @media (max-width: 1024px) {
-            display: none;
-          }
         }
       }
     }
@@ -508,6 +508,10 @@
         position: relative;
         height: 450px;
 
+        @media (max-width: 1024px) {
+          display: none;
+        }
+
         > svg {
           width: 650px;
           height: auto;
@@ -515,10 +519,6 @@
           right: -100px;
           top: 50%;
           transform: translate(0, -50%);
-
-          @media (max-width: 1024px) {
-            display: none;
-          }
         }
       }
 

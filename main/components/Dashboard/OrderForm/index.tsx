@@ -1,6 +1,6 @@
 import styles from "./style.module.scss";
 import { useState } from "react";
-import { FormattedNumber } from "react-intl";
+import { FormattedNumber, useIntl } from "react-intl";
 import { CircularProgressbar } from "react-circular-progressbar";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
@@ -19,6 +19,7 @@ import AddressStage from "@/main/components/Dashboard/OrderForm/AddressStage";
 import NewAddressesStage from "@/main/components/Dashboard/OrderForm/NewAddressesStage";
 import EditAddressesStage from "@/main/components/Dashboard/OrderForm/EditAddressesStage";
 import PaymentStage from "@/main/components/Dashboard/OrderForm/PaymentStage";
+import { Address, PrintFolder } from "@/shared/types";
 
 enum OrderFormStages {
   printFolders = "پوشه ها",
@@ -31,11 +32,16 @@ enum OrderFormStages {
 }
 
 export default function OrderForm() {
+  const intl = useIntl();
   const router = useRouter();
 
   const [currentStage, setCurrentStage] = useState(
     OrderFormStages.printFolders
   );
+
+  const [printFoldersData, setPrintFoldersData] = useState<PrintFolder[]>([]);
+  const [addressesData, setAddressesData] = useState<Address[]>([]);
+
   const [currentInEditPrintFolderId, setCurrentInEditPrintFolderId] = useState<
     number | null
   >(null);
@@ -79,7 +85,17 @@ export default function OrderForm() {
   return (
     <>
       <ContentHeader
-        title={currentStage}
+        title={
+          currentStage === OrderFormStages.newPrintFolder
+            ? `پوشه ${intl.formatNumber(printFoldersData.length + 1)}`
+            : currentStage === OrderFormStages.editPrintFolder
+            ? `پوشه ${intl.formatNumber(
+                (printFoldersData
+                  .map((item) => item.id)
+                  .indexOf(currentInEditPrintFolderId!) || 0) + 1
+              )}`
+            : currentStage
+        }
         start={
           [
             OrderFormStages.printFolders,
@@ -118,6 +134,8 @@ export default function OrderForm() {
       />
       {currentStage === OrderFormStages.printFolders && (
         <PrintFoldersStage
+          data={printFoldersData}
+          setData={setPrintFoldersData}
           actions={{
             new: () => setCurrentStage(OrderFormStages.newPrintFolder),
             edit: (printFolderId) => {
@@ -148,6 +166,8 @@ export default function OrderForm() {
       )}
       {currentStage === OrderFormStages.address && (
         <AddressStage
+          data={addressesData}
+          setData={setAddressesData}
           selectedAddressId={addressId}
           setSelectedAddressId={setAddressId}
           actions={{

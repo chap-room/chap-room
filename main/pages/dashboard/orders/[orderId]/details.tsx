@@ -38,6 +38,8 @@ export default function DashboardOrderDetails() {
               href={
                 router.query.fromTransactions === "true"
                   ? "/dashboard/transactions"
+                  : router.query.fromDashboard === "true"
+                  ? "/dashboard"
                   : "/dashboard/orders"
               }
             >
@@ -51,6 +53,8 @@ export default function DashboardOrderDetails() {
           backTo={
             router.query.fromTransactions === "true"
               ? "/dashboard/transactions"
+              : router.query.fromDashboard === "true"
+              ? "/dashboard"
               : "/dashboard/orders"
           }
           title="جزئیات سفارش"
