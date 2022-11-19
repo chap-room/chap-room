@@ -695,8 +695,10 @@ export function updateCooperationRequest(
 
 export function getFinancialRecords(
   search: string,
-  page: number,
-  status: "successful" | "unsuccessful" | null
+  startDate: Date | null,
+  endDate: Date | null,
+  paymentStatus: "successful" | "unsuccessful" | null,
+  page: number
 ) {
   return request({
     method: "GET",
@@ -704,8 +706,10 @@ export function getFinancialRecords(
     needAuth: true,
     params: {
       search,
+      startAt: startDate ? startDate.toISOString() : undefined,
+      endAt: endDate ? endDate.toISOString() : undefined,
+      status: paymentStatus || undefined,
       page,
-      status: status || "null",
     },
   }).then(({ data }) => ({
     countOfItems: data.totalCount,
@@ -766,7 +770,11 @@ export function deleteFinancialRecord(financialRecordId: number) {
   }).then(({ data }) => data.message);
 }
 
-export function getWithdrawalRequests(search: string, page: number) {
+export function getWithdrawalRequests(
+  search: string,
+  page: number,
+  status: "pending" | "rejected" | "done"
+) {
   return request({
     method: "GET",
     url: "/admins/withdrawals",
@@ -774,6 +782,7 @@ export function getWithdrawalRequests(search: string, page: number) {
     params: {
       search,
       page,
+      status,
     },
   }).then(({ data }) => ({
     countOfItems: data.totalCount,
@@ -993,13 +1002,58 @@ export function getDedicatedLinkReports(search: string, page: number) {
   }));
 }
 
-export function getCustomerReports(search: string, page: number) {
+export function getCustomerReports(
+  search: string,
+  paperSize: "a4" | "a5" | "a3" | null,
+  paperColor: "blackAndWhite" | "fullColor" | "normalColor" | null,
+  paperSide: "singleSided" | "doubleSided" | null,
+  sortOrder:
+    | "withoutOrder"
+    | "oneOrder"
+    | "twoOrder"
+    | "threeAndMoreOrder"
+    | "mostToLowestOrder"
+    | "lowestToMostOrder"
+    | "mostToLowestBalance"
+    | "lowestToMostBalance"
+    | "mostToLowestPayment"
+    | "lowestToMostPayment",
+  page: number
+) {
   return request({
     method: "GET",
     url: "/admins/customers-report",
     needAuth: true,
     params: {
       search,
+      paperSize: paperSize !== null ? paperSize : undefined,
+      paperColor:
+        paperColor !== null
+          ? {
+              blackAndWhite: "black_and_white",
+              fullColor: "full_color",
+              normalColor: "normal_color",
+            }[paperColor]
+          : undefined,
+      paperSide:
+        paperSide !== null
+          ? {
+              singleSided: "single_sided",
+              doubleSided: "double_sided",
+            }[paperSide]
+          : undefined,
+      sortOrder: {
+        withoutOrder: "without_order",
+        oneOrder: "one_order",
+        twoOrder: "two_order",
+        threeAndMoreOrder: "three_and_more_order",
+        mostToLowestOrder: "most_to_lowest_order",
+        lowestToMostOrder: "lowest_to_most_order",
+        mostToLowestBalance: "most_to_lowest_balance",
+        lowestToMostBalance: "lowest_to_most_balance",
+        mostToLowestPayment: "most_to_lowest_payment",
+        lowestToMostPayment: "lowest_to_most_payment",
+      }[sortOrder],
       page,
     },
   }).then(({ data }) => ({
@@ -1011,13 +1065,57 @@ export function getCustomerReports(search: string, page: number) {
   }));
 }
 
-export function getCustomerReportsExcel(search: string) {
+export function getCustomerReportsExcel(
+  search: string,
+  paperSize: "a4" | "a5" | "a3" | null,
+  paperColor: "blackAndWhite" | "fullColor" | "normalColor" | null,
+  paperSide: "singleSided" | "doubleSided" | null,
+  sortOrder:
+    | "withoutOrder"
+    | "oneOrder"
+    | "twoOrder"
+    | "threeAndMoreOrder"
+    | "mostToLowestOrder"
+    | "lowestToMostOrder"
+    | "mostToLowestBalance"
+    | "lowestToMostBalance"
+    | "mostToLowestPayment"
+    | "lowestToMostPayment"
+) {
   return request({
     method: "POST",
     url: "/admins/customers-report/excel",
     needAuth: true,
     params: {
       search,
+      paperSize: paperSize !== null ? paperSize : undefined,
+      paperColor:
+        paperColor !== null
+          ? {
+              blackAndWhite: "black_and_white",
+              fullColor: "full_color",
+              normalColor: "normal_color",
+            }[paperColor]
+          : undefined,
+      paperSide:
+        paperSide !== null
+          ? {
+              singleSided: "single_sided",
+              doubleSided: "double_sided",
+            }[paperSide]
+          : undefined,
+      sortOrder: {
+        withoutOrder: "without_order",
+        oneOrder: "one_order",
+        twoOrder: "two_order",
+        threeAndMoreOrder: "three_and_more_order",
+        mostToLowestOrder: "most_to_lowest_order",
+        lowestToMostOrder: "lowest_to_most_order",
+        mostToLowestBalance: "most_to_lowest_balance",
+        lowestToMostBalance: "lowest_to_most_balance",
+        mostToLowestPayment: "most_to_lowest_payment",
+        lowestToMostPayment: "lowest_to_most_payment",
+      }[sortOrder],
     },
   }).then(({ data }) => data.url);
 }

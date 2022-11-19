@@ -22,10 +22,6 @@ import WithdrawalRequestDoneDialog from "@/admin/components/WithdrawalRequestDon
 import WithdrawalRequestRejectDialog from "@/admin/components/WithdrawalRequestRejectDialog";
 
 export default function DashboardWithdrawalRequests() {
-  const [itemsStatus, setItemsStatus] = useState<"done" | "rejected" | null>(
-    null
-  );
-
   const [data, setData] = useState<{
     countOfItems: number;
     withdrawals: WithdrawalRequest[];
@@ -33,6 +29,9 @@ export default function DashboardWithdrawalRequests() {
 
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
+  const [itemsStatus, setItemsStatus] = useState<"done" | "rejected" | null>(
+    null
+  );
 
   const [
     pendingWithdrawalRequestDoneRequest,
@@ -87,8 +86,14 @@ export default function DashboardWithdrawalRequests() {
           }
         />
         <DataLoader
-          load={() => getWithdrawalRequests(search, page)}
-          deps={[search, page]}
+          load={() =>
+            getWithdrawalRequests(
+              search,
+              page,
+              itemsStatus === null ? "pending" : itemsStatus
+            )
+          }
+          deps={[search, page, itemsStatus]}
           setData={setData}
           reloadRef={reloadRef}
         >

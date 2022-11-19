@@ -1,9 +1,9 @@
 import styles from "./style.module.scss";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useIntl } from "react-intl";
 import { Bar } from "react-chartjs-2";
 import { ChartJSOrUndefined } from "react-chartjs-2/dist/types";
-import { ChartArea, ChartData } from "chart.js/auto";
+import { ChartArea, ChartData, ChartOptions } from "chart.js/auto";
 import "chart.js/auto";
 
 interface BaseData {
@@ -11,9 +11,11 @@ interface BaseData {
   value: number;
 }
 
-interface BarChartProps<DT extends BaseData = BaseData> {
+interface BarChartProps<DT extends BaseData> {
   data: DT[];
-  setTooltipData?: (data: DT | null) => void;
+  setTooltipData?: (
+    data: { item: DT; position: { left: number; top: number } } | null
+  ) => void;
 }
 
 function createGradient(ctx: CanvasRenderingContext2D, area: ChartArea) {
@@ -25,7 +27,10 @@ function createGradient(ctx: CanvasRenderingContext2D, area: ChartArea) {
   return gradient;
 }
 
-export default function BarChart({ data, setTooltipData }: BarChartProps) {
+export default function BarChart<DT extends BaseData>({
+  data,
+  setTooltipData,
+}: BarChartProps<DT>) {
   const intl = useIntl();
 
   const chartRef = useRef<ChartJSOrUndefined<"bar", number[], string>>();
@@ -54,50 +59,61 @@ export default function BarChart({ data, setTooltipData }: BarChartProps) {
     });
   }, []);
 
-  return (
-    <Bar
-      ref={chartRef}
-      data={chartData}
-      options={{
-        animation: false,
-        plugins: {
-          legend: {
+  const options: ChartOptions<"bar"> = useMemo(() => {
+    return {
+      animation: false,
+      plugins: {
+        legend: {
+          display: false,
+        },
+        tooltip: {
+          enabled: false,
+          external: ({ tooltip, chart }) => {
+            if (setTooltipData) {
+              if (tooltip.opacity === 0) {
+                setTooltipData(null);
+                return;
+              }
+              const canvasPosition = chart.canvas.getBoundingClientRect();
+              const position = {
+                left: canvasPosition.left + window.pageXOffset + tooltip.caretX,
+                top: canvasPosition.top + window.pageYOffset + tooltip.caretY,
+              };
+
+              setTooltipData({
+                item: data[tooltip.dataPoints[0].dataIndex || 0],
+                position,
+              });
+            }
+          },
+        },
+      },
+      scales: {
+        x: {
+          grid: {
             display: false,
           },
-          tooltip: {
-            // enabled: false,
-            external: ({ tooltip }) => {
-              if (setTooltipData)
-                setTooltipData(tooltip.opacity === 0 ? null : null);
-              console.log(tooltip);
+          ticks: {
+            color: "#9c9c9c",
+          },
+        },
+        y: {
+          grid: {
+            display: false,
+          },
+          beginAtZero: true,
+          ticks: {
+            callback: (tickValue) => {
+              tickValue = tickValue as number;
+              if (Math.floor(tickValue) === tickValue) {
+                return tickValue;
+              }
             },
           },
         },
-        scales: {
-          x: {
-            grid: {
-              display: false,
-            },
-            ticks: {
-              color: "#9c9c9c",
-            },
-          },
-          y: {
-            grid: {
-              display: false,
-            },
-            beginAtZero: true,
-            ticks: {
-              callback: function (tickValue) {
-                tickValue = tickValue as number;
-                if (Math.floor(tickValue) === tickValue) {
-                  return tickValue;
-                }
-              },
-            },
-          },
-        },
-      }}
-    />
-  );
+      },
+    };
+  }, [setTooltipData]);
+
+  return <Bar ref={chartRef} data={chartData} options={options} />;
 }

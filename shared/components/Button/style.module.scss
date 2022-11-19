@@ -116,5 +116,19 @@
     background-color: transparent;
     box-shadow: none;
     padding: 0;
+
+    &.Loading {
+      font-size: 0;
+
+      > svg {
+        display: none;
+      }
+  
+      &::after {
+        border-top-color: #0077b5;
+        border-left-color: #0077b5;
+        border-right-color: #0077b5;
+      }
+    }
   }
 }

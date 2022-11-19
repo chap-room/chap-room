@@ -1,22 +1,21 @@
 import styles from "./style.module.scss";
 import { ReactElement, useState } from "react";
+import { FormattedNumber, useIntl } from "react-intl";
 import Head from "next/head";
+import { AdminUserRole } from "@/shared/types";
+import { getDashboard, request } from "@/admin/api";
 import Avatar from "@/shared/components/Dashboard/Avatar";
 import DashboardLayout from "@/admin/components/Layout";
 import DashboardNavLinks from "@/admin/components/NavLinks";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
-import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import BarChart from "@/admin/components/BarChart";
 import IranMap from "@/admin/components/IranMap";
 import DataLoader from "@/shared/components/DataLoader";
-import { getDashboard, request } from "@/admin/api";
-import { AdminUserRole } from "@/shared/types";
-import Controls from "@/admin/components/Controls";
-import Select from "@/shared/components/Select";
+import FilterSelect from "@/admin/components/FilterSelect";
 
 export default function DashboardMain() {
-  const [IsInitialFetch, setIsInitialFetch] = useState(true);
+  const intl = useIntl();
 
   const [adminData, setAdminData] = useState<{
     avatar: string | null;
@@ -56,6 +55,15 @@ export default function DashboardMain() {
     totalSales: 0,
     chart: [],
   });
+  const [salesTooltipData, setSalesTooltipData] = useState<{
+    item: {
+      label: string;
+      value: number;
+      debtor: number;
+      creditor: number;
+    };
+    position: { left: number; top: number };
+  } | null>(null);
 
   const [usersTicker, setUsersTicker] = useState<
     "daily" | "weekly" | "monthly"
@@ -70,6 +78,13 @@ export default function DashboardMain() {
     totalUsers: 0,
     chart: [],
   });
+  const [usersTooltipData, setUsersTooltipData] = useState<{
+    item: {
+      label: string;
+      value: number;
+    };
+    position: { left: number; top: number };
+  } | null>(null);
 
   const [ordersTicker, setOrdersTicker] = useState<
     "daily" | "weekly" | "monthly"
@@ -84,10 +99,20 @@ export default function DashboardMain() {
     totalOrders: 0,
     chart: [],
   });
+  const [ordersTooltipData, setOrdersTooltipData] = useState<{
+    item: {
+      label: string;
+      value: number;
+    };
+    position: { left: number; top: number };
+  } | null>(null);
 
   const [usersOrdersTicker, setUsersOrdersTicker] = useState<
     "daily" | "weekly" | "monthly"
   >("daily");
+  const [usersOrdersFilter, setUsersOrdersFilter] = useState<
+    "one" | "two" | "three"
+  >("one");
   const [usersOrdersData, setUsersOrdersData] = useState<{
     totalUsersWithOneOrder: number;
     totalUsersWithTwoOrder: number;
@@ -102,6 +127,13 @@ export default function DashboardMain() {
     totalUsersWithThreeOrder: 0,
     chart: [],
   });
+  const [usersOrdersTooltipData, setUsersOrdersTooltipData] = useState<{
+    item: {
+      label: string;
+      value: number;
+    };
+    position: { left: number; top: number };
+  } | null>(null);
 
   const [provincesOrders, setProvincesOrders] = useState<
     Record<
@@ -137,22 +169,26 @@ export default function DashboardMain() {
             <div className={styles.ContentContainer}>
               <div>
                 <SectionContent>
-                  <ContentHeader title="فروش" />
-                  <Controls
-                    start={
-                      <div className={styles.TickerSelect}>
-                        <Select
-                          options={{
-                            daily: "روزانه",
-                            weekly: "هفتگی",
-                            monthly: "ماهانه",
-                          }}
-                          value={salesTicker}
-                          onChange={setSalesTicker}
-                        />
+                  <div className={styles.ContentHeader}>
+                    <div>
+                      <div>فروش</div>
+                      <FilterSelect
+                        options={{
+                          daily: "روزانه",
+                          weekly: "هفتگی",
+                          monthly: "ماهانه",
+                        }}
+                        value={salesTicker}
+                        onChange={setSalesTicker}
+                      />
+                    </div>
+                    <div>
+                      <div>
+                        <div>کل فروش:</div>
+                        <FormattedNumber value={salesData.totalSales} /> تومان
                       </div>
-                    }
-                  />
+                    </div>
+                  </div>
                   <DataLoader
                     load={() =>
                       request({
@@ -174,26 +210,65 @@ export default function DashboardMain() {
                           debtor,
                         })
                       )}
+                      setTooltipData={setSalesTooltipData}
                     />
+                    {salesTooltipData && (
+                      <div
+                        className={styles.SalesTooltip}
+                        style={{
+                          left: salesTooltipData.position.left,
+                          top: salesTooltipData.position.top,
+                        }}
+                      >
+                        <div>
+                          <div>
+                            <div>بستانکار:</div>
+                            <div>
+                              <div>
+                                <FormattedNumber
+                                  value={salesTooltipData.item.creditor}
+                                />
+                              </div>
+                              <div>تومان</div>
+                            </div>
+                          </div>
+                          <div>
+                            <div>بدهکار:</div>
+                            <div>
+                              <div>
+                                <FormattedNumber
+                                  value={salesTooltipData.item.debtor}
+                                />
+                              </div>
+                              <div>تومان</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </DataLoader>
                 </SectionContent>
                 <SectionContent>
-                  <ContentHeader title="کاربران" />
-                  <Controls
-                    start={
-                      <div className={styles.TickerSelect}>
-                        <Select
-                          options={{
-                            daily: "روزانه",
-                            weekly: "هفتگی",
-                            monthly: "ماهانه",
-                          }}
-                          value={usersTicker}
-                          onChange={setUsersTicker}
-                        />
+                  <div className={styles.ContentHeader}>
+                    <div>
+                      <div>کاربران</div>
+                      <FilterSelect
+                        options={{
+                          daily: "روزانه",
+                          weekly: "هفتگی",
+                          monthly: "ماهانه",
+                        }}
+                        value={usersTicker}
+                        onChange={setUsersTicker}
+                      />
+                    </div>
+                    <div>
+                      <div>
+                        <div>کل کاربران:</div>
+                        <FormattedNumber value={salesData.totalSales} /> کاربر
                       </div>
-                    }
-                  />
+                    </div>
+                  </div>
                   <DataLoader
                     load={() =>
                       request({
@@ -211,28 +286,49 @@ export default function DashboardMain() {
                         label: time,
                         value: count,
                       }))}
+                      setTooltipData={setUsersTooltipData}
                     />
+                    {usersTooltipData && (
+                      <div
+                        className={styles.UsersTooltip}
+                        style={{
+                          left: usersTooltipData.position.left,
+                          top: usersTooltipData.position.top,
+                        }}
+                      >
+                        <div>
+                          <FormattedNumber
+                            value={usersTooltipData.item.value}
+                          />{" "}
+                          کاربر
+                        </div>
+                      </div>
+                    )}
                   </DataLoader>
                 </SectionContent>
               </div>
               <div>
                 <SectionContent>
-                  <ContentHeader title="سفارش ها" />
-                  <Controls
-                    start={
-                      <div className={styles.TickerSelect}>
-                        <Select
-                          options={{
-                            daily: "روزانه",
-                            weekly: "هفتگی",
-                            monthly: "ماهانه",
-                          }}
-                          value={ordersTicker}
-                          onChange={setOrdersTicker}
-                        />
+                  <div className={styles.ContentHeader}>
+                    <div>
+                      <div>سفارش ها</div>
+                      <FilterSelect
+                        options={{
+                          daily: "روزانه",
+                          weekly: "هفتگی",
+                          monthly: "ماهانه",
+                        }}
+                        value={ordersTicker}
+                        onChange={setOrdersTicker}
+                      />
+                    </div>
+                    <div>
+                      <div>
+                        <div>کل سفارشات:</div>
+                        <FormattedNumber value={ordersData.totalOrders} /> سفارش
                       </div>
-                    }
-                  />
+                    </div>
+                  </div>
                   <DataLoader
                     load={() =>
                       request({
@@ -250,35 +346,93 @@ export default function DashboardMain() {
                         label: time,
                         value: count,
                       }))}
+                      setTooltipData={setOrdersTooltipData}
                     />
+                    {ordersTooltipData && (
+                      <div
+                        className={styles.OrdersTooltip}
+                        style={{
+                          left: ordersTooltipData.position.left,
+                          top: ordersTooltipData.position.top,
+                        }}
+                      >
+                        <div>
+                          <FormattedNumber
+                            value={ordersTooltipData.item.value}
+                          />{" "}
+                          سفارش
+                        </div>
+                      </div>
+                    )}
                   </DataLoader>
                 </SectionContent>
                 <SectionContent>
-                  <ContentHeader title="کاربر سفارش" />
-                  <Controls
-                    start={
-                      <div className={styles.TickerSelect}>
-                        <Select
-                          options={{
-                            daily: "روزانه",
-                            weekly: "هفتگی",
-                            monthly: "ماهانه",
-                          }}
-                          value={usersOrdersTicker}
-                          onChange={setUsersOrdersTicker}
-                        />
+                  <div className={styles.ContentHeader}>
+                    <div>
+                      <div>کاربر سفارش</div>
+                      <FilterSelect
+                        options={{
+                          daily: "روزانه",
+                          weekly: "هفتگی",
+                          monthly: "ماهانه",
+                        }}
+                        value={usersOrdersTicker}
+                        onChange={setUsersOrdersTicker}
+                      />
+                      <FilterSelect
+                        options={{
+                          one: `${intl.formatNumber(1)} سفارش`,
+                          two: `${intl.formatNumber(2)} سفارش`,
+                          three: `${intl.formatNumber(3)} سفارش و بیشتر`,
+                        }}
+                        value={usersOrdersFilter}
+                        onChange={setUsersOrdersFilter}
+                        maxWidth={150}
+                      />
+                    </div>
+                    <div>
+                      <div className={styles.UsersOrdersSeeAll}>
+                        مشاهده کل
+                        <div className={styles.UsersOrdersSeeAllTooltip}>
+                          <div>
+                            <div>
+                              <FormattedNumber value={1} /> سفارش:
+                            </div>
+                            <div>{usersOrdersData.totalUsersWithOneOrder}</div>
+                            <div>کاربر</div>
+                          </div>
+                          <div>
+                            <div>
+                              <FormattedNumber value={2} /> سفارش:
+                            </div>
+                            <div>{usersOrdersData.totalUsersWithTwoOrder}</div>
+                            <div>کاربر</div>
+                          </div>
+                          <div>
+                            <div>
+                              <FormattedNumber value={3} /> سفارش و بیشتر:
+                            </div>
+                            <div>
+                              {usersOrdersData.totalUsersWithThreeOrder}
+                            </div>
+                            <div>کاربر</div>
+                          </div>
+                        </div>
                       </div>
-                    }
-                  />
+                    </div>
+                  </div>
                   <DataLoader
                     load={() =>
                       request({
                         method: "GET",
                         url: `/admins/dashboard/users-orders/ticker/${usersOrdersTicker}`,
                         needAuth: true,
+                        params: {
+                          orders: usersOrdersFilter,
+                        },
                       }).then(({ data }) => data)
                     }
-                    deps={[usersOrdersTicker]}
+                    deps={[usersOrdersTicker, usersOrdersFilter]}
                     setData={setUsersOrdersData}
                     initialFetch={false}
                   >
@@ -287,12 +441,33 @@ export default function DashboardMain() {
                         label: time,
                         value: count,
                       }))}
+                      setTooltipData={setUsersOrdersTooltipData}
                     />
+                    {usersOrdersTooltipData && (
+                      <div
+                        className={styles.UsersOrdersTooltip}
+                        style={{
+                          left: usersOrdersTooltipData.position.left,
+                          top: usersOrdersTooltipData.position.top,
+                        }}
+                      >
+                        <div>
+                          <FormattedNumber
+                            value={usersOrdersTooltipData.item.value}
+                          />{" "}
+                          کاربر
+                        </div>
+                      </div>
+                    )}
                   </DataLoader>
                 </SectionContent>
               </div>
               <SectionContent>
-                <ContentHeader title="سفارش بر اساس استان" />
+                <div className={styles.ContentHeader}>
+                  <div>
+                    <div>سفارش بر اساس استان</div>
+                  </div>
+                </div>
                 <IranMap data={provincesOrders} />
               </SectionContent>
             </div>

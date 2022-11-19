@@ -20,6 +20,9 @@ import DataLoader from "@/shared/components/DataLoader";
 import FinancialRecordTable from "@/admin/components/FinancialRecordTable";
 import EmptyNote from "@/shared/components/Dashboard/EmptyNote";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
+import Filters from "@/admin/components/Filters";
+import FilterSelect from "@/admin/components/FilterSelect";
+import FilterDate from "@/admin/components/FilterDate";
 
 export default function DashboardFinancialRecordList() {
   const router = useRouter();
@@ -33,6 +36,11 @@ export default function DashboardFinancialRecordList() {
   });
 
   const [search, setSearch] = useState("");
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [paymentStatus, setPaymentStatus] = useState<
+    "successful" | "unsuccessful" | null
+  >(null);
   const [page, setPage] = useState(1);
 
   const [
@@ -92,10 +100,48 @@ export default function DashboardFinancialRecordList() {
               setValue={setSearch}
             />
           }
+          end={
+            <Filters
+              removeFilters={() => {
+                setStartDate(null);
+                setEndDate(null);
+                setPaymentStatus(null);
+              }}
+              rows={[
+                [
+                  <FilterDate
+                    value={startDate}
+                    onChange={setStartDate}
+                    width={140}
+                    maxWidth={140}
+                  />,
+                  <FilterDate
+                    value={endDate}
+                    onChange={setEndDate}
+                    width={140}
+                    maxWidth={140}
+                  />,
+                  <FilterSelect
+                    placeholder="وضعیت پرداخت"
+                    options={{
+                      successful: "موفق",
+                      unsuccessful: "ناموفق",
+                    }}
+                    value={paymentStatus}
+                    onChange={setPaymentStatus}
+                    width={150}
+                    maxWidth={150}
+                  />,
+                ],
+              ]}
+            />
+          }
         />
         <DataLoader
-          load={() => getFinancialRecords(search, page, null)}
-          deps={[search, page]}
+          load={() =>
+            getFinancialRecords(search, startDate, endDate, paymentStatus, page)
+          }
+          deps={[search, startDate, endDate, paymentStatus, page]}
           setData={setData}
           reloadRef={reloadRef}
         >
