@@ -1,3 +1,31 @@
+.TickerSelect {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  column-gap: 30px;
+  row-gap: 10px;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+  }
+
+  > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+
+    @media (max-width: 640px) {
+      justify-content: stretch;
+
+      > div {
+        flex: 1;
+        max-width: unset !important;
+      }
+    }
+  }
+}
+
 .Tooltip {
   position: absolute;
   display: flex;

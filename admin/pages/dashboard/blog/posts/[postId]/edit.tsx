@@ -29,7 +29,7 @@ export default function DashboardEditPost() {
       <SectionHeader
         title="وبلاگ"
         description="وبلاگ را از این بخش مدیریت کنید"
-        hideBackToSiteButton
+        isAdmin
       />
       <SectionContent>
         <ContentHeader

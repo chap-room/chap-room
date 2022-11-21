@@ -32,7 +32,7 @@ export default function DashboardEditUser() {
       <SectionHeader
         title="کاربران"
         description="کاربران را از این بخش اضافه و ویرایش کنید"
-        hideBackToSiteButton
+        isAdmin
       />
       <SectionContent>
         <ContentHeader

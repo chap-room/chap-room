@@ -16,15 +16,18 @@ import Button from "@/shared/components/Button";
 import DataLoader from "@/shared/components/DataLoader";
 import OrderTable from "@/main/components/Dashboard/OrderTable";
 import EmptyNote from "@/shared/components/Dashboard/EmptyNote";
+import Pagination from "@/shared/components/Pagination";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
 
 export default function DashboardOrderList() {
   const router = useRouter();
   const [data, setData] = useState<{
-    countOfItems: number;
+    totalCount: number;
+    pageSize: number;
     orders: Order[];
   }>({
-    countOfItems: 0,
+    totalCount: 0,
+    pageSize: 0,
     orders: [],
   });
 
@@ -79,6 +82,12 @@ export default function DashboardOrderList() {
               router.push(`/dashboard/orders/${orderId}/details`)
             }
             onCancelOrder={setPendingOrderCancelRequest}
+          />
+          <Pagination
+            currentPage={page}
+            totalCount={data.totalCount}
+            pageSize={data.pageSize}
+            onPageChange={setPage}
           />
           {!data.orders.length && <EmptyNote>شما هیچ سفارشی ندارید</EmptyNote>}
           <WarningConfirmDialog

@@ -110,6 +110,7 @@ export default function BarChart<DT extends BaseData>({
             font: {
               family: "iransansx",
             },
+            autoSkip: false,
           },
         },
         y: {
@@ -135,5 +136,9 @@ export default function BarChart<DT extends BaseData>({
     };
   }, [setTooltipData]);
 
-  return <Bar ref={chartRef} data={chartData} options={options} />;
+  return (
+    <div className={styles.Container}>
+      <Bar ref={chartRef} data={chartData} options={options} />
+    </div>
+  );
 }

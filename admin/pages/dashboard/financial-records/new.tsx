@@ -24,7 +24,7 @@ export default function DashboardNewFinancialRecord() {
       <SectionHeader
         title="سوابق مالی"
         description="سوابق مالی را از این بخش مدیریت کنید"
-        hideBackToSiteButton
+        isAdmin
       />
       <SectionContent>
         <ContentHeader

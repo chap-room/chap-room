@@ -29,7 +29,7 @@ export default function DashboardEditUser() {
       <SectionHeader
         title="کدهای تخفیف"
         description="کدهای تخفیف را از این بخش مدیریت کنید"
-        hideBackToSiteButton
+        isAdmin
       />
       <SectionContent>
         <ContentHeader

@@ -15,6 +15,7 @@ import {
 } from "@/main/api";
 import { Post, PostCategory } from "@/shared/types";
 import EmptyNote from "@/shared/components/Dashboard/EmptyNote";
+import Pagination from "@/shared/components/Pagination";
 import Link from "next/link";
 
 export default function Blog() {
@@ -23,18 +24,23 @@ export default function Blog() {
   );
 
   const [data, setData] = useState<{
-    countOfItems: number;
+    totalCount: number;
     pageSize: number;
     posts: Post[];
   }>({
-    countOfItems: 0,
+    totalCount: 0,
     pageSize: 0,
     posts: [],
   });
 
   const [page, setPage] = useState(1);
 
-  const [categories, setCategories] = useState<PostCategory[]>([]);
+  const [categoriesData, setCategoriesData] = useState<{
+    totalBlogs: number;
+    categories: PostCategory[];
+  }>({ totalBlogs: 0, categories: [] });
+
+  const [popularPostData, setPopularPostData] = useState<Post[]>([]);
 
   return (
     <>
@@ -86,6 +92,12 @@ export default function Blog() {
               ))}
             </div>
             {!data.posts.length && <EmptyNote>هیچ بلاگی وجود ندارد</EmptyNote>}
+            <Pagination
+              currentPage={page}
+              totalCount={data.totalCount}
+              pageSize={data.pageSize}
+              onPageChange={setPage}
+            />
           </DataLoader>
         </div>
         <div>
@@ -94,20 +106,28 @@ export default function Blog() {
               <div className={styles.WidgetTitle}>دسته بندی</div>
               <DataLoader
                 load={() => getBlogCategories()}
-                setData={setCategories}
+                setData={setCategoriesData}
               >
                 <div className={styles.CategoryList}>
-                  <div onClick={() => setSelectedCategoryId(null)}>
+                  <div
+                    onClick={() => {
+                      setSelectedCategoryId(null);
+                      setPage(1);
+                    }}
+                  >
                     <Radio checked={selectedCategoryId === null} />
                     <div>همه</div>
                     <div>
-                      <FormattedNumber value={221} /> {/* TODO */}
+                      <FormattedNumber value={categoriesData.totalBlogs} />
                     </div>
                   </div>
-                  {categories.map((category) => (
+                  {categoriesData.categories.map((category) => (
                     <div
                       key={category.id}
-                      onClick={() => setSelectedCategoryId(category.id)}
+                      onClick={() => {
+                        setSelectedCategoryId(category.id);
+                        setPage(1);
+                      }}
                     >
                       <Radio checked={selectedCategoryId === category.id} />
                       <div>{category.name}</div>
@@ -121,78 +141,34 @@ export default function Blog() {
             </div>
             <div className={styles.Widget}>
               <div className={styles.WidgetTitle}>محبوبترین مقالات</div>
-              <div className={styles.PopularPosts}>
-                <div>
-                  <div>
-                    <img
-                      src="/assets/images/post-thumbnail.jpg"
-                      alt="چاپ کتاب با یک کلیک!"
-                    />
-                  </div>
-                  <div>
-                    <div>چاپ کتاب با یک کلیک!</div>
-                    <div>
-                      <FormattedDate value={new Date()} />
+              <DataLoader
+                load={() => getBlogPosts(1, "popular")}
+                setData={(data) => setPopularPostData(data.posts)}
+              >
+                <div className={styles.PopularPosts}>
+                  {popularPostData.map((post) => (
+                    <div key={post.id}>
+                      {post.thumbnailUrl && (
+                        <div className={styles.PostThumbnail}>
+                          <img
+                            src={post.thumbnailUrl}
+                            alt={post.thumbnailAlt || ""}
+                          />
+                        </div>
+                      )}
+                      <div>
+                        <div>{post.title}</div>
+                        <div>
+                          <FormattedDate value={post.lastUpdateDate} />
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  ))}
+                  {!popularPostData.length && (
+                    <EmptyNote>هیچ بلاگی وجود ندارد</EmptyNote>
+                  )}
                 </div>
-                <div>
-                  <div>
-                    <img
-                      src="/assets/images/post-thumbnail.jpg"
-                      alt="چاپ کتاب با یک کلیک!"
-                    />
-                  </div>
-                  <div>
-                    <div>چاپ کتاب با یک کلیک!</div>
-                    <div>
-                      <FormattedDate value={new Date()} />
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <div>
-                    <img
-                      src="/assets/images/post-thumbnail.jpg"
-                      alt="چاپ کتاب با یک کلیک!"
-                    />
-                  </div>
-                  <div>
-                    <div>چاپ کتاب با یک کلیک!</div>
-                    <div>
-                      <FormattedDate value={new Date()} />
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <div>
-                    <img
-                      src="/assets/images/post-thumbnail.jpg"
-                      alt="چاپ کتاب با یک کلیک!"
-                    />
-                  </div>
-                  <div>
-                    <div>چاپ کتاب با یک کلیک!</div>
-                    <div>
-                      <FormattedDate value={new Date()} />
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <div>
-                    <img
-                      src="/assets/images/post-thumbnail.jpg"
-                      alt="چاپ کتاب با یک کلیک!"
-                    />
-                  </div>
-                  <div>
-                    <div>چاپ کتاب با یک کلیک!</div>
-                    <div>
-                      <FormattedDate value={new Date()} />
-                    </div>
-                  </div>
-                </div>
-              </div>
+              </DataLoader>
             </div>
           </div>
         </div>

@@ -24,7 +24,7 @@ export default function DashboardNewUser() {
       <SectionHeader
         title="کاربران"
         description="کاربران را از این بخش اضافه و ویرایش کنید"
-        hideBackToSiteButton
+        isAdmin
       />
       <SectionContent>
         <ContentHeader

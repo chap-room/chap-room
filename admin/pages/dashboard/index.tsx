@@ -169,7 +169,7 @@ export default function DashboardMain() {
       <Head>
         <title>داشبورد</title>
       </Head>
-      <SectionHeader title="داشبورد" hideBackToSiteButton />
+      <SectionHeader title="داشبورد" isAdmin />
       <DataLoader
         load={() => getDashboard()}
         setData={(data) => {
