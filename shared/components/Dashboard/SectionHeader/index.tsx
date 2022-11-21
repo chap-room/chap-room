@@ -25,7 +25,11 @@ export default function SectionHeader({
             </a>
           </Link>
         ) : (
-          <a className={styles.BackToSiteButton} href={process.env.MAIN_URL} target="_blank">
+          <a
+            className={styles.BackToSiteButton}
+            href={process.env.MAIN_URL}
+            target="_blank"
+          >
             بازگشت به سایت
             <Logo width={24} height={24} />
           </a>

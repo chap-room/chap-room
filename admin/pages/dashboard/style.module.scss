@@ -39,7 +39,7 @@
               font-weight: bold;
             }
           }
-          
+
           &:last-child {
             > div {
               color: #0377a5;
@@ -119,7 +119,7 @@
 
           &::after {
             display: block;
-            content: '';
+            content: "";
             border-width: 6px;
             border-style: solid;
             border-color: transparent;
@@ -184,7 +184,6 @@
         gap: 5px;
         color: #464646;
         flex: 1;
-
 
         .UserRole {
           font-size: 12px;

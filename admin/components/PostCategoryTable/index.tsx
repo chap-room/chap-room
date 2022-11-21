@@ -31,7 +31,10 @@ export default function PostCategoryTable({
             <td>
               <span className={styles.MobileLabel}>#:</span>
               <div>
-                <FormattedNumber value={startCountFrom + index} useGrouping={false} />
+                <FormattedNumber
+                  value={startCountFrom + index}
+                  useGrouping={false}
+                />
               </div>
             </td>
             <td>

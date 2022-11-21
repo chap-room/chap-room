@@ -6,7 +6,7 @@
   align-items: center;
   text-align: center;
   gap: 20px;
-    
+
   @media (max-width: 896px) {
     justify-content: space-between;
   }
@@ -16,7 +16,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+
     @media (min-width: 897px) {
       display: none;
     }
@@ -33,7 +33,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+
     @media (min-width: 897px) {
       margin-top: 10px;
     }

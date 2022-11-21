@@ -33,9 +33,7 @@ export default function DashboardPrintPricesList() {
           title="لیست تعرفه ها"
           end={
             <Link href="/dashboard/tariffs/binding">
-              <Button varient="content-title-none">
-                صحافی
-              </Button>
+              <Button varient="content-title-none">صحافی</Button>
             </Link>
           }
         />
