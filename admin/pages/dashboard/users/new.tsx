@@ -23,7 +23,7 @@ export default function DashboardNewUser() {
       </Head>
       <SectionHeader
         title="کاربران"
-        description="کاربران را از این بخش اضافه و ویرایش کنید"
+        description="- کاربران را از این بخش اضافه و ویرایش کنید"
         isAdmin
       />
       <SectionContent>

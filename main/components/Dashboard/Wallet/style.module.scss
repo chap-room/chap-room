@@ -14,7 +14,22 @@
     cursor: pointer;
     user-select: none;
     transition: all, 0.3s;
-    font-weight: bold;
+
+    .Balance {
+      display: flex;
+      flex-direction: row;
+      gap: 5px;
+      align-items: center;
+
+      > span:nth-child(1) {
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      > span:nth-child(2) {
+        font-size: 12px;
+      }
+    }
 
     .Spacer {
       flex: 1;

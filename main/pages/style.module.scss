@@ -603,7 +603,9 @@
 
   .Features {
     margin: 0 auto;
+    width: 100%;
     max-width: 1024px;
+    box-sizing: border-box;
     padding: 0 50px;
 
     @media (max-width: 896px) {
@@ -669,6 +671,7 @@
           text-align: justify;
           text-align-last: center;
           font-size: 14px;
+          max-width: 190px;
 
           @media (max-width: 896px) {
             font-size: 12px;

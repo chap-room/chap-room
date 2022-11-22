@@ -160,6 +160,19 @@
 
         > div:first-child {
           flex: 1;
+
+          .Canceled {
+            color: #f20f4b;
+          }
+  
+          .Pending,
+          .Preparing {
+            color: #0077b5;
+          }
+  
+          .Sent {
+            color: #14cc9c;
+          }
         }
 
         > div:last-child {

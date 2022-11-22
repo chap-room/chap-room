@@ -39,11 +39,11 @@ export default function DashboardAddresseList() {
   return (
     <>
       <Head>
-        <title>داشبورد - آدرس ها من</title>
+        <title>داشبورد - آدرس های من</title>
       </Head>
       <SectionHeader
-        title="آدرس ها من"
-        description="آدرس های خود را از این بخش مدیریت کنید"
+        title="آدرس های من"
+        description="- آدرس های خود را از این بخش مدیریت کنید"
       />
       <SectionContent>
         <ContentHeader

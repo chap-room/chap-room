@@ -91,7 +91,7 @@ export default function DashboardFinancialRecordsTotalIncome() {
       </Head>
       <SectionHeader
         title="سوابق مالی"
-        description="سوابق مالی را از این بخش مدیریت کنید"
+        description="- سوابق مالی را از این بخش مدیریت کنید"
         isAdmin
       />
       <SectionContent>
@@ -191,7 +191,7 @@ export default function DashboardFinancialRecordsTotalIncome() {
                   startAt: startDate?.toISOString() || undefined,
                   endAt: endDate?.toISOString() || undefined,
                 },
-              }) /* TODO .then(({ data }) => data) */
+              }).then(({ data }) => data)
           }
           deps={[ticker, month, startDate, endDate]}
           setData={setData}

@@ -61,7 +61,7 @@ export default function PrintFoldersStage({
         />
         <AreaButton
           title="افزودن پوشه +"
-          description="در هر پوشه فایلهایی که مشخصات چاپ یکسانی دارند را آپلود کنید"
+          description="- در هر پوشه فایلهایی که مشخصات چاپ یکسانی دارند را آپلود کنید"
           onClick={actions.new}
         />
       </div>

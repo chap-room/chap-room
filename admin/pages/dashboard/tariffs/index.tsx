@@ -25,7 +25,7 @@ export default function DashboardPrintPricesList() {
       </Head>
       <SectionHeader
         title="تعرفه ها"
-        description="تعرفه های چاپ را از این بخش مدیریت کنید"
+        description="- تعرفه های چاپ را از این بخش مدیریت کنید"
         isAdmin
       />
       <SectionContent>

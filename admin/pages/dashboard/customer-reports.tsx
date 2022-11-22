@@ -70,7 +70,7 @@ export default function DashboardCustomerReport() {
       </Head>
       <SectionHeader
         title="گزارش مشتریان"
-        description="گزارش مشتریان را از این بخش مشاهده کنید"
+        description="- گزارش مشتریان را از این بخش مشاهده کنید"
         isAdmin
       />
       <SectionContent>

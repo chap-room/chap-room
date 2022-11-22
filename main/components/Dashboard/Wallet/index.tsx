@@ -38,8 +38,13 @@ export default function Wallet({
           setWalletExpanded(!walletExpanded);
         }}
       >
-        موجودی: <FormattedNumber value={walletBalance + marketingBalance} />{" "}
-        تومان
+        <div className={styles.Balance}>
+          موجودی:{" "}
+          <span>
+            <FormattedNumber value={walletBalance + marketingBalance} />
+          </span>{" "}
+          <span>تومان</span>
+        </div>
         <div className={styles.Spacer} />
         <ExpandMoreIcon className={styles.ExpandMoreIcon} />
       </div>

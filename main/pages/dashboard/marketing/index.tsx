@@ -55,7 +55,7 @@ export default function DashboardMarketing() {
       </Head>
       <SectionHeader
         title="پنل بازاریابی"
-        description="با استفاده از این سیستم می توانید به راحتی برای خود درآمدزایی کنید"
+        description="- با استفاده از این سیستم می توانید به راحتی برای خود درآمدزایی کنید"
       />
       <SectionContent>
         <MobileContentHeader backTo="/dashboard" title="بازاریابی" />
@@ -70,8 +70,11 @@ export default function DashboardMarketing() {
                   کسب درآمد کنید. لازم به ذکر است پس از اولین بازدید از طریق
                   لینک شما تا یک ماه بعد (حتی اگر کاربر شما توسط لینک‌های دیگر
                   وارد سایت چاپ روم شود) کاربر خریدی انجام دهد،{" "}
-                  {<FormattedNumber value={data!.referral.commission} />} درصد
-                  از خرید آن مشتری در پنل بازاریابی شما لحاظ می‌شود.
+                  <span className={styles.Highlight}>
+                    {<FormattedNumber value={data!.referral.commission} />} درصد
+                    از خرید آن مشتری
+                  </span>{" "}
+                  در پنل بازاریابی شما لحاظ می‌شود.
                 </div>
               </div>
               <div>

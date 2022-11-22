@@ -31,7 +31,7 @@ export default function DashboardTransactions() {
       </Head>
       <SectionHeader
         title="تراکنش های انجام شده"
-        description="سوابق مالی خود را از این بخش مشاهده کنید"
+        description="- سوابق مالی خود را از این بخش مشاهده کنید"
       />
       <SectionContent>
         <ContentHeader title="همه سوابق مالی" />
