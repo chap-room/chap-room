@@ -46,7 +46,7 @@ export default function DashboardOrderList() {
       </Head>
       <SectionHeader
         title="سفارش های من"
-        description="- تاریخچه سفارشات خود را از این بخش مشاهده کنید"
+        description="ــ تاریخچه سفارشات خود را از این بخش مشاهده کنید"
       />
       <SectionContent>
         <ContentHeader

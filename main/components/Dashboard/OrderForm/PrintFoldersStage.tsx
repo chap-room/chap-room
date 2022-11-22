@@ -6,7 +6,6 @@ import { deletePrintFolder, getPrintFolders } from "@/main/api";
 import DataLoader from "@/shared/components/DataLoader";
 import PrintFolderList from "@/main/components/Dashboard/PrintFolderList";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
-import AreaButton from "@/shared/components/Dashboard/AreaButton";
 import BottomActions from "@/shared/components/Dashboard/BottomActions";
 import Button from "@/shared/components/Button";
 
@@ -59,11 +58,15 @@ export default function PrintFoldersStage({
           message="از حذف این پوشه مطمئن هستید؟"
           confirmButtonText="حذف"
         />
-        <AreaButton
-          title="افزودن پوشه +"
-          description="- در هر پوشه فایلهایی که مشخصات چاپ یکسانی دارند را آپلود کنید"
-          onClick={actions.new}
-        />
+        <button
+          className={styles.NewFolderButton}
+          onClick={() => actions.new()}
+        >
+          <div className={styles.Title}>افزودن پوشه +</div>
+          <div className={styles.Description}>
+            در هر پوشه فایلهایی که مشخصات چاپ یکسانی دارند را آپلود کنید
+          </div>
+        </button>
       </div>
       <BottomActions>
         <Button

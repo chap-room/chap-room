@@ -30,7 +30,7 @@ export default function DashboardUserOrderDetails() {
       </Head>
       <SectionHeader
         title="کاربران"
-        description="- کاربران را از این بخش اضافه و ویرایش کنید"
+        description="ــ کاربران را از این بخش اضافه و ویرایش کنید"
         isAdmin
       />
       <SectionContent>

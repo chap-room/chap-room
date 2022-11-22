@@ -1,5 +1,5 @@
 import styles from "./style.module.scss";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { Address } from "@/shared/types";
 import { deleteAddress, getAddresses } from "@/main/api";
@@ -7,7 +7,6 @@ import DataLoader from "@/shared/components/DataLoader";
 import AddressView from "@/shared/components/Dashboard/AddressView";
 import Radio from "@/shared/components/Radio";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
-import AreaButton from "@/shared/components/Dashboard/AreaButton";
 import BottomActions from "@/shared/components/Dashboard/BottomActions";
 import Button from "@/shared/components/Button";
 
@@ -48,7 +47,7 @@ export default function AddressStage({
     >
       <div className={styles.AddressSelect}>
         {data.map((address) => (
-          <div key={address.id}>
+          <Fragment key={address.id}>
             <Radio
               checked={address.id === selectedAddressId}
               onChecked={() => setSelectedAddressId(address.id)}
@@ -58,8 +57,15 @@ export default function AddressStage({
               onEdit={() => actions.edit(address.id)}
               onDelete={() => setPendingAddressDeleteRequest(address.id)}
             />
-          </div>
+          </Fragment>
         ))}
+        <div />
+        <button
+          className={styles.NewAddressButton}
+          onClick={() => actions.new()}
+        >
+          ایجاد آدرس جدید +
+        </button>
       </div>
       <WarningConfirmDialog
         open={pendingAddressDeleteRequest !== null}
@@ -78,7 +84,6 @@ export default function AddressStage({
         message="از حذف این آدرس مطمئن هستید؟"
         confirmButtonText="حذف"
       />
-      <AreaButton title="ایجاد آدرس جدید +" onClick={actions.new} />
       <BottomActions>
         <Button onClick={actions.back}>مرحله قبل</Button>
         <Button

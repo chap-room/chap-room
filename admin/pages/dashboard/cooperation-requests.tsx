@@ -50,7 +50,7 @@ export default function DashboardCooperationRequests() {
       </Head>
       <SectionHeader
         title="درخواست های همکاری"
-        description="- از این بخش درخواست های همکاری را مدیریت کنید"
+        description="ــ از این بخش درخواست های همکاری را مدیریت کنید"
         isAdmin
       />
       <SectionContent>

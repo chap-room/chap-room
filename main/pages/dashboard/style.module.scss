@@ -56,15 +56,12 @@
             > div {
               > button {
                 padding: 0;
-                width: 36px;
-
-                &:not([data-current="true"]) {
-                  box-shadow: none;
-                }
+                width: 30px;
+                height: 30px;
+                font-size: 12px;
 
                 &:last-child {
-                  width: unset;
-                  padding: 0 10px;
+                  width: 80px;
                 }
               }
             }

@@ -28,7 +28,7 @@ export default function DashboardFinancialRecordEdit() {
       </Head>
       <SectionHeader
         title="سوابق مالی"
-        description="- سوابق مالی را از این بخش مدیریت کنید"
+        description="ــ سوابق مالی را از این بخش مدیریت کنید"
         isAdmin
       />
       <SectionContent>

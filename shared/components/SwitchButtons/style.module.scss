@@ -10,13 +10,14 @@
     justify-content: center;
     align-items: center;
     border-radius: 18px;
+    background-color: #f5f5f5;
     color: #5e5e5e;
     fill: #5e5e5e;
     box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
     user-select: none;
-    background: transparent;
     border: none;
     padding: 0 15px;
+    font-size: 14px;
 
     &[data-current="true"] {
       color: #0077b5;

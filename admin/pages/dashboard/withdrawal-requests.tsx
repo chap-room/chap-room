@@ -53,7 +53,7 @@ export default function DashboardWithdrawalRequests() {
       </Head>
       <SectionHeader
         title="درخواست های برداشت"
-        description="- درخواست های برداشت از این بخش را مدیریت کنید"
+        description="ــ درخواست های برداشت از این بخش را مدیریت کنید"
         isAdmin
       />
       <SectionContent>

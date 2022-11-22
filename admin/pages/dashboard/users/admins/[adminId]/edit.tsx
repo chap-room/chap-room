@@ -30,7 +30,7 @@ export default function DashboardEditAdmin() {
       </Head>
       <SectionHeader
         title="ادمین ها"
-        description="- ادمین ها را از این بخش اضافه و ویرایش کنید"
+        description="ــ ادمین ها را از این بخش اضافه و ویرایش کنید"
         isAdmin
       />
       <SectionContent>

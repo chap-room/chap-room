@@ -28,7 +28,7 @@ export default function DashboardEditPost() {
       </Head>
       <SectionHeader
         title="وبلاگ"
-        description="- وبلاگ را از این بخش مدیریت کنید"
+        description="ــ وبلاگ را از این بخش مدیریت کنید"
         isAdmin
       />
       <SectionContent>

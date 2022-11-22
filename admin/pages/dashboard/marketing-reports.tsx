@@ -47,7 +47,7 @@ export default function DashboardMarketingReport() {
       </Head>
       <SectionHeader
         title="گزارش بازاریابی"
-        description="- گزارش بازاریابی را از این بخش مشاهده کنید"
+        description="ــ گزارش بازاریابی را از این بخش مشاهده کنید"
         isAdmin
       />
       <SectionContent>
