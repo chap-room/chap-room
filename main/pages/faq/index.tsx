@@ -1,6 +1,9 @@
 import styles from "./style.module.scss";
 import { ReactElement, useState } from "react";
+import { FormattedNumber } from "react-intl";
 import ExpandMoreIcon from "@/shared/assets/icons/expandMore.svg";
+import CaillIcon from "@/main/assets/icons/call.svg";
+import SupportImage from "@/main/assets/images/support.svg";
 import Layout from "@/main/components/Layout";
 
 const accordions: [string, string][] = [
@@ -59,6 +62,53 @@ export default function FrequentlyAskedQuestions() {
             <div className={styles.Answer}>{answer}</div>
           </div>
         ))}
+      </div>
+      <div className={styles.ContactUs}>
+        <h2>جواب یا پرسش خود را پیدا نکردید؟</h2>
+        <div>
+          <div>
+            <h3>با ما تماس بگیرید</h3>
+            <div>
+              <div>
+                <CaillIcon />
+                <div>تلفن شعبه تهران</div>
+                <div>
+                  <FormattedNumber
+                    value={21}
+                    useGrouping={false}
+                    minimumIntegerDigits={3}
+                  />
+                  -
+                  <FormattedNumber
+                    value={91090772}
+                    useGrouping={false}
+                    minimumIntegerDigits={8}
+                  />
+                </div>
+              </div>
+              <div>
+                <CaillIcon />
+                <div>تلفن شعبه اصفهان</div>
+                <div>
+                  <FormattedNumber
+                    value={21}
+                    useGrouping={false}
+                    minimumIntegerDigits={3}
+                  />
+                  -
+                  <FormattedNumber
+                    value={91090772}
+                    useGrouping={false}
+                    minimumIntegerDigits={8}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <SupportImage />
+          </div>
+        </div>
       </div>
     </div>
   );

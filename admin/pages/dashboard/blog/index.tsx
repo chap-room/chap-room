@@ -11,6 +11,7 @@ import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
+import FilledIconContainer from "@/shared/components/FilledIconContainer";
 import IconButton from "@/shared/components/IconButton";
 import ButtonList from "@/shared/components/ButtonList";
 import Button from "@/shared/components/Button";
@@ -66,13 +67,9 @@ export default function DashboardBlog() {
               <Link href="/dashboard/blog/posts/new">
                 <Button varient="content-title-none">
                   ایجاد وبلاگ
-                  <IconButton
-                    varient="filled"
-                    size={34}
-                    style={{ marginRight: 10 }}
-                  >
+                  <FilledIconContainer style={{ marginRight: 10 }}>
                     <AddIcon />
-                  </IconButton>
+                  </FilledIconContainer>
                 </Button>
               </Link>
             </ButtonList>

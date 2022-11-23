@@ -12,6 +12,7 @@ import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
 import DataLoader from "@/shared/components/DataLoader";
+import FilledIconContainer from "@/shared/components/FilledIconContainer";
 import IconButton from "@/shared/components/IconButton";
 import ButtonList from "@/shared/components/ButtonList";
 import Button from "@/shared/components/Button";
@@ -71,13 +72,9 @@ export default function DashboardAdminList() {
               <Link href="/dashboard/users/admins/new">
                 <Button varient="content-title-none">
                   افزودن ادمین
-                  <IconButton
-                    varient="filled"
-                    size={34}
-                    style={{ marginRight: 10 }}
-                  >
+                  <FilledIconContainer style={{ marginRight: 10 }}>
                     <AddIcon />
-                  </IconButton>
+                  </FilledIconContainer>
                 </Button>
               </Link>
             </ButtonList>

@@ -11,6 +11,7 @@ import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
+import FilledIconContainer from "@/shared/components/FilledIconContainer";
 import IconButton from "@/shared/components/IconButton";
 import Button from "@/shared/components/Button";
 import Controls from "@/admin/components/Controls";
@@ -56,13 +57,9 @@ export default function DashboardDiscountList() {
             <Link href="/dashboard/discounts/new">
               <Button varient="content-title-none">
                 ایجاد کد تخفیف
-                <IconButton
-                  varient="filled"
-                  size={34}
-                  style={{ marginRight: 10 }}
-                >
+                <FilledIconContainer style={{ marginRight: 10 }}>
                   <AddIcon />
-                </IconButton>
+                </FilledIconContainer>
               </Button>
             </Link>
           }

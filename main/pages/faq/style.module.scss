@@ -94,4 +94,135 @@
       }
     }
   }
+
+  .ContactUs {
+    margin-top: 50px;
+    width: 100%;
+    max-width: 768px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    > h2 {
+      color: #5800b3;
+      font-size: 30px;
+      font-weight: bold;
+      margin: 0;
+      text-align: center;
+
+      @media (max-width: 896px) {
+        font-size: 22px;
+      }
+  
+      @media (max-width: 512px) {
+        font-size: 18px;
+      }
+    }
+
+    > div {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+
+      @media (max-width: 640px) {
+        flex-direction: column-reverse;
+        align-items: center;
+        gap: 0;
+      }
+
+      > h3 {
+        color: #464646;
+        font-size: 26px;
+        margin: 0;
+
+        @media (max-width: 640px) {
+          text-align: center;
+        }
+      }
+
+      > div:first-child {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        @media (max-width: 640px) {
+          align-items: center;
+          gap: 10px;
+        }
+
+        > div {
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+          margin-right: 20px;
+
+          @media (max-width: 640px) {
+            margin-right: 0;
+            gap: 10px;
+          }
+
+          > div {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            align-items: center;
+            font-size: 18px;
+
+            @media (max-width: 896px) {
+              font-size: 16px;
+            }
+        
+            @media (max-width: 512px) {
+              font-size: 14px;
+            }
+
+            > svg:nth-child(1) {
+              fill: #9c9c9c;
+              width: 32px;
+              height: 32px;
+              min-width: 32px;
+              min-height: 32px;
+
+              @media (max-width: 896px) {
+                width: 28px;
+                height: 28px;
+                min-width: 28px;
+                min-height: 28px;
+              }
+          
+              @media (max-width: 512px) {
+                width: 24px;
+                height: 24px;
+                min-width: 24px;
+                min-height: 24px;
+              }
+            }
+
+            > div:nth-child(2) {
+              width: 100%;
+              max-width: 200px;
+            }
+
+            > div:nth-child(3) {
+              color: #9c9c9c;
+            }
+          }
+        }
+      }
+
+      > div:last-child {
+        display: flex;
+        width: 200px;
+
+        @media (max-width: 896px) {
+          width: 180px;
+        }
+  
+        @media (max-width: 512px) {
+          width: 150px;
+        }
+      }
+    }
+  }
 }

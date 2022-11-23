@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, forwardRef, PropsWithChildren } from "react";
+import { ButtonHTMLAttributes, forwardRef } from "react";
 import styles from "./style.module.scss";
 
 interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

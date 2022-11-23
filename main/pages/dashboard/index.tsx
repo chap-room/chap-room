@@ -12,7 +12,7 @@ import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import DataLoader from "@/shared/components/DataLoader";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
-import IconButton from "@/shared/components/IconButton";
+import FilledIconContainer from "@/shared/components/FilledIconContainer";
 import SwitchButtons from "@/shared/components/SwitchButtons";
 import Switch from "@/shared/components/Switch";
 import TariffsTable from "@/main/components/TariffsTable";
@@ -171,13 +171,9 @@ export default function DashboardMain() {
                     onClick={() => router.push("/dashboard/orders/new")}
                   >
                     سفارش جدید
-                    <IconButton
-                      varient="filled"
-                      size={34}
-                      style={{ marginRight: 10 }}
-                    >
+                    <FilledIconContainer style={{ marginRight: 10 }}>
                       <OrdersIcon />
-                    </IconButton>
+                    </FilledIconContainer>
                   </Button>
                 }
               />

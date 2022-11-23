@@ -12,6 +12,7 @@ import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
+import FilledIconContainer from "@/shared/components/FilledIconContainer";
 import IconButton from "@/shared/components/IconButton";
 import Button from "@/shared/components/Button";
 import DataLoader from "@/shared/components/DataLoader";
@@ -53,13 +54,9 @@ export default function DashboardAddresseList() {
             <Link href="/dashboard/addresses/new">
               <Button varient="content-title-none">
                 افزودن آدرس
-                <IconButton
-                  varient="filled"
-                  size={34}
-                  style={{ marginRight: 10 }}
-                >
+                <FilledIconContainer style={{ marginRight: 10 }}>
                   <AddressesIcon />
-                </IconButton>
+                </FilledIconContainer>
               </Button>
             </Link>
           }
