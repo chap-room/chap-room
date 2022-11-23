@@ -114,7 +114,7 @@ export default function Header() {
                   </button>
                   <Link href="/dashboard">
                     <button>
-                      <DashboardIcon /> حساب کاربری
+                      <DashboardIcon /> مشاهده حساب کاربری
                     </button>
                   </Link>
                   <button
