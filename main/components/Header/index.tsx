@@ -1,7 +1,7 @@
 import styles from "./style.module.scss";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { isLoggedIn } from "@/main/api";
+import { isLoggedIn, logout } from "@/main/api";
 import ProfileFilledIcon from "@/main/assets/icons/personFilled.svg";
 import LogoWithName from "@/shared/assets/images/logoWithName.svg";
 import ButtonList from "@/shared/components/ButtonList";
@@ -9,7 +9,9 @@ import Button from "@/shared/components/Button";
 import NavLink from "@/shared/components/NavLink";
 import SmallLoader from "@/shared/components/SmallLoader";
 import IconButton from "@/shared/components/IconButton";
-import Avatar from "@/shared/components/Dashboard/Avatar";
+import ExpandMoreIcon from "@/shared/assets/icons/expandMore.svg";
+import DashboardIcon from "@/shared/assets/icons/dashboard.svg";
+import LogoutIcon from "@/shared/assets/icons/logout.svg";
 
 export default function Header() {
   const [isFirstRender, setIsFirstRender] = useState(true);
@@ -18,6 +20,8 @@ export default function Header() {
     avatar: string | null;
     name: string;
   } | null>(null);
+
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   useEffect(() => {
     try {
@@ -98,14 +102,33 @@ export default function Header() {
               </div>
             </>
           ) : (
-            <Link href="/dashboard">
-              <div className={styles.User}>
-                <div className={styles.UserAvatar}>
-                  <Avatar user={user} />
-                </div>
-                <div>{user.name}</div>
+            <div className={styles.User}>
+              <div className={styles.Avatar}>
+                <ProfileFilledIcon />
               </div>
-            </Link>
+              <div className={styles.MenuContainer}>
+                <div className={styles.Menu} data-is-open={isUserMenuOpen}>
+                  <button onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}>
+                    <ExpandMoreIcon />
+                    <span>{user.name}</span>
+                  </button>
+                  <Link href="/dashboard">
+                    <button>
+                      <DashboardIcon /> حساب کاربری
+                    </button>
+                  </Link>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setUser(null);
+                      location.reload();
+                    }}
+                  >
+                    <LogoutIcon /> خروج
+                  </button>
+                </div>
+              </div>
+            </div>
           )}
         </div>
       </div>

@@ -123,23 +123,57 @@
     }
 
     > div:last-child {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
+      position: relative;
+      min-height: 500px;
+
+      @media (max-width: 1150px) {
+        min-height: 420px;
+      }
+
+      @media (max-width: 1000px) {
+        min-height: 340px;
+      }
 
       @media (max-width: 896px) {
+        min-height: 450px;
         grid-row: 1;
       }
 
-      > svg {
-        max-width: 512px;
+      @media (max-width: 640px) {
+        min-height: 400px;
+      }
 
-        @media (min-width: 897px) {
-          transform: translateX(-100px);
+      @media (max-width: 512px) {
+        min-height: 300px;
+      }
+
+      > svg {
+        width: 640px;
+        height: auto;
+        position: absolute;
+        top: 50%;
+        left: -100px;
+        transform: translateY(-50%);
+        z-index: -1;
+
+        @media (max-width: 1150px) {
+          width: 540px;
+        }
+
+        @media (max-width: 1000px) {
+          width: 440px;
         }
 
         @media (max-width: 896px) {
-          transform: translateX(-80px);
+          width: 640px;
+        }
+
+        @media (max-width: 640px) {
+          width: 512px;
+        }
+
+        @media (max-width: 512px) {
+          width: 384px;
         }
       }
     }
@@ -159,19 +193,57 @@
     }
 
     > div:first-child {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
+      position: relative;
+      min-height: 400px;
+
+      @media (max-width: 1150px) {
+        min-height: 340px;
+      }
+
+      @media (max-width: 1000px) {
+        min-height: 280px;
+      }
+
+      @media (max-width: 896px) {
+        min-height: 400px;
+        grid-row: 1;
+      }
+
+      @media (max-width: 640px) {
+        min-height: 320px;
+      }
+
+      @media (max-width: 512px) {
+        min-height: 250px;
+      }
 
       > svg {
-        max-width: 512px;
+        width: 640px;
+        height: auto;
+        position: absolute;
+        top: 50%;
+        right: -100px;
+        transform: translateY(-50%);
+        z-index: -1;
 
-        @media (min-width: 897px) {
-          transform: translateX(100px);
+        @media (max-width: 1150px) {
+          width: 540px;
+        }
+
+        @media (max-width: 1000px) {
+          width: 440px;
         }
 
         @media (max-width: 896px) {
-          transform: translateX(80px);
+          width: 640px;
+        }
+
+        @media (max-width: 640px) {
+          width: 512px;
+        }
+
+        @media (max-width: 512px) {
+          width: 384px;
         }
       }
     }

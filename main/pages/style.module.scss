@@ -468,6 +468,74 @@
           left: -100px;
           top: 50%;
           transform: translate(0, -50%);
+
+          :global(#calculatorFirstAnimatedNumber),
+          :global(#calculatorSecondAnimatedNumber),
+          :global(#calculatorThirdAnimatedNumber),
+          :global(#calculatorFourthAnimatedNumber) {
+            transform-box: fill-box;
+            transform-origin: center;
+          }
+
+          :global(#calculatorFirstAnimatedNumber) {
+            animation: 6s linear infinite normal;
+            @include animation {
+              0% {
+                transform: rotate(0deg);
+              }
+              18.333333% {
+                transform: rotate(7200deg);
+              }
+              100% {
+                transform: rotate(7200deg);
+              }
+            }
+          }
+
+          :global(#calculatorSecondAnimatedNumber) {
+            animation: 6s linear infinite normal;
+            @include animation {
+              0% {
+                transform: rotate(0deg);
+              }
+              31.666667% {
+                transform: rotate(7200deg);
+              }
+              100% {
+                transform: rotate(7200deg);
+              }
+            }
+          }
+
+          :global(#calculatorThirdAnimatedNumber) {
+            animation: 6s linear infinite normal;
+            @include animation {
+              0% {
+                transform: rotate(0deg);
+              }
+              46.666667% {
+                transform: rotate(10800deg);
+              }
+              100% {
+                transform: rotate(10800deg);
+              }
+            }
+          }
+
+          :global(#calculatorFourthAnimatedNumber) {
+            animation: 6s linear infinite normal;
+            @include animation {
+              0% {
+                transform: rotate(0deg);
+              }
+              61.666667% {
+                transform: rotate(14400deg);
+              }
+              100% {
+                transform: rotate(14400deg);
+              }
+            }
+          }
         }
       }
     }
@@ -728,7 +796,11 @@
         height: auto;
 
         @media (max-width: 512px) {
-          display: none;
+          position: absolute;
+          top: -10%;
+          bottom: 150%;
+          left: 0;
+          width: 160%;
         }
       }
 

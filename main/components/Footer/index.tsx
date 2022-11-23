@@ -1,7 +1,7 @@
 import styles from "./style.module.scss";
 import { FormattedNumber } from "react-intl";
 import Link from "next/link";
-import AddressesIcon from "@/main/assets/icons/addresses.svg";
+import LocationIcon from "@/main/assets/icons/location.svg";
 import CaillIcon from "@/main/assets/icons/call.svg";
 import MailIcon from "@/main/assets/icons/mail.svg";
 import AparatIcon from "@/main/assets/icons/aparat.svg";
@@ -11,10 +11,8 @@ import BottomButtons from "@/main/components/BottomButtons";
 export default function Footer() {
   return (
     <div className={styles.Footer}>
-      <div className={styles.LogoContainer}>
-        <div className={styles.Logo}>
-          <img src="/assets/images/footerLogo.svg" alt="Footer Logo" />
-        </div>
+      <div className={styles.Logo}>
+        <img src="/assets/images/footerLogo.svg" alt="Footer Logo" />
       </div>
       <div className={styles.FooterContent}>
         <div className={styles.Symbol}>
@@ -37,10 +35,10 @@ export default function Footer() {
               <MailIcon /> info@chaproom.com
             </li>
             <li>
-              <AddressesIcon /> تهران، میدان انقلاب
+              <LocationIcon /> تهران، میدان انقلاب
             </li>
             <li>
-              <AddressesIcon /> اصفهان، خیابان احمدآباد
+              <LocationIcon /> اصفهان، خیابان احمدآباد
             </li>
           </ul>
         </div>
@@ -125,7 +123,7 @@ export default function Footer() {
         </div>
       </div>
       <div className={styles.Copyrights}>
-        کلیه حقوق این وبسایت متعلق به چاپ روم می باشد.
+        <div>کلیه حقوق این وبسایت متعلق به چاپ روم می باشد.</div>
       </div>
       <div className={styles.BottomButtonsPlaceholder}>
         <BottomButtons />

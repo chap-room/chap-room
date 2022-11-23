@@ -108,7 +108,7 @@ export default function BarChart<DT extends BaseData>({
           ticks: {
             color: "#9c9c9c",
             font: {
-              family: "iransansx",
+              family: "IRANSans",
             },
             autoSkip: false,
           },
@@ -122,7 +122,7 @@ export default function BarChart<DT extends BaseData>({
           ticks: {
             display: !hideY,
             font: {
-              family: "iransansx",
+              family: "IRANSans",
             },
             callback: (tickValue) => {
               tickValue = tickValue as number;

@@ -1,18 +1,12 @@
 import styles from "./style.module.scss";
 import { ReactElement } from "react";
+import { FormattedNumber } from "react-intl";
 import Head from "next/head";
 import Layout from "@/main/components/Layout";
 import ExpandMoreIcon from "@/shared/assets/icons/expandMore.svg";
 import TargetImage from "@/main/assets/images/target.svg";
 import HappyPeopleImage from "@/main/assets/images/happyPeople.svg";
-import PrintImage from "@/main/assets/images/print.svg";
-import OnlineOrderImage from "@/main/assets/images/onlineOrder.svg";
-import PostageImage from "@/main/assets/images/postage.svg";
-import QualityImage from "@/main/assets/images/quality.svg";
-import SupportImage from "@/main/assets/images/support.svg";
-import BookImage from "@/main/assets/images/book.svg";
 import OurCustomers from "@/main/components/OurCustomers";
-import { FormattedNumber } from "react-intl";
 
 export default function AboutUs() {
   return (
