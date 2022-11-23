@@ -661,7 +661,11 @@ export function deleteDiscount(discountId: number) {
   }).then(({ data }) => data.message);
 }
 
-export function getCooperationRequests(search: string, page: number) {
+export function getCooperationRequests(
+  search: string,
+  page: number,
+  status: "approved" | "rejected" | "pending"
+) {
   return request({
     method: "GET",
     url: "/admins/cooperations",
@@ -669,6 +673,7 @@ export function getCooperationRequests(search: string, page: number) {
     params: {
       search,
       page,
+      status,
     },
   }).then(({ data }) => ({
     totalCount: data.totalCount,

@@ -74,7 +74,7 @@ export default function IncreasBalanceDialog({
         <BottomActions>
           <Button
             varient="filled"
-            style={{ minWidth: 100 }}
+            style={{ minWidth: 155 }}
             onClick={() => {
               setIsSubmitting(true);
               onSubmit(parseInt(amount)).finally(() => setIsSubmitting(false));

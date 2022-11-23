@@ -75,7 +75,7 @@ export default function DashboardCustomerReport() {
       />
       <SectionContent>
         <ContentHeader
-          title="همه گزارش ها"
+          title="کاربران"
           end={
             <Button
               varient="content-title-none"
@@ -84,13 +84,20 @@ export default function DashboardCustomerReport() {
               loading={isGeneratingExcel}
               onClick={() => generatrExcel()}
             >
-              دانلود اکسل براساس فیلتر <DownloadIcon />
+              دانلود اکسل براساس فیلتر
+              <IconButton
+                varient="filled"
+                size={34}
+                style={{ marginRight: 10 }}
+              >
+                <DownloadIcon />
+              </IconButton>
             </Button>
           }
         />
         <MobileContentHeader
           backTo="/dashboard"
-          title="همه گزارش ها"
+          title="کاربران"
           end={
             <IconButton
               varient="filled"

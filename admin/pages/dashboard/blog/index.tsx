@@ -54,7 +54,7 @@ export default function DashboardBlog() {
         <ContentHeader
           title="همه وبلاگ ها"
           end={
-            <ButtonList>
+            <ButtonList gap={15}>
               <Link href="/dashboard/blog/categories">
                 <Button
                   varient="content-title-outlined"
@@ -65,7 +65,14 @@ export default function DashboardBlog() {
               </Link>
               <Link href="/dashboard/blog/posts/new">
                 <Button varient="content-title-none">
-                  ایجاد وبلاگ <AddIcon />
+                  ایجاد وبلاگ
+                  <IconButton
+                    varient="filled"
+                    size={34}
+                    style={{ marginRight: 10 }}
+                  >
+                    <AddIcon />
+                  </IconButton>
                 </Button>
               </Link>
             </ButtonList>

@@ -35,7 +35,7 @@ export default function DashboardEditAddresse() {
           title="ویرایش کردن آدرس"
           end={
             <Link href="/dashboard/addresses">
-              <Button varient="content-title-none">
+              <Button varient="none" style={{ padding: 0 }}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
             </Link>

@@ -79,7 +79,7 @@ export default function WithdrawBalanceDialog({
         <BottomActions>
           <Button
             varient="filled"
-            style={{ minWidth: 100 }}
+            style={{ minWidth: 155 }}
             onClick={() => {
               setIsSubmitting(true);
               onSubmit(accountHolderName, iban).finally(() =>

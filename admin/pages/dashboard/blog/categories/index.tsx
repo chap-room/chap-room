@@ -57,7 +57,7 @@ export default function DashboardBlogCategories() {
           title="مدیریت دسته بندی بلاگ ها"
           end={
             <Link href="/dashboard/blog">
-              <Button varient="content-title-none">
+              <Button varient="none" style={{ padding: 0 }}>
                 بازگشت <ArrowBackIcon />
               </Button>
             </Link>

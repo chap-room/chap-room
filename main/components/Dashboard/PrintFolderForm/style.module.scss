@@ -238,6 +238,23 @@
           }
         }
       }
+
+      > div:nth-child(1),
+      > div:nth-child(2) {
+        > div:last-child {
+          > div:nth-child(1) {
+            width: 150px;
+          }
+
+          > div:nth-child(2) {
+            width: 180px;
+          }
+
+          > div:nth-child(3) {
+            width: 250px;
+          }
+        }
+      }
     }
 
     .CopiesCount {

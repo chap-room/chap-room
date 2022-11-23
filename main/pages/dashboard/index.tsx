@@ -6,12 +6,13 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import { Order, Tariffs } from "@/shared/types";
 import { cancelOrder, getDashboard } from "@/main/api";
-import AddIcon from "@/shared/assets/icons/add.svg";
+import OrdersIcon from "@/shared/assets/icons/orders.svg";
 import DashboardLayout from "@/main/components/Dashboard/Layout";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import DataLoader from "@/shared/components/DataLoader";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
+import IconButton from "@/shared/components/IconButton";
 import SwitchButtons from "@/shared/components/SwitchButtons";
 import Switch from "@/shared/components/Switch";
 import TariffsTable from "@/main/components/TariffsTable";
@@ -169,7 +170,14 @@ export default function DashboardMain() {
                     varient="content-title-none"
                     onClick={() => router.push("/dashboard/orders/new")}
                   >
-                    سفارش جدید <AddIcon />
+                    سفارش جدید
+                    <IconButton
+                      varient="filled"
+                      size={34}
+                      style={{ marginRight: 10 }}
+                    >
+                      <OrdersIcon />
+                    </IconButton>
                   </Button>
                 }
               />

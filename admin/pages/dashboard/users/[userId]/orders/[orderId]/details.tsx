@@ -38,7 +38,7 @@ export default function DashboardUserOrderDetails() {
           title="جزئیات سفارش"
           end={
             <Link href={`/dashboard/users/${userId}/orders`}>
-              <Button varient="content-title-none">
+              <Button varient="none" style={{ padding: 0 }}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
             </Link>

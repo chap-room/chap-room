@@ -61,7 +61,7 @@ export default function DashboardUserOrderList() {
           title="همه سفارش ها"
           end={
             <Link href="/dashboard/users">
-              <Button varient="content-title-none">
+              <Button varient="none" style={{ padding: 0 }}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
             </Link>

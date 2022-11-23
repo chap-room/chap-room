@@ -31,7 +31,7 @@ export default function DashboardNewAdmin() {
           title="افزودن ادمین جدید"
           end={
             <Link href="/dashboard/users/admins">
-              <Button varient="content-title-none">
+              <Button varient="none" style={{ padding: 0 }}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
             </Link>

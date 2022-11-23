@@ -40,7 +40,7 @@ export default function DashboardOrderDetails() {
           })}`}
           end={
             <Link href="/dashboard/orders">
-              <Button varient="content-title-none">
+              <Button varient="none">
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
             </Link>

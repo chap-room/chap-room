@@ -59,7 +59,7 @@ export default function DashboardAdminList() {
         <ContentHeader
           title="همه ادمین ها"
           end={
-            <ButtonList>
+            <ButtonList gap={15}>
               <Link href="/dashboard/users">
                 <Button
                   varient="content-title-outlined"
@@ -70,7 +70,14 @@ export default function DashboardAdminList() {
               </Link>
               <Link href="/dashboard/users/admins/new">
                 <Button varient="content-title-none">
-                  افزودن ادمین <AddIcon />
+                  افزودن ادمین
+                  <IconButton
+                    varient="filled"
+                    size={34}
+                    style={{ marginRight: 10 }}
+                  >
+                    <AddIcon />
+                  </IconButton>
                 </Button>
               </Link>
             </ButtonList>

@@ -46,6 +46,15 @@ export default function DashboardWithdrawalRequests() {
 
   const reloadRef = useRef<(() => void) | null>(null);
 
+  const title =
+    itemsStatus === null
+      ? "درخواست های در انتظار تایید"
+      : itemsStatus === "done"
+      ? "درخواست های انجام شده"
+      : itemsStatus === "rejected"
+      ? "درخواست های رد تشده"
+      : "";
+
   return (
     <>
       <Head>
@@ -58,17 +67,19 @@ export default function DashboardWithdrawalRequests() {
       />
       <SectionContent>
         <ContentHeader
-          title="همه درخواست ها"
+          title={title}
           end={
             <SwitchButtons
               options={[
                 {
-                  id: "done",
-                  label: "انجام شده",
-                },
-                {
                   id: "rejected",
                   label: "رد شده",
+                  color: "#f20f4b",
+                },
+                {
+                  id: "done",
+                  label: "انجام شده",
+                  color: "#14cc9c",
                 },
               ]}
               value={itemsStatus}
@@ -80,7 +91,7 @@ export default function DashboardWithdrawalRequests() {
             />
           }
         />
-        <MobileContentHeader backTo="/dashboard" title="همه درخواست ها" />
+        <MobileContentHeader backTo="/dashboard" title={title} />
         <Controls
           start={
             <SearchInput

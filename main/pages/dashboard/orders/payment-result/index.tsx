@@ -1,7 +1,9 @@
 import styles from "./style.module.scss";
 import { ReactElement } from "react";
+import { FormattedNumber } from "react-intl";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import Link from "next/link";
 import DashboardLayout from "@/main/components/Dashboard/Layout";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
@@ -9,8 +11,6 @@ import LogoWithName from "@/shared/assets/images/logoWithName.svg";
 import SuccessfulOrderImage from "@/main/assets/images/successfulOrder.svg";
 import UnuccessfulOrderImage from "@/main/assets/images/unsuccessfulOrder.svg";
 import Button from "@/shared/components/Button";
-import Link from "next/link";
-import { FormattedNumber } from "react-intl";
 
 export default function DashboardOrderPaymentResult() {
   const router = useRouter();

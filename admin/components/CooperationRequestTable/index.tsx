@@ -13,7 +13,7 @@ interface CooperationRequestTableProps {
     cooperationRequestDescription: string | null
   ) => void;
   showDescription?: boolean;
-  itemsStatus: "approved" | "rejected" | "pending";
+  itemsStatus: "approved" | "rejected" | null;
 }
 
 export default function CooperationRequestTable({

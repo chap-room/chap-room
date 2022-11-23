@@ -52,7 +52,7 @@ export default function DashboardMarketingReport() {
       />
       <SectionContent>
         <ContentHeader
-          title="همه گزارش ها"
+          title="گزارش ها"
           end={
             <SwitchButtons
               options={[
@@ -85,7 +85,7 @@ export default function DashboardMarketingReport() {
             />
           }
         />
-        <MobileContentHeader backTo="/dashboard" title="همه گزارش ها" />
+        <MobileContentHeader backTo="/dashboard" title="گزارش ها" />
         {tab === "link" && (
           <DataLoader
             load={() => getDedicatedLinkReports(search, page)}

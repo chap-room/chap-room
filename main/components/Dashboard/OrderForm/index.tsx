@@ -5,6 +5,7 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import { Address, PrintFolder } from "@/shared/types";
 import { newOrder } from "@/main/api";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import CloseIcon from "@/shared/assets/icons/close.svg";
@@ -19,7 +20,6 @@ import AddressStage from "@/main/components/Dashboard/OrderForm/AddressStage";
 import NewAddressesStage from "@/main/components/Dashboard/OrderForm/NewAddressesStage";
 import EditAddressesStage from "@/main/components/Dashboard/OrderForm/EditAddressesStage";
 import PaymentStage from "@/main/components/Dashboard/OrderForm/PaymentStage";
-import { Address, PrintFolder } from "@/shared/types";
 
 enum OrderFormStages {
   printFolders = "پوشه ها",
@@ -105,7 +105,7 @@ export default function OrderForm() {
         }
         end={
           <Link href="/dashboard/orders">
-            <Button varient="content-title-none">
+            <Button varient="none" style={{ padding: 0 }}>
               انصراف و بازگشت <ArrowBackIcon />
             </Button>
           </Link>
@@ -207,13 +207,9 @@ export default function OrderForm() {
               newOrder(addressId!, discountCode, paidWithWallet)
                 .then(({ orderId, paymentUrl }) => {
                   if (orderId) {
-                    router.push(
-                      `/dashboard/orders/payment-result?isSuccessful=true&orderId=${orderId}`,
-                      undefined,
-                      {
-                        unstable_skipClientCache: true,
-                      }
-                    );
+                    location.href = process.env.PUBLIC_URL
+                      ? `${process.env.PUBLIC_URL}/dashboard/orders/payment-result?isSuccessful=true&orderId=${orderId}`
+                      : `${location.protocol}//${location.host}/dashboard/orders/payment-result?isSuccessful=true&orderId=${orderId}`;
                   }
                   if (paymentUrl) window.location.href = paymentUrl;
                 })

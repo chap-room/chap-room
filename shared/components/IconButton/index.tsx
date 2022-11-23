@@ -32,8 +32,8 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
     return (
       <button
         className={className.join(" ")}
-        style={{ width: size, height: size }}
         {...props}
+        style={{ width: size, height: size, ...props.style }}
         ref={ref}
       >
         {props.children}

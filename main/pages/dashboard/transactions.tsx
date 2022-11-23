@@ -36,7 +36,11 @@ export default function DashboardTransactions() {
       <SectionContent>
         <ContentHeader title="همه سوابق مالی" />
         <MobileContentHeader backTo="/dashboard" title="تراکنش ها" />
-        <DataLoader load={() => getTransactions(page)} setData={setData}>
+        <DataLoader
+          load={() => getTransactions(page)}
+          deps={[page]}
+          setData={setData}
+        >
           <TransactionTable
             transactions={data.transactions}
             onSeeDetails={(orderId) => {

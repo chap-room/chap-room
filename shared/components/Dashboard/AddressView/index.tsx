@@ -1,4 +1,5 @@
 import styles from "./style.module.scss";
+import { FormattedNumber } from "react-intl";
 import { Address } from "@/shared/types";
 import EditIcon from "@/shared/assets/icons/edit.svg";
 import DeletetIcon from "@/shared/assets/icons/delete.svg";
@@ -34,8 +35,24 @@ export default function AddressView({
         </ButtonList>
       </div>
       <div>نام گیرنده: {address.recipientName}</div>
-      <div>شماره تلفن: {address.recipientPhoneNumber}</div>
-      <div>کد پستی: {address.recipientPostalCode}</div>
+      <div>
+        <div>
+          شماره تلفن:{" "}
+          <FormattedNumber
+            value={parseInt(address.recipientPhoneNumber)}
+            useGrouping={false}
+            minimumIntegerDigits={11}
+          />
+        </div>
+        <div>
+          کد پستی:{" "}
+          <FormattedNumber
+            value={parseInt(address.recipientPostalCode)}
+            useGrouping={false}
+            minimumIntegerDigits={10}
+          />
+        </div>
+      </div>
       <div>
         نشانی: استان {address.recipientDeliveryProvince}، شهر{" "}
         {address.recipientDeliveryCity}، {address.recipientDeliveryAddress}

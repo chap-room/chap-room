@@ -3,7 +3,7 @@ import styles from "./style.module.scss";
 
 interface SwitchButtonsProps {
   nullable?: boolean;
-  options: { id: any; label: ReactNode }[];
+  options: { id: any; label: ReactNode; color?: string }[];
   value: any;
   onChange: (newValue: any) => void;
 }
@@ -30,6 +30,7 @@ export default function SwitchButtons({
 
             onChange(option.id);
           }}
+          style={option.color ? { color: option.color } : undefined}
         >
           {option.label}
         </button>

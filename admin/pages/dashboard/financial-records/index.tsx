@@ -65,20 +65,27 @@ export default function DashboardFinancialRecordList() {
       />
       <SectionContent>
         <ContentHeader
-          title="همه سوابق مالی"
+          title="لیست سوابق مالی"
           end={
-            <ButtonList>
+            <ButtonList gap={15}>
               <Link href="/dashboard/financial-records/total-income">
                 <Button
                   varient="content-title-outlined"
                   style={{ minWidth: 130 }}
                 >
-                  کل درآمد
+                  درآمد کل
                 </Button>
               </Link>
               <Link href="/dashboard/financial-records/new">
                 <Button varient="content-title-none">
-                  ایجاد سند <AddIcon />
+                  ایجاد سند
+                  <IconButton
+                    varient="filled"
+                    size={34}
+                    style={{ marginRight: 10 }}
+                  >
+                    <AddIcon />
+                  </IconButton>
                 </Button>
               </Link>
             </ButtonList>
@@ -86,7 +93,7 @@ export default function DashboardFinancialRecordList() {
         />
         <MobileContentHeader
           backTo="/dashboard"
-          title="همه سوابق مالی"
+          title="لیست سوابق مالی"
           end={
             <Link href="/dashboard/financial-records/new">
               <IconButton varient="filled">

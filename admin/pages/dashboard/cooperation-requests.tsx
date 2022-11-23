@@ -20,8 +20,8 @@ import CooperationRequestRejectDialog from "@/admin/components/CooperationReques
 
 export default function DashboardCooperationRequests() {
   const [itemsStatus, setItemsStatus] = useState<
-    "approved" | "rejected" | "pending"
-  >("pending");
+    "approved" | "rejected" | null
+  >(null);
 
   const [data, setData] = useState<{
     totalCount: number;
@@ -43,6 +43,15 @@ export default function DashboardCooperationRequests() {
 
   const reloadRef = useRef<(() => void) | null>(null);
 
+  const title =
+    itemsStatus === null
+      ? "درخواست های در انتظار تایید"
+      : itemsStatus === "approved"
+      ? "درخواست های تایید شده"
+      : itemsStatus === "rejected"
+      ? "درخواست های رد تشده"
+      : "";
+
   return (
     <>
       <Head>
@@ -55,21 +64,19 @@ export default function DashboardCooperationRequests() {
       />
       <SectionContent>
         <ContentHeader
-          title="همه درخواست ها"
+          title={title}
           end={
             <SwitchButtons
               options={[
                 {
-                  id: "pending",
-                  label: "در انتظار بررسی",
+                  id: "rejected",
+                  label: "رد شده",
+                  color: "#f20f4b",
                 },
                 {
                   id: "approved",
                   label: "قبول شده",
-                },
-                {
-                  id: "rejected",
-                  label: "رد شده",
+                  color: "#14cc9c",
                 },
               ]}
               value={itemsStatus}
@@ -77,10 +84,11 @@ export default function DashboardCooperationRequests() {
                 setItemsStatus(newValue);
                 setPage(1);
               }}
+              nullable
             />
           }
         />
-        <MobileContentHeader backTo="/dashboard" title="همه درخواست ها" />
+        <MobileContentHeader backTo="/dashboard" title={title} />
         <Controls
           start={
             <SearchInput
@@ -94,8 +102,14 @@ export default function DashboardCooperationRequests() {
           }
         />
         <DataLoader
-          load={() => getCooperationRequests(search, page)}
-          deps={[search, page]}
+          load={() =>
+            getCooperationRequests(
+              search,
+              page,
+              itemsStatus === null ? "pending" : itemsStatus
+            )
+          }
+          deps={[search, page, itemsStatus]}
           setData={setData}
           reloadRef={reloadRef}
         >
@@ -119,7 +133,7 @@ export default function DashboardCooperationRequests() {
                 description: cooperationRequestDescription,
               });
             }}
-            showDescription={itemsStatus !== "pending"}
+            showDescription={itemsStatus !== null}
             itemsStatus={itemsStatus}
           />
           {!data.cooperations.length && (

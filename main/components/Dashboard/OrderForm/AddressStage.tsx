@@ -85,7 +85,9 @@ export default function AddressStage({
         confirmButtonText="حذف"
       />
       <BottomActions>
-        <Button onClick={actions.back}>مرحله قبل</Button>
+        <Button onClick={actions.back} style={{ fontWeight: "bold" }}>
+          مرحله قبل
+        </Button>
         <Button
           varient="filled"
           style={{ minWidth: 150 }}

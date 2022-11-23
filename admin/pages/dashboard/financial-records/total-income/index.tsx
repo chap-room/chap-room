@@ -99,7 +99,7 @@ export default function DashboardFinancialRecordsTotalIncome() {
           title="درامد کل"
           end={
             <Link href="/dashboard/financial-records">
-              <Button varient="content-title-none">
+              <Button varient="none" style={{ padding: 0 }}>
                 بازگشت <ArrowBackIcon />
               </Button>
             </Link>
@@ -180,18 +180,17 @@ export default function DashboardFinancialRecordsTotalIncome() {
           }
         />
         <DataLoader
-          load={
-            () =>
-              request({
-                method: "GET",
-                url: `/admins/transactions/total/ticker/${ticker}`,
-                needAuth: true,
-                params: {
-                  month,
-                  startAt: startDate?.toISOString() || undefined,
-                  endAt: endDate?.toISOString() || undefined,
-                },
-              }).then(({ data }) => data)
+          load={() =>
+            request({
+              method: "GET",
+              url: `/admins/transactions/total/ticker/${ticker}`,
+              needAuth: true,
+              params: {
+                month: month,
+                startAt: startDate?.toISOString() || undefined,
+                endAt: endDate?.toISOString() || undefined,
+              },
+            }).then(({ data }) => data)
           }
           deps={[ticker, month, startDate, endDate]}
           setData={setData}

@@ -189,7 +189,9 @@ export default function PaymentStage({ actions }: PaymentStageProps) {
           </div>
         }
       >
-        <Button onClick={actions.back}>مرحله قبل</Button>
+        <Button onClick={actions.back} style={{ fontWeight: "bold" }}>
+          مرحله قبل
+        </Button>
         <Button
           varient="filled"
           style={{ minWidth: 110 }}

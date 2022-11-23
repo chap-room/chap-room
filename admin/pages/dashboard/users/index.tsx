@@ -64,7 +64,7 @@ export default function DashboardUserList() {
         <ContentHeader
           title="همه کاربران"
           end={
-            <ButtonList>
+            <ButtonList gap={15}>
               <Link href="/dashboard/users/admins">
                 <Button
                   varient="content-title-outlined"
@@ -75,7 +75,14 @@ export default function DashboardUserList() {
               </Link>
               <Link href="/dashboard/users/new">
                 <Button varient="content-title-none">
-                  افزودن کاربر <AddIcon />
+                  افزودن کاربر
+                  <IconButton
+                    varient="filled"
+                    size={34}
+                    style={{ marginRight: 10 }}
+                  >
+                    <AddIcon />
+                  </IconButton>
                 </Button>
               </Link>
             </ButtonList>

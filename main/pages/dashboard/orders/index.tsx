@@ -5,6 +5,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { Order } from "@/shared/types";
 import { cancelOrder, getOrders } from "@/main/api";
+import OrdersIcon from "@/shared/assets/icons/orders.svg";
 import AddIcon from "@/shared/assets/icons/add.svg";
 import DashboardLayout from "@/main/components/Dashboard/Layout";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
@@ -54,7 +55,14 @@ export default function DashboardOrderList() {
           end={
             <Link href="/dashboard/orders/new">
               <Button varient="content-title-none">
-                سفارش جدید <AddIcon />
+                سفارش جدید
+                <IconButton
+                  varient="filled"
+                  size={34}
+                  style={{ marginRight: 10 }}
+                >
+                  <OrdersIcon />
+                </IconButton>
               </Button>
             </Link>
           }

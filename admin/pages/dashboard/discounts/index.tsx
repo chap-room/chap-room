@@ -55,7 +55,14 @@ export default function DashboardDiscountList() {
           end={
             <Link href="/dashboard/discounts/new">
               <Button varient="content-title-none">
-                ایجاد کد تخفیف <AddIcon />
+                ایجاد کد تخفیف
+                <IconButton
+                  varient="filled"
+                  size={34}
+                  style={{ marginRight: 10 }}
+                >
+                  <AddIcon />
+                </IconButton>
               </Button>
             </Link>
           }

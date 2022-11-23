@@ -39,7 +39,7 @@ export default function DashboardEditUser() {
           title="ویرایش کردن کاربر"
           end={
             <Link href="/dashboard/users">
-              <Button varient="content-title-none">
+              <Button varient="none" style={{ padding: 0 }}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
             </Link>
