@@ -54,7 +54,7 @@ export default function DiscountForm({
       : false
   );
   const [userMode, setUserMode] = useState<"user" | "phoneNumber">(
-    defaultValues?.phoneNumber !== null ? "phoneNumber" : "user"
+    defaultValues && defaultValues.phoneNumber !== null ? "phoneNumber" : "user"
   );
   const [user, setUser] = useState<User | null>(defaultValues?.user || null);
   const [phoneNumber, setPhoneNumber] = useState(

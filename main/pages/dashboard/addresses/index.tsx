@@ -45,7 +45,7 @@ export default function DashboardAddresseList() {
       </Head>
       <SectionHeader
         title="آدرس های من"
-        description="ــ آدرس های خود را از این بخش مدیریت کنید"
+        description="ــ آدرس های خود را از این قسمت مدیریت کنید"
       />
       <SectionContent>
         <ContentHeader

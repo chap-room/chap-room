@@ -24,7 +24,7 @@ export default function DashboardBindingPrices() {
       </Head>
       <SectionHeader
         title="تعرفه ها"
-        description="ــ تعرفه های چاپ را از این بخش مدیریت کنید"
+        description="ــ تعرفه های پرینت را از این قسمت مدیریت کنید"
         isAdmin
       />
       <SectionContent>

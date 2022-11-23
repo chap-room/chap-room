@@ -176,8 +176,6 @@ export default function UserSelect({
             </div>
             <div
               onScroll={(event) => {
-                if (loading || error || !hasMore) return;
-
                 const itemsContainer = event.target as HTMLDivElement;
                 if (
                   itemsContainer.scrollHeight -
@@ -242,8 +240,11 @@ function useUsersSearch(searchQuery: string) {
   const [users, setUsers] = useState<User[]>([]);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
+  const realHasMore = useRef(true);
   const [loading, setLoading] = useState(false);
+  const realLoading = useRef(false);
   const [error, setError] = useState(false);
+  const realError = useRef(false);
 
   useEffect(() => {
     if (page === 0) return;
@@ -259,7 +260,9 @@ function useUsersSearch(searchQuery: string) {
     const abortController = new AbortController();
 
     setError(false);
+    realError.current = true;
     setLoading(true);
+    realLoading.current = true;
     request({
       method: "GET",
       url: "/admins/users",
@@ -279,13 +282,18 @@ function useUsersSearch(searchQuery: string) {
             return true;
           })
         );
-        setHasMore(data.totalCountLeft > 0);
+        realHasMore.current = data.totalCountLeft > 0;
+        setHasMore(realHasMore.current);
       })
       .catch((error) => {
         if (axios.isCancel(error)) return;
-        setError(true);
+        realError.current = true;
+        setError(realError.current);
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        realLoading.current = false;
+        setLoading(realLoading.current);
+      });
 
     return () => abortController.abort();
   }
@@ -293,6 +301,9 @@ function useUsersSearch(searchQuery: string) {
   useEffect(fetchUsers, [searchQuery, page]);
 
   function loadMore() {
+    if (realLoading.current || realError.current || !realHasMore.current)
+      return;
+
     setPage(page + 1);
   }
 

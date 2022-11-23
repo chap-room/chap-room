@@ -55,7 +55,7 @@ export default function DashboardMarketing() {
       </Head>
       <SectionHeader
         title="پنل بازاریابی"
-        description="ــ با استفاده از این سیستم می توانید به راحتی برای خود درآمدزایی کنید"
+        description="ــ با استفاده از این سیستم به راحتی می توانید درآمد برای خود ایجاد نمایید"
       />
       <SectionContent>
         <MobileContentHeader backTo="/dashboard" title="بازاریابی" />

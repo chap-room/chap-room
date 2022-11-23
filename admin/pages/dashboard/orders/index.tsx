@@ -58,7 +58,7 @@ export default function DashboardOrderList() {
       </Head>
       <SectionHeader
         title="سفارش ها"
-        description="ــ سفارشات را از این بخش مدیریت کنید"
+        description="ــ سفارشات را از این قسمت مدیریت کنید"
         isAdmin
       />
       <SectionContent>

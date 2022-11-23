@@ -26,7 +26,7 @@ export default function DashboardOrderPaymentResult() {
       </Head>
       <SectionHeader
         title="سفارش ها"
-        description="ــ تاریخچه سفارشات خود را از این بخش مشاهده کنید"
+        description="ــ تاریخچه سفارشات خود را از این قسمت ملاحظه کنید"
       />
       <SectionContent>
         <div className={styles.Container}>

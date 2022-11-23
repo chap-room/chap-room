@@ -47,7 +47,7 @@ export default function DashboardDiscountList() {
       </Head>
       <SectionHeader
         title="کدهای تخفیف"
-        description="ــ کدهای تخفیف را از این بخش مدیریت کنید"
+        description="ــ کدهای تخفیف را از این قسمت مدیریت کنید"
         isAdmin
       />
       <SectionContent>

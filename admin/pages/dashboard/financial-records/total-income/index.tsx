@@ -91,7 +91,7 @@ export default function DashboardFinancialRecordsTotalIncome() {
       </Head>
       <SectionHeader
         title="سوابق مالی"
-        description="ــ سوابق مالی را از این بخش مدیریت کنید"
+        description="ــ سوابق مالی را از این قسمت مدیریت کنید"
         isAdmin
       />
       <SectionContent>
