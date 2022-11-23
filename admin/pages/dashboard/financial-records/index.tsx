@@ -170,7 +170,7 @@ export default function DashboardFinancialRecordList() {
           <FinancialRecordTable
             financialRecords={data.records}
             onSeeDetails={(orderId) =>
-              router.push(`/dashboard/orders/${orderId}/details`)
+              router.push(`/dashboard/orders/${orderId}/details?fromFinancialRecords=true`)
             }
             onEditFinancialRecord={(financialRecordId) =>
               router.push(

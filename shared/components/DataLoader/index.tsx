@@ -29,20 +29,22 @@ export default function DataLoader<DT>({
   initialFetch = true,
 }: PropsWithChildren<DataLoaderProps<DT>>) {
   const [isFirstRender, setIsFirstRender] = useState(true);
+  const [isFirstTry, setIsFirstTry] = useState(true);
   const [isLoading, setIsLoading] = useState(initialFetch);
   const [isError, setIsError] = useState(false);
 
   const fetchData = () => {
-    if (isLoading && !isFirstRender) return;
-    else if (isFirstRender) {
+    if (isFirstRender) {
       setIsFirstRender(false);
       if (!initialFetch) return;
     }
+    if (isLoading && !isFirstTry) return;
 
     const funcReturn = load();
     if (funcReturn) {
       setIsLoading(true);
       setIsError(false);
+      if (isFirstTry) setIsFirstTry(false);
       (Array.isArray(funcReturn) ? funcReturn[0] : funcReturn)
         .then((data: DT) => {
           setData(data);

@@ -39,7 +39,13 @@ export default function DashboardOrderDetails() {
             useGrouping: false,
           })}`}
           end={
-            <Link href="/dashboard/orders">
+            <Link
+              href={
+                router.query.fromFinancialRecords === "true"
+                  ? "/dashboard/financial-records"
+                  : "/dashboard/orders"
+              }
+            >
               <Button varient="none">
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
@@ -47,7 +53,11 @@ export default function DashboardOrderDetails() {
           }
         />
         <MobileContentHeader
-          backTo="/dashboard/orders"
+          backTo={
+            router.query.fromFinancialRecords === "true"
+              ? "/dashboard/financial-records"
+              : "/dashboard/orders"
+          }
           title={`شماره سفارش: ${intl.formatNumber(orderId, {
             useGrouping: false,
           })}`}
