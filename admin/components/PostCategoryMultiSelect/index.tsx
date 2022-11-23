@@ -171,8 +171,6 @@ export default function PostCategoryMultiSelect({
           >
             <div
               onScroll={(event) => {
-                if (loading || error || !hasMore) return;
-
                 const itemsContainer = event.target as HTMLDivElement;
                 if (
                   itemsContainer.scrollHeight -
@@ -255,8 +253,11 @@ function useCategories() {
   const [categories, setCategories] = useState<PostCategory[]>([]);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
+  const realHasMore = useRef(true);
   const [loading, setLoading] = useState(false);
+  const realLoading = useRef(false);
   const [error, setError] = useState(false);
+  const realError = useRef(false);
 
   function fetchCategories() {
     if (page === 0) return;
@@ -280,18 +281,26 @@ function useCategories() {
             return true;
           })
         );
-        setHasMore(data.totalCountLeft > 0);
+        realHasMore.current = data.totalCountLeft > 0;
+        setHasMore(realHasMore.current);
       })
       .catch((error) => {
         if (axios.isCancel(error)) return;
-        setError(true);
+        realError.current = true;
+        setError(realError.current);
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        realLoading.current = false;
+        setLoading(realLoading.current);
+      });
   }
 
   useEffect(fetchCategories, [page]);
 
   function loadMore() {
+    if (realLoading.current || realError.current || !realHasMore.current)
+      return;
+
     setPage(page + 1);
   }
 
