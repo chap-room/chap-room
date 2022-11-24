@@ -728,61 +728,54 @@ function usePrintFolderPrice({
   bindingOptions: BindingOptions | null;
   countOfCopies: number | null;
 }) {
-  const [isFirstRender, setIsFirstRender] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [price, setPrice] = useState<number | null>(null);
 
   function fetchData() {
-    if (!isFirstRender && isLoading) {
-      return;
-    } else {
-      if (isFirstRender) setIsFirstRender(false);
-    }
-
-    setIsLoading(true);
-    setIsError(false);
     const abortController = new AbortController();
-    calculatePrintFolderPrice(
-      {
-        printFiles,
-        printColor,
-        printSize,
-        printSide,
-        countOfPages,
-        bindingOptions,
-        countOfCopies,
-      },
-      abortController
-    )
-      .then(setPrice)
-      .catch((message) => {
-        if (message === "لغو شده") return;
-        toast.error(message);
-        setIsError(true);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    if (isValid) {
+      setIsLoading(true);
+      setIsError(false);
+      calculatePrintFolderPrice(
+        {
+          printFiles,
+          printColor,
+          printSize,
+          printSide,
+          countOfPages,
+          bindingOptions,
+          countOfCopies,
+        },
+        abortController
+      )
+        .then((amount) => {
+          setPrice(amount);
+          setIsLoading(false);
+        })
+        .catch((message) => {
+          if (message === "لغو شده") return;
+          toast.error(message);
+          setIsError(true);
+          setIsLoading(false);
+        });
+    }
 
     return () => abortController.abort();
   }
 
-  useEffect(
-    () => (isValid ? fetchData() : undefined),
-    [
-      printFiles,
-      printColor,
-      printSize,
-      printSide,
-      countOfPages,
-      bindingOptions?.bindingType,
-      bindingOptions?.bindingMethod,
-      bindingOptions?.countOfFiles || null,
-      bindingOptions?.coverColor,
-      countOfCopies,
-    ]
-  );
+  useEffect(fetchData, [
+    printFiles,
+    printColor,
+    printSize,
+    printSide,
+    countOfPages,
+    bindingOptions?.bindingType,
+    bindingOptions?.bindingMethod,
+    bindingOptions?.countOfFiles || null,
+    bindingOptions?.coverColor,
+    countOfCopies,
+  ]);
 
   return !isValid ? (
     <></>
