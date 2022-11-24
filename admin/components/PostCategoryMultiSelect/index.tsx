@@ -236,6 +236,11 @@ export default function PostCategoryMultiSelect({
                       سعی مجدد
                     </Button>
                   )}
+                  {!loading && !error && (
+                    <Button varient="filled" onClick={loadMore}>
+                      نمایش بیشتر
+                    </Button>
+                  )}
                 </div>
               )}
               {!loading && !hasMore && !categories.length && (
@@ -300,7 +305,8 @@ function useCategories() {
   function loadMore() {
     if (realLoading.current || realError.current || !realHasMore.current)
       return;
-
+    realLoading.current = true;
+    realError.current = false;
     setPage(page + 1);
   }
 

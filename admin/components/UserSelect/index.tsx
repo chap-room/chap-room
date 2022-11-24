@@ -105,7 +105,7 @@ export default function UserSelect({
   }, [open, activeIndex, pointer]);
 
   const { users, page, hasMore, loadMore, retry, loading, error } =
-    useUsersSearch(search);
+    useUsers(search);
   listUsersRef.current = users;
   useEffect(() => {
     if (open && page === 0) {
@@ -223,6 +223,11 @@ export default function UserSelect({
                       سعی مجدد
                     </Button>
                   )}
+                  {!loading && !error && (
+                    <Button varient="filled" onClick={loadMore}>
+                      نمایش بیشتر
+                    </Button>
+                  )}
                 </div>
               )}
               {!loading && !hasMore && !users.length && (
@@ -236,7 +241,7 @@ export default function UserSelect({
   );
 }
 
-function useUsersSearch(searchQuery: string) {
+function useUsers(searchQuery: string) {
   const [users, setUsers] = useState<User[]>([]);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
@@ -260,9 +265,7 @@ function useUsersSearch(searchQuery: string) {
     const abortController = new AbortController();
 
     setError(false);
-    realError.current = true;
     setLoading(true);
-    realLoading.current = true;
     request({
       method: "GET",
       url: "/admins/users",
@@ -303,7 +306,8 @@ function useUsersSearch(searchQuery: string) {
   function loadMore() {
     if (realLoading.current || realError.current || !realHasMore.current)
       return;
-
+    realLoading.current = true;
+    realError.current = false;
     setPage(page + 1);
   }
 
