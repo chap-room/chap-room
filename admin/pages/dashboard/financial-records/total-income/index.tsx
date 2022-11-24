@@ -186,7 +186,7 @@ export default function DashboardFinancialRecordsTotalIncome() {
               url: `/admins/transactions/total/ticker/${ticker}`,
               needAuth: true,
               params: {
-                month: month,
+                month: month + 1,
                 startAt: startDate?.toISOString() || undefined,
                 endAt: endDate?.toISOString() || undefined,
               },
