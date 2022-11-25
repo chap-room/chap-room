@@ -1,4 +1,5 @@
 import { ReactElement, useRef, useState } from "react";
+import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
@@ -22,7 +23,9 @@ import Pagination from "@/shared/components/Pagination";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
 
 export default function DashboardOrderList() {
+  const intl = useIntl();
   const router = useRouter();
+
   const [data, setData] = useState<{
     totalCount: number;
     pageSize: number;
@@ -53,6 +56,11 @@ export default function DashboardOrderList() {
       <SectionContent>
         <ContentHeader
           title="همه سفارش ها"
+          subTitle={
+            data.totalCount
+              ? `(${intl.formatNumber(data.totalCount)})`
+              : undefined
+          }
           end={
             <Link href="/dashboard/orders/new">
               <Button varient="content-title-none">

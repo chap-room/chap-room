@@ -53,6 +53,15 @@ export default function DashboardMarketingReport() {
       <SectionContent>
         <ContentHeader
           title="گزارش ها"
+          subTitle={
+            tab === "discount-code"
+              ? dedicatedDiscountCodeData.totalCount
+                ? `(${dedicatedDiscountCodeData.totalCount})`
+                : undefined
+              : dedicatedLinkData.totalCount
+              ? `(${dedicatedLinkData.totalCount})`
+              : undefined
+          }
           end={
             <SwitchButtons
               options={[

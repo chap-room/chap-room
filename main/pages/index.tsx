@@ -164,8 +164,10 @@ export default function Home() {
           <h1>هدیه اولین سفارش</h1>
           <p>
             با ثبت نام در چاپ روم{" "}
-            <span className={styles.Highlight}>30 صفحه پرینت رایگان</span> در
-            اولین سفارش هدیه بگیرید.
+            <span className={styles.Highlight}>
+              <FormattedNumber value={30} /> صفحه پرینت رایگان
+            </span>{" "}
+            در اولین سفارش هدیه بگیرید.
           </p>
           <Button varient="gradient">دریافت کد هدیه</Button>
         </div>

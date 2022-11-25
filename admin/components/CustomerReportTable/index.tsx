@@ -61,7 +61,7 @@ export default function CustomerReportTable({
                   <FormattedDate value={customerReport.firstOrderDate} />
                 </span>
                 <span>
-                  <FormattedTime value={customerReport.firstOrderDate} hour12 />
+                  <FormattedTime value={customerReport.firstOrderDate} timeStyle="medium" />
                 </span>
               </span>
             </td>
@@ -72,7 +72,7 @@ export default function CustomerReportTable({
                   <FormattedDate value={customerReport.lastOrderDate} />
                 </span>
                 <span>
-                  <FormattedTime value={customerReport.lastOrderDate} hour12 />
+                  <FormattedTime value={customerReport.lastOrderDate} timeStyle="medium" />
                 </span>
               </span>
             </td>

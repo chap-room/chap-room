@@ -134,7 +134,7 @@ export default function Login() {
           ) : (
             <>
               <div className={styles.Column}>
-                <div className={styles.Title}>تایید شماره موبایل</div>
+                <div className={styles.Title}>تأیید شماره موبایل</div>
                 <div className={styles.SubTitle}>
                   کد <FormattedNumber value={6} /> رقمی به شماره{" "}
                   <FormattedNumber

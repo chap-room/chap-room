@@ -77,6 +77,11 @@ export default function DashboardCustomerReport() {
       <SectionContent>
         <ContentHeader
           title="کاربران"
+          subTitle={
+            data.totalCount
+              ? `(${intl.formatNumber(data.totalCount)})`
+              : undefined
+          }
           end={
             <Button
               varient="content-title-none"

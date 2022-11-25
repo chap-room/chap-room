@@ -198,7 +198,7 @@ export default function Register() {
           ) : (
             <>
               <div className={styles.Column}>
-                <div className={styles.Title}>تایید شماره موبایل</div>
+                <div className={styles.Title}>تأیید شماره موبایل</div>
                 <div className={styles.SubTitle}>
                   کد 6 رقمی به شماره{" "}
                   <FormattedNumber

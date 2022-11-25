@@ -31,7 +31,7 @@ export default function TransactionTable({
                   <FormattedDate value={transaction.date} />
                 </span>
                 <span>
-                  <FormattedTime value={transaction.date} hour12 />
+                  <FormattedTime value={transaction.date} timeStyle="medium" />
                 </span>
               </span>
             </td>

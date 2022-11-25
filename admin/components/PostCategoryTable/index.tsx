@@ -22,7 +22,7 @@ export default function PostCategoryTable({
           <th>#</th>
           <th>نام دسته بندی</th>
           <th>تعداد بلاگ در این دسته بندی</th>
-          <th>عملیات</th>
+          <th style={{ width: "1%" }}>عملیات</th>
         </tr>
       </thead>
       <tbody>

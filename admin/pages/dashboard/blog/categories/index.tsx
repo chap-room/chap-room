@@ -1,5 +1,6 @@
 import styles from "./style.module.scss";
 import { ReactElement, useRef, useState } from "react";
+import { useIntl } from "react-intl";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
@@ -26,6 +27,7 @@ import Pagination from "@/shared/components/Pagination";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
 
 export default function DashboardBlogCategories() {
+  const intl = useIntl();
   const [data, setData] = useState<{
     totalCount: number;
     pageSize: number;
@@ -55,6 +57,11 @@ export default function DashboardBlogCategories() {
       <SectionContent>
         <ContentHeader
           title="مدیریت دسته بندی بلاگ ها"
+          subTitle={
+            data.totalCount
+              ? `(${intl.formatNumber(data.totalCount)})`
+              : undefined
+          }
           end={
             <Link href="/dashboard/blog">
               <Button varient="none" style={{ padding: 0 }}>

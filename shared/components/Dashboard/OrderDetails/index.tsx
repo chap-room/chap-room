@@ -112,7 +112,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
             <FormattedDate value={order.date} />
           </span>
           <span>
-            <FormattedTime value={order.date} hour12 />
+            <FormattedTime value={order.date} timeStyle="medium" />
           </span>
         </div>
       </div>
@@ -135,19 +135,33 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
       <div>
         <div className={styles.Label}>مبلغ سفارش:</div>
         <div>
-          <FormattedNumber value={order.amount} /> تومان
+          <div>
+            <FormattedNumber value={order.amount} /> تومان
+          </div>
+          <div>
+            <span>ارسال:</span>
+            <span>
+              <FormattedNumber value={order.postageFee} /> تومان
+            </span>
+          </div>
         </div>
       </div>
       <div>
         <div className={styles.Label}>مبلغ تخفیف:</div>
         <div>
-          {order.discountAmount ? (
-            <>
-              <FormattedNumber value={order.discountAmount} /> تومان
-            </>
-          ) : (
-            "---"
-          )}
+          <div>
+            {order.discountAmount ? (
+              <>
+                <FormattedNumber value={order.discountAmount} /> تومان
+              </>
+            ) : (
+              "---"
+            )}
+          </div>
+          <div>
+            <span>کد:</span>
+            <span>{order.discountCode}</span>
+          </div>
         </div>
       </div>
       <div>
@@ -201,7 +215,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
               <FormattedDate value={order.lastUpdateDate} />
             </div>
             <div>
-              <FormattedTime value={order.lastUpdateDate} hour12 />
+              <FormattedTime value={order.lastUpdateDate} timeStyle="medium" />
             </div>
           </div>
         </div>
@@ -219,7 +233,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                 <FormattedDate value={order.postageDate} />
               </span>
               <span>
-                <FormattedTime value={order.postageDate} hour12 />
+                <FormattedTime value={order.postageDate} timeStyle="medium" />
               </span>
             </>
           ) : (

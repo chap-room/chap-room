@@ -440,23 +440,23 @@ export default function PrintFolderForm({
                   {needBinding && (
                     <div className={styles.BindingOtions}>
                       <div>
-                        <div>نوع صحافی:</div>
-                        <div>
-                          <div>
+                        <div className={styles.Label}>نوع صحافی:</div>
+                        <div className={styles.RadioList}>
+                          <div style={{ width: 150 }}>
                             <Radio
                               checked={bindingType === "springNormal"}
                               onChecked={() => setBindingType("springNormal")}
                             />
                             فنر با طلق معمولی
                           </div>
-                          <div>
+                          <div style={{ width: 180 }}>
                             <Radio
                               checked={bindingType === "springPapco"}
                               onChecked={() => setBindingType("springPapco")}
                             />
                             فنر با طلق پاپکو
                           </div>
-                          <div>
+                          <div style={{ width: 250 }}>
                             <Radio
                               checked={bindingType === "stapler"}
                               onChecked={() => setBindingType("stapler")}
@@ -466,38 +466,40 @@ export default function PrintFolderForm({
                         </div>
                       </div>
                       <div>
-                        <div>طریقه صحافی:</div>
+                        <div className={styles.Label}>طریقه صحافی:</div>
                         <div>
-                          <div>
-                            <Radio
-                              checked={bindingMethod === "eachFileSeparated"}
-                              onChecked={() =>
-                                setBindingMethod("eachFileSeparated")
-                              }
-                            />
-                            هر فایل جدا
-                          </div>
-                          <div>
-                            <Radio
-                              checked={bindingMethod === "allFilesTogether"}
-                              onChecked={() =>
-                                setBindingMethod("allFilesTogether")
-                              }
-                            />
-                            همه فایل ها با هم
-                            <InfoTooltip
-                              message="برگه ها به ترتیب نام گذاری فایل ها مرتب شده و در یک جلد صحافی میشود"
-                              iconSize={20}
-                            />
-                          </div>
-                          <div>
-                            <Radio
-                              checked={bindingMethod === "countOfFiles"}
-                              onChecked={() => setBindingMethod("countOfFiles")}
-                            />
-                            تعدادی از فایل ها
-                            <div className={styles.Spacer} />
-                            <div className={styles.InputContainer}>
+                          <div className={styles.RadioList}>
+                            <div style={{ width: 150 }}>
+                              <Radio
+                                checked={bindingMethod === "eachFileSeparated"}
+                                onChecked={() =>
+                                  setBindingMethod("eachFileSeparated")
+                                }
+                              />
+                              هر فایل جدا
+                            </div>
+                            <div style={{ width: 180 }}>
+                              <Radio
+                                checked={bindingMethod === "allFilesTogether"}
+                                onChecked={() =>
+                                  setBindingMethod("allFilesTogether")
+                                }
+                              />
+                              همه فایل ها با هم
+                              <InfoTooltip
+                                message="برگه ها به ترتیب نام گذاری فایل ها مرتب شده و در یک جلد صحافی میشود"
+                                iconSize={20}
+                              />
+                            </div>
+                            <div style={{ width: 250 }}>
+                              <Radio
+                                checked={bindingMethod === "countOfFiles"}
+                                onChecked={() =>
+                                  setBindingMethod("countOfFiles")
+                                }
+                              />
+                              تعدادی از فایل ها
+                              <div className={styles.Spacer} />
                               <div className={styles.NumberOfFiles}>
                                 <TextInput
                                   inputProps={{
@@ -510,16 +512,21 @@ export default function PrintFolderForm({
                                   readOnly={bindingMethod !== "countOfFiles"}
                                 />
                               </div>
-                              <ErrorList
-                                errors={step2FormValidation.errors.countOfFiles}
-                              />
                             </div>
                           </div>
+                          <div className={styles.MobileSpacer} />
+                          <ErrorList
+                            errors={[
+                              ...step2FormValidation.errors.countOfFiles.map(
+                                (message) => `تعداد فایل ها ${message}`
+                              ),
+                            ]}
+                          />
                         </div>
                       </div>
                       <div>
-                        <div>رنگ جلد:</div>
-                        <div>
+                        <div className={styles.Label}>رنگ جلد:</div>
+                        <div className={styles.RadioList}>
                           <div>
                             <Radio
                               checked={coverColor === "colorful"}

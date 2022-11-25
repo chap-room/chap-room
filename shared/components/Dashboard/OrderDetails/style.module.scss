@@ -119,11 +119,57 @@
     &:nth-child(9) {
       grid-column: 1;
       grid-row: 5;
+
+      > div:last-child {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        row-gap: 5px;
+        column-gap: 30px;
+        align-items: center;
+        
+        > div:first-child {
+          flex: 1;
+          min-width: max-content;
+        }
+
+        > div:last-child {
+          min-width: max-content;
+          color: #9c9c9c;
+          font-size: 10px;
+          display: flex;
+          flex-direction: row;
+          gap: 5px;
+        }
+      }
     }
 
     &:nth-child(10) {
       grid-column: 2;
       grid-row: 5;
+
+      > div:last-child {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        row-gap: 5px;
+        column-gap: 30px;
+        align-items: center;
+        
+        > div:first-child {
+          flex: 1;
+          min-width: max-content;
+        }
+
+        > div:last-child {
+          min-width: max-content;
+          color: #9c9c9c;
+          font-size: 10px;
+          display: flex;
+          flex-direction: row;
+          gap: 5px;
+        }
+      }
     }
 
     &:nth-child(11) {
@@ -164,12 +210,12 @@
           .Canceled {
             color: #f20f4b;
           }
-  
+
           .Pending,
           .Preparing {
             color: #0077b5;
           }
-  
+
           .Sent {
             color: #14cc9c;
           }

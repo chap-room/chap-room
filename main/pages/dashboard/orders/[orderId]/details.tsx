@@ -48,7 +48,7 @@ export default function DashboardOrderDetails() {
               }
             >
               <Button varient="none" style={{ padding: 0 }}>
-                انصراف و بازگشت <ArrowBackIcon />
+                بازگشت <ArrowBackIcon />
               </Button>
             </Link>
           }

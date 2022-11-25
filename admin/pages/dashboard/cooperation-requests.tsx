@@ -17,6 +17,7 @@ import EmptyNote from "@/shared/components/Dashboard/EmptyNote";
 import Pagination from "@/shared/components/Pagination";
 import CooperationRequestAcceptDialog from "@/admin/components/CooperationRequestAcceptDialog";
 import CooperationRequestRejectDialog from "@/admin/components/CooperationRequestRejectDialog";
+import { FormattedNumber } from "react-intl";
 
 export default function DashboardCooperationRequests() {
   const [itemsStatus, setItemsStatus] = useState<
@@ -45,9 +46,9 @@ export default function DashboardCooperationRequests() {
 
   const title =
     itemsStatus === null
-      ? "درخواست های در انتظار تایید"
+      ? "درخواست های در انتظار تأیید"
       : itemsStatus === "approved"
-      ? "درخواست های تایید شده"
+      ? "درخواست های تأیید شده"
       : itemsStatus === "rejected"
       ? "درخواست های رد تشده"
       : "";
@@ -65,6 +66,15 @@ export default function DashboardCooperationRequests() {
       <SectionContent>
         <ContentHeader
           title={title}
+          subTitle={
+            data.totalCount ? (
+              <>
+                {"("}
+                <FormattedNumber value={data.totalCount} />
+                {")"}
+              </>
+            ) : undefined
+          }
           end={
             <SwitchButtons
               options={[

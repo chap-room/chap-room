@@ -40,7 +40,7 @@ export default function FinancialRecordTable({
                   <FormattedDate value={financialRecord.date} />
                 </span>
                 <span>
-                  <FormattedTime value={financialRecord.date} hour12 />
+                  <FormattedTime value={financialRecord.date} timeStyle="medium" />
                 </span>
               </span>
             </td>

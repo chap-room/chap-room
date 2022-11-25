@@ -1,4 +1,5 @@
 import { ReactElement, useRef, useState } from "react";
+import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
@@ -27,6 +28,7 @@ import Pagination from "@/shared/components/Pagination";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
 
 export default function DashboardFinancialRecordList() {
+  const intl = useIntl();
   const router = useRouter();
 
   const [data, setData] = useState<{
@@ -67,6 +69,11 @@ export default function DashboardFinancialRecordList() {
       <SectionContent>
         <ContentHeader
           title="لیست سوابق مالی"
+          subTitle={
+            data.totalCount
+              ? `(${intl.formatNumber(data.totalCount)})`
+              : undefined
+          }
           end={
             <ButtonList gap={15}>
               <Link href="/dashboard/financial-records/total-income">
@@ -170,7 +177,9 @@ export default function DashboardFinancialRecordList() {
           <FinancialRecordTable
             financialRecords={data.records}
             onSeeDetails={(orderId) =>
-              router.push(`/dashboard/orders/${orderId}/details?fromFinancialRecords=true`)
+              router.push(
+                `/dashboard/orders/${orderId}/details?fromFinancialRecords=true`
+              )
             }
             onEditFinancialRecord={(financialRecordId) =>
               router.push(

@@ -97,6 +97,22 @@ export default function DashboardFinancialRecordsTotalIncome() {
       <SectionContent>
         <ContentHeader
           title="درامد کل"
+          subTitle={
+            <div className={styles.SubTitle}>
+              {data.totalCreditor !== 0 && (
+                <div className={styles.TotalCreditor}>
+                  {"("}بدهکار کل: <FormattedNumber value={data.totalCreditor} />{" "}
+                  تومان{")"}
+                </div>
+              )}
+              {data.totalDebtor !== 0 && (
+                <div className={styles.TotalDebtor}>
+                  {"("}بستانکار کل: <FormattedNumber value={data.totalDebtor} />{" "}
+                  تومان{")"}
+                </div>
+              )}
+            </div>
+          }
           end={
             <Link href="/dashboard/financial-records">
               <Button varient="none" style={{ padding: 0 }}>

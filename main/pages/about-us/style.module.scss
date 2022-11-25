@@ -70,8 +70,8 @@
     color: #8770b8;
     fill: #8770b8;
 
-    @media (max-width: 1024px) {
-      grid-column: unset;
+    @media (max-width: 896px) {
+      display: none;
     }
   }
 

@@ -111,26 +111,34 @@ export default function WorkWithUs() {
         <h1>روند پنل همکاری در فروش</h1>
         <div>
           <div>
-            <div className={styles.NumberCircle}>
-              <FormattedNumber value={1} />
+            <div>
+              <div className={styles.NumberCircle}>
+                <FormattedNumber value={1} />
+              </div>
             </div>
             <div>ثبت نام در چاپ روم</div>
           </div>
           <div>
-            <div className={styles.NumberCircle}>
-              <FormattedNumber value={2} />
+            <div>
+              <div className={styles.NumberCircle}>
+                <FormattedNumber value={2} />
+              </div>
             </div>
             <div>دریافت لینک اختصاصی از پنل بازاریابی</div>
           </div>
           <div>
-            <div className={styles.NumberCircle}>
-              <FormattedNumber value={3} />
+            <div>
+              <div className={styles.NumberCircle}>
+                <FormattedNumber value={3} />
+              </div>
             </div>
             <div>اشتراک گذاری لینک اختصاصی</div>
           </div>
           <div>
-            <div className={styles.NumberCircle}>
-              <FormattedNumber value={4} />
+            <div>
+              <div className={styles.NumberCircle}>
+                <FormattedNumber value={4} />
+              </div>
             </div>
             <div>درخواست برداشت موجودی</div>
           </div>

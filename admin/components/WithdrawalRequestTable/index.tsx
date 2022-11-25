@@ -40,7 +40,7 @@ export default function WithdrawalRequestTable({
                   <FormattedDate value={withdrawalRequest.date} />
                 </span>
                 <span>
-                  <FormattedTime value={withdrawalRequest.date} hour12 />
+                  <FormattedTime value={withdrawalRequest.date} timeStyle="medium" />
                 </span>
               </span>
             </td>

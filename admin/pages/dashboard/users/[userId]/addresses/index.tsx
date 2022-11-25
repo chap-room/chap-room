@@ -1,4 +1,5 @@
 import { ReactElement, useState } from "react";
+import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
@@ -19,6 +20,7 @@ import Pagination from "@/shared/components/Pagination";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
 
 export default function DashboardUserAddressList() {
+  const intl = useIntl();
   const router = useRouter();
   const userId = parseInt(router.query.userId as string); // TODO 404
 
@@ -46,10 +48,15 @@ export default function DashboardUserAddressList() {
       <SectionContent>
         <ContentHeader
           title="آدرس ها"
+          subTitle={
+            data.totalCount
+              ? `(${intl.formatNumber(data.totalCount)})`
+              : undefined
+          }
           end={
             <Link href="/dashboard/users">
               <Button varient="none" style={{ padding: 0 }}>
-                انصراف و بازگشت <ArrowBackIcon />
+                بازگشت <ArrowBackIcon />
               </Button>
             </Link>
           }

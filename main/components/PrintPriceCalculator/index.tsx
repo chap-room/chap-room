@@ -156,7 +156,10 @@ export default function PrintPriceCalculator({
       <div className={styles.Bottom}>
         {calculatedPrice && (
           <div>
-            <FormattedNumber value={calculatedPrice} /> تومان
+            <span>قیمت کل: </span>
+            <span>
+              <FormattedNumber value={calculatedPrice} /> تومان
+            </span>
           </div>
         )}
         <Link href={isUserLoggedIn ? "/dashboard/orders/new" : "/auth"}>

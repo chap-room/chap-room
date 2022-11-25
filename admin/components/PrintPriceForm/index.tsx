@@ -235,7 +235,8 @@ function BreakpointInput({
       at: [
         validateInt({ unsigned: true, min: 1 }),
         () => {
-          if (isAtPropertyExist) return "این مقدار از قبل وجود دارد";
+          if (isEditingAtProperty && isAtPropertyExist)
+            return "این مقدار از قبل وجود دارد";
         },
       ],
       singleSided: [validateInt({ unsigned: true, min: 1 })],

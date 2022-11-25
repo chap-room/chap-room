@@ -24,7 +24,7 @@ export interface Order {
   postageDate: Date | null;
   postageMethod: string | null;
   discountAmount: number | null;
-  discountCode: string;
+  discountCode: string | null;
   gatewayPaidAmount: number;
   walletPaidAmount: number;
   cancelReason: string | null;

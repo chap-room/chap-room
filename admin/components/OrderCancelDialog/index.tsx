@@ -37,17 +37,25 @@ export default function OrderCancelDialog({
         <div>انتخاب علت:</div>
         <div>
           <ContentSelect
-            options={["تعداد برگ با سفارش همخوانی ندارد", "دیگر"]}
+            options={[
+              "تعداد برگ با سفارش همخوانی ندارد",
+              "کیفیت فایل نامناسب است",
+              "اشتباه در انتخاب رنگی معمولی",
+              "اشتباه در انتخاب تمام رنگی",
+              "فایل ها تصویر پس زمینه دارد",
+              "تعداد فایل ها زیاد است",
+              "دیگر",
+            ]}
             value={reason}
             onChange={setReason}
           />
         </div>
         {reason === "دیگر" && (
           <>
-            <div>علت:</div>
+            <div>متن:</div>
             <div>
               <TextInput
-                inputProps={{ placeholder: "علت" }}
+                inputProps={{ placeholder: "متن" }}
                 value={reasonText}
                 onChange={setReasonText}
               />

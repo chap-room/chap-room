@@ -151,7 +151,7 @@ export default function ForgotPassword() {
           ) : passwordResetToken === null ? (
             <>
               <div className={styles.Column}>
-                <div className={styles.Title}>تایید شماره موبایل</div>
+                <div className={styles.Title}>تأیید شماره موبایل</div>
                 <div className={styles.SubTitle}>
                   کد 6 رقمی به شماره{" "}
                   <FormattedNumber
@@ -215,7 +215,7 @@ export default function ForgotPassword() {
                   loading={isSubmitting}
                   disabled={isSubmitting || !confirmCodeValidation.isValid}
                 >
-                  تایید کد
+                  تأیید کد
                 </Button>
                 <div className={styles.BottomNote}>
                   <Link href="/login">

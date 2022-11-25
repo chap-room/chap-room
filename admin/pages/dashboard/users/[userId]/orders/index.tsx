@@ -1,4 +1,5 @@
 import { ReactElement, useState } from "react";
+import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
@@ -26,6 +27,7 @@ import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDi
 import OrderSentDialog from "@/admin/components/OrderSentDialog";
 
 export default function DashboardUserOrderList() {
+  const intl = useIntl();
   const router = useRouter();
   const userId = parseInt(router.query.userId as string); // TODO 404
 
@@ -59,10 +61,15 @@ export default function DashboardUserOrderList() {
       <SectionContent>
         <ContentHeader
           title="همه سفارش ها"
+          subTitle={
+            data.totalCount
+              ? `(${intl.formatNumber(data.totalCount)})`
+              : undefined
+          }
           end={
             <Link href="/dashboard/users">
               <Button varient="none" style={{ padding: 0 }}>
-                انصراف و بازگشت <ArrowBackIcon />
+                بازگشت <ArrowBackIcon />
               </Button>
             </Link>
           }

@@ -40,7 +40,7 @@ export default function UserTable({
           <th>موجودی</th>
           <th>آدرس ها</th>
           <th>سفارش ها</th>
-          <th>عملیات</th>
+          <th style={{ width: "1%" }}>عملیات</th>
         </tr>
       </thead>
       <tbody>

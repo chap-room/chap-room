@@ -32,7 +32,7 @@ export default function DedicatedLinkReportTable({
                   <FormattedDate value={dedicatedLinkReport.date} />
                 </span>
                 <span>
-                  <FormattedTime value={dedicatedLinkReport.date} hour12 />
+                  <FormattedTime value={dedicatedLinkReport.date} timeStyle="medium" />
                 </span>
               </span>
             </td>

@@ -56,7 +56,7 @@ export default function CooperationRequestTable({
                   <FormattedDate value={cooperationRequest.date} />
                 </span>
                 <span>
-                  <FormattedTime value={cooperationRequest.date} hour12 />
+                  <FormattedTime value={cooperationRequest.date} timeStyle="medium" />
                 </span>
               </span>
             </td>
@@ -78,7 +78,7 @@ export default function CooperationRequestTable({
                       )
                     }
                   >
-                    تایید کردن
+                    تأیید کردن
                   </button>
                 )}
                 {cooperationRequest.status !== "rejected" && (

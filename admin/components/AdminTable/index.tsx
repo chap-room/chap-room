@@ -27,7 +27,7 @@ export default function AdminTable({
         <tr>
           <th>کاربر</th>
           <th>نقش</th>
-          <th>عملیات</th>
+          <th style={{ width: "1%" }}>عملیات</th>
         </tr>
       </thead>
       <tbody>

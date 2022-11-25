@@ -45,7 +45,7 @@ export default function OrderTable({
                   <FormattedDate value={order.date} />
                 </span>
                 <span>
-                  <FormattedTime value={order.date} hour12 />
+                  <FormattedTime value={order.date} timeStyle="medium" />
                 </span>
               </span>
             </td>
@@ -116,7 +116,7 @@ export default function OrderTable({
                       className={styles.ConfirmButton}
                       onClick={() => onConfirmOrder(order.id)}
                     >
-                      تایید کردن
+                      تأیید کردن
                     </button>
                   </>
                 ) : (

@@ -1,4 +1,5 @@
 import { ReactElement, useRef, useState } from "react";
+import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
@@ -24,6 +25,7 @@ import Pagination from "@/shared/components/Pagination";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
 
 export default function DashboardAdminList() {
+  const intl = useIntl();
   const router = useRouter();
 
   const [pendingAdminDeleteRequest, setPendingAdminDeleteRequest] = useState<
@@ -59,6 +61,11 @@ export default function DashboardAdminList() {
       <SectionContent>
         <ContentHeader
           title="همه ادمین ها"
+          subTitle={
+            data.totalCount
+              ? `(${intl.formatNumber(data.totalCount)})`
+              : undefined
+          }
           end={
             <ButtonList gap={15}>
               <Link href="/dashboard/users">

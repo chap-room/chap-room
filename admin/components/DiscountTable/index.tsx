@@ -24,7 +24,7 @@ export default function DiscountTable({
           <th>نوع</th>
           <th>تنظیمات تخفیف</th>
           <th>وضعیت</th>
-          <th>عملیات</th>
+          <th style={{ width: "1%" }}>عملیات</th>
         </tr>
       </thead>
       <tbody>
@@ -100,7 +100,7 @@ export default function DiscountTable({
                     <span>تاریخ انقضا:</span>
                     <span>
                       <FormattedDate value={discount.expireDate} />{" "}
-                      <FormattedTime value={discount.expireDate} hour12 />
+                      <FormattedTime value={discount.expireDate} timeStyle="medium" />
                     </span>
                   </span>
                 )}

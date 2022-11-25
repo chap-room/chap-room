@@ -35,7 +35,7 @@ export default function DashboardOrderDetails() {
       />
       <SectionContent>
         <ContentHeader
-          title={`شماره سفارش: ${intl.formatNumber(orderId, {
+          title={`سفارش ${intl.formatNumber(orderId, {
             useGrouping: false,
           })}`}
           end={
@@ -46,7 +46,7 @@ export default function DashboardOrderDetails() {
                   : "/dashboard/orders"
               }
             >
-              <Button varient="none">
+              <Button varient="none" style={{ padding: 0 }}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
             </Link>

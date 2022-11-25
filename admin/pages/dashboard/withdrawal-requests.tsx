@@ -21,6 +21,7 @@ import EmptyNote from "@/shared/components/Dashboard/EmptyNote";
 import Pagination from "@/shared/components/Pagination";
 import WithdrawalRequestDoneDialog from "@/admin/components/WithdrawalRequestDoneDialog";
 import WithdrawalRequestRejectDialog from "@/admin/components/WithdrawalRequestRejectDialog";
+import { FormattedNumber } from "react-intl";
 
 export default function DashboardWithdrawalRequests() {
   const [data, setData] = useState<{
@@ -48,7 +49,7 @@ export default function DashboardWithdrawalRequests() {
 
   const title =
     itemsStatus === null
-      ? "درخواست های در انتظار تایید"
+      ? "درخواست های در انتظار تأیید"
       : itemsStatus === "done"
       ? "درخواست های انجام شده"
       : itemsStatus === "rejected"
@@ -68,6 +69,15 @@ export default function DashboardWithdrawalRequests() {
       <SectionContent>
         <ContentHeader
           title={title}
+          subTitle={
+            data.totalCount ? (
+              <>
+                {"("}
+                <FormattedNumber value={data.totalCount} />
+                {")"}
+              </>
+            ) : undefined
+          }
           end={
             <SwitchButtons
               options={[

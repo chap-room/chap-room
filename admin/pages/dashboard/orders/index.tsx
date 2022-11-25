@@ -1,7 +1,8 @@
 import { ReactElement, useRef, useState } from "react";
+import { useIntl } from "react-intl";
+import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import { Order } from "@/shared/types";
 import {
   cancelOrder,
@@ -26,6 +27,7 @@ import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDi
 import OrderSentDialog from "@/admin/components/OrderSentDialog";
 
 export default function DashboardOrderList() {
+  const intl = useIntl();
   const router = useRouter();
 
   const [data, setData] = useState<{
@@ -64,6 +66,11 @@ export default function DashboardOrderList() {
       <SectionContent>
         <ContentHeader
           title="همه سفارش ها"
+          subTitle={
+            data.totalCount
+              ? `(${intl.formatNumber(data.totalCount)})`
+              : undefined
+          }
           end={
             <SwitchButtons
               options={[
