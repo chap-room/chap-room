@@ -1,5 +1,10 @@
 import { orderConvertMap } from "@/main/convertMaps";
-import { PostCategory, BindingTariffs, PrintTariffs } from "@/shared/types";
+import {
+  PostCategory,
+  BindingTariffs,
+  PrintTariffs,
+  Order,
+} from "@/shared/types";
 import { convert } from "@/shared/utils/convert";
 import axios, { AxiosRequestConfig } from "axios";
 import Router from "next/router";
@@ -419,8 +424,8 @@ export function getOrders(
   }).then(({ data }) => ({
     totalCount: data.totalCount,
     pageSize: data.pageSize,
-    orders: data.orders.map((item: any) =>
-      convert(orderConvertMap, item, "a2b")
+    orders: data.orders.map(
+      (item: any) => convert(orderConvertMap, item, "a2b") as Order
     ),
   }));
 }
@@ -430,7 +435,7 @@ export function getOrder(orderId: number) {
     method: "GET",
     url: `/admins/orders/id/${orderId}`,
     needAuth: true,
-  }).then(({ data }) => convert(orderConvertMap, data, "a2b"));
+  }).then(({ data }) => convert(orderConvertMap, data, "a2b") as Order);
 }
 
 export function cancelOrder(orderId: number, cancelReason: string) {

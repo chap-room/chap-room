@@ -864,7 +864,6 @@ function usePrintFolderPrice({
       setIsError(false);
       calculatePrintFolderPrice(
         {
-          printFiles,
           printColor,
           printSize,
           printSide,

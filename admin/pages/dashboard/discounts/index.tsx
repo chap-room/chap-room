@@ -107,7 +107,7 @@ export default function DashboardDiscountList() {
             onDeleteDiscount={setPendingDeleteRequest}
           />
           {!data.discounts.length && (
-            <EmptyNote>هیچ کد تخفیفی وجود ندارید</EmptyNote>
+            <EmptyNote>هیچ کد تخفیفی وجود ندارد</EmptyNote>
           )}
           <Pagination
             currentPage={page}

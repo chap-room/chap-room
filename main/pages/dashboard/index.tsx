@@ -183,7 +183,7 @@ export function DashboardNonMobile({ data, relaod }: DashboardNonMobilePorps) {
             onCancelOrder={setPendingOrderCancelRequest}
           />
           {!data!.inProgressOrders.length && (
-            <EmptyNote>شما هیچ سفارشی در حال انجام وجود ندارد</EmptyNote>
+            <EmptyNote>هیچ سفارشی در حال انجام وجود ندارد</EmptyNote>
           )}
           <WarningConfirmDialog
             open={pendingOrderCancelRequest !== null}

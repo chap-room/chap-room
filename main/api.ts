@@ -1,5 +1,6 @@
 import {
   BindingOptions,
+  Order,
   Post,
   PrintFile,
   PrintFolder,
@@ -321,8 +322,8 @@ export function getDashboard() {
       avatar: data.avatar,
       name: data.name,
       phoneNumber: data.phoneNumber,
-      inProgressOrders: data.inProgressOrders.map((item: any) =>
-        convert(orderConvertMap, item, "a2b")
+      inProgressOrders: data.inProgressOrders.map(
+        (item: any) => convert(orderConvertMap, item, "a2b") as Order
       ),
     }))
     .then((dashboardData) => {
@@ -362,7 +363,7 @@ export function getOrder(orderId: number) {
     method: "GET",
     url: `/users/orders/id/${orderId}`,
     needAuth: true,
-  }).then(({ data }) => convert(orderConvertMap, data, "a2b"));
+  }).then(({ data }) => convert(orderConvertMap, data, "a2b") as Order);
 }
 
 export function cancelOrder(orderId: number) {
@@ -414,7 +415,9 @@ export function getPrintFolders() {
     url: "/users/folders",
     needAuth: true,
   }).then(({ data }) =>
-    data.map((item: any) => convert(printFoldersConvertMap, item, "a2b"))
+    data.map(
+      (item: any) => convert(printFoldersConvertMap, item, "a2b") as PrintFolder
+    )
   );
 }
 
@@ -423,7 +426,9 @@ export function getPrintFolder(printFolderId: number) {
     method: "GET",
     url: `/users/folders/id/${printFolderId}`,
     needAuth: true,
-  }).then(({ data }) => convert(printFoldersConvertMap, data, "a2b"));
+  }).then(
+    ({ data }) => convert(printFoldersConvertMap, data, "a2b") as PrintFolder
+  );
 }
 
 export function newPrintFolder(data: {
@@ -434,6 +439,7 @@ export function newPrintFolder(data: {
   bindingOptions: BindingOptions | null;
   description: string | null;
   countOfCopies: number | null;
+  filesManuallySent: boolean;
   printFiles: PrintFile[];
 }) {
   return request({
@@ -454,6 +460,7 @@ export function updatePrintFolder(
     bindingOptions: BindingOptions | null;
     description: string | null;
     countOfCopies: number | null;
+    filesManuallySent: boolean;
     printFiles: PrintFile[];
   }
 ) {
@@ -473,7 +480,6 @@ export function calculatePrintFolderPrice(
     countOfPages: number;
     bindingOptions: BindingOptions | null;
     countOfCopies: number | null;
-    printFiles: PrintFile[];
   },
   abortController: AbortController
 ) {
