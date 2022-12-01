@@ -20,7 +20,7 @@ export default function AddressView({
   return (
     <div className={styles.AddressView} key={address.id}>
       <div className={styles.Header}>
-        <div className={styles.Label}>{address.label}</div>
+        <div className={styles.Label}>گیرنده</div>
         <ButtonList gap={5}>
           <div className={styles.EditButton}>
             <IconButton varient="none" size={34} onClick={() => onEdit()}>
@@ -34,7 +34,7 @@ export default function AddressView({
           </div>
         </ButtonList>
       </div>
-      <div>نام گیرنده: {address.recipientName}</div>
+      <div>{address.recipientName}</div>
       <div>
         <div>
           شماره تلفن: {englishToPersianNumbers(address.recipientPhoneNumber)}

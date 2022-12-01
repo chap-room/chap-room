@@ -24,7 +24,7 @@ interface FinancialRecordData {
 
 interface FinancialRecordFormProps {
   defaultValues?: Partial<FinancialRecordData>;
-  onSave: (data: FinancialRecordData) => void;
+  onSave: (data: FinancialRecordData) => Promise<any>;
 }
 
 export default function FinancialRecordForm({
@@ -66,6 +66,8 @@ export default function FinancialRecordForm({
       ? defaultValues.description
       : ""
   );
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const formValidation = useValidation(
     {
@@ -174,7 +176,8 @@ export default function FinancialRecordForm({
         <Button
           varient="filled"
           style={{ minWidth: 100 }}
-          onClick={() =>
+          onClick={() => {
+            setIsSubmitting(true);
             onSave({
               user: user!,
               type: type,
@@ -185,9 +188,10 @@ export default function FinancialRecordForm({
                   : descriptionPreset === "2"
                   ? `واریز به حساب کاربر بابت برداشت موجودی. کد پیکیری: ${trackingCode}`
                   : otherDescription,
-            })
-          }
-          disabled={!formValidation.isValid}
+            }).finally(() => setIsSubmitting(false));
+          }}
+          loading={isSubmitting}
+          disabled={isSubmitting || !formValidation.isValid}
         >
           ذخیره
         </Button>

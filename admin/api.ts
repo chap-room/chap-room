@@ -321,7 +321,6 @@ export function getAddress(addressId: number) {
 export function updateAddress(
   addressId: number,
   data: {
-    label: string;
     recipientName: string;
     recipientPhoneNumber: string;
     recipientPostalCode: string;

@@ -89,7 +89,6 @@ export default function AddressStage({
           <Button onClick={actions.back} style={{ fontWeight: 500 }}>
             مرحله قبل
           </Button>
-          <div className={styles.MobileSpacer} />
           <Button
             varient="filled"
             style={{ minWidth: 150 }}

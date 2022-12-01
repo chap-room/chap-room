@@ -58,22 +58,16 @@ export default function OrderTable({
               ) : order.status === "preparing" ? (
                 <span className={styles.Preparing}>در حال آماده سازی</span>
               ) : order.status === "sent" ? (
-                order.trackingNumber || order.trackingUrl ? (
-                  <div>
-                    {order.trackingNumber && (
-                      <div>{englishToPersianNumbers(order.trackingNumber)}</div>
-                    )}
-                    {order.trackingUrl && (
-                      <div>
-                        <a href={order.trackingUrl} target="_blank">
-                          رهگیری مرسوله
-                        </a>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <span className={styles.Sent}>ارسال شده</span>
-                )
+                <div>
+                  <div className={styles.Sent}>ارسال شده</div>
+                  {order.trackingUrl && (
+                    <div>
+                      <a href={order.trackingUrl} target="_blank">
+                        رهگیری مرسوله
+                      </a>
+                    </div>
+                  )}
+                </div>
               ) : order.status === "canceled" ? (
                 <span className={styles.Canceled}>
                   بازگشت وجه به کیف پول
@@ -93,8 +87,6 @@ export default function OrderTable({
             <td>
               {order.status === "canceled" ? (
                 <span className={styles.Canceled}>لغو شده</span>
-              ) : order.status === "sent" ? (
-                <span className={styles.Sent}>ارسال شده</span>
               ) : (
                 <button
                   className={styles.CancelButton}

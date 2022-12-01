@@ -18,7 +18,6 @@ const iranProvincesAndCities: Record<string, string[]> =
   iranProvincesAndCitiesJson;
 
 interface AddressFormData {
-  label: string;
   recipientName: string;
   recipientPhoneNumber: string;
   recipientPostalCode: string;
@@ -38,7 +37,6 @@ export default function AddressForm({
   onSave,
   inputsVarient,
 }: AddressFormProps) {
-  const [label, setLabel] = useState(defaultValues?.label || "");
   const [recipientName, setRecipientName] = useState(
     defaultValues?.recipientName || ""
   );
@@ -62,7 +60,6 @@ export default function AddressForm({
 
   const formValidation = useValidation(
     {
-      label: [validateNotEmpty()],
       recipientName: [validateNotEmpty()],
       recipientPhoneNumber: [validatePhoneNumber()],
       recipientPostalCode: [validateInt({ length: 10, unsigned: true })],
@@ -71,7 +68,6 @@ export default function AddressForm({
       recipientDeliveryAddress: [validateNotEmpty()],
     },
     {
-      label,
       recipientName,
       recipientPhoneNumber,
       recipientPostalCode,
@@ -84,13 +80,6 @@ export default function AddressForm({
   return (
     <>
       <div className={styles.Form}>
-        <TextInput
-          inputProps={{ placeholder: "عنوان" }}
-          varient={inputsVarient}
-          value={label}
-          onChange={(newValue) => setLabel(newValue)}
-        />
-        <ErrorList errors={formValidation.errors.label} />
         <TextInput
           inputProps={{ placeholder: "نام تحویل گیرنده" }}
           varient={inputsVarient}
@@ -171,7 +160,6 @@ export default function AddressForm({
           onClick={() => {
             setIsSubmitting(true);
             onSave({
-              label,
               recipientName,
               recipientPhoneNumber,
               recipientPostalCode,

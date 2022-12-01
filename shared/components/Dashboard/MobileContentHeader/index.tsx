@@ -8,6 +8,7 @@ interface MobileContentHeaderProps {
   onBack?: () => void;
   start?: ReactNode;
   title: string;
+  subTitle?: string;
   end?: ReactNode;
 }
 
@@ -16,6 +17,7 @@ export default function MobileContentHeader({
   onBack,
   start,
   title,
+  subTitle,
   end,
 }: MobileContentHeaderProps) {
   return (
@@ -32,7 +34,10 @@ export default function MobileContentHeader({
           </a>
         </Link>
       ) : undefined}
-      <div className={styles.Title}>{title}</div>
+      <div className={styles.TitleContainer}>
+        <div className={styles.Title}>{title}</div>
+        {subTitle && <div className={styles.SubTitle}>{subTitle}</div>}
+      </div>
       {end}
     </div>
   );

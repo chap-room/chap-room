@@ -216,29 +216,16 @@ export default function OrderSearch() {
                           </td>
                           <td>
                             {order.status === "sent" ? (
-                              order.trackingNumber || order.trackingUrl ? (
-                                <div>
-                                  {order.trackingNumber && (
-                                    <div>
-                                      {englishToPersianNumbers(
-                                        order.trackingNumber
-                                      )}
-                                    </div>
-                                  )}
-                                  {order.trackingUrl && (
-                                    <div>
-                                      <a
-                                        href={order.trackingUrl}
-                                        target="_blank"
-                                      >
-                                        رهگیری مرسوله
-                                      </a>
-                                    </div>
-                                  )}
-                                </div>
-                              ) : (
-                                <span className={styles.Sent}>ارسال شده</span>
-                              )
+                              <div>
+                                <div className={styles.Sent}>ارسال شده</div>
+                                {order.trackingUrl && (
+                                  <div>
+                                    <a href={order.trackingUrl} target="_blank">
+                                      رهگیری مرسوله
+                                    </a>
+                                  </div>
+                                )}
+                              </div>
                             ) : (
                               <span className={styles.NotApplicable}>-</span>
                             )}

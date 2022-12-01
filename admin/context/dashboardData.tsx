@@ -1,10 +1,4 @@
-import {
-  createContext,
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { AdminUserRole } from "@/shared/types";
 import { getDashboard } from "@/admin/api";
 import { DataLoaderState, useDataLoader } from "@/shared/components/DataLoader";

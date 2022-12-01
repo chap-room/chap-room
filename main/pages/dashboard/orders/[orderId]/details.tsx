@@ -67,7 +67,8 @@ export default function DashboardOrderDetails() {
               ? "/dashboard"
               : "/dashboard/orders"
           }
-          title={title}
+          title="جزییات"
+          subTitle={title}
         />
         <DataLoader
           load={() => {

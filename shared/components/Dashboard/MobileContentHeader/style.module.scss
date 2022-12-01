@@ -25,11 +25,23 @@
     cursor: pointer;
   }
 
-  .Title {
+  .TitleContainer {
     flex: 1;
-    margin: 0;
-    font-size: 18px;
-    color: #5e5e5e;
-    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+
+    .Title {
+      margin: 0;
+      font-size: 18px;
+      color: #5e5e5e;
+      font-weight: bold;
+    }
+
+    .SubTitle {
+      margin: 0;
+      font-size: 12px;
+      color: #464646;
+      font-weight: 300; // Light
+    }
   }
 }

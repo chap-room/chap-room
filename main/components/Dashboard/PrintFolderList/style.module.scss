@@ -9,14 +9,18 @@
 
   .PrintFolder {
     background-color: #f5f5f5;
-    border: 1px solid #cccccc;
     padding: 15px;
-    color: #9c9c9c;
 
     .Header {
       display: flex;
       flex-direction: row;
       gap: 15px;
+
+      @media (max-width: 768px) {
+        padding-bottom: 10px;
+        border-bottom: 1px solid #cccccc;
+        margin-bottom: 10px;
+      }
 
       .Label {
         flex: 1;
@@ -24,12 +28,26 @@
         flex-direction: row;
         gap: 15px;
 
+        @media (max-width: 768px) {
+          align-items: center;
+        }
+
         > span:first-child {
+          color: #464646;
+          font-size: 14px;
           font-weight: 500; // Medium
+          width: 90px;
+
+          @media (max-width: 768px) {
+            width: unset;
+            font-size: 16px;
+          }
         }
 
         > span:last-child {
           color: #2578fa;
+          font-size: 12px;
+          font-weight: 500; // Medium
         }
       }
 
@@ -54,6 +72,36 @@
 
         .DeleteButton {
           fill: #f20f4b;
+        }
+      }
+    }
+
+    > div:last-child {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      row-gap: 5px;
+      column-gap: 10px;
+
+      @media (max-width: 768px) {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .Label {
+        color: #464646;
+        font-size: 12px;
+
+        @media (max-width: 768px) {
+          font-weight: 500; // Medium
+        }
+      }
+
+      .Content {
+        color: #9c9c9c;
+        font-size: 12px;
+
+        @media (max-width: 768px) {
+          font-weight: 300; // Light
         }
       }
     }

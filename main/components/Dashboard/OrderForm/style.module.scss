@@ -69,20 +69,18 @@
 .BottomActionsContainer {
   margin-top: auto;
 
-  // @media (max-width: 768px) {
-  //   > div {
-  //     > div:last-child {
-  //       > div {}
+  @media (max-width: 768px) {
+    > div {
+      flex-direction: column;
+      gap: 15px;
+      align-items: stretch;
+      padding-top: 0;
 
-  //     }
-  //   }
-  // }
-  
-  .MobileSpacer {
-    flex: 1;
-
-    @media (min-width: 769px) {
-      display: none;
+      > div:last-child {
+        > div {
+          justify-content: space-between;
+        }
+      }
     }
   }
 }
@@ -131,13 +129,19 @@
       padding: 5px 0;
       width: 100%;
       max-width: 250px;
+      color: #464646;
 
-      @media (max-width: 896px) {
+      @media (max-width: 768px) {
         max-width: unset;
       }
 
       > div:first-child {
         flex: 1;
+
+        @media (max-width: 768px) {
+          max-width: unset;
+          color: #9c9c9c;
+        }
       }
     }
 
@@ -235,19 +239,8 @@
   }
 }
 
-.AmountPayableMobileContainer {
-  @media (min-width: 897px) {
-    display: none;
-  }
-}
-
-.AmountPayableContainer {
-  @media (max-width: 896px) {
-    display: none;
-  }
-}
-
 .AmountPayable {
+  flex: 1;
   display: flex;
   flex-direction: row;
   gap: 30px;
@@ -256,9 +249,15 @@
   align-items: center;
   font-size: 16px;
 
-  @media (max-width: 896px) {
+  @media (max-width: 768px) {
+    justify-content: space-between;
+
     > div:first-child {
-      flex: 1;
+      color: #464646;
+    }
+
+    > div:last-child {
+      color: #0077b5;
     }
   }
 

@@ -4,7 +4,6 @@ import { FormattedNumber } from "react-intl";
 import toast from "react-hot-toast";
 import { walletDeposit, walletWithdrawal } from "@/main/api";
 import { useDashboardData } from "@/main/context/dashboardData";
-import { DataLoaderView } from "@/shared/components/DataLoader";
 import ExpandMoreIcon from "@/shared/assets/icons/expandMore.svg";
 import IncreasBalanceDialog from "@/main/components/Dashboard/IncreasBalanceDialog";
 import WithdrawBalanceDialog from "@/main/components/Dashboard/WithdrawBalanceDialog";
@@ -15,7 +14,7 @@ export default function Wallet() {
   const [showIncreasBalanceDialog, setShowIncreasBalanceDialog] =
     useState(false);
   const [showWithdrawBalanceDialog, setShowWithdrawBalanceDialog] =
-    useState(false);
+    useState(false);console.log(dashboardData);
 
   return (
     <div
@@ -32,53 +31,41 @@ export default function Wallet() {
         }}
       >
         <div className={styles.Balance}>
-          <DataLoaderView
-            state={dashboardData.walletDataLoaderState}
-            size="small"
-          >
-            موجودی:{" "}
-            <span>
-              <FormattedNumber
-                value={
-                  (dashboardData.data?.walletBalance || 0) +
-                  (dashboardData.data?.marketingBalance || 0)
-                }
-              />
-            </span>{" "}
-            <span>تومان</span>
-          </DataLoaderView>
+          موجودی:{" "}
+          <span>
+            <FormattedNumber
+              value={
+                (dashboardData.data?.walletBalance || 0) +
+                (dashboardData.data?.marketingBalance || 0)
+              }
+            />
+          </span>{" "}
+          <span>تومان</span>
         </div>
         <div className={styles.Spacer} />
         <ExpandMoreIcon className={styles.ExpandMoreIcon} />
       </div>
       <div className={styles.WalletDetails}>
-        <DataLoaderView
-          state={dashboardData.walletDataLoaderState}
-          size="small"
-        >
-          <div className={styles.WalletBalance}>
-            <div>موجودی کیف پول:</div>
-            <div>
-              <span>
-                <FormattedNumber
-                  value={dashboardData.data?.walletBalance || 0}
-                />
-              </span>{" "}
-              تومان
-            </div>
+        <div className={styles.WalletBalance}>
+          <div>موجودی کیف پول:</div>
+          <div>
+            <span>
+              <FormattedNumber value={dashboardData.data?.walletBalance || 0} />
+            </span>{" "}
+            تومان
           </div>
-          <div className={styles.MarketingBalance}>
-            <div>موجودی فروش بازاریابی:</div>
-            <div>
-              <span>
-                <FormattedNumber
-                  value={dashboardData.data?.marketingBalance || 0}
-                />
-              </span>{" "}
-              تومان
-            </div>
+        </div>
+        <div className={styles.MarketingBalance}>
+          <div>موجودی فروش بازاریابی:</div>
+          <div>
+            <span>
+              <FormattedNumber
+                value={dashboardData.data?.marketingBalance || 0}
+              />
+            </span>{" "}
+            تومان
           </div>
-        </DataLoaderView>
+        </div>
         <button
           className={styles.IncreasBalance}
           onClick={() => setShowIncreasBalanceDialog(true)}

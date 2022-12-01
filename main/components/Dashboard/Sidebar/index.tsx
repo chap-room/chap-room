@@ -11,17 +11,7 @@ export default function DashboardSidebar() {
 
   return (
     <div className={styles.Sidebar}>
-      <DataLoaderView
-        state={
-          dashboardData.data !== null
-            ? {
-                isLoading: false,
-                isError: false,
-                reload: dashboardData.dataLoaderState.reload,
-              }
-            : dashboardData.dataLoaderState
-        }
-      >
+      <DataLoaderView state={dashboardData.dataLoaderState}>
         <Wallet />
         <DashboardNavLinks />
         {dashboardData.data !== null && (

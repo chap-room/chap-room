@@ -72,7 +72,6 @@ export interface BindingOptions {
 
 export interface Address {
   id: number;
-  label: string;
   recipientName: string;
   recipientPhoneNumber: string;
   recipientPostalCode: string;

@@ -139,16 +139,21 @@ export default function PrintPricesForm({
             <button
               className={styles.AddButton}
               onClick={() => {
+                const id = nextId.current++;
                 setBreakpoints([
                   ...breakpoints,
                   {
-                    id: nextId.current++,
+                    id,
                     at: "",
                     singleSided: "",
                     doubleSided: "",
                     singleSidedGlossy: "",
                     doubleSidedGlossy: "",
                   },
+                ]);
+                setEditingAtProperty((editingAtProperty) => [
+                  ...editingAtProperty,
+                  id,
                 ]);
               }}
             >

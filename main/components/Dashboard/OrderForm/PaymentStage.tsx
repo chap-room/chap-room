@@ -179,35 +179,27 @@ export default function PaymentStage({ actions }: PaymentStageProps) {
           </div>
         </div>
       </div>
-      <div className={styles.AmountPayableMobileContainer}>
-        {amountPayableView}
+      <div className={styles.BottomActionsContainer}>
+        <BottomActions start={amountPayableView}>
+          <Button onClick={actions.back} style={{ fontWeight: 500 }}>
+            مرحله قبل
+          </Button>
+          <Button
+            varient="filled"
+            style={{ minWidth: 110 }}
+            onClick={() => {
+              setIsSubmitting(true);
+              actions
+                .finish(discountCode, paidWithWallet)
+                .finally(() => setIsSubmitting(false));
+            }}
+            loading={isSubmitting}
+            disabled={isSubmitting}
+          >
+            پرداخت
+          </Button>
+        </BottomActions>
       </div>
-      <BottomActions
-        start={
-          <div className={styles.AmountPayableContainer}>
-            {amountPayableView}
-          </div>
-        }
-      >
-        <Button onClick={actions.back} style={{ fontWeight: 500 }}>
-          مرحله قبل
-        </Button>
-        <div className={styles.MobileSpacer} />
-        <Button
-          varient="filled"
-          style={{ minWidth: 110 }}
-          onClick={() => {
-            setIsSubmitting(true);
-            actions
-              .finish(discountCode, paidWithWallet)
-              .finally(() => setIsSubmitting(false));
-          }}
-          loading={isSubmitting}
-          disabled={isSubmitting}
-        >
-          پرداخت
-        </Button>
-      </BottomActions>
     </DataLoader>
   );
 }

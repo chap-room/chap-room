@@ -45,52 +45,60 @@ export default function PrintFolderList({
             </div>
           </div>
           <div>
-            فایلها:{" "}
-            {printFolder.printFiles
-              .map((printFile) => printFile.name)
-              .join(" / ")}
+            <div className={styles.Label}>فایلها:</div>
+            <div className={styles.Content}>
+              {printFolder.filesManuallySent
+                ? printFolder.printFiles
+                    .map((printFile) => printFile.name)
+                    .join(" / ")
+                : "از طریق تلگرام و ایتا"}
+            </div>
+            <div className={styles.Label}>خلاصه سفارش:</div>
+            <div className={styles.Content}>
+              {[
+                {
+                  blackAndWhite: "سیاه و سفید",
+                  normalColor: "رنگی معمولی",
+                  fullColor: "تمام رنگی",
+                }[printFolder.printColor],
+                { a4: "A4", a5: "A5", a3: "A3" }[printFolder.printSize],
+                { singleSided: "یک رو", doubleSided: "دو رو" }[
+                  printFolder.printSide
+                ],
+                `${intl.formatNumber(printFolder.countOfPages)} صفحه`,
+                ...(printFolder.bindingOptions === null
+                  ? []
+                  : [
+                      "صحافی",
+                      {
+                        springNormal: "فنر با طلق معمولی",
+                        springPapco: "فنر با طلق پاپکو",
+                        stapler: "منگنه",
+                      }[printFolder.bindingOptions.bindingType],
+                      printFolder.bindingOptions.bindingMethod !==
+                      "countOfFiles"
+                        ? {
+                            allFilesTogether: "هر فایل جدا",
+                            eachFileSeparated: "همه فایل ها با هم",
+                          }[printFolder.bindingOptions.bindingMethod]
+                        : `${intl.formatNumber(
+                            printFolder.bindingOptions.countOfFiles || 0
+                          )} فایل`,
+                      {
+                        colorful: "جلد رنگی",
+                        blackAndWhite: "جلد سیاه و سفید",
+                      }[printFolder.bindingOptions.coverColor],
+                    ]),
+                `${intl.formatNumber(printFolder.countOfCopies || 1)} نسخه`,
+              ].join(" / ")}
+            </div>
+            {printFolder.description && (
+              <>
+                <div className={styles.Label}>توضیحات:</div>
+                <div className={styles.Content}>{printFolder.description}</div>
+              </>
+            )}
           </div>
-          <div>
-            خلاصه:{" "}
-            {[
-              {
-                blackAndWhite: "سیاه و سفید",
-                normalColor: "رنگی معمولی",
-                fullColor: "تمام رنگی",
-              }[printFolder.printColor],
-              { a4: "A4", a5: "A5", a3: "A3" }[printFolder.printSize],
-              { singleSided: "یک رو", doubleSided: "دو رو" }[
-                printFolder.printSide
-              ],
-              `${intl.formatNumber(printFolder.countOfPages)} صفحه`,
-              ...(printFolder.bindingOptions === null
-                ? []
-                : [
-                    "صحافی",
-                    {
-                      springNormal: "فنر با طلق معمولی",
-                      springPapco: "فنر با طلق پاپکو",
-                      stapler: "منگنه",
-                    }[printFolder.bindingOptions.bindingType],
-                    printFolder.bindingOptions.bindingMethod !== "countOfFiles"
-                      ? {
-                          allFilesTogether: "هر فایل جدا",
-                          eachFileSeparated: "همه فایل ها با هم",
-                        }[printFolder.bindingOptions.bindingMethod]
-                      : `${intl.formatNumber(
-                          printFolder.bindingOptions.countOfFiles || 0
-                        )} فایل`,
-                    {
-                      colorful: "جلد رنگی",
-                      blackAndWhite: "جلد سیاه و سفید",
-                    }[printFolder.bindingOptions.coverColor],
-                  ]),
-              `${intl.formatNumber(printFolder.countOfCopies || 1)} نسخه`,
-            ].join(" / ")}
-          </div>
-          {printFolder.description && (
-            <div>توضیحات: {printFolder.description}</div>
-          )}
         </div>
       ))}
     </div>

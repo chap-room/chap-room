@@ -119,6 +119,16 @@ export default function OrderForm() {
         }
       />
       <MobileContentHeader
+        title={title}
+        subTitle={
+          currentStage === OrderFormStages.newPrintFolder ||
+          currentStage === OrderFormStages.editPrintFolder
+            ? "پوشه اول خود را سفارش دهید"
+            : currentStage === OrderFormStages.newAddress ||
+              currentStage === OrderFormStages.editAddress
+            ? "مشخصات گیرنده را وارد کنید"
+            : undefined
+        }
         start={
           isMainStage && (
             <div className={styles.MobileSemiCircleProgressBar}>
@@ -126,36 +136,34 @@ export default function OrderForm() {
             </div>
           )
         }
-        onBack={
-          !isMainStage
-            ? () => {
-                switch (currentStage) {
-                  case OrderFormStages.newPrintFolder:
-                    setCurrentStage(OrderFormStages.printFolders);
-                    break;
-                  case OrderFormStages.editPrintFolder:
-                    setCurrentStage(OrderFormStages.printFolders);
-                    setCurrentInEditPrintFolderId(null);
-                    break;
-                  case OrderFormStages.newAddress:
-                    setCurrentStage(OrderFormStages.address);
-                    break;
-                  case OrderFormStages.editAddress:
-                    setCurrentStage(OrderFormStages.address);
-                    setCurrentInEditAddressId(null);
-                    break;
-                }
-              }
-            : undefined
-        }
-        title={title}
         end={
-          isMainStage && (
+          isMainStage ? (
             <Link href="/dashboard/orders">
               <IconButton varient="outlined">
                 <CloseIcon />
               </IconButton>
             </Link>
+          ) : (
+            <a
+              onClick={() => {
+                setCurrentStage(
+                  currentStage === OrderFormStages.newPrintFolder ||
+                    currentStage === OrderFormStages.editPrintFolder
+                    ? OrderFormStages.printFolders
+                    : OrderFormStages.address
+                );
+                if (currentStage === OrderFormStages.editAddress) {
+                  setCurrentInEditPrintFolderId(null);
+                }
+                if (currentStage === OrderFormStages.editAddress) {
+                  setCurrentInEditAddressId(null);
+                }
+              }}
+            >
+              <IconButton varient="outlined">
+                <ArrowBackIcon />
+              </IconButton>
+            </a>
           )
         }
       />
@@ -240,7 +248,7 @@ export default function OrderForm() {
                       `/dashboard/orders/payment-result?isSuccessful=true&orderId=${orderId}`
                     );
                     if (paidWithWallet) {
-                      dashboardData.walletDataLoaderState.reload();
+                      dashboardData.dataLoaderState.reload();
                     }
                   }
                   if (paymentUrl) window.location.href = paymentUrl;

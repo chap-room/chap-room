@@ -13,15 +13,7 @@ export default function NewAddressesStage({ actions }: NewAddressesStageProps) {
     <AddressForm
       inputsVarient="shadow"
       onSave={(addressData) =>
-        newAddress(
-          addressData.label,
-          addressData.recipientName,
-          addressData.recipientPhoneNumber,
-          addressData.recipientPostalCode,
-          addressData.recipientDeliveryProvince,
-          addressData.recipientDeliveryCity,
-          addressData.recipientDeliveryAddress
-        )
+        newAddress(addressData)
           .then((message) => {
             toast.success(message);
             actions.finish();

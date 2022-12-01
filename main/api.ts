@@ -551,28 +551,19 @@ export function getAddresses(page: number) {
   }));
 }
 
-export function newAddress(
-  label: string,
-  recipientName: string,
-  recipientPhoneNumber: string,
-  recipientPostalCode: string,
-  recipientDeliveryProvince: string,
-  recipientDeliveryCity: string,
-  recipientDeliveryAddress: string
-) {
+export function newAddress(data: {
+  recipientName: string;
+  recipientPhoneNumber: string;
+  recipientPostalCode: string;
+  recipientDeliveryProvince: string;
+  recipientDeliveryCity: string;
+  recipientDeliveryAddress: string;
+}) {
   return request({
     method: "POST",
     url: "/users/addresses",
     needAuth: true,
-    data: {
-      label,
-      recipientName,
-      recipientPhoneNumber,
-      recipientPostalCode,
-      recipientDeliveryProvince,
-      recipientDeliveryCity,
-      recipientDeliveryAddress,
-    },
+    data,
   }).then(({ data }) => data.message);
 }
 
@@ -587,7 +578,6 @@ export function getAddress(addressId: number) {
 export function updateAddress(
   addressId: number,
   data: {
-    label: string;
     recipientName: string;
     recipientPhoneNumber: string;
     recipientPostalCode: string;

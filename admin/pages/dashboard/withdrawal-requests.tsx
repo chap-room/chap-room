@@ -55,7 +55,7 @@ export default function DashboardWithdrawalRequests() {
       : itemsStatus === "done"
       ? "درخواست های انجام شده"
       : itemsStatus === "rejected"
-      ? "درخواست های رد تشده"
+      ? "درخواست های رد شده"
       : "";
 
   return (

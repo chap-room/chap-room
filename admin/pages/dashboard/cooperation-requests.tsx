@@ -51,7 +51,7 @@ export default function DashboardCooperationRequests() {
       : itemsStatus === "approved"
       ? "درخواست های تأیید شده"
       : itemsStatus === "rejected"
-      ? "درخواست های رد تشده"
+      ? "درخواست های رد شده"
       : "";
 
   return (

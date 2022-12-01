@@ -17,7 +17,7 @@ import Filters from "@/admin/components/Filters";
 import FilterSelect from "@/admin/components/FilterSelect";
 import FilterDate from "@/admin/components/FilterDate";
 import DataLoader from "@/shared/components/DataLoader";
-import BarChart from "@/admin/components/BarChart";
+import BarChart, { ChartTooltipData } from "@/admin/components/BarChart";
 import Button from "@/shared/components/Button";
 
 const months = [
@@ -52,20 +52,17 @@ export default function DashboardFinancialRecordsTotalIncome() {
     chart: [],
   });
 
-  const [tooltipData, setTooltipData] = useState<{
-    item: {
-      label: string;
-      value: number;
-      debtor: number;
-      creditor: number;
-    };
-    position: { left: number; top: number };
-  } | null>(null);
+  const [tooltipData, setTooltipData] = useState<ChartTooltipData<{
+    label: string;
+    value: number;
+    debtor: number;
+    creditor: number;
+  }> | null>(null);
 
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [ticker, setTicker] = useState<"monthly" | "yearly">("monthly");
-  const [month, setMonth] = useState(moment().jMonth().toString());
+  const [month, setMonth] = useState(moment().jMonth());
 
   return (
     <>
@@ -83,8 +80,8 @@ export default function DashboardFinancialRecordsTotalIncome() {
             <div className={styles.SubTitle}>
               {data.totalCreditor !== 0 && (
                 <div>
-                  {"("}بستانکار کل: <FormattedNumber value={data.totalCreditor} />{" "}
-                  تومان{")"}
+                  {"("}بستانکار کل:{" "}
+                  <FormattedNumber value={data.totalCreditor} /> تومان{")"}
                 </div>
               )}
               {data.totalDebtor !== 0 && (
@@ -141,8 +138,8 @@ export default function DashboardFinancialRecordsTotalIncome() {
                       "10": months[10],
                       "11": months[11],
                     }}
-                    value={month}
-                    onChange={setMonth}
+                    value={month.toString()}
+                    onChange={(newValue) => setMonth(parseInt(newValue))}
                     width={130}
                     maxWidth={130}
                   />

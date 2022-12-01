@@ -191,6 +191,13 @@
   }
 
   &:not([data-items-status="null"]) {
+    > thead > tr > th:nth-child(5),
+    > tbody > tr > td:nth-child(5) {
+      display: none;
+    }
+  }
+
+  &:not([data-items-status="null"]) {
     &:not([data-items-status="sent"]) {
       > thead > tr > th:nth-child(6),
       > tbody > tr > td:nth-child(6) {

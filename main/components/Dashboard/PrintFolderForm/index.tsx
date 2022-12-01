@@ -218,21 +218,28 @@ export default function PrintFolderForm({
 
   const pagePriceView = usePrintFolderPrice({
     isValid: step1FormValidation.isValid && step2FormValidation.isValid,
-    printFiles,
     printColor: printColor!,
     printSize: printSize!,
     printSide: printSide!,
     countOfPages: parseInt(countOfPages),
-    bindingOptions: needBinding
-      ? {
-          bindingType,
-          bindingMethod,
-          countOfFiles:
-            bindingMethod === "countOfFiles" ? parseInt(countOfFiles) : null,
-          coverColor,
-        }
-      : null,
-    countOfCopies: toBePrintedInSeveralCopies ? parseInt(countOfCopies) : null,
+    bindingOptions:
+      currentStep === "1"
+        ? null
+        : needBinding
+        ? {
+            bindingType,
+            bindingMethod,
+            countOfFiles:
+              bindingMethod === "countOfFiles" ? parseInt(countOfFiles) : null,
+            coverColor,
+          }
+        : null,
+    countOfCopies:
+      currentStep === "1"
+        ? 1
+        : toBePrintedInSeveralCopies
+        ? parseInt(countOfCopies)
+        : null,
   });
 
   const cancelButton = (
@@ -842,10 +849,8 @@ function usePrintFolderPrice({
   countOfPages,
   bindingOptions,
   countOfCopies,
-  printFiles,
 }: {
   isValid: boolean;
-  printFiles: PrintFile[];
   printColor: "blackAndWhite" | "normalColor" | "fullColor";
   printSize: "a4" | "a5" | "a3";
   printSide: "singleSided" | "doubleSided";
@@ -889,7 +894,6 @@ function usePrintFolderPrice({
   }
 
   useEffect(fetchData, [
-    printFiles,
     printColor,
     printSize,
     printSide,
