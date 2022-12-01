@@ -34,7 +34,7 @@ export default function OrderTable({
           <th>وضعیت</th>
           <th>کد پیگیری</th>
           <th>علت لغو</th>
-          <th style={{ width: "1%" }}>عملیات</th>
+          <th>عملیات</th>
         </tr>
       </thead>
       <tbody>
