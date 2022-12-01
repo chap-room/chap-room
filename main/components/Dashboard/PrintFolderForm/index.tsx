@@ -755,9 +755,13 @@ function UploadedPrintFile({ printFile, onDelete }: UploadedPrintFileProps) {
     <div className={styles.UploadedPrintFile}>
       <div>
         {printFile.name}
-        {" ("}
-        <FormattedNumber value={printFile.countOfPages} />
-        {" صفحه)"}
+        {printFile.countOfPages && (
+          <>
+            {" ("}
+            <FormattedNumber value={printFile.countOfPages} />
+            {" صفحه)"}
+          </>
+        )}
       </div>
       <div className={styles.DeleteIcon}>
         <IconButton
