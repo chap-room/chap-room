@@ -101,6 +101,7 @@ export default function Editor({
         images_upload_handler: (blobInfo, progress) => {
           const data = new FormData();
           data.append("attachment", blobInfo.blob(), blobInfo.filename());
+          data.append("fileName", blobInfo.filename());
 
           return request({
             method: "POST",

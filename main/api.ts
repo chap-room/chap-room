@@ -381,6 +381,7 @@ export function uploadPrintFile(
 ) {
   let data = new FormData();
   data.append("attachment", file);
+  data.append("fileName", file.name);
 
   return request({
     method: "POST",

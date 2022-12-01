@@ -33,6 +33,7 @@ export default function PostThumbnailUpload({
 
     let data = new FormData();
     data.append("attachment", inUploadFile);
+    data.append("fileName", inUploadFile.name);
 
     request({
       method: "POST",
