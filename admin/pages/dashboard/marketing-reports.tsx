@@ -9,7 +9,7 @@ import {
   getDedicatedLinkReports,
 } from "@/admin/api";
 import DashboardLayout from "@/admin/components/Layout";
-import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
+import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
@@ -45,10 +45,9 @@ export default function DashboardMarketingReport() {
       <Head>
         <title>داشبورد - گزارش بازاریابی</title>
       </Head>
-      <SectionHeader
+      <AdminSectionHeader
         title="گزارش بازاریابی"
         description="ــ بازاریابی کاربران را از این قسمت مشاهده کنید"
-        isAdmin
       />
       <SectionContent>
         <ContentHeader
@@ -105,7 +104,7 @@ export default function DashboardMarketingReport() {
               dedicatedLinkReports={dedicatedLinkData.reports}
             />
             {!dedicatedLinkData.reports.length && (
-              <EmptyNote>هیچ گزارشی وجود ندارید</EmptyNote>
+              <EmptyNote>هیچ گزارشی وجود ندارد</EmptyNote>
             )}
             <Pagination
               currentPage={page}
@@ -125,7 +124,7 @@ export default function DashboardMarketingReport() {
               dedicatedDiscountCodeReports={dedicatedDiscountCodeData.reports}
             />
             {!dedicatedDiscountCodeData.reports.length && (
-              <EmptyNote>هیچ گزارشی وجود ندارید</EmptyNote>
+              <EmptyNote>هیچ گزارشی وجود ندارد</EmptyNote>
             )}
             <Pagination
               currentPage={page}

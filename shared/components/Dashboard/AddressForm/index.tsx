@@ -29,14 +29,12 @@ interface AddressFormData {
 
 interface AddressFormProps {
   defaultValues?: Partial<AddressFormData>;
-  onCancel?: () => void;
   onSave: (data: AddressFormData) => Promise<any>;
   inputsVarient?: "outlined" | "shadow";
 }
 
 export default function AddressForm({
   defaultValues,
-  onCancel,
   onSave,
   inputsVarient,
 }: AddressFormProps) {
@@ -167,10 +165,9 @@ export default function AddressForm({
         <ErrorList errors={formValidation.errors.recipientDeliveryAddress} />
       </div>
       <BottomActions>
-        {onCancel && <Button onClick={() => onCancel()}>بازگشت</Button>}
         <Button
           varient="filled"
-          style={{ minWidth: 100 }}
+          style={{ minWidth: 114 }}
           onClick={() => {
             setIsSubmitting(true);
             onSave({

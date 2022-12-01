@@ -3,16 +3,19 @@ import { newPrintFolder } from "@/main/api";
 import PrintFolderForm from "@/main/components/Dashboard/PrintFolderForm";
 
 interface NewPrintFolderStageProps {
+  index: number;
   actions: {
     finish: () => void;
   };
 }
 
 export default function NewPrintFolderStage({
+  index,
   actions,
 }: NewPrintFolderStageProps) {
   return (
     <PrintFolderForm
+      index={index}
       onCancel={actions.finish}
       onFinish={(printFolderData) =>
         newPrintFolder(printFolderData)

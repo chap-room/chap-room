@@ -1,6 +1,6 @@
 import styles from "./style.module.scss";
-import { FormattedNumber } from "react-intl";
 import Link from "next/link";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import LocationIcon from "@/main/assets/icons/location.svg";
 import CaillIcon from "@/main/assets/icons/call.svg";
 import MailIcon from "@/main/assets/icons/mail.svg";
@@ -22,14 +22,10 @@ export default function Footer() {
           <h3>تماس با ما</h3>
           <ul>
             <li>
-              <CaillIcon />{" "}
-              <FormattedNumber value={21} minimumIntegerDigits={3} />-
-              <FormattedNumber value={91090772} useGrouping={false} />
+              <CaillIcon /> {englishToPersianNumbers("021-91090772")}
             </li>
             <li>
-              <CaillIcon />{" "}
-              <FormattedNumber value={31} minimumIntegerDigits={3} />-
-              <FormattedNumber value={91090414} useGrouping={false} />
+              <CaillIcon /> {englishToPersianNumbers("021-91090414")}
             </li>
             <li>
               <MailIcon /> info@chaproom.com

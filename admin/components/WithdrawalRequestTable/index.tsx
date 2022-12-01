@@ -1,6 +1,7 @@
 import styles from "./style.module.scss";
 import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
 import { WithdrawalRequest } from "@/shared/types";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 
 interface WithdrawalRequestTableProps {
   withdrawalRequests: WithdrawalRequest[];
@@ -27,7 +28,7 @@ export default function WithdrawalRequestTable({
           <th>مبلغ</th>
           <th>شماره شبا</th>
           <th>نام صاحب حساب</th>
-          <th>عملیات</th>
+          <th style={{ width: "1%" }}>عملیات</th>
         </tr>
       </thead>
       <tbody>
@@ -40,7 +41,10 @@ export default function WithdrawalRequestTable({
                   <FormattedDate value={withdrawalRequest.date} />
                 </span>
                 <span>
-                  <FormattedTime value={withdrawalRequest.date} timeStyle="medium" />
+                  <FormattedTime
+                    value={withdrawalRequest.date}
+                    timeStyle="medium"
+                  />
                 </span>
               </span>
             </td>
@@ -51,11 +55,7 @@ export default function WithdrawalRequestTable({
                   {withdrawalRequest.user.name}
                 </div>
                 <div>
-                  <FormattedNumber
-                    value={parseInt(withdrawalRequest.user.phoneNumber)}
-                    useGrouping={false}
-                    minimumIntegerDigits={11}
-                  />
+                  {englishToPersianNumbers(withdrawalRequest.user.phoneNumber)}
                 </div>
               </div>
             </td>
@@ -69,21 +69,7 @@ export default function WithdrawalRequestTable({
               <span className={styles.MobileLabel}>شماره شبا:</span>
               <div>
                 IR
-                {/* The 24-character number format is not supported */}
-                <FormattedNumber
-                  value={parseInt(
-                    withdrawalRequest.iban.toString().substring(0, 12)
-                  )}
-                  useGrouping={false}
-                  minimumIntegerDigits={12}
-                />
-                <FormattedNumber
-                  value={parseInt(
-                    withdrawalRequest.iban.toString().substring(12, 24)
-                  )}
-                  useGrouping={false}
-                  minimumIntegerDigits={12}
-                />
+                {englishToPersianNumbers(withdrawalRequest.iban)}
               </div>
             </td>
             <td>

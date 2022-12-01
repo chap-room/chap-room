@@ -1,10 +1,10 @@
 import styles from "./style.module.scss";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useIntl } from "react-intl";
 import { Bar } from "react-chartjs-2";
 import { ChartJSOrUndefined } from "react-chartjs-2/dist/types";
 import { ChartArea, ChartData, ChartOptions, defaults } from "chart.js/auto";
 import "chart.js/auto";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 
 interface BaseData {
   label: string;
@@ -33,8 +33,6 @@ export default function BarChart<DT extends BaseData>({
   setTooltipData,
   hideY = false,
 }: BarChartProps<DT>) {
-  const intl = useIntl();
-
   const chartRef = useRef<ChartJSOrUndefined<"bar", number[], string>>();
   const [chartData, setChartData] = useState<ChartData<"bar">>({
     labels: data.map((item) => item.label),
@@ -127,7 +125,7 @@ export default function BarChart<DT extends BaseData>({
             callback: (tickValue) => {
               tickValue = tickValue as number;
               if (Math.floor(tickValue) === tickValue) {
-                return intl.formatNumber(tickValue);
+                return englishToPersianNumbers(tickValue);
               }
             },
           },

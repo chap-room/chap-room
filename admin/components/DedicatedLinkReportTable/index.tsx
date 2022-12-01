@@ -1,6 +1,7 @@
 import styles from "./style.module.scss";
 import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
 import { DedicatedLinkReport } from "@/shared/types";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 
 interface DedicatedLinkReportTableProps {
   dedicatedLinkReports: DedicatedLinkReport[];
@@ -32,7 +33,10 @@ export default function DedicatedLinkReportTable({
                   <FormattedDate value={dedicatedLinkReport.date} />
                 </span>
                 <span>
-                  <FormattedTime value={dedicatedLinkReport.date} timeStyle="medium" />
+                  <FormattedTime
+                    value={dedicatedLinkReport.date}
+                    timeStyle="medium"
+                  />
                 </span>
               </span>
             </td>
@@ -43,11 +47,9 @@ export default function DedicatedLinkReportTable({
                   {dedicatedLinkReport.user.name}
                 </div>
                 <div>
-                  <FormattedNumber
-                    value={parseInt(dedicatedLinkReport.user.phoneNumber)}
-                    useGrouping={false}
-                    minimumIntegerDigits={11}
-                  />
+                  {englishToPersianNumbers(
+                    dedicatedLinkReport.user.phoneNumber
+                  )}
                 </div>
               </div>
             </td>
@@ -58,20 +60,15 @@ export default function DedicatedLinkReportTable({
                   {dedicatedLinkReport.buyer.name}
                 </div>
                 <div>
-                  <FormattedNumber
-                    value={parseInt(dedicatedLinkReport.buyer.phoneNumber)}
-                    useGrouping={false}
-                    minimumIntegerDigits={11}
-                  />
+                  {englishToPersianNumbers(
+                    dedicatedLinkReport.buyer.phoneNumber
+                  )}
                 </div>
               </div>
             </td>
             <td>
               <span className={styles.MobileLabel}>شماره سفارش:</span>
-              <FormattedNumber
-                value={dedicatedLinkReport.orderId}
-                useGrouping={false}
-              />
+              {englishToPersianNumbers(dedicatedLinkReport.orderId)}
             </td>
             <td>
               <span className={styles.MobileLabel}>مبلغ سفارش:</span>

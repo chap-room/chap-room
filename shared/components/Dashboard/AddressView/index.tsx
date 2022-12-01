@@ -1,6 +1,6 @@
 import styles from "./style.module.scss";
-import { FormattedNumber } from "react-intl";
 import { Address } from "@/shared/types";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import EditIcon from "@/shared/assets/icons/edit.svg";
 import DeletetIcon from "@/shared/assets/icons/delete.svg";
 import ButtonList from "@/shared/components/ButtonList";
@@ -37,20 +37,10 @@ export default function AddressView({
       <div>نام گیرنده: {address.recipientName}</div>
       <div>
         <div>
-          شماره تلفن:{" "}
-          <FormattedNumber
-            value={parseInt(address.recipientPhoneNumber)}
-            useGrouping={false}
-            minimumIntegerDigits={11}
-          />
+          شماره تلفن: {englishToPersianNumbers(address.recipientPhoneNumber)}
         </div>
         <div>
-          کد پستی:{" "}
-          <FormattedNumber
-            value={parseInt(address.recipientPostalCode)}
-            useGrouping={false}
-            minimumIntegerDigits={10}
-          />
+          کد پستی: {englishToPersianNumbers(address.recipientPostalCode)}
         </div>
       </div>
       <div>

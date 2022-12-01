@@ -26,7 +26,7 @@ export default function OurCustomers() {
         (result, child, index) =>
           index === 0 ? result : result + child.clientWidth + 50,
         0
-      ) < 682.5 &&
+      ) < 750 &&
       currentCloneIndex >= 0
     );
 
@@ -43,7 +43,7 @@ export default function OurCustomers() {
         (result, child, index) =>
           index === 0 ? result : result + child.clientWidth + 50,
         0
-      ) < 682.5 &&
+      ) < 750 &&
       currentCloneIndex < customerListItems.length
     );
 
@@ -94,14 +94,12 @@ export default function OurCustomers() {
   return (
     <div className={styles.OurCustomers}>
       <h1>مشتریان چاپ روم</h1>
-      <div>
-        <div ref={customerListContainerRef}>
-          {CustomerList.map(({ title, image }, index) => (
-            <div key={index}>
-              <img src={image} alt={title} title={title} />
-            </div>
-          ))}
-        </div>
+      <div ref={customerListContainerRef}>
+        {CustomerList.map(({ title, image }, index) => (
+          <div key={index}>
+            <img src={image} alt={title} title={title} />
+          </div>
+        ))}
       </div>
     </div>
   );

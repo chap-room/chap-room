@@ -1,6 +1,6 @@
 import styles from "./style.module.scss";
 import { ReactElement, useState } from "react";
-import { FormattedNumber } from "react-intl";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import ExpandMoreIcon from "@/shared/assets/icons/expandMore.svg";
 import CaillIcon from "@/main/assets/icons/call.svg";
 import SupportImage from "@/main/assets/images/support.svg";
@@ -72,36 +72,12 @@ export default function FrequentlyAskedQuestions() {
               <div>
                 <CaillIcon />
                 <div>تلفن شعبه تهران</div>
-                <div>
-                  <FormattedNumber
-                    value={21}
-                    useGrouping={false}
-                    minimumIntegerDigits={3}
-                  />
-                  -
-                  <FormattedNumber
-                    value={91090772}
-                    useGrouping={false}
-                    minimumIntegerDigits={8}
-                  />
-                </div>
+                <div>{englishToPersianNumbers("021-91090772")}</div>
               </div>
               <div>
                 <CaillIcon />
                 <div>تلفن شعبه اصفهان</div>
-                <div>
-                  <FormattedNumber
-                    value={21}
-                    useGrouping={false}
-                    minimumIntegerDigits={3}
-                  />
-                  -
-                  <FormattedNumber
-                    value={91090772}
-                    useGrouping={false}
-                    minimumIntegerDigits={8}
-                  />
-                </div>
+                <div>{englishToPersianNumbers("021-91090414")}</div>
               </div>
             </div>
           </div>

@@ -50,7 +50,7 @@ export default function DashboardTransactions() {
             }}
           />
           {!data.transactions.length && (
-            <EmptyNote>شما هیچ تراکنشی ندارید</EmptyNote>
+            <EmptyNote>هیچ تراکنشی وجود ندارد</EmptyNote>
           )}
           <Pagination
             currentPage={page}

@@ -1,9 +1,11 @@
-import { ReactElement, useState } from "react";
-import { useIntl } from "react-intl";
+import { ReactElement, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import ReactToPrint from "react-to-print";
 import Head from "next/head";
+import Link from "next/link";
 import { Order } from "@/shared/types";
 import { getOrder } from "@/main/api";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/main/components/Dashboard/Layout";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
@@ -14,14 +16,20 @@ import DataLoader from "@/shared/components/DataLoader";
 import OrderDetails from "@/shared/components/Dashboard/OrderDetails";
 import Button from "@/shared/components/Button";
 import BottomActions from "@/shared/components/Dashboard/BottomActions";
-import Link from "next/link";
 
 export default function DashboardOrderDetails() {
-  const intl = useIntl();
   const router = useRouter();
   const orderId = parseInt(router.query.orderId as string);
 
   const [data, setData] = useState<Order>();
+
+  const title = `شماره سفارش: ${englishToPersianNumbers(orderId)}`;
+  const orderDetailsContainerRef = useRef<HTMLDivElement>(null);
+
+  function print() {
+    if (!orderDetailsContainerRef.current) return;
+    const orderDetailsContainer = orderDetailsContainerRef.current;
+  }
 
   return (
     <>
@@ -34,9 +42,7 @@ export default function DashboardOrderDetails() {
       />
       <SectionContent>
         <ContentHeader
-          title={`شماره سفارش: ${intl.formatNumber(orderId, {
-            useGrouping: false,
-          })}`}
+          title={title}
           end={
             <Link
               href={
@@ -61,9 +67,7 @@ export default function DashboardOrderDetails() {
               ? "/dashboard"
               : "/dashboard/orders"
           }
-          title={`شماره سفارش: ${intl.formatNumber(orderId, {
-            useGrouping: false,
-          })}`}
+          title={title}
         />
         <DataLoader
           load={() => {
@@ -72,11 +76,21 @@ export default function DashboardOrderDetails() {
           deps={[router.isReady]}
           setData={setData}
         >
-          <OrderDetails order={data!} />
+          <div ref={orderDetailsContainerRef}>
+            <OrderDetails order={data!} />
+          </div>
           <BottomActions>
-            <Button varient="filled" style={{ minWidth: 100 }}>
-              دریافت فاکتور
-            </Button>
+            <ReactToPrint
+              content={() => orderDetailsContainerRef.current}
+              documentTitle={title}
+              removeAfterPrint
+              trigger={() => (
+                <Button varient="filled" style={{ minWidth: 100 }}>
+                  دریافت فاکتور
+                </Button>
+              )}
+              pageStyle="body {direction: rtl; margin: 0; padding: 50px; box-sizing: border-box;}"
+            />
           </BottomActions>
         </DataLoader>
       </SectionContent>

@@ -18,8 +18,8 @@ import {
   useFocus,
   useInteractions,
 } from "@floating-ui/react-dom-interactions";
-import { FormattedNumber } from "react-intl";
 import moment, { Moment } from "jalali-moment";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import PrevIcon from "@/shared/assets/icons/navigateBefore.svg";
 import NextIcon from "@/shared/assets/icons/navigateNext.svg";
 import TextInput from "@/shared/components/TextInput";
@@ -31,6 +31,7 @@ interface DatePickerProps {
   onChange: (newValue: Moment) => void;
   inputFormat?: string;
   setIsValid?: (newValue: boolean) => void;
+  boxProps?: InputHTMLAttributes<HTMLDivElement>;
   inputProps?: InputHTMLAttributes<HTMLInputElement>;
   inputVarient?: "outlined" | "shadow";
   inputPrefix?: ReactNode;
@@ -44,6 +45,7 @@ export default function DatePicker({
   value,
   onChange,
   inputFormat = "jYYYY/jMM/jDD",
+  boxProps = {},
   inputProps = {},
   setIsValid,
   inputVarient,
@@ -118,7 +120,7 @@ export default function DatePicker({
             if (newMomentValue.isValid()) onChange(newMomentValue);
           } catch {}
         }}
-        boxProps={getReferenceProps()}
+        boxProps={getReferenceProps(boxProps)}
         prefix={inputPrefix}
         suffix={inputSuffix}
         height={inputHeight}
@@ -235,7 +237,7 @@ function MonthPicker({
           <NextIcon />
         </button>
         <span className={styles.title}>
-          <FormattedNumber value={year.jYear()} useGrouping={false} />
+          {englishToPersianNumbers(year.jYear())}
         </span>
         <button title="سال بعد" onClick={() => onNextYear()}>
           <PrevIcon />
@@ -306,8 +308,7 @@ function DayPicker({
           <NextIcon />
         </button>
         <button onClick={() => onClickOnMonth()}>
-          {months[month.jMonth()]}{" "}
-          <FormattedNumber value={month.jYear()} useGrouping={false} />
+          {months[month.jMonth()]} {englishToPersianNumbers(month.jYear())}
         </button>
         <button title="ماه بعد" onClick={() => onNextMonth()}>
           <PrevIcon />
@@ -334,7 +335,7 @@ function DayPicker({
             data-is-current-month={day.isSame(month, "jMonth")}
             onClick={() => onSelectDay(day)}
           >
-            <FormattedNumber value={day.jDate()} />
+            {englishToPersianNumbers(day.jDate())}
           </button>
         ))}
       </div>

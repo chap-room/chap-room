@@ -13,7 +13,9 @@ export default function BottomActions({
   return (
     <div className={styles.BottomActions}>
       <div className={styles.Start}>{start}</div>
-      <ButtonList>{children}</ButtonList>
+      <div className={styles.End}>
+        <ButtonList>{children}</ButtonList>
+      </div>
     </div>
   );
 }

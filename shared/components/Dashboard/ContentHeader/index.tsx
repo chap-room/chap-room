@@ -2,9 +2,9 @@ import { ReactNode } from "react";
 import styles from "./style.module.scss";
 
 interface ContentHeaderProps {
+  start?: ReactNode;
   title: ReactNode;
   subTitle?: ReactNode;
-  start?: ReactNode;
   end?: ReactNode;
 }
 

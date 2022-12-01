@@ -34,7 +34,7 @@ export default function PostGrid({
           <div className={styles.PostBottom}>
             <div className={styles.PostMetaData}>
               <div>
-                <ViewIcon /> <FormattedNumber value={20} />
+                <ViewIcon /> <FormattedNumber value={post.countOfViews} />
               </div>
             </div>
             <ButtonList>

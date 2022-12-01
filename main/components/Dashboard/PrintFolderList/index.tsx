@@ -1,6 +1,7 @@
 import styles from "./style.module.scss";
 import { FormattedNumber, useIntl } from "react-intl";
 import { PrintFolder } from "@/shared/types";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import EditIcon from "@/shared/assets/icons/edit.svg";
 import DeletetIcon from "@/shared/assets/icons/delete.svg";
 
@@ -23,9 +24,7 @@ export default function PrintFolderList({
         <div className={styles.PrintFolder} key={printFolder.id}>
           <div className={styles.Header}>
             <div className={styles.Label}>
-              <span>
-                پوشه <FormattedNumber value={index + 1} useGrouping={false} />
-              </span>
+              <span>پوشه {englishToPersianNumbers(index + 1)}</span>
               <span>
                 (<FormattedNumber value={printFolder.amount} /> تومان)
               </span>
@@ -63,6 +62,7 @@ export default function PrintFolderList({
               { singleSided: "یک رو", doubleSided: "دو رو" }[
                 printFolder.printSide
               ],
+              `${intl.formatNumber(printFolder.countOfPages)} صفحه`,
               ...(printFolder.bindingOptions === null
                 ? []
                 : [

@@ -105,6 +105,10 @@
           color: #f20f4b;
         }
 
+        &:nth-child(6) {
+          white-space: nowrap;
+        }
+
         .SeeDetailsButton,
         .CancelButton {
           display: inline-flex;

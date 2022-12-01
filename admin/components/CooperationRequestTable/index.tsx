@@ -1,6 +1,7 @@
 import styles from "./style.module.scss";
-import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
+import { FormattedDate, FormattedTime } from "react-intl";
 import { CooperationRequest } from "@/shared/types";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 
 interface CooperationRequestTableProps {
   cooperationRequests: CooperationRequest[];
@@ -33,7 +34,7 @@ export default function CooperationRequestTable({
           <th>شماره موبایل</th>
           <th>تاریخ</th>
           {showDescription && <th>توضیحات</th>}
-          <th>عملیات</th>
+          <th style={{ width: "1%" }}>عملیات</th>
         </tr>
       </thead>
       <tbody>
@@ -42,11 +43,7 @@ export default function CooperationRequestTable({
             <td>
               <span className={styles.MobileLabel}>شماره موبایل:</span>
               <div>
-                <FormattedNumber
-                  value={parseInt(cooperationRequest.phoneNumber)}
-                  useGrouping={false}
-                  minimumIntegerDigits={11}
-                />
+                {englishToPersianNumbers(cooperationRequest.phoneNumber)}
               </div>
             </td>
             <td>
@@ -56,7 +53,10 @@ export default function CooperationRequestTable({
                   <FormattedDate value={cooperationRequest.date} />
                 </span>
                 <span>
-                  <FormattedTime value={cooperationRequest.date} timeStyle="medium" />
+                  <FormattedTime
+                    value={cooperationRequest.date}
+                    timeStyle="medium"
+                  />
                 </span>
               </span>
             </td>

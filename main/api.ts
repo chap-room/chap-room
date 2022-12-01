@@ -320,20 +320,31 @@ export function getDashboard() {
     method: "GET",
     url: "/users/dashboard",
     needAuth: true,
-  }).then(({ data }) => ({
-    tariffs: data.tariffs,
-    marketingBalance: data.marketingBalance,
-    walletBalance: data.walletBalance,
-    avatar: data.avatar,
-    name: data.name,
-    phoneNumber: data.phoneNumber,
-    inProgressOrders: data.inProgressOrders.map((item: any) => ({
-      id: item.id,
-      date: new Date(item.createdAt),
-      amount: item.amount,
-      status: item.status,
-    })) as Order[],
-  }));
+  })
+    .then(({ data }) => ({
+      tariffs: data.tariffs,
+      marketingBalance: data.marketingBalance,
+      walletBalance: data.walletBalance,
+      avatar: data.avatar,
+      name: data.name,
+      phoneNumber: data.phoneNumber,
+      inProgressOrders: data.inProgressOrders.map((item: any) =>
+        convert(orderConvertMap, item, "a2b")
+      ) as Order[],
+    }))
+    .then((dashboardData) => {
+      localStorage.setItem(
+        "userData",
+        JSON.stringify({
+          marketingBalance: dashboardData.marketingBalance,
+          walletBalance: dashboardData.walletBalance,
+          avatar: dashboardData.avatar,
+          name: dashboardData.name,
+          phoneNumber: dashboardData.phoneNumber,
+        })
+      );
+      return dashboardData;
+    });
 }
 
 export function getOrders(page: number) {
@@ -347,13 +358,9 @@ export function getOrders(page: number) {
   }).then(({ data }) => ({
     totalCount: data.totalCount,
     pageSize: data.pageSize,
-    orders: data.orders.map((item: any) => ({
-      id: item.id,
-      date: new Date(item.createdAt),
-      amount: item.amount,
-      status: item.status,
-      cancelReason: item.cancelReason,
-    })) as Order[],
+    orders: data.orders.map((item: any) =>
+      convert(orderConvertMap, item, "a2b")
+    ) as Order[],
   }));
 }
 
@@ -495,7 +502,7 @@ export function deletePrintFolder(printFolderId: number) {
     method: "DELETE",
     url: `/users/folders/id/${printFolderId}`,
     needAuth: true,
-  });
+  }).then(({ data }) => data.message);
 }
 
 export function calculateOrderPrice(discountCode: string | null) {

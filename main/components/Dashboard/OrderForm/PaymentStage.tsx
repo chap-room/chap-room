@@ -189,9 +189,10 @@ export default function PaymentStage({ actions }: PaymentStageProps) {
           </div>
         }
       >
-        <Button onClick={actions.back} style={{ fontWeight: "bold" }}>
+        <Button onClick={actions.back} style={{ fontWeight: 500 }}>
           مرحله قبل
         </Button>
+        <div className={styles.MobileSpacer} />
         <Button
           varient="filled"
           style={{ minWidth: 110 }}

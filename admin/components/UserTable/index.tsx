@@ -1,5 +1,6 @@
 import styles from "./style.module.scss";
 import { FormattedNumber } from "react-intl";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import InfoIcon from "@/admin/assets/icons/info.svg";
 import LoginIcon from "@/admin/assets/icons/login.svg";
 import EditIcon from "@/shared/assets/icons/edit.svg";
@@ -50,13 +51,7 @@ export default function UserTable({
               <span className={styles.MobileLabel}>کاربر:</span>
               <div>
                 <div className={styles.UserName}>{user.name}</div>
-                <div>
-                  <FormattedNumber
-                    value={parseInt(user.phoneNumber)}
-                    useGrouping={false}
-                    minimumIntegerDigits={11}
-                  />
-                </div>
+                <div>{englishToPersianNumbers(user.phoneNumber)}</div>
               </div>
             </td>
             <td>

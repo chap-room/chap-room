@@ -5,7 +5,12 @@
   flex-direction: row;
   align-items: center;
 
-  .Start {
+  .End {
     flex: 1;
+
+    > div {
+      flex: 1;
+      justify-content: flex-end;
+    }
   }
 }

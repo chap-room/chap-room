@@ -1,23 +1,16 @@
 import styles from "./style.module.scss";
 import { useState } from "react";
 import { FormattedNumber } from "react-intl";
+import toast from "react-hot-toast";
+import { walletDeposit, walletWithdrawal } from "@/main/api";
+import { useDashboardData } from "@/main/context/dashboardData";
+import { DataLoaderView } from "@/shared/components/DataLoader";
 import ExpandMoreIcon from "@/shared/assets/icons/expandMore.svg";
 import IncreasBalanceDialog from "@/main/components/Dashboard/IncreasBalanceDialog";
 import WithdrawBalanceDialog from "@/main/components/Dashboard/WithdrawBalanceDialog";
-import { walletDeposit, walletWithdrawal } from "@/main/api";
-import toast from "react-hot-toast";
 
-interface WalletProps {
-  marketingBalance: number;
-  walletBalance: number;
-  setBalance: (walletBalance: number, marketingBalance: number) => void;
-}
-
-export default function Wallet({
-  marketingBalance,
-  walletBalance,
-  setBalance,
-}: WalletProps) {
+export default function Wallet() {
+  const dashboardData = useDashboardData();
   const [walletExpanded, setWalletExpanded] = useState(false);
   const [showIncreasBalanceDialog, setShowIncreasBalanceDialog] =
     useState(false);
@@ -41,7 +34,17 @@ export default function Wallet({
         <div className={styles.Balance}>
           موجودی:{" "}
           <span>
-            <FormattedNumber value={walletBalance + marketingBalance} />
+            <DataLoaderView
+              state={dashboardData.walletDataLoaderState}
+              size="small"
+            >
+              <FormattedNumber
+                value={
+                  (dashboardData.data?.walletBalance || 0) +
+                  (dashboardData.data?.marketingBalance || 0)
+                }
+              />
+            </DataLoaderView>
           </span>{" "}
           <span>تومان</span>
         </div>
@@ -53,7 +56,12 @@ export default function Wallet({
           موجودی کیف پول:
           <div className={styles.Spacer} />
           <span>
-            <FormattedNumber value={walletBalance} />
+            <DataLoaderView
+              state={dashboardData.walletDataLoaderState}
+              size="small"
+            >
+              <FormattedNumber value={dashboardData.data?.walletBalance || 0} />
+            </DataLoaderView>
           </span>{" "}
           تومان
         </div>
@@ -61,7 +69,14 @@ export default function Wallet({
           موجودی فروش بازاریابی:
           <div className={styles.Spacer} />
           <span>
-            <FormattedNumber value={marketingBalance} />
+            <DataLoaderView
+              state={dashboardData.walletDataLoaderState}
+              size="small"
+            >
+              <FormattedNumber
+                value={dashboardData.data?.marketingBalance || 0}
+              />
+            </DataLoaderView>
           </span>{" "}
           تومان
         </div>
@@ -97,7 +112,7 @@ export default function Wallet({
             .then((message) => {
               toast.success(message);
               setShowWithdrawBalanceDialog(false);
-              setBalance(0, 0);
+              dashboardData.walletDataLoaderState.reload();
             })
             .catch(toast.error)
         }

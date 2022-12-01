@@ -1,13 +1,15 @@
-import { useRouter } from "next/router";
+import styles from "./style.module.scss";
 import { ReactElement, useState } from "react";
-import { useIntl } from "react-intl";
+import { FormattedNumber } from "react-intl";
+import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import { CustomerReport } from "@/shared/types";
 import { getCustomerReports, getCustomerReportsExcel } from "@/admin/api";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import DownloadIcon from "@/admin/assets/icons/download.svg";
 import DashboardLayout from "@/admin/components/Layout";
-import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
+import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
@@ -24,14 +26,23 @@ import EmptyNote from "@/shared/components/Dashboard/EmptyNote";
 import Pagination from "@/shared/components/Pagination";
 
 export default function DashboardCustomerReport() {
-  const intl = useIntl();
   const router = useRouter();
 
   const [data, setData] = useState<{
     totalCount: number;
     pageSize: number;
+    totalCreditor: number;
+    totalDebtor: number;
+    totalOrdersCount: number;
     reports: CustomerReport[];
-  }>({ totalCount: 0, pageSize: 0, reports: [] });
+  }>({
+    totalCount: 0,
+    pageSize: 0,
+    totalCreditor: 0,
+    totalDebtor: 0,
+    totalOrdersCount: 0,
+    reports: [],
+  });
 
   const [search, setSearch] = useState("");
   const [paperSize, setPaperSize] = useState<"a4" | "a5" | "a3" | null>(null);
@@ -69,18 +80,31 @@ export default function DashboardCustomerReport() {
       <Head>
         <title>داشبورد - گزارش مشتریان</title>
       </Head>
-      <SectionHeader
+      <AdminSectionHeader
         title="گزارش مشتریان"
         description="ــ گزارش مشتریان را از این قسمت مشاهده کنید"
-        isAdmin
       />
       <SectionContent>
         <ContentHeader
           title="کاربران"
           subTitle={
-            data.totalCount
-              ? `(${intl.formatNumber(data.totalCount)})`
-              : undefined
+            <div className={styles.SubTitle}>
+              <div style={{ color: "#9c9c9c", fontSize: 13, fontWeight: 400 }}>
+                مجموع بر اساس فیلتر:
+              </div>
+              <div>
+                تعداد: <FormattedNumber value={data.totalCount} /> کاربر -{" "}
+                <FormattedNumber value={data.totalOrdersCount} /> سفارش
+              </div>
+              <div>
+                {"("}بستانکار کل: <FormattedNumber value={data.totalCreditor} />{" "}
+                تومان{")"}
+              </div>
+              <div style={{ color: "#f20f4b" }}>
+                {"("}بدهکار کل: <FormattedNumber value={data.totalDebtor} />{" "}
+                تومان{")"}
+              </div>
+            </div>
           }
           end={
             <Button
@@ -187,9 +211,9 @@ export default function DashboardCustomerReport() {
                       mostToLowestPayment: "بیشترین به کمترین پرداختی",
                       lowestToMostPayment: "کمترین به بیشترین پرداختی",
                       withoutOrder: "بدون سفارش",
-                      oneOrder: `${intl.formatNumber(1)} سفارش`,
-                      twoOrder: `${intl.formatNumber(2)} سفارش`,
-                      threeAndMoreOrder: `${intl.formatNumber(
+                      oneOrder: `${englishToPersianNumbers(1)} سفارش`,
+                      twoOrder: `${englishToPersianNumbers(2)} سفارش`,
+                      threeAndMoreOrder: `${englishToPersianNumbers(
                         3
                       )} سفارش و بیشتر`,
                     }}
@@ -226,9 +250,7 @@ export default function DashboardCustomerReport() {
               router.push(`/dashboard/users/${userId}/orders`)
             }
           />
-          {!data.reports.length && (
-            <EmptyNote>هیچ گزارشی وجود ندارید</EmptyNote>
-          )}
+          {!data.reports.length && <EmptyNote>هیچ گزارشی وجود ندارد</EmptyNote>}
           <Pagination
             currentPage={page}
             totalCount={data.totalCount}

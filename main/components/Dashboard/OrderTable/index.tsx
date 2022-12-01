@@ -1,6 +1,7 @@
 import styles from "./style.module.scss";
 import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
 import { Order } from "@/shared/types";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 
 interface OrderTableProps {
   orders: Order[];
@@ -22,7 +23,7 @@ export default function OrderTable({
           <th>مبلغ سفارش</th>
           <th>وضعیت</th>
           <th>جزییات</th>
-          <th>عملیات</th>
+          <th style={{ width: "1%" }}>عملیات</th>
         </tr>
       </thead>
       <tbody>
@@ -30,7 +31,7 @@ export default function OrderTable({
           <tr key={order.id}>
             <td>
               <span className={styles.MobileLabel}>شماره سفارش:</span>
-              <FormattedNumber value={order.id} useGrouping={false} />
+              {englishToPersianNumbers(order.id)}
             </td>
             <td>
               <span className={styles.MobileLabel}>تاریخ سفارش:</span>
@@ -74,9 +75,9 @@ export default function OrderTable({
                   case "canceled":
                     return (
                       <span className={styles.Canceled}>
-                        لغو شده
-                        <br />
                         بازگشت وجه به کیف پول
+                        <br />
+                        {order.cancelReason}
                       </span>
                     );
                 }

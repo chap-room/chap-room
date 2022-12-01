@@ -8,6 +8,7 @@ import {
   deletePrintFile,
   getTariffs,
   calculatePrintFolderPrice,
+  request,
 } from "@/main/api";
 import {
   optionalValidate,
@@ -15,6 +16,7 @@ import {
   validateInt,
   validateNotEmpty,
 } from "@/shared/utils/validation";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import DeleteIcon from "@/shared/assets/icons/delete.svg";
 import CloseIcon from "@/shared/assets/icons/close.svg";
 import Button from "@/shared/components/Button";
@@ -32,9 +34,16 @@ import Radio from "@/shared/components/Radio";
 import InfoTooltip from "@/shared/components/InfoTooltip";
 import IconButton from "@/shared/components/IconButton";
 import SmallLoader from "@/shared/components/SmallLoader";
+import TelegramIcon from "@/main/assets/icons/telegram.svg";
+import EitaaIcon from "@/main/assets/icons/eitaa.svg";
+import CopyIcon from "@/shared/assets/icons/copy.svg";
+import CopyToClipboard from "react-copy-to-clipboard";
 
 interface PrintFolderFormData {
   printFiles: PrintFile[];
+  filesManuallySent: boolean;
+  folderCode: string;
+  phoneNumberToSendFile: string;
   printColor: "blackAndWhite" | "normalColor" | "fullColor";
   printSize: "a4" | "a5" | "a3";
   printSide: "singleSided" | "doubleSided";
@@ -45,21 +54,28 @@ interface PrintFolderFormData {
 }
 
 interface PrintFolderFormProps {
+  index: number;
   defaultValues?: Partial<PrintFolderFormData>;
   onCancel: () => void;
   onFinish: (data: PrintFolderFormData) => Promise<any>;
 }
 
 export default function PrintFolderForm({
+  index,
   defaultValues,
   onCancel,
   onFinish,
 }: PrintFolderFormProps) {
   const [tariffs, setTariffs] = useState<Tariffs | null>(null);
+  const [printFiles, setPrintFiles] = useState(defaultValues?.printFiles || []);
   const [inUploadPrintFiles, setInUploadPrintFiles] = useState<File[]>([]);
+  const [filesManuallySent, setFilesManuallySent] = useState(
+    defaultValues && defaultValues.filesManuallySent !== undefined
+      ? defaultValues.filesManuallySent
+      : true
+  );
 
   const [currentStep, setCurrentStep] = useState<"1" | "2">("1");
-  const [printFiles, setPrintFiles] = useState(defaultValues?.printFiles || []);
   const [printColor, setPrintColor] = useState(
     defaultValues?.printColor || null
   );
@@ -106,9 +122,26 @@ export default function PrintFolderForm({
     defaultValues?.countOfCopies?.toString() || ""
   );
 
+  const [socialMediaFileSendData, setSocialMediaFileSendData] = useState<{
+    folderCode: string;
+    phoneNumberToSendFile: string;
+  } | null>(
+    defaultValues?.folderCode && defaultValues?.phoneNumberToSendFile
+      ? {
+          folderCode: defaultValues.folderCode,
+          phoneNumberToSendFile: defaultValues.phoneNumberToSendFile,
+        }
+      : null
+  );
+
   const step1FormValidation = useValidation(
     {
-      printFiles: [validateNotEmpty()],
+      printFiles: [
+        optionalValidate({
+          enabled: filesManuallySent,
+          validator: validateNotEmpty(),
+        }),
+      ],
       printColor: [validateNotEmpty()],
       printSize: [validateNotEmpty()],
       printSide: [validateNotEmpty()],
@@ -203,7 +236,7 @@ export default function PrintFolderForm({
   });
 
   const cancelButton = (
-    <Button varient="none" onClick={() => onCancel()}>
+    <Button varient="none" style={{ fontSize: 18 }} onClick={() => onCancel()}>
       بازگشت
     </Button>
   );
@@ -216,6 +249,7 @@ export default function PrintFolderForm({
         setIsSubmitting(true);
         onFinish({
           printFiles,
+          filesManuallySent,
           printColor: printColor!,
           printSize: printSize!,
           printSide: printSide!,
@@ -235,6 +269,8 @@ export default function PrintFolderForm({
           countOfCopies: toBePrintedInSeveralCopies
             ? parseInt(countOfCopies)
             : null,
+          folderCode: "",
+          phoneNumberToSendFile: "",
         }).finally(() => setIsSubmitting(false));
       }}
       loading={isSubmitting}
@@ -244,7 +280,7 @@ export default function PrintFolderForm({
         !step2FormValidation.isValid
       }
     >
-      ثبت پوشه
+      ثبت پوشه {englishToPersianNumbers(index)}
     </Button>
   );
 
@@ -260,74 +296,155 @@ export default function PrintFolderForm({
                 <div className={styles.Step1}>
                   <div className={styles.SendFile}>
                     <div className={styles.Title}>ارسال فایل ها</div>
-                    <div>
-                      <UploadArea
-                        onSelectFile={(file) =>
-                          setInUploadPrintFiles([...inUploadPrintFiles, file])
-                        }
-                        acceptedTypes={{
-                          Word: [
-                            "application/msword",
-                            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                          ],
-                          PDF: ["application/pdf"],
-                        }}
-                        maxSizeInMB={200}
-                        multiple
-                      />
-                      <div className={styles.UploadedFileList}>
-                        {printFiles.map((printFile) => (
-                          <UploadedPrintFile
-                            key={printFile.id}
-                            printFile={printFile}
-                            onDelete={() =>
-                              setPrintFiles(
-                                printFiles.filter(
-                                  (item) => item.id !== printFile.id
-                                )
-                              )
-                            }
-                          />
-                        ))}
+                    <div className={styles.FilesSendMethod}>
+                      <div onClick={() => setFilesManuallySent(true)}>
+                        <Radio checked={filesManuallySent} />
+                        از طریق سایت
                       </div>
-                      <div className={styles.InUploadFileList}>
-                        {inUploadPrintFiles.map((file, index) => (
-                          <UploadPrintFile
-                            key={index}
-                            file={file}
-                            onCancel={() =>
-                              setInUploadPrintFiles(
-                                inUploadPrintFiles.filter(
-                                  (item) => item !== file
-                                )
-                              )
-                            }
-                            onComplete={(printFile) => {
-                              setInUploadPrintFiles(
-                                inUploadPrintFiles.filter(
-                                  (item) => item !== file
-                                )
-                              );
-                              setPrintFiles([...printFiles, printFile]);
-                            }}
-                            onError={() => {
-                              setInUploadPrintFiles(
-                                inUploadPrintFiles.filter(
-                                  (item) => item !== file
-                                )
-                              );
-                            }}
-                          />
-                        ))}
+                      <div
+                        onClick={() => {
+                          if (
+                            printFiles.length > 0 ||
+                            inUploadPrintFiles.length > 0
+                          )
+                            toast.error(
+                              "شما نمی توانید از هر دو روش استفاده کنید." +
+                                " اگر می خواهید از تلگرام و ایتا استفاده کنید،" +
+                                "ابتدا تمام فایل های لیست را حذف کنید."
+                            );
+                          else setFilesManuallySent(false);
+                        }}
+                      >
+                        <Radio checked={!filesManuallySent} />
+                        از طریق تلگرام و ایتا
                       </div>
                     </div>
+                    {filesManuallySent && (
+                      <div className={styles.ManualUploadFiles}>
+                        <UploadArea
+                          onSelectFile={(file) =>
+                            setInUploadPrintFiles([...inUploadPrintFiles, file])
+                          }
+                          acceptedTypes={{
+                            Word: [
+                              "application/msword",
+                              "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                            ],
+                            PDF: ["application/pdf"],
+                          }}
+                          maxSizeInMB={200}
+                          multiple
+                        />
+                        <div className={styles.UploadedFileList}>
+                          {printFiles.map((printFile) => (
+                            <UploadedPrintFile
+                              key={printFile.id}
+                              printFile={printFile}
+                              onDelete={() =>
+                                setPrintFiles(
+                                  printFiles.filter(
+                                    (item) => item.id !== printFile.id
+                                  )
+                                )
+                              }
+                            />
+                          ))}
+                        </div>
+                        <div className={styles.InUploadFileList}>
+                          {inUploadPrintFiles.map((file, index) => (
+                            <UploadPrintFile
+                              key={index}
+                              file={file}
+                              onCancel={() =>
+                                setInUploadPrintFiles(
+                                  inUploadPrintFiles.filter(
+                                    (item) => item !== file
+                                  )
+                                )
+                              }
+                              onComplete={(printFile) => {
+                                setInUploadPrintFiles(
+                                  inUploadPrintFiles.filter(
+                                    (item) => item !== file
+                                  )
+                                );
+                                setPrintFiles([...printFiles, printFile]);
+                              }}
+                              onError={() => {
+                                setInUploadPrintFiles(
+                                  inUploadPrintFiles.filter(
+                                    (item) => item !== file
+                                  )
+                                );
+                              }}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    {!filesManuallySent && (
+                      <DataLoader
+                        load={() =>
+                          request({
+                            method: "GET",
+                            url: "/users/folders/code",
+                            needAuth: true,
+                          }).then(({ data }) => data)
+                        }
+                        setData={setSocialMediaFileSendData}
+                        initialFetch={socialMediaFileSendData === null}
+                      >
+                        <div className={styles.SocialMediaUploadFiles}>
+                          <div className={styles.FolderCode}>
+                            <div>کد پوشه {englishToPersianNumbers(index)}:</div>
+                            <div>
+                              <div>
+                                <CopyToClipboard
+                                  text={
+                                    socialMediaFileSendData?.folderCode || ""
+                                  }
+                                >
+                                  <IconButton varient="none" size={20}>
+                                    <CopyIcon width={20} height={20} />
+                                  </IconButton>
+                                </CopyToClipboard>
+                                <div>
+                                  {englishToPersianNumbers(
+                                    socialMediaFileSendData?.folderCode || ""
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className={styles.Note}>
+                            فایلها را به همراه کد پوشه به یکی از اکانت‌های زیر
+                            ارسال کنید.
+                          </div>
+                          <div className={styles.Accounts}>
+                            <div className={styles.TelegramAccount}>
+                              <TelegramIcon />
+                              <div>chaproom_order</div>
+                            </div>
+                            <div className={styles.EitaaAccount}>
+                              <EitaaIcon />
+                              <div>
+                                {englishToPersianNumbers(
+                                  socialMediaFileSendData?.phoneNumberToSendFile ||
+                                    ""
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </DataLoader>
+                    )}
                   </div>
                   <div className={styles.Separator} />
                   <div className={styles.PrintProperties}>
                     <div className={styles.Title}>
-                      فایل های این پوشه رو چکارش کنم برات؟!
+                      فایل های این پوشه رو چکارش کنم برات؟
                     </div>
-                    <div>
+                    <div className={styles.FolderProperties}>
                       <div>
                         <Select
                           varient="shadow-without-bg"
@@ -596,7 +713,11 @@ export default function PrintFolderForm({
                 </div>
                 <div className={styles.StepBottomActionsContainer}>
                   <BottomActions start={pagePriceView}>
-                    <Button varient="none" onClick={() => setCurrentStep("1")}>
+                    <Button
+                      varient="none"
+                      style={{ fontSize: 18 }}
+                      onClick={() => setCurrentStep("1")}
+                    >
                       مرحله قبل
                     </Button>
                     {submitButton}
@@ -607,12 +728,9 @@ export default function PrintFolderForm({
           },
         ]}
       />
-      <div className={styles.BottomActionsContainer}>
+      <div className={styles.MobileBottomActions}>
         {pagePriceView}
-        <BottomActions>
-          {cancelButton}
-          {submitButton}
-        </BottomActions>
+        {submitButton}
       </div>
     </div>
   );

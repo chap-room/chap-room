@@ -1,6 +1,7 @@
 import styles from "./style.module.scss";
 import { CustomerReport } from "@/shared/types";
 import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 
 interface CustomerReportTableProps {
   customerReports: CustomerReport[];
@@ -31,13 +32,7 @@ export default function CustomerReportTable({
               <span className={styles.MobileLabel}>کاربر:</span>
               <div>
                 <div className={styles.UserName}>{customerReport.name}</div>
-                <div>
-                  <FormattedNumber
-                    value={parseInt(customerReport.phoneNumber)}
-                    useGrouping={false}
-                    minimumIntegerDigits={11}
-                  />
-                </div>
+                <div>{englishToPersianNumbers(customerReport.phoneNumber)}</div>
               </div>
             </td>
             <td>
@@ -61,7 +56,10 @@ export default function CustomerReportTable({
                   <FormattedDate value={customerReport.firstOrderDate} />
                 </span>
                 <span>
-                  <FormattedTime value={customerReport.firstOrderDate} timeStyle="medium" />
+                  <FormattedTime
+                    value={customerReport.firstOrderDate}
+                    timeStyle="medium"
+                  />
                 </span>
               </span>
             </td>
@@ -72,7 +70,10 @@ export default function CustomerReportTable({
                   <FormattedDate value={customerReport.lastOrderDate} />
                 </span>
                 <span>
-                  <FormattedTime value={customerReport.lastOrderDate} timeStyle="medium" />
+                  <FormattedTime
+                    value={customerReport.lastOrderDate}
+                    timeStyle="medium"
+                  />
                 </span>
               </span>
             </td>

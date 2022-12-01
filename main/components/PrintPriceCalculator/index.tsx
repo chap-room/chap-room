@@ -134,10 +134,68 @@ export default function PrintPriceCalculator({
       <div className={styles.Row}>
         <div className={styles.Input}>
           <TextInput
-            inputProps={{ type: "number", placeholder: "تعداد برگ" }}
+            inputProps={{ placeholder: "تعداد برگ" }}
             varient="shadow-without-bg"
-            value={countOfPages}
-            onChange={setCountOfPages}
+            value={countOfPages
+              .split("")
+              .map(
+                (char) =>
+                  ({
+                    "0": "۰",
+                    "۰": "۰",
+                    "1": "۱",
+                    "۱": "۱",
+                    "2": "۲",
+                    "۲": "۲",
+                    "3": "۳",
+                    "۳": "۳",
+                    "4": "۴",
+                    "۴": "۴",
+                    "5": "۵",
+                    "۵": "۵",
+                    "6": "۶",
+                    "۶": "۶",
+                    "7": "۷",
+                    "۷": "۷",
+                    "8": "۸",
+                    "۸": "۸",
+                    "9": "۹",
+                    "۹": "۹",
+                  }[char])
+              )
+              .join("")}
+            onChange={(newValue) =>
+              setCountOfPages(
+                newValue
+                  .split("")
+                  .map(
+                    (char) =>
+                      ({
+                        "۰": "0",
+                        "0": "0",
+                        "۱": "1",
+                        "1": "1",
+                        "۲": "2",
+                        "2": "2",
+                        "۳": "3",
+                        "3": "3",
+                        "۴": "4",
+                        "4": "4",
+                        "۵": "5",
+                        "5": "5",
+                        "۶": "6",
+                        "6": "6",
+                        "۷": "7",
+                        "7": "7",
+                        "۸": "8",
+                        "8": "8",
+                        "۹": "9",
+                        "9": "9",
+                      }[char])
+                  )
+                  .join("")
+              )
+            }
             height={48}
           />
           <ErrorList errors={formValidation.errors.countOfPages} />

@@ -11,7 +11,7 @@ import {
   markOrderSent,
 } from "@/admin/api";
 import DashboardLayout from "@/admin/components/Layout";
-import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
+import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
@@ -58,10 +58,9 @@ export default function DashboardOrderList() {
       <Head>
         <title>داشبورد - سفارش ها</title>
       </Head>
-      <SectionHeader
+      <AdminSectionHeader
         title="سفارش ها"
         description="ــ سفارشات را از این قسمت مدیریت کنید"
-        isAdmin
       />
       <SectionContent>
         <ContentHeader
@@ -129,28 +128,29 @@ export default function DashboardOrderList() {
             onMarkOrderSent={setPendingMarkOrderSentRequest}
             itemsStatus={itemsStatus}
           />
-          {!data.orders.length && <EmptyNote>هیچ سفارشی وجود ندارید</EmptyNote>}
+          {!data.orders.length && <EmptyNote>هیچ سفارشی وجود ندارد</EmptyNote>}
           <Pagination
             currentPage={page}
             totalCount={data.totalCount}
             pageSize={data.pageSize}
             onPageChange={setPage}
           />
-          <OrderCancelDialog
-            open={pendingOrderCancelRequest !== null}
-            onClose={() => {
-              setPendingOrderCancelRequest(null);
-            }}
-            onCancelOrder={(reason) =>
-              cancelOrder(pendingOrderCancelRequest!, reason)
-                .then((message) => {
-                  toast.success(message);
-                  setPendingOrderCancelRequest(null);
-                  if (reloadRef.current) reloadRef.current();
-                })
-                .catch(toast.error)
-            }
-          />
+          {pendingOrderCancelRequest !== null && (
+            <OrderCancelDialog
+              onClose={() => {
+                setPendingOrderCancelRequest(null);
+              }}
+              onCancelOrder={(reason) =>
+                cancelOrder(pendingOrderCancelRequest!, reason)
+                  .then((message) => {
+                    toast.success(message);
+                    setPendingOrderCancelRequest(null);
+                    if (reloadRef.current) reloadRef.current();
+                  })
+                  .catch(toast.error)
+              }
+            />
+          )}
           <WarningConfirmDialog
             open={pendingOrderConfirmRequest !== null}
             onClose={() => {
@@ -168,19 +168,20 @@ export default function DashboardOrderList() {
             message="از تأیید کردن این سفارش مطمئن هستید؟"
             confirmButtonText="تأیید"
           />
-          <OrderSentDialog
-            open={pendingMarkOrderSentRequest !== null}
-            onClose={() => setPendingMarkOrderSentRequest(null)}
-            onMarkOrderSent={(trackingCode) =>
-              markOrderSent(pendingMarkOrderSentRequest!, trackingCode)
-                .then((message) => {
-                  toast.success(message);
-                  setPendingMarkOrderSentRequest(null);
-                  if (reloadRef.current) reloadRef.current();
-                })
-                .catch(toast.error)
-            }
-          />
+          {pendingMarkOrderSentRequest !== null && (
+            <OrderSentDialog
+              onClose={() => setPendingMarkOrderSentRequest(null)}
+              onMarkOrderSent={(trackingCode) =>
+                markOrderSent(pendingMarkOrderSentRequest!, trackingCode)
+                  .then((message) => {
+                    toast.success(message);
+                    setPendingMarkOrderSentRequest(null);
+                    if (reloadRef.current) reloadRef.current();
+                  })
+                  .catch(toast.error)
+              }
+            />
+          )}
         </DataLoader>
       </SectionContent>
     </>

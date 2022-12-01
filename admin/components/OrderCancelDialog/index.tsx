@@ -1,19 +1,23 @@
 import styles from "./style.module.scss";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import {
+  optionalValidate,
+  useValidation,
+  validateNotEmpty,
+} from "@/shared/utils/validation";
 import Dialog from "@/shared/components/Dialog";
 import TextInput from "@/shared/components/TextInput";
 import BottomActions from "@/shared/components/Dashboard/BottomActions";
+import ErrorList from "@/shared/components/ErrorList";
 import Button from "@/shared/components/Button";
 import ContentSelect from "@/shared/components/ContentSelect";
 
 interface OrderCancelDialogProps {
-  open: boolean;
   onClose: () => void;
   onCancelOrder: (reason: string) => Promise<any>;
 }
 
 export default function OrderCancelDialog({
-  open,
   onClose,
   onCancelOrder,
 }: OrderCancelDialogProps) {
@@ -22,20 +26,27 @@ export default function OrderCancelDialog({
   );
   const [reasonText, setReasonText] = useState("");
 
-  useEffect(() => {
-    if (open) {
-      setReason("تعداد برگ با سفارش همخوانی ندارد");
-      setReasonText("");
-    }
-  }, [open]);
-
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const formValidation = useValidation(
+    {
+      reasonText: [
+        optionalValidate({
+          enabled: reason === "دیگر",
+          validator: validateNotEmpty(),
+        }),
+      ],
+    },
+    {
+      reasonText,
+    }
+  );
+
   return (
-    <Dialog title="لغو سفارش" open={open} onClose={() => onClose()}>
+    <Dialog title="لغو سفارش" open={true} onClose={() => onClose()}>
       <div className={styles.DialogContent}>
-        <div>انتخاب علت:</div>
-        <div>
+        <div className={styles.Label}>انتخاب علت:</div>
+        <div className={styles.Input}>
           <ContentSelect
             options={[
               "تعداد برگ با سفارش همخوانی ندارد",
@@ -52,13 +63,14 @@ export default function OrderCancelDialog({
         </div>
         {reason === "دیگر" && (
           <>
-            <div>متن:</div>
-            <div>
+            <div className={styles.Label}>متن:</div>
+            <div className={styles.Input}>
               <TextInput
                 inputProps={{ placeholder: "متن" }}
                 value={reasonText}
                 onChange={setReasonText}
               />
+              <ErrorList errors={formValidation.errors.reasonText} />
             </div>
           </>
         )}
@@ -74,7 +86,7 @@ export default function OrderCancelDialog({
           }}
           style={{ minWidth: 100 }}
           loading={isSubmitting}
-          disabled={isSubmitting || (reason === "دیگر" && !reasonText)}
+          disabled={isSubmitting || !formValidation.isValid}
         >
           لغو کردن
         </Button>

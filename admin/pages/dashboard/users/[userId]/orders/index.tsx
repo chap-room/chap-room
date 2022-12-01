@@ -1,20 +1,20 @@
 import { ReactElement, useState } from "react";
-import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
-import { Order } from "@/shared/types";
+import { Order, User } from "@/shared/types";
 import {
   cancelOrder,
   confirmOrder,
   getUserOrders,
   markOrderSent,
 } from "@/admin/api";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import DataLoader from "@/shared/components/DataLoader";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
-import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
+import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
@@ -27,15 +27,15 @@ import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDi
 import OrderSentDialog from "@/admin/components/OrderSentDialog";
 
 export default function DashboardUserOrderList() {
-  const intl = useIntl();
   const router = useRouter();
   const userId = parseInt(router.query.userId as string); // TODO 404
 
   const [data, setData] = useState<{
     totalCount: number;
     pageSize: number;
+    user: User | null;
     orders: Order[];
-  }>({ totalCount: 0, pageSize: 0, orders: [] });
+  }>({ totalCount: 0, pageSize: 0, user: null, orders: [] });
 
   const [page, setPage] = useState(1);
 
@@ -53,17 +53,18 @@ export default function DashboardUserOrderList() {
       <Head>
         <title>داشبورد - سفارش ها</title>
       </Head>
-      <SectionHeader
+      <AdminSectionHeader
         title="کاربران"
         description="ــ افزودن و ویرایش کاربران از این قسمت"
-        isAdmin
       />
       <SectionContent>
         <ContentHeader
           title="همه سفارش ها"
           subTitle={
-            data.totalCount
-              ? `(${intl.formatNumber(data.totalCount)})`
+            data.user
+              ? `(${data.user.name} / ${englishToPersianNumbers(
+                  data.user.phoneNumber
+                )})`
               : undefined
           }
           end={
@@ -95,7 +96,7 @@ export default function DashboardUserOrderList() {
             itemsStatus={null}
           />
           {!data.orders.length && (
-            <EmptyNote>این کاربر هیچ سفارشی ندارید</EmptyNote>
+            <EmptyNote>این کاربر هیچ سفارشی ندارد</EmptyNote>
           )}
           <Pagination
             currentPage={page}
@@ -103,20 +104,21 @@ export default function DashboardUserOrderList() {
             pageSize={data.pageSize}
             onPageChange={setPage}
           />
-          <OrderCancelDialog
-            open={pendingOrderCancelRequest !== null}
-            onClose={() => {
-              setPendingOrderCancelRequest(null);
-            }}
-            onCancelOrder={(reason) =>
-              cancelOrder(pendingOrderCancelRequest!, reason)
-                .then((message) => {
-                  toast.success(message);
-                  setPendingOrderCancelRequest(null);
-                })
-                .catch(toast.error)
-            }
-          />
+          {pendingOrderCancelRequest !== null && (
+            <OrderCancelDialog
+              onClose={() => {
+                setPendingOrderCancelRequest(null);
+              }}
+              onCancelOrder={(reason) =>
+                cancelOrder(pendingOrderCancelRequest!, reason)
+                  .then((message) => {
+                    toast.success(message);
+                    setPendingOrderCancelRequest(null);
+                  })
+                  .catch(toast.error)
+              }
+            />
+          )}
           <WarningConfirmDialog
             open={pendingOrderConfirmRequest !== null}
             onClose={() => {
@@ -133,20 +135,21 @@ export default function DashboardUserOrderList() {
             message="از تأیید کردن این سفارش مطمئن هستید؟"
             confirmButtonText="تأیید"
           />
-          <OrderSentDialog
-            open={pendingMarkOrderSentRequest !== null}
-            onClose={() => {
-              setPendingMarkOrderSentRequest(null);
-            }}
-            onMarkOrderSent={(trackingCode) =>
-              markOrderSent(pendingMarkOrderSentRequest!, trackingCode)
-                .then((message) => {
-                  toast.success(message);
-                  setPendingMarkOrderSentRequest(null);
-                })
-                .catch(toast.error)
-            }
-          />
+          {pendingMarkOrderSentRequest !== null && (
+            <OrderSentDialog
+              onClose={() => {
+                setPendingMarkOrderSentRequest(null);
+              }}
+              onMarkOrderSent={(trackingCode) =>
+                markOrderSent(pendingMarkOrderSentRequest!, trackingCode)
+                  .then((message) => {
+                    toast.success(message);
+                    setPendingMarkOrderSentRequest(null);
+                  })
+                  .catch(toast.error)
+              }
+            />
+          )}
         </DataLoader>
       </SectionContent>
     </>

@@ -12,7 +12,6 @@ export default function NewAddressesStage({ actions }: NewAddressesStageProps) {
   return (
     <AddressForm
       inputsVarient="shadow"
-      onCancel={actions.finish}
       onSave={(addressData) =>
         newAddress(
           addressData.label,

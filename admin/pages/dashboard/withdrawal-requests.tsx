@@ -1,4 +1,5 @@
 import { ReactElement, useRef, useState } from "react";
+import { useIntl } from "react-intl";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import { WithdrawalRequest } from "@/shared/types";
@@ -8,7 +9,7 @@ import {
   rejectWithdrawalRequests,
 } from "@/admin/api";
 import DashboardLayout from "@/admin/components/Layout";
-import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
+import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
@@ -21,9 +22,10 @@ import EmptyNote from "@/shared/components/Dashboard/EmptyNote";
 import Pagination from "@/shared/components/Pagination";
 import WithdrawalRequestDoneDialog from "@/admin/components/WithdrawalRequestDoneDialog";
 import WithdrawalRequestRejectDialog from "@/admin/components/WithdrawalRequestRejectDialog";
-import { FormattedNumber } from "react-intl";
 
 export default function DashboardWithdrawalRequests() {
+  const intl = useIntl();
+
   const [data, setData] = useState<{
     totalCount: number;
     pageSize: number;
@@ -61,22 +63,17 @@ export default function DashboardWithdrawalRequests() {
       <Head>
         <title>داشبورد - درخواست های برداشت</title>
       </Head>
-      <SectionHeader
+      <AdminSectionHeader
         title="درخواست های برداشت"
         description="ــ در خواست های برداشت را از این قسمت مدیریت کنید"
-        isAdmin
       />
       <SectionContent>
         <ContentHeader
           title={title}
           subTitle={
-            data.totalCount ? (
-              <>
-                {"("}
-                <FormattedNumber value={data.totalCount} />
-                {")"}
-              </>
-            ) : undefined
+            data.totalCount
+              ? `(${intl.formatNumber(data.totalCount)})`
+              : undefined
           }
           end={
             <SwitchButtons
@@ -133,7 +130,7 @@ export default function DashboardWithdrawalRequests() {
             itemsStatus={itemsStatus === null ? "pending" : itemsStatus}
           />
           {!data.withdrawals.length && (
-            <EmptyNote>هیچ درخواست برداشتی وجود ندارید</EmptyNote>
+            <EmptyNote>هیچ درخواست برداشتی وجود ندارد</EmptyNote>
           )}
           <Pagination
             currentPage={page}
@@ -141,38 +138,40 @@ export default function DashboardWithdrawalRequests() {
             pageSize={data.pageSize}
             onPageChange={setPage}
           />
-          <WithdrawalRequestDoneDialog
-            open={pendingWithdrawalRequestDoneRequest !== null}
-            onClose={() => setPendingWithdrawalRequestDoneRequest(null)}
-            onDoneWithdrawalRequest={(transactionDate, trackingCode) =>
-              doWithdrawalRequests(
-                pendingWithdrawalRequestDoneRequest!,
-                trackingCode
-              )
-                .then((message) => {
-                  toast.success(message);
-                  setPendingWithdrawalRequestDoneRequest(null);
-                  if (reloadRef.current) reloadRef.current();
-                })
-                .catch(toast.error)
-            }
-          />
-          <WithdrawalRequestRejectDialog
-            open={pendingWithdrawalRequestRejectRequest !== null}
-            onClose={() => setPendingWithdrawalRequestRejectRequest(null)}
-            onRejectWithdrawalRequest={(reason) =>
-              rejectWithdrawalRequests(
-                pendingWithdrawalRequestRejectRequest!,
-                reason
-              )
-                .then((message) => {
-                  toast.success(message);
-                  setPendingWithdrawalRequestRejectRequest(null);
-                  if (reloadRef.current) reloadRef.current();
-                })
-                .catch(toast.error)
-            }
-          />
+          {pendingWithdrawalRequestDoneRequest !== null && (
+            <WithdrawalRequestDoneDialog
+              onClose={() => setPendingWithdrawalRequestDoneRequest(null)}
+              onDoneWithdrawalRequest={(transactionDate, trackingCode) =>
+                doWithdrawalRequests(
+                  pendingWithdrawalRequestDoneRequest!,
+                  trackingCode
+                )
+                  .then((message) => {
+                    toast.success(message);
+                    setPendingWithdrawalRequestDoneRequest(null);
+                    if (reloadRef.current) reloadRef.current();
+                  })
+                  .catch(toast.error)
+              }
+            />
+          )}
+          {pendingWithdrawalRequestRejectRequest !== null && (
+            <WithdrawalRequestRejectDialog
+              onClose={() => setPendingWithdrawalRequestRejectRequest(null)}
+              onRejectWithdrawalRequest={(reason) =>
+                rejectWithdrawalRequests(
+                  pendingWithdrawalRequestRejectRequest!,
+                  reason
+                )
+                  .then((message) => {
+                    toast.success(message);
+                    setPendingWithdrawalRequestRejectRequest(null);
+                    if (reloadRef.current) reloadRef.current();
+                  })
+                  .catch(toast.error)
+              }
+            />
+          )}
         </DataLoader>
       </SectionContent>
     </>

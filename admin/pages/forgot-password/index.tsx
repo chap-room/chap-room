@@ -19,6 +19,7 @@ import {
   validateLength,
   validatePasswordRepeat,
 } from "@/shared/utils/validation";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import LogoWithName from "@/shared/assets/images/logoWithName.svg";
 import ArrowForwardIcon from "@/shared/assets/icons/arrowForward.svg";
 import Image from "@/shared/assets/images/thinking.svg";
@@ -152,12 +153,7 @@ export default function ForgotPassword() {
               <div className={styles.Column}>
                 <div className={styles.Title}>تأیید شماره موبایل</div>
                 <div className={styles.SubTitle}>
-                  کد 6 رقمی به شماره{" "}
-                  <FormattedNumber
-                    value={parseInt(phoneNumber)}
-                    minimumIntegerDigits={11}
-                    useGrouping={false}
-                  />{" "}
+                  کد 6 رقمی به شماره {englishToPersianNumbers(phoneNumber)}{" "}
                   ارسال شد.
                 </div>
               </div>

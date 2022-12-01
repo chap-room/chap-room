@@ -1,9 +1,9 @@
 import styles from "./style.module.scss";
 import { ReactElement, useState } from "react";
-import { FormattedNumber } from "react-intl";
 import Head from "next/head";
 import { Tariffs } from "@/shared/types";
 import { getTariffs } from "@/main/api";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import Layout from "@/main/components/Layout";
 import DataLoader from "@/shared/components/DataLoader";
 import PrintPriceCalculator from "@/main/components/PrintPriceCalculator";
@@ -83,18 +83,15 @@ export default function TariffsPage() {
               <p>
                 - قیمت ها بر اساس{" "}
                 <u>
-                  کاغذ تحریر <FormattedNumber value={80} /> گرمی درجه{" "}
-                  <FormattedNumber value={1} />
+                  کاغذ تحریر {englishToPersianNumbers(80)} گرمی درجه{" "}
+                  {englishToPersianNumbers(1)}
                 </u>{" "}
                 می باشد.
               </p>
               <p>
                 - برای سفارش روی کاغذ گلاسه{" "}
-                <u>
-                  <FormattedNumber value={125} /> گرمی
-                </u>{" "}
-                به قیمت های فوق مبلغ <FormattedNumber value={800} /> تومان اضافه
-                می گردد.
+                <u>{englishToPersianNumbers(125)} گرمی</u> به قیمت های فوق مبلغ{" "}
+                {englishToPersianNumbers(800)} تومان اضافه می گردد.
               </p>
               <p>
                 - <u>رنگی معمولی</u> یعنی پس زمینه تصویر سفید است اما المان های

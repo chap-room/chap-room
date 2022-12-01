@@ -1,6 +1,7 @@
 import styles from "./style.module.scss";
 import { FinancialRecord } from "@/shared/types";
 import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import EditIcon from "@/shared/assets/icons/edit.svg";
 import DeletetIcon from "@/shared/assets/icons/delete.svg";
 import IconButton from "@/shared/components/IconButton";
@@ -40,7 +41,10 @@ export default function FinancialRecordTable({
                   <FormattedDate value={financialRecord.date} />
                 </span>
                 <span>
-                  <FormattedTime value={financialRecord.date} timeStyle="medium" />
+                  <FormattedTime
+                    value={financialRecord.date}
+                    timeStyle="medium"
+                  />
                 </span>
               </span>
             </td>
@@ -51,11 +55,7 @@ export default function FinancialRecordTable({
                   {financialRecord.user.name}
                 </div>
                 <div>
-                  <FormattedNumber
-                    value={parseInt(financialRecord.user.phoneNumber)}
-                    useGrouping={false}
-                    minimumIntegerDigits={11}
-                  />
+                  {englishToPersianNumbers(financialRecord.user.phoneNumber)}
                 </div>
               </div>
             </td>
@@ -78,12 +78,7 @@ export default function FinancialRecordTable({
             </td>
             <td>
               <span className={styles.MobileLabel}>نوع:</span>
-              {
-                {
-                  debtor: "بدهکار",
-                  creditor: "بستانکار",
-                }[financialRecord.type]
-              }
+              {financialRecord.type}
             </td>
             <td>
               <span className={styles.MobileLabel}>وضعیت:</span>

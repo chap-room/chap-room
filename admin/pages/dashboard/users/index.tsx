@@ -7,7 +7,7 @@ import Link from "next/link";
 import { createUserAccessToken, deleteUser, getUsers } from "@/admin/api";
 import AddIcon from "@/shared/assets/icons/add.svg";
 import DashboardLayout from "@/admin/components/Layout";
-import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
+import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
@@ -58,10 +58,9 @@ export default function DashboardUserList() {
       <Head>
         <title>داشبورد - کاربران</title>
       </Head>
-      <SectionHeader
+      <AdminSectionHeader
         title="کاربران"
         description="ــ افزودن و ویرایش کاربران از این قسمت"
-        isAdmin
       />
       <SectionContent>
         <ContentHeader
@@ -155,7 +154,7 @@ export default function DashboardUserList() {
               router.push(`/dashboard/users/${userId}/edit`)
             }
           />
-          {!data.users.length && <EmptyNote>هیچ کاربری وجود ندارید</EmptyNote>}
+          {!data.users.length && <EmptyNote>هیچ کاربری وجود ندارد</EmptyNote>}
           <Pagination
             currentPage={page}
             totalCount={data.totalCount}

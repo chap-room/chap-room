@@ -2,39 +2,39 @@
   background-image: url("~@/main/assets/images/customersBG.svg");
   background-repeat: no-repeat;
   background-position: center center;
-  background-size: 1389px 243px;
+  background-size: 1600px 280px;
   width: 100%;
-  min-height: 243px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  max-width: 1500px;
+  height: 280px;
+  margin: 0 auto;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 20px 0;
 
   > h1 {
     margin: 0;
+    height: 75px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     color: #5800b3;
     font-size: 30px;
     font-weight: 500; // Medium
-    margin: 15px 0;
+    text-align: center;
   }
 
   > div {
-    width: 100%;
-    max-width: 1365px;
-    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    transition: transform 0.3s;
 
     > div {
       display: flex;
-      flex-direction: row;
-      gap: 50px;
-      transition: transform 0.3s;
 
-      > div {
-        display: flex;
-
-        > img {
-          height: 90px;
-          width: auto;
-        }
+      > img {
+        height: 90px;
+        width: auto;
       }
     }
   }

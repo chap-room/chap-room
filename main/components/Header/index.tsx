@@ -12,6 +12,8 @@ import IconButton from "@/shared/components/IconButton";
 import ExpandMoreIcon from "@/shared/assets/icons/expandMore.svg";
 import DashboardIcon from "@/shared/assets/icons/dashboard.svg";
 import LogoutIcon from "@/shared/assets/icons/logout.svg";
+import Avatar from "@/shared/components/Dashboard/Avatar";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 
 export default function Header() {
   const [isFirstRender, setIsFirstRender] = useState(true);
@@ -19,6 +21,7 @@ export default function Header() {
   const [user, setUser] = useState<{
     avatar: string | null;
     name: string;
+    phoneNumber: string;
   } | null>(null);
 
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -102,33 +105,44 @@ export default function Header() {
               </div>
             </>
           ) : (
-            <div className={styles.User}>
-              <div className={styles.Avatar}>
-                <ProfileFilledIcon />
-              </div>
-              <div className={styles.MenuContainer}>
-                <div className={styles.Menu} data-is-open={isUserMenuOpen}>
-                  <button onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}>
-                    <ExpandMoreIcon />
-                    <span>{user.name}</span>
-                  </button>
-                  <Link href="/dashboard">
-                    <button>
-                      <DashboardIcon /> مشاهده حساب کاربری
+            <>
+              <div className={styles.User}>
+                <div className={styles.Avatar}>
+                  <ProfileFilledIcon />
+                </div>
+                <div className={styles.MenuContainer}>
+                  <div className={styles.Menu} data-is-open={isUserMenuOpen}>
+                    <button onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}>
+                      <ExpandMoreIcon />
+                      <span>{user.name}</span>
                     </button>
-                  </Link>
-                  <button
-                    onClick={() => {
-                      logout();
-                      setUser(null);
-                      location.reload();
-                    }}
-                  >
-                    <LogoutIcon /> خروج
-                  </button>
+                    <Link href="/dashboard">
+                      <button>
+                        <DashboardIcon /> مشاهده حساب کاربری
+                      </button>
+                    </Link>
+                    <button
+                      onClick={() => {
+                        logout();
+                        setUser(null);
+                        location.reload();
+                      }}
+                    >
+                      <LogoutIcon /> خروج
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
+              <div className={styles.UserMobile}>
+                <Avatar user={user!} />
+                <div className={styles.Meta}>
+                  <div className={styles.PhoneNumber}>
+                    {englishToPersianNumbers(user!.phoneNumber)}
+                  </div>
+                  <div className={styles.Name}>{user!.name}</div>
+                </div>
+              </div>
+            </>
           )}
         </div>
       </div>

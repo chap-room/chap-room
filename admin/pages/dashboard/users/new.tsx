@@ -6,7 +6,7 @@ import Link from "next/link";
 import { newUser } from "@/admin/api";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
-import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
+import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
@@ -21,10 +21,9 @@ export default function DashboardNewUser() {
       <Head>
         <title>داشبورد - افزودن کاربر</title>
       </Head>
-      <SectionHeader
+      <AdminSectionHeader
         title="کاربران"
         description="ــ افزودن و ویرایش کاربران از این قسمت"
-        isAdmin
       />
       <SectionContent>
         <ContentHeader

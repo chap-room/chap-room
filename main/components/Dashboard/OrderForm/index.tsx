@@ -1,12 +1,13 @@
 import styles from "./style.module.scss";
 import { useState } from "react";
-import { FormattedNumber, useIntl } from "react-intl";
 import { CircularProgressbar } from "react-circular-progressbar";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import { Address, PrintFolder } from "@/shared/types";
 import { newOrder } from "@/main/api";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
+import { useDashboardData } from "@/main/context/dashboardData";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import CloseIcon from "@/shared/assets/icons/close.svg";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
@@ -32,7 +33,7 @@ enum OrderFormStages {
 }
 
 export default function OrderForm() {
-  const intl = useIntl();
+  const dashboardData = useDashboardData();
   const router = useRouter();
 
   const [currentStage, setCurrentStage] = useState(
@@ -77,32 +78,38 @@ export default function OrderForm() {
         }}
       />
       <div className={styles.SemiCircleProgressBarText}>
-        <FormattedNumber value={progress} />/<FormattedNumber value={3} />
+        {englishToPersianNumbers(progress)}/{englishToPersianNumbers(3)}
       </div>
     </div>
   );
 
+  const isMainStage = [
+    OrderFormStages.printFolders,
+    OrderFormStages.address,
+    OrderFormStages.payment,
+  ].includes(currentStage);
+
+  const printFolderIndex =
+    currentStage === OrderFormStages.newPrintFolder
+      ? printFoldersData.length + 1
+      : currentStage === OrderFormStages.editPrintFolder
+      ? (printFoldersData
+          .map((item) => item.id)
+          .indexOf(currentInEditPrintFolderId!) || 0) + 1
+      : 1;
+
+  const title = [
+    OrderFormStages.newPrintFolder,
+    OrderFormStages.editPrintFolder,
+  ].includes(currentStage)
+    ? `پوشه ${englishToPersianNumbers(printFolderIndex)}`
+    : currentStage;
+
   return (
     <>
       <ContentHeader
-        title={
-          currentStage === OrderFormStages.newPrintFolder
-            ? `پوشه ${intl.formatNumber(printFoldersData.length + 1)}`
-            : currentStage === OrderFormStages.editPrintFolder
-            ? `پوشه ${intl.formatNumber(
-                (printFoldersData
-                  .map((item) => item.id)
-                  .indexOf(currentInEditPrintFolderId!) || 0) + 1
-              )}`
-            : currentStage
-        }
-        start={
-          [
-            OrderFormStages.printFolders,
-            OrderFormStages.address,
-            OrderFormStages.payment,
-          ].includes(currentStage) && SemiCircleProgressBar
-        }
+        title={title}
+        start={isMainStage && SemiCircleProgressBar}
         end={
           <Link href="/dashboard/orders">
             <Button varient="none" style={{ padding: 0 }}>
@@ -113,23 +120,43 @@ export default function OrderForm() {
       />
       <MobileContentHeader
         start={
-          [
-            OrderFormStages.printFolders,
-            OrderFormStages.address,
-            OrderFormStages.payment,
-          ].includes(currentStage) && (
+          isMainStage && (
             <div className={styles.MobileSemiCircleProgressBar}>
               {SemiCircleProgressBar}
             </div>
           )
         }
-        title={currentStage}
+        onBack={
+          !isMainStage
+            ? () => {
+                switch (currentStage) {
+                  case OrderFormStages.newPrintFolder:
+                    setCurrentStage(OrderFormStages.printFolders);
+                    break;
+                  case OrderFormStages.editPrintFolder:
+                    setCurrentStage(OrderFormStages.printFolders);
+                    setCurrentInEditPrintFolderId(null);
+                    break;
+                  case OrderFormStages.newAddress:
+                    setCurrentStage(OrderFormStages.address);
+                    break;
+                  case OrderFormStages.editAddress:
+                    setCurrentStage(OrderFormStages.address);
+                    setCurrentInEditAddressId(null);
+                    break;
+                }
+              }
+            : undefined
+        }
+        title={title}
         end={
-          <Link href="/dashboard/orders">
-            <IconButton varient="outlined">
-              <CloseIcon />
-            </IconButton>
-          </Link>
+          isMainStage && (
+            <Link href="/dashboard/orders">
+              <IconButton varient="outlined">
+                <CloseIcon />
+              </IconButton>
+            </Link>
+          )
         }
       />
       {currentStage === OrderFormStages.printFolders && (
@@ -148,6 +175,7 @@ export default function OrderForm() {
       )}
       {currentStage === OrderFormStages.newPrintFolder && (
         <NewPrintFolderStage
+          index={printFolderIndex}
           actions={{
             finish: () => setCurrentStage(OrderFormStages.printFolders),
           }}
@@ -155,6 +183,7 @@ export default function OrderForm() {
       )}
       {currentStage === OrderFormStages.editPrintFolder && (
         <EditPrintFolderStage
+          index={printFolderIndex}
           printFolderId={currentInEditPrintFolderId!}
           actions={{
             finish: () => {
@@ -207,9 +236,12 @@ export default function OrderForm() {
               newOrder(addressId!, discountCode, paidWithWallet)
                 .then(({ orderId, paymentUrl }) => {
                   if (orderId) {
-                    location.href = process.env.PUBLIC_URL
-                      ? `${process.env.PUBLIC_URL}/dashboard/orders/payment-result?isSuccessful=true&orderId=${orderId}`
-                      : `${location.protocol}//${location.host}/dashboard/orders/payment-result?isSuccessful=true&orderId=${orderId}`;
+                    router.push(
+                      `/dashboard/orders/payment-result?isSuccessful=true&orderId=${orderId}`
+                    );
+                    if (paidWithWallet) {
+                      dashboardData.walletDataLoaderState.reload();
+                    }
                   }
                   if (paymentUrl) window.location.href = paymentUrl;
                 })

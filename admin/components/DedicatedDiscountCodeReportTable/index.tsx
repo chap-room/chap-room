@@ -1,6 +1,7 @@
 import styles from "./style.module.scss";
 import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
 import { DedicatedDiscountCodeReport } from "@/shared/types";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 
 interface DedicatedDiscountCodeReportTableProps {
   dedicatedDiscountCodeReports: DedicatedDiscountCodeReport[];
@@ -20,7 +21,7 @@ export default function DedicatedDiscountCodeReportTable({
           <th>مبلغ سفارش</th>
           <th>تخفیف خریدار</th>
           <th>پورسانت کاربر</th>
-          <th>لینک کاربر</th>
+          <th>کد تخفیف</th>
         </tr>
       </thead>
       <tbody>
@@ -47,13 +48,9 @@ export default function DedicatedDiscountCodeReportTable({
                   {dedicatedDiscountCodeReport.user.name}
                 </div>
                 <div>
-                  <FormattedNumber
-                    value={parseInt(
-                      dedicatedDiscountCodeReport.user.phoneNumber
-                    )}
-                    useGrouping={false}
-                    minimumIntegerDigits={11}
-                  />
+                  {englishToPersianNumbers(
+                    dedicatedDiscountCodeReport.user.phoneNumber
+                  )}
                 </div>
               </div>
             </td>
@@ -64,22 +61,15 @@ export default function DedicatedDiscountCodeReportTable({
                   {dedicatedDiscountCodeReport.buyer.name}
                 </div>
                 <div>
-                  <FormattedNumber
-                    value={parseInt(
-                      dedicatedDiscountCodeReport.buyer.phoneNumber
-                    )}
-                    useGrouping={false}
-                    minimumIntegerDigits={11}
-                  />
+                  {englishToPersianNumbers(
+                    dedicatedDiscountCodeReport.buyer.phoneNumber
+                  )}
                 </div>
               </div>
             </td>
             <td>
               <span className={styles.MobileLabel}>شماره سفارش:</span>
-              <FormattedNumber
-                value={dedicatedDiscountCodeReport.orderId}
-                useGrouping={false}
-              />
+              {englishToPersianNumbers(dedicatedDiscountCodeReport.orderId)}
             </td>
             <td>
               <span className={styles.MobileLabel}>مبلغ سفارش:</span>

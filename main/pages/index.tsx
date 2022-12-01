@@ -12,11 +12,16 @@ import {
   reportReferralView,
   sendCooperationRequest,
 } from "@/main/api";
+import {
+  englishToPersianNumbers,
+  persianToEnglishNumbers,
+} from "@/shared/utils/numbers";
 import ExpandMoreIcon from "@/shared/assets/icons/expandMore.svg";
 import GiftImage from "@/main/assets/images/gift.svg";
 import CalculatorImage from "@/main/assets/images/calculator.svg";
 import DataLoader from "@/shared/components/DataLoader";
 import PrintPriceCalculator from "@/main/components/PrintPriceCalculator";
+import BookPriceCalculator from "@/main/components/BookPriceCalculator";
 import BookPrintingImage from "@/main/assets/images/bookPrinting.svg";
 import Layout from "@/main/components/Layout";
 import Button from "@/shared/components/Button";
@@ -24,7 +29,6 @@ import PostageImage from "@/main/assets/images/postage.svg";
 import PriceImage from "@/main/assets/images/price.svg";
 import SupportImage from "@/main/assets/images/support.svg";
 import PostageSpeedImage from "@/main/assets/images/postageSpeed.svg";
-import Select from "@/shared/components/Select";
 import TextInput from "@/shared/components/TextInput";
 import VideoGalleryBG from "@/main/assets/images/videoGalleryBG.svg";
 import MonitorImage from "@/main/assets/images/monitor.svg";
@@ -86,68 +90,72 @@ export default function Home() {
         <title>صفحه اصلی</title>
       </Head>
       <div className={styles.Introduction}>
-        <div />
         <div>
-          <h1>چاپ روم</h1>
-          <h1>سامانه چاپ و پرینت آنلاین و ارزان</h1>
-          <p>
-            استارت آپ چاپ روم با بهره گیری از دستگاه های صنعتی روز دنیا، خدمات
-            چاپ آنلاین را با کیفیت بالا و قیمت باور نکردنی به سراسر کشور ارائه
-            میکند.
-          </p>
           <div>
-            <Link href={isUserLoggedIn ? "/dashboard/orders/new" : "/auth"}>
-              <Button varient="gradient">سفارش پرینت</Button>
-            </Link>
-            <Link href="/tariffs">
-              <Button varient="outlined">تعرفه پرینت</Button>
-            </Link>
-          </div>
-        </div>
-        <div>
-          <div className={styles.Steps}>
+            <div />
             <div>
-              <span>
-                <FormattedNumber value={1} />
-              </span>{" "}
-              <span>ثبت سفارش</span>
-            </div>
-            <div>
-              <span>
-                <FormattedNumber value={2} />
-              </span>{" "}
-              <span>آپلود فایل</span>
-            </div>
-            <div>
-              <span>
-                <FormattedNumber value={3} />
-              </span>{" "}
-              <span>فرآیند چاپ</span>
-            </div>
-            <div>
-              <span>
-                <FormattedNumber value={4} />
-              </span>{" "}
-              <span>ارسال سفارش</span>
-            </div>
-          </div>
-          <div className={styles.Images}>
-            <div>
+              <h1>چاپ روم</h1>
+              <h1>سامانه چاپ و پرینت آنلاین و ارزان</h1>
+              <p>
+                استارت آپ چاپ روم با بهره گیری از دستگاه های صنعتی روز دنیا،
+                خدمات چاپ آنلاین را با کیفیت بالا و قیمت باور نکردنی به سراسر
+                کشور ارائه میکند.
+              </p>
               <div>
+                <Link href={isUserLoggedIn ? "/dashboard/orders/new" : "/auth"}>
+                  <Button varient="gradient">سفارش پرینت</Button>
+                </Link>
+                <Link href="/tariffs">
+                  <Button varient="outlined">تعرفه پرینت</Button>
+                </Link>
+              </div>
+            </div>
+            <div>
+              <div className={styles.Steps}>
                 <div>
-                  <img src="/assets/images/newOrder.svg" alt="New Order" />
+                  <span>
+                    <FormattedNumber value={1} />
+                  </span>{" "}
+                  <span>ثبت سفارش</span>
                 </div>
                 <div>
-                  <img src="/assets/images/uploading.svg" alt="Uploading" />
+                  <span>
+                    <FormattedNumber value={2} />
+                  </span>{" "}
+                  <span>آپلود فایل</span>
                 </div>
                 <div>
-                  <img src="/assets/images/printing.svg" alt="Printing" />
+                  <span>
+                    <FormattedNumber value={3} />
+                  </span>{" "}
+                  <span>فرآیند چاپ</span>
                 </div>
                 <div>
-                  <img
-                    src="/assets/images/bikeDelivery.svg"
-                    alt="Bike Delivery"
-                  />
+                  <span>
+                    <FormattedNumber value={4} />
+                  </span>{" "}
+                  <span>ارسال سفارش</span>
+                </div>
+              </div>
+              <div className={styles.Images}>
+                <div>
+                  <div>
+                    <div>
+                      <img src="/assets/images/newOrder.svg" alt="New Order" />
+                    </div>
+                    <div>
+                      <img src="/assets/images/uploading.svg" alt="Uploading" />
+                    </div>
+                    <div>
+                      <img src="/assets/images/printing.svg" alt="Printing" />
+                    </div>
+                    <div>
+                      <img
+                        src="/assets/images/bikeDelivery.svg"
+                        alt="Bike Delivery"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -165,7 +173,7 @@ export default function Home() {
           <p>
             با ثبت نام در چاپ روم{" "}
             <span className={styles.Highlight}>
-              <FormattedNumber value={30} /> صفحه پرینت رایگان
+              {englishToPersianNumbers(30)} صفحه پرینت رایگان
             </span>{" "}
             در اولین سفارش هدیه بگیرید.
           </p>
@@ -192,81 +200,9 @@ export default function Home() {
             <BookPrintingImage />
           </div>
           <div>
-            <div>
-              <div className={styles.Title}>
-                از منوی زیر خدمات مورد نظر خود را انتخاب کنید
-              </div>
-              <div className={styles.Input}>
-                <Select
-                  value={null}
-                  onChange={() => {}}
-                  options={{}}
-                  varient="shadow-without-bg"
-                  placeholder="قطع کتاب"
-                  readOnly
-                  height={48}
-                />
-              </div>
-              <div className={styles.Input}>
-                <Select
-                  value={null}
-                  onChange={() => {}}
-                  options={{}}
-                  varient="shadow-without-bg"
-                  placeholder="جنس کاغذ"
-                  readOnly
-                  height={48}
-                />
-              </div>
-              <div className={styles.Input}>
-                <Select
-                  value={null}
-                  onChange={() => {}}
-                  options={{}}
-                  varient="shadow-without-bg"
-                  placeholder="نوع صحافی"
-                  readOnly
-                  height={48}
-                />
-              </div>
-              <div className={styles.Row}>
-                <div className={styles.Input}>
-                  <TextInput
-                    inputProps={{ type: "number", placeholder: "تعداد صفحه" }}
-                    varient="shadow-without-bg"
-                    height={48}
-                  />
-                </div>
-                <div className={styles.Input}>
-                  <TextInput
-                    inputProps={{
-                      type: "number",
-                      placeholder: "تیراژ (حداقل 50 نسخه)",
-                    }}
-                    varient="shadow-without-bg"
-                  />
-                </div>
-              </div>
-              <div className={styles.Row}>
-                <div>
-                  <span>قیمت هر کتاب: </span>
-                  <span>
-                    <FormattedNumber value={56000} /> تومان
-                  </span>
-                </div>
-                <div>
-                  <span>قیمت کل: </span>
-                  <span>
-                    <FormattedNumber value={560000} /> تومان
-                  </span>
-                </div>
-              </div>
-              <div className={styles.SubmitButton}>
-                <Button varient="gradient" style={{ padding: "0 30px" }}>
-                  مشاوره رایگان
-                </Button>
-              </div>
-            </div>
+            {/* <DataLoader load={() => getTariffs()} setData={setTariffs}> */}
+            <BookPriceCalculator /* printTariffs={tariffs.print} */ />
+            {/* </DataLoader> */}
           </div>
         </div>
       </div>
@@ -285,13 +221,13 @@ export default function Home() {
           <div>
             <PriceImage />
             <h2>
-              <FormattedNumber value={1} />/<FormattedNumber value={8} /> قیمت
+              {englishToPersianNumbers(1)}/{englishToPersianNumbers(8)} قیمت
               مصوب
             </h2>
             <p>
               چاپ روم با استفاده از بهترین پرینترها، کاغذهای اورجینال، پایان
               نامه، جزوه و یا کتاب شما را با قیمت حداقل{" "}
-              <FormattedNumber value={1} />/<FormattedNumber value={8} /> قیمت
+              {englishToPersianNumbers(1)}/{englishToPersianNumbers(8)} قیمت
               مصوب .چاپ و تکثیر می‌کند
             </p>
           </div>
@@ -362,11 +298,15 @@ export default function Home() {
             </strong>
             <div>
               <TextInput
-                inputProps={{ type: "number", placeholder: "09xxxxxxxxx" }}
+                inputProps={{
+                  placeholder: englishToPersianNumbers("09xxxxxxxxx"),
+                }}
                 varient="shadow"
-                value={cooperationPhoneNumber}
+                value={englishToPersianNumbers(cooperationPhoneNumber)}
                 onChange={(newValue) =>
-                  setCooperationPhoneNumber(newValue.substring(0, 11))
+                  setCooperationPhoneNumber(
+                    persianToEnglishNumbers(newValue, false).substring(0, 11)
+                  )
                 }
               />
               <Button

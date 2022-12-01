@@ -1,14 +1,14 @@
 import { ReactElement, useState } from "react";
-import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
-import { Address } from "@/shared/types";
+import { Address, User } from "@/shared/types";
 import { deleteAddress, getUserAddresses } from "@/admin/api";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
-import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
+import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
@@ -20,15 +20,15 @@ import Pagination from "@/shared/components/Pagination";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
 
 export default function DashboardUserAddressList() {
-  const intl = useIntl();
   const router = useRouter();
   const userId = parseInt(router.query.userId as string); // TODO 404
 
   const [data, setData] = useState<{
     totalCount: number;
     pageSize: number;
+    user: User | null;
     addresses: Address[];
-  }>({ totalCount: 0, pageSize: 0, addresses: [] });
+  }>({ totalCount: 0, pageSize: 0, user: null, addresses: [] });
 
   const [page, setPage] = useState(1);
 
@@ -40,17 +40,18 @@ export default function DashboardUserAddressList() {
       <Head>
         <title>داشبورد - آدرس ها</title>
       </Head>
-      <SectionHeader
+      <AdminSectionHeader
         title="کاربران"
         description="ــ افزودن و ویرایش کاربران از این قسمت"
-        isAdmin
       />
       <SectionContent>
         <ContentHeader
           title="آدرس ها"
           subTitle={
-            data.totalCount
-              ? `(${intl.formatNumber(data.totalCount)})`
+            data.user
+              ? `(${data.user.name} / ${englishToPersianNumbers(
+                  data.user.phoneNumber
+                )})`
               : undefined
           }
           end={
@@ -79,7 +80,7 @@ export default function DashboardUserAddressList() {
             onDeleteAddress={setPendingAddressDeleteRequest}
           />
           {!data.addresses.length && (
-            <EmptyNote>این کاربر هیچ آدرسی ندارید</EmptyNote>
+            <EmptyNote>این کاربر هیچ آدرسی ندارد</EmptyNote>
           )}
           <Pagination
             currentPage={page}

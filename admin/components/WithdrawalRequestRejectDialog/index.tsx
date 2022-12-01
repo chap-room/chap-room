@@ -1,19 +1,23 @@
 import styles from "./style.module.scss";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import {
+  useValidation,
+  optionalValidate,
+  validateNotEmpty,
+} from "@/shared/utils/validation";
 import Dialog from "@/shared/components/Dialog";
 import ContentSelect from "@/shared/components/ContentSelect";
 import TextInput from "@/shared/components/TextInput";
+import ErrorList from "@/shared/components/ErrorList";
 import BottomActions from "@/shared/components/Dashboard/BottomActions";
 import Button from "@/shared/components/Button";
 
 interface WithdrawalRequestRejectDialogProps {
-  open: boolean;
   onClose: () => void;
   onRejectWithdrawalRequest: (reason: string) => Promise<any>;
 }
 
 export default function WithdrawalRequestRejectDialog({
-  open,
   onClose,
   onRejectWithdrawalRequest,
 }: WithdrawalRequestRejectDialogProps) {
@@ -22,19 +26,26 @@ export default function WithdrawalRequestRejectDialog({
   );
   const [reasonText, setReasonText] = useState("");
 
-  useEffect(() => {
-    if (open) {
-      setReason("شماره شبا با نام صاحب حساب مطابقت ندارد");
-      setReasonText("");
-    }
-  }, [open]);
-
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const formValidation = useValidation(
+    {
+      reasonText: [
+        optionalValidate({
+          enabled: reason === "دیگر",
+          validator: validateNotEmpty(),
+        }),
+      ],
+    },
+    {
+      reasonText,
+    }
+  );
 
   return (
     <Dialog
       title="رد کردن درخواست برداشت"
-      open={open}
+      open={true}
       onClose={() => onClose()}
     >
       <div className={styles.DialogContent}>
@@ -55,6 +66,7 @@ export default function WithdrawalRequestRejectDialog({
                 value={reasonText}
                 onChange={setReasonText}
               />
+              <ErrorList errors={formValidation.errors.reasonText} />
             </div>
           </>
         )}

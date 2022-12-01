@@ -1,5 +1,5 @@
 import styles from "./style.module.scss";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Dialog from "@/shared/components/Dialog";
 import TextArea from "@/shared/components/TextArea";
 import BottomActions from "@/shared/components/Dashboard/BottomActions";
@@ -10,7 +10,6 @@ interface CooperationRequestRejectDialogData {
 }
 
 interface CooperationRequestRejectDialogProps {
-  open: boolean;
   onClose: () => void;
   defaultValues?: Partial<CooperationRequestRejectDialogData>;
   onRejectCooperationRequest: (
@@ -19,7 +18,6 @@ interface CooperationRequestRejectDialogProps {
 }
 
 export default function CooperationRequestRejectDialog({
-  open,
   onClose,
   defaultValues,
   onRejectCooperationRequest,
@@ -28,14 +26,10 @@ export default function CooperationRequestRejectDialog({
     defaultValues?.description || ""
   );
 
-  useEffect(() => {
-    setDescription(defaultValues?.description || "");
-  }, [defaultValues?.description, open]);
-
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   return (
-    <Dialog title="رد کردن درخواست ها همکاری" open={open} onClose={onClose}>
+    <Dialog title="رد کردن درخواست ها همکاری" open={true} onClose={onClose}>
       <div className={styles.DialogContent}>
         <TextArea
           placeholder="توضیحات"

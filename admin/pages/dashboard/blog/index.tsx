@@ -8,7 +8,7 @@ import { Post } from "@/shared/types";
 import { deleteBlogPost, getBlogPosts } from "@/admin/api";
 import DashboardLayout from "@/admin/components/Layout";
 import AddIcon from "@/shared/assets/icons/add.svg";
-import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
+import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
@@ -19,7 +19,7 @@ import Button from "@/shared/components/Button";
 import Controls from "@/admin/components/Controls";
 import SearchInput from "@/admin/components/SearchInput";
 import DataLoader from "@/shared/components/DataLoader";
-import PostGrid from "@/admin/components/PostList";
+import PostGrid from "@/admin/components/PostGrid";
 import EmptyNote from "@/shared/components/Dashboard/EmptyNote";
 import Pagination from "@/shared/components/Pagination";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
@@ -48,10 +48,9 @@ export default function DashboardBlog() {
       <Head>
         <title>داشبورد - وبلاگ</title>
       </Head>
-      <SectionHeader
+      <AdminSectionHeader
         title="وبلاگ"
         description="ــ وبلاگ ها را از این قسمت مدیریت کنید"
-        isAdmin
       />
       <SectionContent>
         <ContentHeader
@@ -118,7 +117,7 @@ export default function DashboardBlog() {
               router.push(`/dashboard/blog/posts/${postId}/edit`)
             }
           />
-          {!data.posts.length && <EmptyNote>هیچ بلاگی وجود ندارید</EmptyNote>}
+          {!data.posts.length && <EmptyNote>هیچ بلاگی وجود ندارد</EmptyNote>}
           <Pagination
             currentPage={page}
             totalCount={data.totalCount}

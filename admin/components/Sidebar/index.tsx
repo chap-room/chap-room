@@ -1,62 +1,51 @@
 import styles from "./style.module.scss";
-import { useState } from "react";
-import { AdminUserRole } from "@/shared/types";
-import { getDashboard } from "@/admin/api";
-import DataLoader from "@/shared/components/DataLoader";
+import { useDashboardData } from "@/admin/context/dashboardData";
+import { DataLoaderView } from "@/shared/components/DataLoader";
 import DashboardNavLinks from "@/admin/components/NavLinks";
 import Avatar from "@/shared/components/Dashboard/Avatar";
 
 export default function DashboardSidebar() {
-  const [adminData, setAdminData] = useState<{
-    avatar: string | null;
-    name: string;
-    phoneNumber: string;
-    role: AdminUserRole;
-  }>({
-    avatar: null,
-    name: "",
-    phoneNumber: "",
-    role: {
-      name: "admin",
-    },
-  });
-
-  const [sidebarData, setSidebarData] = useState<{
-    countOfInProgressOrders: number;
-    countOfPendingCooperations: number;
-    countOfPendingWithdrawals: number;
-  }>({
-    countOfInProgressOrders: 0,
-    countOfPendingCooperations: 0,
-    countOfPendingWithdrawals: 0,
-  });
+  const dashboardData = useDashboardData();
 
   return (
     <div className={styles.Sidebar}>
-      <DataLoader
-        load={() => getDashboard()}
-        setData={(data) => {
-          setAdminData(data.admin);
-          setSidebarData(data.sidebarData);
-        }}
-      >
-        <div className={styles.User}>
-          <Avatar user={{ name: adminData.name, avatar: adminData.avatar }} />
-          <div className={styles.Meta}>
-            <div>{adminData.name}</div>
-            <div className={styles.UserRole}>
-              {
-                {
-                  superAdmin: "سوپر ادمین",
-                  admin: "ادمین",
-                  agent: "نمایندگی",
-                }[adminData.role.name]
+      <DataLoaderView
+        state={
+          dashboardData.data !== null
+            ? {
+                isLoading: false,
+                isError: false,
+                reload: dashboardData.dataLoaderState.reload,
               }
+            : dashboardData.dataLoaderState
+        }
+      >
+        {dashboardData.data !== null && (
+          <>
+            <div className={styles.User}>
+              <Avatar
+                user={{
+                  name: dashboardData.data.admin.name,
+                  avatar: dashboardData.data.admin.avatar,
+                }}
+              />
+              <div className={styles.Meta}>
+                <div>{dashboardData.data.admin.name}</div>
+                <div className={styles.UserRole}>
+                  {
+                    {
+                      superAdmin: "سوپر ادمین",
+                      admin: "ادمین",
+                      agent: "نمایندگی",
+                    }[dashboardData.data.admin.role.name]
+                  }
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <DashboardNavLinks sidebarData={sidebarData} />
-      </DataLoader>
+            <DashboardNavLinks sidebarData={dashboardData.data.sidebarData} />
+          </>
+        )}
+      </DataLoaderView>
     </div>
   );
 }

@@ -128,10 +128,10 @@ export default function PrintPricesForm({
                 )
               }
               setIsValid={(newValue) =>
-                setBreakpointsValidation({
+                setBreakpointsValidation((breakpointsValidation) => ({
                   ...breakpointsValidation,
                   [breakpoint.id]: newValue,
-                })
+                }))
               }
             />
           ))}

@@ -1,0 +1,134 @@
+.SearchInputContainer {
+  > div {
+    max-width: 330px;
+  }
+}
+
+.Popover {
+  height: 400px;
+  overflow: hidden;
+  z-index: 100;
+  background-color: #f5f5f5;
+  border-radius: 20px;
+  box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
+  display: flex;
+  flex-direction: column;
+
+  > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+    box-sizing: border-box;
+    overflow: auto;
+
+    .OrderTable {
+      width: 100%;
+      border-spacing: 0;
+
+      > thead > tr > th {
+        background-color: #ffffff;
+        color: #464646;
+        padding: 5px 15px;
+      }
+
+      &[data-items-status="sent"] > thead > tr > th {
+        background-color: #14cc9c;
+        color: #ffffff;
+      }
+
+      &[data-items-status="canceled"] > thead > tr > th {
+        background-color: #f20f4b;
+        color: #ffffff;
+      }
+
+      > tbody {
+        color: #9c9c9c;
+        font-size: 12px;
+
+        > tr {
+          > td {
+            text-align: center;
+            padding: 15px;
+
+            .Date {
+              white-space: nowrap;
+              display: flex;
+              flex-direction: column;
+            }
+
+            .Status {
+              display: flex;
+              flex-direction: column;
+              color: #0077b5;
+              white-space: nowrap;
+            }
+
+            .CancelReason,
+            .NotApplicable {
+              color: #f20f4b;
+            }
+
+            .SeeDetailsButton,
+            .CancelButton,
+            .ConfirmButton,
+            .MarkAsSentButton {
+              display: inline-flex;
+              width: 90px;
+              height: 30px;
+              flex-direction: row;
+              justify-content: center;
+              align-items: center;
+              border-radius: 20px;
+              box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
+              font-size: 12px;
+              user-select: none;
+              cursor: pointer;
+              border: none;
+            }
+
+            .SeeDetailsButton {
+              background-color: #0077b5;
+              color: #ffffff;
+            }
+
+            .ButtonList {
+              min-height: 40px;
+              display: flex;
+              flex-direction: row;
+              gap: 10px;
+              white-space: nowrap;
+              flex: 1;
+              justify-content: center;
+              align-items: center;
+
+              .ConfirmButton {
+                background-color: #f5f5f5;
+                color: #464646;
+              }
+
+              .MarkAsSentButton {
+                background-color: #14cc9c;
+                color: #ffffff;
+              }
+
+              .CancelButton {
+                padding: 0;
+                background-color: transparent;
+                box-shadow: none;
+                color: #f20f4b;
+                width: unset;
+              }
+            }
+          }
+
+          &:not(:first-child) {
+            > td {
+              border-top: 1px solid #cccccc;
+            }
+          }
+        }
+      }
+    }
+  }
+}

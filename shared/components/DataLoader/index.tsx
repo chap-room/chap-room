@@ -10,24 +10,25 @@ import Button from "@/shared/components/Button";
 import Loader from "@/shared/components/Loader";
 import SmallLoader from "@/shared/components/SmallLoader";
 
-interface DataLoaderProps<DT> {
+interface UseDataLoaderProps<DT> {
   load: () => Promise<DT> | [Promise<DT>, AbortController] | void;
   setData: (data: DT) => void;
   deps?: unknown[];
-  size?: "small" | "larg";
-  reloadRef?: MutableRefObject<(() => void) | null>;
   initialFetch?: boolean;
 }
 
-export default function DataLoader<DT>({
+export interface DataLoaderState {
+  isLoading: boolean;
+  isError: boolean;
+  reload: () => void;
+}
+
+export function useDataLoader<DT>({
   load,
   setData,
   deps = [],
-  size = "larg",
-  reloadRef,
-  children,
   initialFetch = true,
-}: PropsWithChildren<DataLoaderProps<DT>>) {
+}: UseDataLoaderProps<DT>): DataLoaderState {
   const [isFirstRender, setIsFirstRender] = useState(true);
   const [isFirstTry, setIsFirstTry] = useState(true);
   const [isLoading, setIsLoading] = useState(initialFetch);
@@ -67,8 +68,19 @@ export default function DataLoader<DT>({
 
   useEffect(fetchData, deps);
 
-  if (reloadRef) reloadRef.current = fetchData;
+  return { isLoading, isError, reload: fetchData };
+}
 
+interface DataLoaderViewProps {
+  state: DataLoaderState;
+  size?: "small" | "larg";
+}
+
+export function DataLoaderView({
+  state: { isLoading, isError, reload },
+  size,
+  children,
+}: PropsWithChildren<DataLoaderViewProps>) {
   if (isLoading) return size === "small" ? <SmallLoader /> : <Loader />;
 
   if (isError)
@@ -81,11 +93,45 @@ export default function DataLoader<DT>({
             اینترنت متصل هستید و سپس دوباره امتحان کنید.
           </p>
         )}
-        <Button varient="filled" onClick={fetchData}>
+        <Button varient="filled" onClick={reload}>
           سعی مجدد
         </Button>
       </div>
     );
 
   return <>{children}</>;
+}
+
+interface DataLoaderProps<DT> {
+  load: () => Promise<DT> | [Promise<DT>, AbortController] | void;
+  setData: (data: DT) => void;
+  deps?: unknown[];
+  initialFetch?: boolean;
+  size?: "small" | "larg";
+  reloadRef?: MutableRefObject<(() => void) | null>;
+}
+
+export default function DataLoader<DT>({
+  load,
+  setData,
+  deps = [],
+  initialFetch = true,
+  size = "larg",
+  reloadRef,
+  children,
+}: PropsWithChildren<DataLoaderProps<DT>>) {
+  const state = useDataLoader({
+    load,
+    setData,
+    deps,
+    initialFetch,
+  });
+
+  if (reloadRef) reloadRef.current = state.reload;
+
+  return (
+    <DataLoaderView state={state} size={size}>
+      {children}
+    </DataLoaderView>
+  );
 }

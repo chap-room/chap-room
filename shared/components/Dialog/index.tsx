@@ -15,6 +15,7 @@ interface DialogProps {
   open: boolean;
   onClose: () => void;
   title?: string;
+  subTitle?: string;
   fullScreenInMobile?: boolean;
   hideTitleInMobile?: boolean;
 }
@@ -23,6 +24,7 @@ export default function Dialog({
   open,
   onClose,
   title,
+  subTitle,
   children,
   fullScreenInMobile = false,
   hideTitleInMobile = false,
@@ -62,8 +64,11 @@ export default function Dialog({
                   <div className={styles.Header}>
                     <div className={styles.Start} />
                     <div className={styles.Center}>
-                      <div className={styles.Title} id={labelId}>
-                        {title}
+                      <div className={styles.TitleContainer}>
+                        <div className={styles.Title} id={labelId}>
+                          {title}
+                        </div>
+                        <div className={styles.SubTitle}>{subTitle}</div>
                       </div>
                     </div>
                     <div className={styles.End}>

@@ -1,6 +1,7 @@
 import styles from "./style.module.scss";
 import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
 import { Discount } from "@/shared/types";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import EditIcon from "@/shared/assets/icons/edit.svg";
 import DeletetIcon from "@/shared/assets/icons/delete.svg";
 import IconButton from "@/shared/components/IconButton";
@@ -44,21 +45,11 @@ export default function DiscountTable({
                   <span>{discount.user.name}</span>
                   <br />
                   <span>
-                    <FormattedNumber
-                      value={parseInt(discount.user.phoneNumber)}
-                      useGrouping={false}
-                      minimumIntegerDigits={11}
-                    />
+                    {englishToPersianNumbers(discount.user.phoneNumber)}
                   </span>
                 </span>
               ) : discount.phoneNumber !== null ? (
-                <span>
-                  <FormattedNumber
-                    value={parseInt(discount.phoneNumber)}
-                    useGrouping={false}
-                    minimumIntegerDigits={11}
-                  />
-                </span>
+                <span>{englishToPersianNumbers(discount.phoneNumber)}</span>
               ) : (
                 <span>عمومی</span>
               )}
@@ -100,7 +91,10 @@ export default function DiscountTable({
                     <span>تاریخ انقضا:</span>
                     <span>
                       <FormattedDate value={discount.expireDate} />{" "}
-                      <FormattedTime value={discount.expireDate} timeStyle="medium" />
+                      <FormattedTime
+                        value={discount.expireDate}
+                        timeStyle="medium"
+                      />
                     </span>
                   </span>
                 )}

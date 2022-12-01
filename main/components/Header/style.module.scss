@@ -1,6 +1,8 @@
 .Header {
   width: 100%;
   max-width: 1100px;
+  box-sizing: border-box;
+  height: 94px;
   margin: 0 auto;
   box-sizing: border-box;
   padding: 20px;
@@ -26,7 +28,7 @@
 
       > svg {
         width: auto;
-        height: 55px;
+        height: 54px;
 
         @media (max-width: 640px) {
           height: 40px;
@@ -86,7 +88,6 @@
 
     @media (max-width: 512px) {
       justify-content: flex-start;
-      height: 54px;
     }
 
     .UserAuth {
@@ -146,6 +147,10 @@
       width: 220px;
       display: grid;
       grid-template-columns: 48px 1fr;
+
+      @media (max-width: 512px) {
+        display: none;
+      }
 
       .Avatar {
         display: flex;
@@ -221,6 +226,33 @@
               white-space: nowrap;
             }
           }
+        }
+      }
+    }
+
+    .UserMobile {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+
+      @media (min-width: 513px) {
+        display: none;
+      }
+
+      .Meta {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        color: #464646;
+        flex: 1;
+
+        .PhoneNumber {
+          font-size: 10px;
+          font-weight: 300; // Light
+        }
+
+        .Name {
+          font-weight: bold;
         }
       }
     }

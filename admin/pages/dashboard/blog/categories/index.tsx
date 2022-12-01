@@ -12,7 +12,7 @@ import {
 } from "@/admin/api";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
-import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
+import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
@@ -49,10 +49,9 @@ export default function DashboardBlogCategories() {
       <Head>
         <title>داشبورد - مدیریت دسته بندی بلاگ ها</title>
       </Head>
-      <SectionHeader
+      <AdminSectionHeader
         title="وبلاگ"
         description="ــ وبلاگ ها را از این قسمت مدیریت کنید"
-        isAdmin
       />
       <SectionContent>
         <ContentHeader
@@ -117,7 +116,7 @@ export default function DashboardBlogCategories() {
             startCountFrom={(page - 1) * data.pageSize + 1}
           />
           {!data.categories.length && (
-            <EmptyNote>هیچ دسته بندی وجود ندارید</EmptyNote>
+            <EmptyNote>هیچ دسته بندی وجود ندارد</EmptyNote>
           )}
           <Pagination
             currentPage={page}

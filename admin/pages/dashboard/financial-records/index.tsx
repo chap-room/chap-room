@@ -8,7 +8,7 @@ import { FinancialRecord } from "@/shared/types";
 import { deleteFinancialRecord, getFinancialRecords } from "@/admin/api";
 import AddIcon from "@/shared/assets/icons/add.svg";
 import DashboardLayout from "@/admin/components/Layout";
-import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
+import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
@@ -61,10 +61,9 @@ export default function DashboardFinancialRecordList() {
       <Head>
         <title>داشبورد - سوابق مالی</title>
       </Head>
-      <SectionHeader
+      <AdminSectionHeader
         title="سوابق مالی"
         description="ــ سوابق مالی را از این قسمت مدیریت کنید"
-        isAdmin
       />
       <SectionContent>
         <ContentHeader
@@ -188,7 +187,7 @@ export default function DashboardFinancialRecordList() {
             }
             onDeleteFinancialRecord={setPendingFinancialRecordCodeDeleteRequest}
           />
-          {!data.records.length && <EmptyNote>هیچ سندی وجود ندارید</EmptyNote>}
+          {!data.records.length && <EmptyNote>هیچ سندی وجود ندارد</EmptyNote>}
           <Pagination
             currentPage={page}
             totalCount={data.totalCount}

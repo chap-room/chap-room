@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import Head from "next/head";
 import { getProfile, updateProfile } from "@/admin/api";
 import DashboardLayout from "@/admin/components/Layout";
-import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
+import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
@@ -26,7 +26,7 @@ export default function DashboardProfile() {
       <Head>
         <title>داشبورد - پروفایل</title>
       </Head>
-      <SectionHeader
+      <AdminSectionHeader
         title="پروفایل"
         description="ــ تنظیمات حساب خود را از این قسمت انجام دهید"
       />

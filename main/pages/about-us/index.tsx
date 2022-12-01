@@ -2,6 +2,7 @@ import styles from "./style.module.scss";
 import { ReactElement } from "react";
 import { FormattedNumber } from "react-intl";
 import Head from "next/head";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import Layout from "@/main/components/Layout";
 import ExpandMoreIcon from "@/shared/assets/icons/expandMore.svg";
 import TargetImage from "@/main/assets/images/target.svg";
@@ -15,29 +16,33 @@ export default function AboutUs() {
         <title>صفحه اصلی</title>
       </Head>
       <div className={styles.Introduction}>
-        <div></div>
         <div>
-          <h2>درباره چاپ روم</h2>
-          <p>
-            چاپ روم یک سرویس پرینت و کپی آنلاین است که از سال{" "}
-            <FormattedNumber value={1398} useGrouping={false} /> فعالیت خود را
-            در جهت بهینه سازی هزینه های چاپ و پرینت تا{" "}
-            <FormattedNumber value={90} /> درصد آغاز نمود. شما قادر خواهید بود
-            از طریق وب سایت چاپ روم یا شبکه های اجتماعی سفارش خود را ثبت کنید
-            سپس جزوه یا فایل خود را در قسمت مربوطه آپلود نمایید و با بالاترین
-            کیفیت و سرعت جزوه خود را پرینت و درب منزل دریافت کنید.
-          </p>
-          <p>
-            استارت آپ چاپ روم با استفاده از بهترین تکنولوژی چاپ قابلیت ارائه صد
-            هزار صفحه در روز را برای مشتریان خود دارد. تمامی فرایند چاپ و پرینت
-            از ابتدا تا انتها توسط پرسنل با تجربه و فنی انجام می شود و خیال شما
-            باید از بابت کیفیت و امنیت کار راحت باشد.
-          </p>
+          <div>
+            <div></div>
+            <div>
+              <h2>درباره چاپ روم</h2>
+              <p>
+                چاپ روم یک سرویس پرینت و کپی آنلاین است که از سال{" "}
+                {englishToPersianNumbers(1398)} فعالیت خود را در جهت بهینه سازی
+                هزینه های چاپ و پرینت تا {englishToPersianNumbers(90)} درصد آغاز
+                نمود. شما قادر خواهید بود از طریق وب سایت چاپ روم یا شبکه های
+                اجتماعی سفارش خود را ثبت کنید سپس جزوه یا فایل خود را در قسمت
+                مربوطه آپلود نمایید و با بالاترین کیفیت و سرعت جزوه خود را پرینت
+                و درب منزل دریافت کنید.
+              </p>
+              <p>
+                استارت آپ چاپ روم با استفاده از بهترین تکنولوژی چاپ قابلیت ارائه
+                صد هزار صفحه در روز را برای مشتریان خود دارد. تمامی فرایند چاپ و
+                پرینت از ابتدا تا انتها توسط پرسنل با تجربه و فنی انجام می شود و
+                خیال شما باید از بابت کیفیت و امنیت کار راحت باشد.
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className={styles.ReadMore}>
-        بیشتر بخوانید
-        <ExpandMoreIcon />
+        <div className={styles.ReadMore}>
+          بیشتر بخوانید
+          <ExpandMoreIcon />
+        </div>
       </div>
       <div className={styles.Section1}>
         <div>
@@ -123,9 +128,7 @@ export default function AboutUs() {
             </p>
           </div>
           <div>
-            <h3>
-              پشتیبانی <FormattedNumber value={24} /> ساعته
-            </h3>
+            <h3>پشتیبانی {englishToPersianNumbers(24)} ساعته</h3>
             <p>
               در صورت داشتن هرگونه سوال پشتیبانان چاپ روم آماده ارائه خدمات
               پشتیبانی به شما هستند.

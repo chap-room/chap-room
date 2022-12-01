@@ -5,7 +5,7 @@ import Link from "next/link";
 import { PrintTariffs } from "@/shared/types";
 import { getPrintTariffs } from "@/admin/api";
 import DashboardLayout from "@/admin/components/Layout";
-import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
+import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
@@ -23,10 +23,9 @@ export default function DashboardPrintPricesList() {
       <Head>
         <title>داشبورد - تعرفه ها</title>
       </Head>
-      <SectionHeader
+      <AdminSectionHeader
         title="تعرفه ها"
         description="ــ تعرفه های پرینت را از این قسمت مدیریت کنید"
-        isAdmin
       />
       <SectionContent>
         <ContentHeader

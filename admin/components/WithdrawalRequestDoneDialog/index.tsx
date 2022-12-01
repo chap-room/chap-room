@@ -1,13 +1,14 @@
 import styles from "./style.module.scss";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import moment from "jalali-moment";
+import { useValidation, validateInt } from "@/shared/utils/validation";
 import Dialog from "@/shared/components/Dialog";
 import TextInput from "@/shared/components/TextInput";
+import ErrorList from "@/shared/components/ErrorList";
 import BottomActions from "@/shared/components/Dashboard/BottomActions";
 import Button from "@/shared/components/Button";
 
 interface WithdrawalRequestDoneDialogProps {
-  open: boolean;
   onClose: () => void;
   onDoneWithdrawalRequest: (
     transactionDate: string,
@@ -16,7 +17,6 @@ interface WithdrawalRequestDoneDialogProps {
 }
 
 export default function WithdrawalRequestDoneDialog({
-  open,
   onClose,
   onDoneWithdrawalRequest,
 }: WithdrawalRequestDoneDialogProps) {
@@ -32,22 +32,33 @@ export default function WithdrawalRequestDoneDialog({
   );
   const [trackingCode, setTrackingCode] = useState("");
 
-  useEffect(() => {
-    if (open) {
-      const jaliliMoment = moment();
-      setTransactionDateDay(jaliliMoment.jDate().toString());
-      setTransactionDateMonth((jaliliMoment.jMonth() + 1).toString());
-      setTransactionDateYear(jaliliMoment.jYear().toString());
-      setTrackingCode("");
-    }
-  }, [open]);
-
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const formValidation = useValidation(
+    {
+      transactionDate: [
+        (value) => {
+          if (!moment.from(value, "fa-IR", "jYYYY/jMM/jDD").isValid()) {
+            return "تاریخ نامعتبر است";
+          }
+        },
+      ],
+      trackingCode: [validateInt({ unsigned: true })],
+    },
+    {
+      transactionDate: [
+        transactionDateYear,
+        transactionDateMonth,
+        transactionDateDay,
+      ].join("/"),
+      trackingCode,
+    }
+  );
 
   return (
     <Dialog
       title="انجام دادن درخواست برداشت"
-      open={open}
+      open={true}
       onClose={() => onClose()}
     >
       <div className={styles.DialogContent}>
@@ -57,19 +68,26 @@ export default function WithdrawalRequestDoneDialog({
             <TextInput
               inputProps={{ type: "number", placeholder: "روز" }}
               value={transactionDateDay}
-              onChange={setTransactionDateDay}
+              onChange={(newValue) =>
+                setTransactionDateDay(newValue.substring(0, 2))
+              }
             />
             <TextInput
               inputProps={{ type: "number", placeholder: "ماه" }}
               value={transactionDateMonth}
-              onChange={setTransactionDateMonth}
+              onChange={(newValue) =>
+                setTransactionDateMonth(newValue.substring(0, 2))
+              }
             />
             <TextInput
               inputProps={{ type: "number", placeholder: "سال" }}
               value={transactionDateYear}
-              onChange={setTransactionDateYear}
+              onChange={(newValue) =>
+                setTransactionDateYear(newValue.substring(0, 4))
+              }
             />
           </div>
+          <ErrorList errors={formValidation.errors.transactionDate} />
         </div>
         <div>کد پیگیری:</div>
         <div>
@@ -78,6 +96,7 @@ export default function WithdrawalRequestDoneDialog({
             value={trackingCode}
             onChange={setTrackingCode}
           />
+          <ErrorList errors={formValidation.errors.trackingCode} />
         </div>
       </div>
       <BottomActions>
@@ -87,29 +106,16 @@ export default function WithdrawalRequestDoneDialog({
             setIsSubmitting(true);
             onDoneWithdrawalRequest(
               [
-                transactionDateDay,
-                transactionDateMonth,
                 transactionDateYear,
-              ].join("-"),
+                transactionDateMonth,
+                transactionDateDay,
+              ].join("/"),
               trackingCode
             ).finally(() => setIsSubmitting(false));
           }}
           style={{ minWidth: 100 }}
           loading={isSubmitting}
-          disabled={
-            isSubmitting ||
-            isNaN(parseInt(transactionDateYear)) ||
-            parseInt(transactionDateYear) <= 0 ||
-            transactionDateYear.length !== 4 ||
-            isNaN(parseInt(transactionDateMonth)) ||
-            parseInt(transactionDateMonth) <= 0 ||
-            parseInt(transactionDateMonth) > 12 ||
-            isNaN(parseInt(transactionDateDay)) ||
-            parseInt(transactionDateDay) <= 0 ||
-            (parseInt(transactionDateMonth) > 6
-              ? parseInt(transactionDateDay) > 30
-              : parseInt(transactionDateDay) > 31)
-          }
+          disabled={isSubmitting || !formValidation.isValid}
         >
           انجام دادن
         </Button>

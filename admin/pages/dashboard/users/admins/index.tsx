@@ -8,7 +8,7 @@ import { AdminUserRole } from "@/shared/types";
 import { deleteAdmin, getAdmins } from "@/admin/api";
 import AddIcon from "@/shared/assets/icons/add.svg";
 import DashboardLayout from "@/admin/components/Layout";
-import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
+import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
@@ -53,10 +53,9 @@ export default function DashboardAdminList() {
       <Head>
         <title>داشبورد - ادمین ها</title>
       </Head>
-      <SectionHeader
+      <AdminSectionHeader
         title="ادمین ها"
-        description="ــ ادمین ها را از این بخش اضافه و ویرایش کنید"
-        isAdmin
+        description="ــ افزودن و ویرایش ادمین ها از این قسمت"
       />
       <SectionContent>
         <ContentHeader
@@ -123,7 +122,7 @@ export default function DashboardAdminList() {
               router.push(`/dashboard/users/admins/${adminId}/edit`)
             }
           />
-          {!data.admins.length && <EmptyNote>هیچ ادمینی وجود ندارید</EmptyNote>}
+          {!data.admins.length && <EmptyNote>هیچ ادمینی وجود ندارد</EmptyNote>}
           <Pagination
             currentPage={page}
             totalCount={data.totalCount}

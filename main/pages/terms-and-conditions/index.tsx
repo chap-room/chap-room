@@ -1,6 +1,6 @@
 import styles from "./style.module.scss";
 import { ReactElement } from "react";
-import { FormattedNumber } from "react-intl";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import Layout from "@/main/components/Layout";
 
 const terms = [
@@ -19,9 +19,7 @@ export default function TermsAndConditions() {
       <div className={styles.OrderedList}>
         {terms.map((term, index) => (
           <div key={index}>
-            <div>
-              <FormattedNumber value={index + 1} />.
-            </div>
+            <div>{englishToPersianNumbers(index + 1)}.</div>
             <div>{term}</div>
           </div>
         ))}

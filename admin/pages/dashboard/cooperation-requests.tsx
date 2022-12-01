@@ -1,10 +1,11 @@
 import { ReactElement, useRef, useState } from "react";
+import { useIntl } from "react-intl";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import { CooperationRequest } from "@/shared/types";
 import { getCooperationRequests, updateCooperationRequest } from "@/admin/api";
 import DashboardLayout from "@/admin/components/Layout";
-import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
+import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
@@ -17,12 +18,9 @@ import EmptyNote from "@/shared/components/Dashboard/EmptyNote";
 import Pagination from "@/shared/components/Pagination";
 import CooperationRequestAcceptDialog from "@/admin/components/CooperationRequestAcceptDialog";
 import CooperationRequestRejectDialog from "@/admin/components/CooperationRequestRejectDialog";
-import { FormattedNumber } from "react-intl";
 
 export default function DashboardCooperationRequests() {
-  const [itemsStatus, setItemsStatus] = useState<
-    "approved" | "rejected" | null
-  >(null);
+  const intl = useIntl();
 
   const [data, setData] = useState<{
     totalCount: number;
@@ -30,6 +28,9 @@ export default function DashboardCooperationRequests() {
     cooperations: CooperationRequest[];
   }>({ totalCount: 0, pageSize: 0, cooperations: [] });
 
+  const [itemsStatus, setItemsStatus] = useState<
+    "approved" | "rejected" | null
+  >(null);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
 
@@ -58,22 +59,17 @@ export default function DashboardCooperationRequests() {
       <Head>
         <title>داشبورد - درخواست های همکاری</title>
       </Head>
-      <SectionHeader
+      <AdminSectionHeader
         title="درخواست های همکاری"
         description="ــ درخواست ها را از این قسمت مدیریت کنید"
-        isAdmin
       />
       <SectionContent>
         <ContentHeader
           title={title}
           subTitle={
-            data.totalCount ? (
-              <>
-                {"("}
-                <FormattedNumber value={data.totalCount} />
-                {")"}
-              </>
-            ) : undefined
+            data.totalCount
+              ? `(${intl.formatNumber(data.totalCount)})`
+              : undefined
           }
           end={
             <SwitchButtons
@@ -147,7 +143,7 @@ export default function DashboardCooperationRequests() {
             itemsStatus={itemsStatus}
           />
           {!data.cooperations.length && (
-            <EmptyNote>هیچ درخواست همکاری ندارید</EmptyNote>
+            <EmptyNote>هیچ درخواست همکاری وجود ندارد</EmptyNote>
           )}
           <Pagination
             currentPage={page}
@@ -155,54 +151,56 @@ export default function DashboardCooperationRequests() {
             pageSize={data.pageSize}
             onPageChange={setPage}
           />
-          <CooperationRequestAcceptDialog
-            open={pendingCooperationRequestAcceptRequest !== null}
-            onClose={() => {
-              setPendingCooperationRequestAcceptRequest(null);
-            }}
-            defaultValues={{
-              description:
-                pendingCooperationRequestAcceptRequest?.description ||
-                undefined,
-            }}
-            onAcceptCooperationRequest={(cooperationRequestAcceptData) =>
-              updateCooperationRequest(
-                pendingCooperationRequestAcceptRequest!.id,
-                "approved",
-                cooperationRequestAcceptData.description
-              )
-                .then((message) => {
-                  toast.success(message);
-                  setPendingCooperationRequestAcceptRequest(null);
-                  if (reloadRef.current) reloadRef.current();
-                })
-                .catch(toast.error)
-            }
-          />
-          <CooperationRequestRejectDialog
-            open={pendingCooperationRequestRejectRequest !== null}
-            onClose={() => {
-              setPendingCooperationRequestRejectRequest(null);
-            }}
-            defaultValues={{
-              description:
-                pendingCooperationRequestRejectRequest?.description ||
-                undefined,
-            }}
-            onRejectCooperationRequest={(cooperationRequestRejectData) =>
-              updateCooperationRequest(
-                pendingCooperationRequestRejectRequest!.id,
-                "rejected",
-                cooperationRequestRejectData.description
-              )
-                .then((message) => {
-                  toast.success(message);
-                  setPendingCooperationRequestRejectRequest(null);
-                  if (reloadRef.current) reloadRef.current();
-                })
-                .catch(toast.error)
-            }
-          />
+          {pendingCooperationRequestAcceptRequest !== null && (
+            <CooperationRequestAcceptDialog
+              onClose={() => {
+                setPendingCooperationRequestAcceptRequest(null);
+              }}
+              defaultValues={{
+                description:
+                  pendingCooperationRequestAcceptRequest?.description ||
+                  undefined,
+              }}
+              onAcceptCooperationRequest={(cooperationRequestAcceptData) =>
+                updateCooperationRequest(
+                  pendingCooperationRequestAcceptRequest!.id,
+                  "approved",
+                  cooperationRequestAcceptData.description
+                )
+                  .then((message) => {
+                    toast.success(message);
+                    setPendingCooperationRequestAcceptRequest(null);
+                    if (reloadRef.current) reloadRef.current();
+                  })
+                  .catch(toast.error)
+              }
+            />
+          )}
+          {pendingCooperationRequestRejectRequest !== null && (
+            <CooperationRequestRejectDialog
+              onClose={() => {
+                setPendingCooperationRequestRejectRequest(null);
+              }}
+              defaultValues={{
+                description:
+                  pendingCooperationRequestRejectRequest?.description ||
+                  undefined,
+              }}
+              onRejectCooperationRequest={(cooperationRequestRejectData) =>
+                updateCooperationRequest(
+                  pendingCooperationRequestRejectRequest!.id,
+                  "rejected",
+                  cooperationRequestRejectData.description
+                )
+                  .then((message) => {
+                    toast.success(message);
+                    setPendingCooperationRequestRejectRequest(null);
+                    if (reloadRef.current) reloadRef.current();
+                  })
+                  .catch(toast.error)
+              }
+            />
+          )}
         </DataLoader>
       </SectionContent>
     </>

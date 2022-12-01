@@ -85,14 +85,32 @@
           }
         }
 
-        .Sent {
-          color: #14cc9c;
+        .Status {
+          display: flex;
+          flex-direction: column;
+          color: #0077b5;
+          white-space: nowrap;
+
+          @media (max-width: 800px) {
+            gap: 5px;
+            justify-content: flex-end;
+          }
         }
 
-        .Canceled,
-        .Pending,
-        .Preparing {
+        .CancelReason,
+        .NotApplicable {
           color: #f20f4b;
+        }
+
+        .TrackingNumber {
+          display: flex;
+          flex-direction: column;
+          white-space: nowrap;
+
+          @media (max-width: 800px) {
+            gap: 5px;
+            justify-content: flex-end;
+          }
         }
 
         .SeeDetailsButton,
@@ -100,46 +118,64 @@
         .ConfirmButton,
         .MarkAsSentButton {
           display: inline-flex;
+          width: 90px;
           height: 30px;
           flex-direction: row;
           justify-content: center;
           align-items: center;
           border-radius: 20px;
           box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
-          padding: 0 20px;
           font-size: 12px;
           user-select: none;
           cursor: pointer;
           border: none;
-
-          @media (max-width: 800px) {
-            flex: 1;
-          }
         }
 
         .SeeDetailsButton {
-          background-color: #ffffff;
+          background-color: #0077b5;
+          color: #ffffff;
+        }
+        
+        &.NoButtons {
+          @media (max-width: 800px) {
+            display: none;
+          }
         }
 
         .ButtonList {
           min-height: 40px;
           display: flex;
           flex-direction: row;
-          gap: 5px;
+          gap: 10px;
           white-space: nowrap;
           flex: 1;
           justify-content: center;
           align-items: center;
 
           .ConfirmButton,
+          .MarkAsSentButton,
+          .CancelButton {
+            @media (max-width: 800px) {
+              flex: 1;
+            }
+          }
+
+          .ConfirmButton {
+            background-color: #f5f5f5;
+            color: #464646;
+          }
+
           .MarkAsSentButton {
             background-color: #14cc9c;
             color: #ffffff;
           }
 
           .CancelButton {
-            background-color: #f20f4b;
-            color: #ffffff;
+            padding: 0;
+            background-color: transparent;
+            box-shadow: none;
+            color: #f20f4b;
+            width: unset;
           }
         }
       }
@@ -149,6 +185,35 @@
           > td {
             border-top: 1px solid #cccccc;
           }
+        }
+      }
+    }
+  }
+
+  &:not([data-items-status="null"]) {
+    &:not([data-items-status="sent"]) {
+      > thead > tr > th:nth-child(6),
+      > tbody > tr > td:nth-child(6) {
+        display: none;
+      }
+    }
+  }
+
+  &:not([data-items-status="null"]) {
+    &:not([data-items-status="canceled"]) {
+      > thead > tr > th:nth-child(7),
+      > tbody > tr > td:nth-child(7) {
+        display: none;
+      }
+    }
+  }
+
+  &:not([data-items-status="null"]) {
+    &:not([data-items-status="pending"]) {
+      &:not([data-items-status="preparing"]) {
+        > thead > tr > th:nth-child(8),
+        > tbody > tr > td:nth-child(8) {
+          display: none;
         }
       }
     }

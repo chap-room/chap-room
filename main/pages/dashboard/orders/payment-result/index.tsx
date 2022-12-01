@@ -1,9 +1,9 @@
 import styles from "./style.module.scss";
 import { ReactElement } from "react";
-import { FormattedNumber } from "react-intl";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import DashboardLayout from "@/main/components/Dashboard/Layout";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
@@ -44,11 +44,7 @@ export default function DashboardOrderPaymentResult() {
                 سفارش شما با موفقیت تکمیل شد
               </h2>
               <p className={styles.SuccessfulOrderId}>
-                شماره سفارش:{" "}
-                <FormattedNumber
-                  value={parseInt(orderId)}
-                  useGrouping={false}
-                />
+                شماره سفارش: {englishToPersianNumbers(orderId)}
               </p>
               <Link href="/dashboard/orders">
                 <Button varient="gradient" style={{ minWidth: 300 }}>
@@ -66,7 +62,7 @@ export default function DashboardOrderPaymentResult() {
                 متاسفانه پرداخت اخیر شما انجام نشد
               </h2>
               <p className={styles.UnsuccessfulMessage}>
-                در صورت کسر موجودی از حساب شما تا <FormattedNumber value={72} />{" "}
+                در صورت کسر موجودی از حساب شما تا {englishToPersianNumbers(72)}{" "}
                 ساعت به حساب شما باز می‌گردد، در غیر این صورت با ما تماس بگیرید{" "}
                 <Link href="/contact-us">
                   <a>[ تماس با ما ]</a>

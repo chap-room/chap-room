@@ -1,41 +1,45 @@
 import styles from "./style.module.scss";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useValidation, validateInt } from "@/shared/utils/validation";
 import Dialog from "@/shared/components/Dialog";
 import TextInput from "@/shared/components/TextInput";
 import BottomActions from "@/shared/components/Dashboard/BottomActions";
 import Button from "@/shared/components/Button";
+import ErrorList from "@/shared/components/ErrorList";
 
 interface OrderSentDialogProps {
-  open: boolean;
   onClose: () => void;
   onMarkOrderSent: (trackingCode: string) => Promise<any>;
 }
 
 export default function OrderSentDialog({
-  open,
   onClose,
   onMarkOrderSent,
 }: OrderSentDialogProps) {
   const [trackingCode, setTrackingCode] = useState("");
 
-  useEffect(() => {
-    if (open) {
-      setTrackingCode("");
-    }
-  }, [open]);
-
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const formValidation = useValidation(
+    {
+      trackingCode: [validateInt({ unsigned: true })],
+    },
+    {
+      trackingCode,
+    }
+  );
+
   return (
-    <Dialog title="ارسال سفارش" open={open} onClose={() => onClose()}>
+    <Dialog title="ارسال سفارش" open={true} onClose={() => onClose()}>
       <div className={styles.DialogContent}>
-        <div>کد پیگیری:</div>
-        <div>
+        <div className={styles.Label}>کد پیگیری:</div>
+        <div className={styles.Input}>
           <TextInput
             inputProps={{ type: "number", placeholder: "کد پیگیری" }}
             value={trackingCode}
-            onChange={(newValue) => setTrackingCode(newValue.substring(0, 24))}
+            onChange={setTrackingCode}
           />
+          <ErrorList errors={formValidation.errors.trackingCode} />
         </div>
       </div>
       <BottomActions>
@@ -47,7 +51,7 @@ export default function OrderSentDialog({
           }}
           style={{ minWidth: 100 }}
           loading={isSubmitting}
-          disabled={isSubmitting || trackingCode.length !== 24}
+          disabled={isSubmitting || !formValidation.isValid}
         >
           ارسال شده
         </Button>

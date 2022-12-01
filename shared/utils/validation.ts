@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
-import { IntlShape, useIntl } from "react-intl";
+import { useRef } from "react";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 
-type Validator = (value: any, intl: IntlShape) => string | void;
+type Validator = (value: any) => string | void;
 
 export function useValidation<VT extends Record<string, any>>(
   validators: {
@@ -9,7 +9,6 @@ export function useValidation<VT extends Record<string, any>>(
   },
   value: VT
 ) {
-  const intl = useIntl();
   const editedValues = useRef<string[]>([]);
   const lastValue = useRef<VT>({} as VT);
 
@@ -29,7 +28,7 @@ export function useValidation<VT extends Record<string, any>>(
     const itemErrors: string[] = [];
 
     for (let validator of validators[item]) {
-      const result = validator(value[item], intl);
+      const result = validator(value[item]);
       if (result) {
         if (editedValues.current.includes(item)) {
           itemErrors.push(result);
@@ -50,13 +49,19 @@ export function validateLength(options: {
   min?: number;
   max?: number;
 }): Validator {
-  return (value: string, intl) => {
+  return (value: string) => {
     if (options.length !== undefined && value.length !== options.length)
-      return `باید ${intl.formatNumber(options.length)} کاراکتر داشته باشد`;
+      return `باید ${englishToPersianNumbers(
+        options.length
+      )} کاراکتر داشته باشد`;
     if (options.min !== undefined && value.length < options.min)
-      return `باید حداقل ${intl.formatNumber(options.min)} کاراکتر داشته باشد`;
+      return `باید حداقل ${englishToPersianNumbers(
+        options.min
+      )} کاراکتر داشته باشد`;
     if (options.max !== undefined && value.length > options.max)
-      return `باید حداکثر ${intl.formatNumber(options.max)} کاراکتر داشته باشد`;
+      return `باید حداکثر ${englishToPersianNumbers(
+        options.max
+      )} کاراکتر داشته باشد`;
   };
 }
 
@@ -64,8 +69,8 @@ export function optionalValidate(options: {
   enabled: boolean;
   validator: Validator;
 }): Validator {
-  return (value, intl) => {
-    if (options.enabled) return options.validator(value, intl);
+  return (value) => {
+    if (options.enabled) return options.validator(value);
   };
 }
 
@@ -75,7 +80,7 @@ export function validateInt(options?: {
   min?: number;
   max?: number;
 }): Validator {
-  return (value: string, intl) => {
+  return (value: string) => {
     if (
       isNaN(parseInt(value)) ||
       (options?.unsigned && !(parseInt(value) >= 0))
@@ -85,19 +90,19 @@ export function validateInt(options?: {
       options?.length !== undefined &&
       parseInt(value).toString().length !== options?.length // Remove '+' or '--' Character
     )
-      return `باید ${intl.formatNumber(options.length)} رقم داشته باشد`;
+      return `باید ${englishToPersianNumbers(options.length)} رقم داشته باشد`;
     if (options?.min !== undefined && parseInt(value) < options.min)
-      return `باید حداقل ${intl.formatNumber(options.min)} باشد`;
+      return `باید حداقل ${englishToPersianNumbers(options.min)} باشد`;
     if (options?.max !== undefined && parseInt(value) > options.max)
-      return `باید حداکثر ${intl.formatNumber(options.max)} باشد`;
+      return `باید حداکثر ${englishToPersianNumbers(options.max)} باشد`;
   };
 }
 
 export function validatePhoneNumber(): Validator {
-  return (value: string, intl) => {
+  return (value: string) => {
     if (
-      validateLength({ length: 11 })(value, intl) ||
-      validateInt({ length: 10, unsigned: true })(value, intl) || // the 0 in start will be remove in int
+      validateLength({ length: 11 })(value) ||
+      validateInt({ length: 10, unsigned: true })(value) || // the 0 in start will be remove in int
       !value.startsWith("09")
     )
       return "شماره موبایل نامعتبر است";

@@ -1,6 +1,6 @@
 import styles from "./style.module.scss";
-import { FormattedNumber } from "react-intl";
 import { AdminUserRole } from "@/shared/types";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import EditIcon from "@/shared/assets/icons/edit.svg";
 import DeletetIcon from "@/shared/assets/icons/delete.svg";
 import IconButton from "@/shared/components/IconButton";
@@ -26,7 +26,7 @@ export default function AdminTable({
       <thead>
         <tr>
           <th>کاربر</th>
-          <th>نقش</th>
+          <th style={{ width: "60%" }}>نقش</th>
           <th style={{ width: "1%" }}>عملیات</th>
         </tr>
       </thead>
@@ -37,13 +37,7 @@ export default function AdminTable({
               <span className={styles.MobileLabel}>ادمین:</span>
               <div>
                 <div className={styles.UserName}>{admin.name}</div>
-                <div>
-                  <FormattedNumber
-                    value={parseInt(admin.phoneNumber)}
-                    useGrouping={false}
-                    minimumIntegerDigits={11}
-                  />
-                </div>
+                <div>{englishToPersianNumbers(admin.phoneNumber)}</div>
               </div>
             </td>
             <td>

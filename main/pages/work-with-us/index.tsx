@@ -1,6 +1,8 @@
 import styles from "./style.module.scss";
 import { ReactElement } from "react";
+import { FormattedNumber } from "react-intl";
 import Head from "next/head";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import Layout from "@/main/components/Layout";
 import ExpandMoreIcon from "@/shared/assets/icons/expandMore.svg";
 import HappyPeopleImage from "@/main/assets/images/happyPeople.svg";
@@ -8,7 +10,6 @@ import MobileMarketingImage from "@/main/assets/images/mobileMarketing.svg";
 import SocialMediaImage from "@/main/assets/images/socialMedia.svg";
 import MarketingBenefitImage from "@/main/assets/images/marketingBenefit.svg";
 import CheckoutImage from "@/main/assets/images/checkout.svg";
-import { FormattedNumber } from "react-intl";
 
 export default function WorkWithUs() {
   return (
@@ -18,21 +19,25 @@ export default function WorkWithUs() {
       </Head>
       <div className={styles.Introduction}>
         <div>
-          <h1>همکاری در فروش</h1>
-          <p>
-            در صورتی که شما با دانش آموزان یا دانشجویان ارتباط دارید، می‌توانید
-            وارد پنل کاربری خود شوید و از قسمت پنل بازاریابی لینک اختصاصی خود را
-            دریافت و به کاربران خود جهت ثبت سفارش ارائه کنید تا با خرید کاربران
-            از سود فروش برخوردار شوید
-          </p>
+          <div>
+            <div>
+              <h1>همکاری در فروش</h1>
+              <p>
+                در صورتی که شما با دانش آموزان یا دانشجویان ارتباط دارید،
+                می‌توانید وارد پنل کاربری خود شوید و از قسمت پنل بازاریابی لینک
+                اختصاصی خود را دریافت و به کاربران خود جهت ثبت سفارش ارائه کنید
+                تا با خرید کاربران از سود فروش برخوردار شوید
+              </p>
+            </div>
+            <div>
+              <HappyPeopleImage />
+            </div>
+          </div>
         </div>
-        <div>
-          <HappyPeopleImage />
+        <div className={styles.ReadMore}>
+          بیشتر بخوانید
+          <ExpandMoreIcon />
         </div>
-      </div>
-      <div className={styles.ReadMore}>
-        بیشتر بخوانید
-        <ExpandMoreIcon />
       </div>
       <div className={styles.Section}>
         <h1>پنل بازاریابی برای چه کسانی مناسب است؟</h1>
@@ -113,7 +118,7 @@ export default function WorkWithUs() {
           <div>
             <div>
               <div className={styles.NumberCircle}>
-                <FormattedNumber value={1} />
+                {englishToPersianNumbers(1)}
               </div>
             </div>
             <div>ثبت نام در چاپ روم</div>
@@ -121,7 +126,7 @@ export default function WorkWithUs() {
           <div>
             <div>
               <div className={styles.NumberCircle}>
-                <FormattedNumber value={2} />
+                {englishToPersianNumbers(2)}
               </div>
             </div>
             <div>دریافت لینک اختصاصی از پنل بازاریابی</div>
@@ -129,7 +134,7 @@ export default function WorkWithUs() {
           <div>
             <div>
               <div className={styles.NumberCircle}>
-                <FormattedNumber value={3} />
+                {englishToPersianNumbers(3)}
               </div>
             </div>
             <div>اشتراک گذاری لینک اختصاصی</div>
@@ -137,7 +142,7 @@ export default function WorkWithUs() {
           <div>
             <div>
               <div className={styles.NumberCircle}>
-                <FormattedNumber value={4} />
+                {englishToPersianNumbers(4)}
               </div>
             </div>
             <div>درخواست برداشت موجودی</div>

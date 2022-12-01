@@ -84,19 +84,22 @@ export default function AddressStage({
         message="از حذف این آدرس مطمئن هستید؟"
         confirmButtonText="حذف"
       />
-      <BottomActions>
-        <Button onClick={actions.back} style={{ fontWeight: "bold" }}>
-          مرحله قبل
-        </Button>
-        <Button
-          varient="filled"
-          style={{ minWidth: 150 }}
-          onClick={actions.finish}
-          disabled={!data.map((item) => item.id).includes(selectedAddressId!)}
-        >
-          مرحله بعد
-        </Button>
-      </BottomActions>
+      <div className={styles.BottomActionsContainer}>
+        <BottomActions>
+          <Button onClick={actions.back} style={{ fontWeight: 500 }}>
+            مرحله قبل
+          </Button>
+          <div className={styles.MobileSpacer} />
+          <Button
+            varient="filled"
+            style={{ minWidth: 150 }}
+            onClick={actions.finish}
+            disabled={!data.map((item) => item.id).includes(selectedAddressId!)}
+          >
+            مرحله بعد
+          </Button>
+        </BottomActions>
+      </div>
     </DataLoader>
   );
 }

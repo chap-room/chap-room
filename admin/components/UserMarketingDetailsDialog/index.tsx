@@ -1,10 +1,12 @@
 import styles from "./style.module.scss";
 import { useState } from "react";
-import Dialog from "@/shared/components/Dialog";
-import CopyableText from "@/shared/components/CopyableText";
 import { FormattedNumber } from "react-intl";
-import DataLoader from "@/shared/components/DataLoader";
 import { getUserMarketing } from "@/admin/api";
+import { User } from "@/shared/types";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
+import Dialog from "@/shared/components/Dialog";
+import DataLoader from "@/shared/components/DataLoader";
+import CopyableText from "@/shared/components/CopyableText";
 
 interface UserMarketingDetailsDialogProps {
   open: boolean;
@@ -18,6 +20,7 @@ export default function UserMarketingDetailsDialog({
   userId,
 }: UserMarketingDetailsDialogProps) {
   const [data, setData] = useState<{
+    user: User | null;
     referral: {
       commission: number;
       slug: string;
@@ -36,6 +39,7 @@ export default function UserMarketingDetailsDialog({
       }[];
     };
   }>({
+    user: null,
     referral: {
       commission: 10,
       slug: "",
@@ -57,6 +61,13 @@ export default function UserMarketingDetailsDialog({
       open={open}
       onClose={onClose}
       title="اطلاعات بازاریابی"
+      subTitle={
+        data.user
+          ? `(${data.user.name} / ${englishToPersianNumbers(
+              data.user.phoneNumber
+            )})`
+          : undefined
+      }
       fullScreenInMobile
     >
       <DataLoader

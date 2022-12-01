@@ -6,7 +6,7 @@ import Link from "next/link";
 import { newAdmin } from "@/admin/api";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
-import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
+import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
@@ -21,10 +21,9 @@ export default function DashboardNewAdmin() {
       <Head>
         <title>داشبورد - افزودن ادمین</title>
       </Head>
-      <SectionHeader
+      <AdminSectionHeader
         title="ادمین ها"
-        description="ــ ادمین ها را از این بخش اضافه و ویرایش کنید"
-        isAdmin
+        description="ــ افزودن و ویرایش ادمین ها از این قسمت"
       />
       <SectionContent>
         <ContentHeader

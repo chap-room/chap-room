@@ -31,6 +31,7 @@ export interface Order {
   lastUpdateDate: Date;
   trackingNumber: string | null;
   printFolders: PrintFolder[];
+  user: User;
 }
 
 export enum OrderCancelReason {
@@ -48,7 +49,10 @@ export interface PrintFolder {
   bindingOptions: BindingOptions | null;
   description: string | null;
   countOfCopies: number | null;
+  filesManuallySent: boolean;
   printFiles: PrintFile[];
+  folderCode: string;
+  phoneNumberToSendFile: string;
   filesUrl: string;
 }
 

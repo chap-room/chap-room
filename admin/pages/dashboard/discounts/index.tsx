@@ -8,7 +8,7 @@ import { Discount } from "@/shared/types";
 import { deleteDiscount, getDiscounts } from "@/admin/api";
 import DashboardLayout from "@/admin/components/Layout";
 import AddIcon from "@/shared/assets/icons/add.svg";
-import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
+import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
@@ -47,10 +47,9 @@ export default function DashboardDiscountList() {
       <Head>
         <title>داشبورد - کدهای تخفیف</title>
       </Head>
-      <SectionHeader
+      <AdminSectionHeader
         title="کدهای تخفیف"
         description="ــ کدهای تخفیف را از این قسمت مدیریت کنید"
-        isAdmin
       />
       <SectionContent>
         <ContentHeader

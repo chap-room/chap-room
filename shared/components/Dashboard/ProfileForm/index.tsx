@@ -1,6 +1,5 @@
 import styles from "./style.module.scss";
 import { useState } from "react";
-import { FormattedNumber } from "react-intl";
 import TextInput from "@/shared/components/TextInput";
 import Button from "@/shared/components/Button";
 import BottomActions from "@/shared/components/Dashboard/BottomActions";
@@ -11,6 +10,7 @@ import {
   validatePasswordRepeat,
   optionalValidate,
 } from "@/shared/utils/validation";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import ErrorList from "@/shared/components/ErrorList";
 
 interface ProfileFormData {
@@ -68,11 +68,7 @@ export default function ProfileForm({
       <div className={styles.Form}>
         <div className={styles.Label}>شماره موبایل:</div>
         <div className={styles.Input}>
-          <FormattedNumber
-            value={parseInt(phoneNumber)}
-            useGrouping={false}
-            minimumIntegerDigits={11}
-          />
+          {englishToPersianNumbers(phoneNumber)}
         </div>
         <div className={styles.Label}>نام کامل:</div>
         <div className={styles.Input}>

@@ -60,6 +60,7 @@
                 }
 
                 > .UsersOrdersSeeAllTooltip {
+                  pointer-events: none;
                   position: absolute;
                   top: 0;
                   left: 0;
@@ -102,7 +103,7 @@
         .UsersTooltip,
         .OrdersTooltip,
         .UsersOrdersTooltip {
-          position: absolute;
+          pointer-events: none;
           display: flex;
           flex-direction: column;
           align-items: center;

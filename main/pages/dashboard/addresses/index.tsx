@@ -93,7 +93,7 @@ export default function DashboardAddresseList() {
             onDeleteAddress={setPendingDeleteRequest}
           />
           {!data.addresses.length && (
-            <EmptyNote>شما هیچ آدرسی ندارید</EmptyNote>
+            <EmptyNote>هیچ آدرسی وجود ندارد</EmptyNote>
           )}
           <Pagination
             currentPage={page}

@@ -1,333 +1,271 @@
 .OrderDetails {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 1px;
-  border: 1px solid #cccccc;
-  background-color: #cccccc;
   color: #464646;
   font-size: 12px;
+  word-break: break-word;
+  width: 100%;
+  border: 1px solid #cccccc;
+  border-collapse: collapse;
 
-  @media (max-width: 896px) {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  @media (max-width: 512px) {
-    grid-template-columns: 1fr;
-  }
-
-  > div {
-    background-color: #eeeeee;
-    padding: 10px 15px;
+  @media screen and (max-width: 896px) {
     display: flex;
     flex-direction: column;
-
-    > .Label {
-      font-size: 11px;
-      color: #9c9c9c;
-    }
-
-    &:nth-child(1) {
-      grid-column: 1 / span 2;
-      grid-row: 1;
-
-      > div:not(:first-child) {
-        display: flex;
-        flex-direction: row;
-        gap: 20px;
-
-        > div:first-child {
-          min-width: max-content;
-        }
-      }
-    }
-
-    &:nth-child(2) {
-      grid-column: 3 / span 2;
-      grid-row: 1;
-
-      > div:not(:first-child) {
-        display: flex;
-        flex-direction: row;
-        gap: 20px;
-
-        > div:first-child {
-          min-width: max-content;
-        }
-
-        > div:last-child {
-          display: flex;
-          flex-direction: row;
-          gap: 10px;
-
-          .Match {
-            color: #14cc9c;
-          }
-
-          .NotMatch {
-            color: #f20f4b;
-          }
-        }
-      }
-    }
-
-    &:nth-child(3) {
-      grid-column: 1 / span 4;
-      grid-row: 2;
-
-      > div:not(:first-child) {
-        display: flex;
-        flex-direction: row;
-        gap: 20px;
-
-        > div:first-child {
-          min-width: max-content;
-        }
-      }
-    }
-
-    &:nth-child(4) {
-      grid-column: 1;
-      grid-row: 3;
-
-      > div:last-child {
-        display: flex;
-        flex-direction: row;
-        gap: 10px;
-      }
-    }
-
-    &:nth-child(5) {
-      grid-column: 2;
-      grid-row: 3;
-    }
-
-    &:nth-child(6) {
-      grid-column: 3;
-      grid-row: 3;
-    }
-
-    &:nth-child(7) {
-      grid-column: 4;
-      grid-row: 3;
-    }
-
-    &:nth-child(8) {
-      grid-column: 1 / span 4;
-      grid-row: 4;
-    }
-
-    &:nth-child(9) {
-      grid-column: 1;
-      grid-row: 5;
-
-      > div:last-child {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        row-gap: 5px;
-        column-gap: 30px;
-        align-items: center;
-        
-        > div:first-child {
-          flex: 1;
-          min-width: max-content;
-        }
-
-        > div:last-child {
-          min-width: max-content;
-          color: #9c9c9c;
-          font-size: 10px;
-          display: flex;
-          flex-direction: row;
-          gap: 5px;
-        }
-      }
-    }
-
-    &:nth-child(10) {
-      grid-column: 2;
-      grid-row: 5;
-
-      > div:last-child {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        row-gap: 5px;
-        column-gap: 30px;
-        align-items: center;
-        
-        > div:first-child {
-          flex: 1;
-          min-width: max-content;
-        }
-
-        > div:last-child {
-          min-width: max-content;
-          color: #9c9c9c;
-          font-size: 10px;
-          display: flex;
-          flex-direction: row;
-          gap: 5px;
-        }
-      }
-    }
-
-    &:nth-child(11) {
-      grid-column: 3 / span 2;
-      grid-row: 5;
-      background-color: #d9ebe6;
-
-      > div:last-child {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        row-gap: 5px;
-        column-gap: 30px;
-
-        > div {
-          flex: 1;
-          min-width: max-content;
-          display: flex;
-          flex-direction: row;
-          gap: 10px;
-        }
-      }
-    }
-
-    &:nth-child(12) {
-      grid-column: 1;
-      grid-row: 6;
-
-      > div:last-child {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 10px;
-
-        > div:first-child {
-          flex: 1;
-
-          .Canceled {
-            color: #f20f4b;
-          }
-
-          .Pending,
-          .Preparing {
-            color: #0077b5;
-          }
-
-          .Sent {
-            color: #14cc9c;
-          }
-        }
-
-        > div:last-child {
-          text-align: end;
-        }
-      }
-    }
-
-    &:nth-child(13) {
-      grid-column: 2;
-      grid-row: 6;
-    }
-
-    &:nth-child(14) {
-      grid-column: 3;
-      grid-row: 6;
-
-      > div:last-child {
-        display: flex;
-        flex-direction: row;
-        gap: 10px;
-      }
-    }
-
-    &:nth-child(15) {
-      grid-column: 4;
-      grid-row: 6;
-    }
-
-    @media (max-width: 896px) {
-      &:nth-child(1) {
-        grid-column: 1 / span 2;
-        grid-row: 1;
-      }
-
-      &:nth-child(2) {
-        grid-column: 1 / span 2;
-        grid-row: 2;
-      }
-
-      &:nth-child(3) {
-        grid-column: 1 / span 2;
-        grid-row: 3;
-      }
-
-      &:nth-child(4) {
-        grid-column: 1;
-        grid-row: 4;
-      }
-
-      &:nth-child(5) {
-        grid-column: 2;
-        grid-row: 4;
-      }
-
-      &:nth-child(6) {
-        grid-column: 1;
-        grid-row: 5;
-      }
-
-      &:nth-child(7) {
-        grid-column: 2;
-        grid-row: 5;
-      }
-
-      &:nth-child(8) {
-        grid-column: 1 / span 2;
-        grid-row: 6;
-      }
-
-      &:nth-child(9) {
-        grid-column: 1;
-        grid-row: 7;
-      }
-
-      &:nth-child(10) {
-        grid-column: 2;
-        grid-row: 7;
-      }
-
-      &:nth-child(11) {
-        grid-column: 1 / span 2;
-        grid-row: 8;
-      }
-
-      &:nth-child(12) {
-        grid-column: 1;
-        grid-row: 9;
-      }
-
-      &:nth-child(13) {
-        grid-column: 2;
-        grid-row: 9;
-      }
-
-      &:nth-child(14) {
-        grid-column: 1;
-        grid-row: 10;
-      }
-
-      &:nth-child(15) {
-        grid-column: 2;
-        grid-row: 10;
-      }
-    }
   }
 
-  @media (max-width: 512px) {
-    display: flex;
-    flex-direction: column;
+  tbody {
+    tr {
+      &:not(:first-child) {
+        border-top: 1px solid #cccccc;
+      }
+
+      @media screen and (max-width: 896px) {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        &:first-child {
+          td:nth-child(2) {
+            border-right-width: 0;
+            border-top: 1px solid #cccccc;
+          }
+        }
+      }
+
+      td {
+        padding: 0;
+        vertical-align: top;
+        box-sizing: border-box;
+
+        &:not(:first-child) {
+          border-right: 1px solid #cccccc;
+        }
+
+        @media screen and (max-width: 896px) {
+          display: flex;
+          flex-direction: column;
+
+          &:nth-child(3) {
+            border-right-width: 0;
+            border-top: 1px solid #cccccc;
+          }
+
+          &:nth-child(4) {
+            border-top: 1px solid #cccccc;
+          }
+        }
+
+        @media screen and (max-width: 512px) {
+          &:nth-child(2) {
+            border-right-width: 0;
+            border-top: 1px solid #cccccc;
+          }
+
+          &:nth-child(4) {
+            border-right-width: 0;
+          }
+        }
+
+        &.Cell25 {
+          width: 25%;
+
+          @media screen and (max-width: 896px) {
+            width: 50%;
+          }
+
+          @media screen and (max-width: 512px) {
+            width: 100%;
+          }
+        }
+
+        &.Cell50 {
+          width: 50%;
+
+          @media screen and (max-width: 896px) {
+            width: 100%;
+          }
+        }
+
+        &.Cell100 {
+          width: 100%;
+        }
+
+        .Cell {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          box-sizing: border-box;
+          padding: 10px 15px;
+
+          .Label {
+            font-size: 11px;
+            color: #9c9c9c;
+          }
+
+          .Summary {
+            display: flex;
+            flex-direction: column;
+
+            > div {
+              display: flex;
+              flex-direction: row;
+              gap: 20px;
+
+              > div:first-child {
+                min-width: max-content;
+              }
+            }
+          }
+
+          .Files {
+            display: flex;
+            flex-direction: column;
+
+            > div {
+              display: flex;
+              flex-direction: row;
+              gap: 20px;
+
+              > div:first-child {
+                min-width: max-content;
+              }
+
+              > div:last-child {
+                display: flex;
+                flex-direction: row;
+                gap: 10px;
+
+                .Match {
+                  color: #14cc9c;
+                }
+
+                .NotMatch {
+                  color: #f20f4b;
+                }
+              }
+            }
+          }
+
+          .Descriptions {
+            display: flex;
+            flex-direction: column;
+
+            > div {
+              display: flex;
+              flex-direction: row;
+              gap: 20px;
+
+              > div:first-child {
+                min-width: max-content;
+              }
+            }
+          }
+
+          .OrderDate {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+          }
+
+          .OrderAmount {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            row-gap: 5px;
+            column-gap: 30px;
+            align-items: center;
+
+            > div:first-child {
+              flex: 1;
+              min-width: max-content;
+            }
+
+            > div:last-child {
+              min-width: max-content;
+              color: #9c9c9c;
+              font-size: 10px;
+              display: flex;
+              flex-direction: row;
+              gap: 5px;
+            }
+          }
+
+          .DiscountAmount {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            row-gap: 5px;
+            column-gap: 30px;
+            align-items: center;
+
+            > div:first-child {
+              flex: 1;
+              min-width: max-content;
+            }
+
+            > div:last-child {
+              min-width: max-content;
+              color: #9c9c9c;
+              font-size: 10px;
+              display: flex;
+              flex-direction: row;
+              gap: 5px;
+            }
+          }
+
+          .PaymentMethod {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            row-gap: 5px;
+            column-gap: 30px;
+
+            > div {
+              flex: 1;
+              min-width: max-content;
+              display: flex;
+              flex-direction: row;
+              gap: 10px;
+            }
+          }
+
+          .OrderStatus {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 10px;
+
+            > div:first-child {
+              flex: 1;
+
+              &.Canceled {
+                color: #f20f4b;
+              }
+
+              &.Pending,
+              &.Preparing {
+                color: #0077b5;
+              }
+
+              &.Sent {
+                color: #14cc9c;
+              }
+            }
+
+            > div:last-child {
+              text-align: end;
+            }
+          }
+
+          .OrderPostageDate {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+          }
+        }
+
+        &.PaymentMethodTd {
+          background-color: #d9ebe6;
+        }
+      }
+    }
   }
 }

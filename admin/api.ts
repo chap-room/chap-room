@@ -21,6 +21,7 @@ import {
   Post,
   PostCategory,
   PrintTariffs,
+  User,
   WithdrawalRequest,
 } from "@/shared/types";
 import { convert } from "@/shared/utils/convert";
@@ -38,7 +39,6 @@ export function setAccessToken(token: string) {
 
 export function logout() {
   localStorage.removeItem("adminAccessToken");
-  localStorage.removeItem("adminData");
 }
 
 const api = axios.create({
@@ -105,11 +105,7 @@ export function isLoggedIn() {
     url: "/admins/profile",
     needAuth: true,
     redirectIfNotLogin: false,
-  }).then(({ data }) => ({
-    avatar: data.avatar,
-    name: data.name,
-    phoneNumber: data.phoneNumber,
-  }));
+  }).then(() => {});
 }
 
 export function resendCode(phoneNumber: string) {
@@ -143,38 +139,6 @@ export function loginConfirm(phoneNumber: string, code: number) {
   return request({
     method: "POST",
     url: "/admins/auth/login/confirm",
-    data: {
-      phoneNumber,
-      code,
-    },
-  });
-}
-
-export function register(
-  name: string,
-  phoneNumber: string,
-  password: string,
-  referralSlug: string | null
-) {
-  return request({
-    method: "POST",
-    url: "/admins/auth/register",
-    data: {
-      name,
-      phoneNumber,
-      password,
-      referralSlug,
-    },
-  }).then(({ data }) => ({
-    message: data.message,
-    expireAt: new Date(data.expireAt),
-  }));
-}
-
-export function registerConfirm(phoneNumber: string, code: number) {
-  return request({
-    method: "POST",
-    url: "/admins/auth/register/confirm",
     data: {
       phoneNumber,
       code,
@@ -228,63 +192,7 @@ export function getDashboard() {
     method: "GET",
     url: "/admins/dashboard",
     needAuth: true,
-  }).then(
-    ({ data }) =>
-      data as {
-        admin: {
-          marketingBalance: number;
-          walletBalance: number;
-          avatar: string | null;
-          name: string;
-          phoneNumber: string;
-          role: AdminUserRole;
-        };
-        sidebarData: {
-          countOfInProgressOrders: number;
-          countOfPendingCooperations: number;
-          countOfPendingWithdrawals: number;
-        };
-        sales: {
-          totalSales: number;
-          chart: {
-            time: string;
-            debtor: number;
-            creditor: number;
-          }[];
-        };
-        users: {
-          totalUsers: number;
-          chart: {
-            time: string;
-            count: number;
-          }[];
-        };
-        orders: {
-          totalOrders: number;
-          chart: {
-            time: string;
-            count: number;
-          }[];
-        };
-        usersOrders: {
-          totalUsersWithOneOrder: number;
-          totalUsersWithTwoOrder: number;
-          totalUsersWithThreeOrder: number;
-          chart: {
-            time: string;
-            count: number;
-          }[];
-        };
-        provincesOrders: Record<
-          string,
-          {
-            sale: number;
-            totalOrders: number;
-            totalUsers: number;
-          }
-        >;
-      }
-  );
+  }).then(({ data }) => data);
 }
 
 export function getUsers(search: string, page: number) {
@@ -382,13 +290,14 @@ export function getUserOrders(userId: number, page: number) {
   }).then(({ data }) => ({
     totalCount: data.totalCount,
     pageSize: data.pageSize,
-    orders: data.orders.map((item: any) => ({
-      id: item.id,
-      date: new Date(item.createdAt),
-      amount: item.amount,
-      status: item.status,
-      cancelReason: item.cancelReason,
-    })) as Order[],
+    user: {
+      id: data.user.id,
+      name: data.user.name,
+      phoneNumber: data.user.phoneNumber,
+    } as User,
+    orders: data.orders.map((item: any) =>
+      convert(orderConvertMap, item, "a2b")
+    ) as Order[],
   }));
 }
 
@@ -403,6 +312,11 @@ export function getUserAddresses(userId: number, page: number) {
   }).then(({ data }) => ({
     totalCount: data.totalCount,
     pageSize: data.pageSize,
+    user: {
+      id: data.user.id,
+      name: data.user.name,
+      phoneNumber: data.user.phoneNumber,
+    } as User,
     addresses: data.addresses as Address[],
   }));
 }
@@ -533,13 +447,9 @@ export function getOrders(
   }).then(({ data }) => ({
     totalCount: data.totalCount,
     pageSize: data.pageSize,
-    orders: data.orders.map((item: any) => ({
-      id: item.id,
-      date: new Date(item.createdAt),
-      amount: item.amount,
-      status: item.status,
-      cancelReason: item.cancelReason,
-    })) as Order[],
+    orders: data.orders.map((item: any) =>
+      convert(orderConvertMap, item, "a2b")
+    ) as Order[],
   }));
 }
 
@@ -806,7 +716,7 @@ export function doWithdrawalRequests(
 ) {
   return request({
     method: "PUT",
-    url: `/admins/cooperations/id/${cooperationRequestId}`,
+    url: `/admins/withdrawals/id/${cooperationRequestId}`,
     needAuth: true,
     data: {
       status: "done",
@@ -821,7 +731,7 @@ export function rejectWithdrawalRequests(
 ) {
   return request({
     method: "PUT",
-    url: `/admins/cooperations/id/${cooperationRequestId}`,
+    url: `/admins/withdrawals/id/${cooperationRequestId}`,
     needAuth: true,
     data: {
       status: "rejected",
@@ -1066,6 +976,9 @@ export function getCustomerReports(
   }).then(({ data }) => ({
     totalCount: data.totalCount,
     pageSize: data.pageSize,
+    totalCreditor: data.totalCreditor,
+    totalDebtor: data.totalDebtor,
+    totalOrdersCount: data.totalOrdersCount,
     reports: data.customersReport.map((item: any) =>
       convert(customerReportConvertMap, item, "a2b")
     ) as CustomerReport[],
@@ -1132,19 +1045,14 @@ export function getProfile() {
     method: "GET",
     url: "/admins/profile",
     needAuth: true,
-  })
-    .then(({ data }) => ({
-      marketingBalance: data.marketingBalance,
-      walletBalance: data.walletBalance,
-      avatar: data.avatar,
-      name: data.name,
-      phoneNumber: data.phoneNumber,
-      role: data.role,
-    }))
-    .then((adminData) => {
-      localStorage.setItem("adminData", JSON.stringify(adminData));
-      return adminData;
-    });
+  }).then(({ data }) => ({
+    marketingBalance: data.marketingBalance,
+    walletBalance: data.walletBalance,
+    avatar: data.avatar,
+    name: data.name,
+    phoneNumber: data.phoneNumber,
+    role: data.role,
+  }));
 }
 
 export function updateProfile(name: string, password: string) {

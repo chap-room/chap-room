@@ -66,6 +66,27 @@
   }
 }
 
+.BottomActionsContainer {
+  margin-top: auto;
+
+  // @media (max-width: 768px) {
+  //   > div {
+  //     > div:last-child {
+  //       > div {}
+
+  //     }
+  //   }
+  // }
+  
+  .MobileSpacer {
+    flex: 1;
+
+    @media (min-width: 769px) {
+      display: none;
+    }
+  }
+}
+
 .AddressSelect {
   display: grid;
   grid-template-columns: 16px 1fr;

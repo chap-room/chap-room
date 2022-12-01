@@ -5,9 +5,10 @@ import moment from "jalali-moment";
 import Head from "next/head";
 import Link from "next/link";
 import { request } from "@/admin/api";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
-import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
+import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
@@ -18,24 +19,6 @@ import FilterDate from "@/admin/components/FilterDate";
 import DataLoader from "@/shared/components/DataLoader";
 import BarChart from "@/admin/components/BarChart";
 import Button from "@/shared/components/Button";
-
-function forrmateTime(intl: IntlShape, time: string) {
-  if (time.includes("/")) {
-    const splitedTime = time.split("/");
-    return [
-      intl.formatNumber(parseInt(splitedTime[0]), {
-        minimumIntegerDigits: 2,
-      }),
-      intl.formatNumber(parseInt(splitedTime[1]), {
-        minimumIntegerDigits: 2,
-      }),
-    ].join("/");
-  } else if (!isNaN(parseInt(time))) {
-    return intl.formatNumber(parseInt(time));
-  } else {
-    return time;
-  }
-}
 
 const months = [
   "فروردین",
@@ -89,10 +72,9 @@ export default function DashboardFinancialRecordsTotalIncome() {
       <Head>
         <title>داشبورد - درامد کل</title>
       </Head>
-      <SectionHeader
+      <AdminSectionHeader
         title="سوابق مالی"
         description="ــ سوابق مالی را از این قسمت مدیریت کنید"
-        isAdmin
       />
       <SectionContent>
         <ContentHeader
@@ -100,14 +82,14 @@ export default function DashboardFinancialRecordsTotalIncome() {
           subTitle={
             <div className={styles.SubTitle}>
               {data.totalCreditor !== 0 && (
-                <div className={styles.TotalCreditor}>
-                  {"("}بدهکار کل: <FormattedNumber value={data.totalCreditor} />{" "}
+                <div>
+                  {"("}بستانکار کل: <FormattedNumber value={data.totalCreditor} />{" "}
                   تومان{")"}
                 </div>
               )}
               {data.totalDebtor !== 0 && (
-                <div className={styles.TotalDebtor}>
-                  {"("}بستانکار کل: <FormattedNumber value={data.totalDebtor} />{" "}
+                <div style={{ color: "#f20f4b" }}>
+                  {"("}بدهکار کل: <FormattedNumber value={data.totalDebtor} />{" "}
                   تومان{")"}
                 </div>
               )}
@@ -215,7 +197,7 @@ export default function DashboardFinancialRecordsTotalIncome() {
             data={data.chart.map(({ time, creditor, debtor }) => ({
               label:
                 ticker === "monthly"
-                  ? forrmateTime(intl, time)
+                  ? englishToPersianNumbers(time)
                   : months[parseInt(time) - 1],
               value: creditor - debtor,
               creditor,
@@ -227,6 +209,7 @@ export default function DashboardFinancialRecordsTotalIncome() {
             <div
               className={styles.Tooltip}
               style={{
+                position: "absolute",
                 left: tooltipData.position.left,
                 top: tooltipData.position.top,
               }}

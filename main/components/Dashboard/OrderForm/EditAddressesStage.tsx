@@ -23,7 +23,6 @@ export default function EditAddressesStage({
       <AddressForm
         inputsVarient="shadow"
         defaultValues={data}
-        onCancel={actions.finish}
         onSave={(addressData) =>
           updateAddress(addressId, addressData)
             .then((message) => {

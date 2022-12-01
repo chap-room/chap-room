@@ -6,7 +6,7 @@ import Link from "next/link";
 import { newBlogPost } from "@/admin/api";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
-import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
+import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
@@ -21,10 +21,9 @@ export default function DashboardNewPost() {
       <Head>
         <title>داشبورد - ایجاد بلاگ</title>
       </Head>
-      <SectionHeader
+      <AdminSectionHeader
         title="وبلاگ"
         description="ــ وبلاگ ها را از این قسمت مدیریت کنید"
-        isAdmin
       />
       <SectionContent>
         <ContentHeader

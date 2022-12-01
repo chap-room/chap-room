@@ -1,16 +1,16 @@
 import styles from "./style.module.scss";
 import { ReactElement, useEffect, useRef, useState } from "react";
-import { FormattedNumber } from "react-intl";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { Order, Tariffs } from "@/shared/types";
-import { cancelOrder, getDashboard } from "@/main/api";
+import { cancelOrder } from "@/main/api";
+import { englishToPersianNumbers } from "@/shared/utils/numbers";
+import { DashboardData, useDashboardData } from "@/main/context/dashboardData";
+import { DataLoaderView } from "@/shared/components/DataLoader";
 import OrdersIcon from "@/shared/assets/icons/orders.svg";
 import DashboardLayout from "@/main/components/Dashboard/Layout";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
-import DataLoader from "@/shared/components/DataLoader";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import FilledIconContainer from "@/shared/components/FilledIconContainer";
 import SwitchButtons from "@/shared/components/SwitchButtons";
@@ -27,37 +27,8 @@ import DashboardNavLinks from "@/main/components/Dashboard/NavLinks";
 import BottomButtons from "@/main/components/BottomButtons";
 
 export default function DashboardMain() {
+  const dashboardData = useDashboardData();
   const router = useRouter();
-
-  const [data, setData] = useState<{
-    tariffs: Tariffs;
-    marketingBalance: number;
-    walletBalance: number;
-    avatar: string | null;
-    name: string;
-    phoneNumber: string;
-    inProgressOrders: Order[];
-  }>({
-    tariffs: {
-      print: {},
-      binding: {},
-    } as Tariffs,
-    marketingBalance: 0,
-    walletBalance: 0,
-    avatar: null,
-    name: "",
-    phoneNumber: "",
-    inProgressOrders: [],
-  });
-
-  const [tariffsTableSection, setTariffsTableSection] = useState<
-    "a4" | "a5" | "a3" | "binding"
-  >("a4");
-  const [pendingOrderCancelRequest, setPendingOrderCancelRequest] = useState<
-    number | null
-  >(null);
-
-  const reloadRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     if (router.isReady) {
@@ -66,7 +37,7 @@ export default function DashboardMain() {
           // TODO Chnage message
           toast.success("افزایش موجودی با موفقیت انجام شده");
         } else {
-          toast.error("افزایش موجودی با موفقیت انجام نشده");
+          toast.error("متاسفانه پرداخت اخیر شما انجام نشد");
         }
         router.replace("/dashboard");
       }
@@ -79,168 +50,15 @@ export default function DashboardMain() {
         <title>داشبورد</title>
       </Head>
       <SectionHeader title="داشبورد" />
-      <DataLoader
-        load={() => getDashboard()}
-        setData={setData}
-        reloadRef={reloadRef}
-      >
-        <div className={styles.NonMobile}>
-          <div className={styles.ContentContainer}>
-            <div>
-              <SectionContent>
-                <div className={styles.WelcomeUser}>سلام {data!.name}</div>
-                <div className={styles.DashboardDescription}>
-                  خلاصه‌ای از همه چیز را ببینید در
-                  <br />
-                  چاپ روم
-                </div>
-                <div className={styles.Printing}>
-                  <PrintingImage />
-                </div>
-              </SectionContent>
-              <SectionContent>
-                <ContentHeader
-                  title="تعرفه ها"
-                  end={
-                    <div className={styles.PricesPrintSizeButtons}>
-                      <SwitchButtons
-                        options={[
-                          {
-                            id: "a4",
-                            label: "A4",
-                          },
-                          {
-                            id: "a5",
-                            label: "A5",
-                          },
-                          {
-                            id: "a3",
-                            label: "A3",
-                          },
-                          {
-                            id: "binding",
-                            label: "صحافی",
-                          },
-                        ]}
-                        value={tariffsTableSection}
-                        onChange={setTariffsTableSection}
-                      />
-                    </div>
-                  }
-                />
-                <Switch
-                  currentViewId={tariffsTableSection}
-                  views={[
-                    {
-                      id: "a4",
-                      content: (
-                        <TariffsTable tariffs={data!.tariffs} section="a4" />
-                      ),
-                    },
-                    {
-                      id: "a5",
-                      content: (
-                        <TariffsTable tariffs={data!.tariffs} section="a5" />
-                      ),
-                    },
-                    {
-                      id: "a3",
-                      content: (
-                        <TariffsTable tariffs={data!.tariffs} section="a3" />
-                      ),
-                    },
-                    {
-                      id: "binding",
-                      content: (
-                        <TariffsTable
-                          tariffs={data!.tariffs}
-                          section="binding"
-                        />
-                      ),
-                    },
-                  ]}
-                />
-              </SectionContent>
-            </div>
-            <SectionContent>
-              <ContentHeader
-                title="سفارش های در حال انجام من"
-                end={
-                  <Button
-                    varient="content-title-none"
-                    onClick={() => router.push("/dashboard/orders/new")}
-                  >
-                    سفارش جدید
-                    <FilledIconContainer style={{ marginRight: 10 }}>
-                      <OrdersIcon />
-                    </FilledIconContainer>
-                  </Button>
-                }
-              />
-              <OrderTable
-                orders={data!.inProgressOrders}
-                onSeeOrderDetails={(orderId) =>
-                  router.push(
-                    `/dashboard/orders/${orderId}/details?fromDashboard=true`
-                  )
-                }
-                onCancelOrder={setPendingOrderCancelRequest}
-              />
-              {!data!.inProgressOrders.length && (
-                <EmptyNote>شما هیچ سفارشی در حال انجام ندارید</EmptyNote>
-              )}
-              <WarningConfirmDialog
-                open={pendingOrderCancelRequest !== null}
-                onClose={() => {
-                  setPendingOrderCancelRequest(null);
-                }}
-                onConfirm={() =>
-                  cancelOrder(pendingOrderCancelRequest!)
-                    .then((message) => {
-                      toast.success(message);
-                      setPendingOrderCancelRequest(null);
-                      if (reloadRef.current) reloadRef.current();
-                    })
-                    .catch(toast.error)
-                }
-                message="از لغو کردن این سفارش مطمئن هستید؟"
-                confirmButtonText="لغو کردن"
-              />
-            </SectionContent>
-          </div>
-        </div>
-        <div className={styles.Mobile}>
-          <div className={styles.User}>
-            <Avatar user={data!} />
-            <div className={styles.Meta}>
-              <div className={styles.PhoneNumber}>
-                <FormattedNumber
-                  value={parseInt(data!.phoneNumber)}
-                  useGrouping={false}
-                  minimumIntegerDigits={11}
-                />
-              </div>
-              <div className={styles.Name}>{data!.name}</div>
-            </div>
-          </div>
-          <div className={styles.Welcome}>خوش‌آمدی!</div>
-          <Wallet
-            marketingBalance={data!.marketingBalance}
-            walletBalance={data!.walletBalance}
-            setBalance={(walletBalance: number, marketingBalance: number) => {
-              setData({
-                ...data,
-                walletBalance,
-                marketingBalance,
-              });
-            }}
-          />
-          <DashboardNavLinks />
-          <div className={styles.BottomButtonsPlaceholder}>
-            <BottomButtons />
-          </div>
-        </div>
-      </DataLoader>
+      <DataLoaderView state={dashboardData.dataLoaderState}>
+        <DashboardNonMobile
+          data={dashboardData.data!}
+          relaod={() => {
+            dashboardData.dataLoaderState.reload();
+          }}
+        />
+        <DashboardMobile data={dashboardData.data!} />
+      </DataLoaderView>
     </div>
   );
 }
@@ -248,3 +66,170 @@ export default function DashboardMain() {
 DashboardMain.getLayout = function getLayout(page: ReactElement) {
   return <DashboardLayout>{page}</DashboardLayout>;
 };
+
+interface DashboardNonMobilePorps {
+  data: DashboardData;
+  relaod: () => void;
+}
+
+export function DashboardNonMobile({ data, relaod }: DashboardNonMobilePorps) {
+  const router = useRouter();
+
+  const [tariffsTableSection, setTariffsTableSection] = useState<
+    "a4" | "a5" | "a3" | "binding"
+  >("a4");
+  const [pendingOrderCancelRequest, setPendingOrderCancelRequest] = useState<
+    number | null
+  >(null);
+
+  return (
+    <div className={styles.NonMobile}>
+      <div className={styles.ContentContainer}>
+        <div>
+          <SectionContent>
+            <div className={styles.WelcomeUser}>سلام {data?.name}</div>
+            <div className={styles.DashboardDescription}>
+              خلاصه‌ای از همه چیز را ببینید در
+              <br />
+              چاپ روم
+            </div>
+            <div className={styles.Printing}>
+              <PrintingImage />
+            </div>
+          </SectionContent>
+          <SectionContent>
+            <ContentHeader
+              title="تعرفه ها"
+              end={
+                <div className={styles.PricesPrintSizeButtons}>
+                  <SwitchButtons
+                    options={[
+                      {
+                        id: "a4",
+                        label: "A4",
+                      },
+                      {
+                        id: "a5",
+                        label: "A5",
+                      },
+                      {
+                        id: "a3",
+                        label: "A3",
+                      },
+                      {
+                        id: "binding",
+                        label: "صحافی",
+                      },
+                    ]}
+                    value={tariffsTableSection}
+                    onChange={setTariffsTableSection}
+                  />
+                </div>
+              }
+            />
+            <Switch
+              currentViewId={tariffsTableSection}
+              views={[
+                {
+                  id: "a4",
+                  content: (
+                    <TariffsTable tariffs={data!.tariffs} section="a4" />
+                  ),
+                },
+                {
+                  id: "a5",
+                  content: (
+                    <TariffsTable tariffs={data!.tariffs} section="a5" />
+                  ),
+                },
+                {
+                  id: "a3",
+                  content: (
+                    <TariffsTable tariffs={data!.tariffs} section="a3" />
+                  ),
+                },
+                {
+                  id: "binding",
+                  content: (
+                    <TariffsTable tariffs={data!.tariffs} section="binding" />
+                  ),
+                },
+              ]}
+            />
+          </SectionContent>
+        </div>
+        <SectionContent>
+          <ContentHeader
+            title="سفارش های در حال انجام من"
+            end={
+              <Button
+                varient="content-title-none"
+                onClick={() => router.push("/dashboard/orders/new")}
+              >
+                سفارش جدید
+                <FilledIconContainer style={{ marginRight: 10 }}>
+                  <OrdersIcon />
+                </FilledIconContainer>
+              </Button>
+            }
+          />
+          <OrderTable
+            orders={data!.inProgressOrders}
+            onSeeOrderDetails={(orderId) =>
+              router.push(
+                `/dashboard/orders/${orderId}/details?fromDashboard=true`
+              )
+            }
+            onCancelOrder={setPendingOrderCancelRequest}
+          />
+          {!data!.inProgressOrders.length && (
+            <EmptyNote>شما هیچ سفارشی در حال انجام وجود ندارد</EmptyNote>
+          )}
+          <WarningConfirmDialog
+            open={pendingOrderCancelRequest !== null}
+            onClose={() => {
+              setPendingOrderCancelRequest(null);
+            }}
+            onConfirm={() =>
+              cancelOrder(pendingOrderCancelRequest!)
+                .then((message) => {
+                  toast.success(message);
+                  setPendingOrderCancelRequest(null);
+                  relaod();
+                })
+                .catch(toast.error)
+            }
+            message="از لغو کردن این سفارش مطمئن هستید؟"
+            confirmButtonText="لغو کردن"
+          />
+        </SectionContent>
+      </div>
+    </div>
+  );
+}
+
+interface DashboardMobilePorps {
+  data: DashboardData;
+}
+
+export function DashboardMobile({ data }: DashboardMobilePorps) {
+  return (
+    <div className={styles.Mobile}>
+      <div className={styles.User}>
+        <Avatar user={data!} />
+        <div className={styles.Meta}>
+          <div className={styles.PhoneNumber}>
+            {englishToPersianNumbers(data!.phoneNumber)}
+          </div>
+          <div className={styles.Name}>{data!.name}</div>
+        </div>
+      </div>
+      <div className={styles.Welcome}>خوش‌آمدی!</div>
+      <Wallet />
+      <DashboardNavLinks />
+      <div className={styles.BottomButtonsPlaceholder}>
+        <BottomButtons />
+      </div>
+    </div>
+  );
+}
