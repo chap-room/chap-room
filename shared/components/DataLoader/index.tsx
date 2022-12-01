@@ -3,6 +3,7 @@ import {
   MutableRefObject,
   PropsWithChildren,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import toast from "react-hot-toast";
@@ -11,7 +12,7 @@ import Loader from "@/shared/components/Loader";
 import SmallLoader from "@/shared/components/SmallLoader";
 
 interface UseDataLoaderProps<DT> {
-  load: () => Promise<DT> | [Promise<DT>, AbortController] | void;
+  load: () => Promise<DT> | [Promise<DT | null>, AbortController] | void;
   setData: (data: DT) => void;
   deps?: unknown[];
   initialFetch?: boolean;
@@ -30,39 +31,44 @@ export function useDataLoader<DT>({
   initialFetch = true,
 }: UseDataLoaderProps<DT>): DataLoaderState {
   const [isFirstRender, setIsFirstRender] = useState(true);
-  const [isFirstTry, setIsFirstTry] = useState(true);
   const [isLoading, setIsLoading] = useState(initialFetch);
   const [isError, setIsError] = useState(false);
+  const currentRequestAbortController = useRef<AbortController | null>(null);
 
   const fetchData = () => {
     if (isFirstRender) {
       setIsFirstRender(false);
       if (!initialFetch) return;
     }
-    if (isLoading && !isFirstTry) return;
+    if (currentRequestAbortController.current) {
+      currentRequestAbortController.current.abort();
+      currentRequestAbortController.current = null;
+    }
 
     const funcReturn = load();
     if (funcReturn) {
       setIsLoading(true);
       setIsError(false);
-      if (isFirstTry) setIsFirstTry(false);
       (Array.isArray(funcReturn) ? funcReturn[0] : funcReturn)
-        .then((data: DT) => {
-          setData(data);
+        .then((data) => {
+          if (data) {
+            setData(data);
+            setIsLoading(false);
+          }
         })
         .catch((message) => {
           toast.error(message);
           setIsError(true);
-        })
-        .finally(() => {
           setIsLoading(false);
         });
     }
+    currentRequestAbortController.current = Array.isArray(funcReturn)
+      ? funcReturn[1]
+      : null;
 
     return () => {
-      if (Array.isArray(funcReturn)) {
-        funcReturn[1].abort();
-      }
+      if (currentRequestAbortController.current)
+        currentRequestAbortController.current.abort();
     };
   };
 
@@ -103,7 +109,7 @@ export function DataLoaderView({
 }
 
 interface DataLoaderProps<DT> {
-  load: () => Promise<DT> | [Promise<DT>, AbortController] | void;
+  load: () => Promise<DT> | [Promise<DT | null>, AbortController] | void;
   setData: (data: DT) => void;
   deps?: unknown[];
   initialFetch?: boolean;

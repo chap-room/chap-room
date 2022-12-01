@@ -83,6 +83,19 @@ export async function request({
   });
 }
 
+export function cancelableRequest<DT>(
+  config: (abortController: AbortController) => Promise<DT>
+): [Promise<DT | null>, AbortController] {
+  const abortController = new AbortController();
+  return [
+    config(abortController).catch((message) => {
+      if (message === "لغو شده") return null;
+      throw message;
+    }),
+    abortController,
+  ];
+}
+
 export function isLoggedIn() {
   return request({
     method: "GET",
@@ -185,19 +198,22 @@ export function getDashboard() {
 }
 
 export function getUsers(search: string, page: number) {
-  return request({
-    method: "GET",
-    url: "/admins/users",
-    needAuth: true,
-    params: {
-      search,
-      page,
-    },
-  }).then(({ data }) => ({
-    totalCount: data.totalCount,
-    pageSize: data.pageSize,
-    users: data.users,
-  }));
+  return cancelableRequest((abortController) =>
+    request({
+      method: "GET",
+      url: "/admins/users",
+      needAuth: true,
+      params: {
+        search,
+        page,
+      },
+      signal: abortController.signal,
+    }).then(({ data }) => ({
+      totalCount: data.totalCount,
+      pageSize: data.pageSize,
+      users: data.users,
+    }))
+  );
 }
 
 export function newUser(data: {
@@ -346,19 +362,22 @@ export function deleteAddress(addressId: number) {
 }
 
 export function getAdmins(search: string, page: number) {
-  return request({
-    method: "GET",
-    url: "/admins",
-    needAuth: true,
-    params: {
-      search,
-      page,
-    },
-  }).then(({ data }) => ({
-    totalCount: data.totalCount,
-    pageSize: data.pageSize,
-    admins: data.admins,
-  }));
+  return cancelableRequest((abortController) =>
+    request({
+      method: "GET",
+      url: "/admins",
+      needAuth: true,
+      params: {
+        search,
+        page,
+      },
+      signal: abortController.signal,
+    }).then(({ data }) => ({
+      totalCount: data.totalCount,
+      pageSize: data.pageSize,
+      admins: data.admins,
+    }))
+  );
 }
 
 export function newAdmin(data: {
@@ -415,18 +434,21 @@ export function getOrders(
   page: number,
   status: "canceled" | "pending" | "preparing" | "sent" | null
 ) {
-  return request({
-    method: "GET",
-    url: "/admins/orders",
-    needAuth: true,
-    params: { search, page, status: status !== null ? status : undefined },
-  }).then(({ data }) => ({
-    totalCount: data.totalCount,
-    pageSize: data.pageSize,
-    orders: data.orders.map(
-      (item: any) => convert(orderConvertMap, item, "a2b") as Order
-    ),
-  }));
+  return cancelableRequest((abortController) =>
+    request({
+      method: "GET",
+      url: "/admins/orders",
+      needAuth: true,
+      params: { search, page, status: status !== null ? status : undefined },
+      signal: abortController.signal,
+    }).then(({ data }) => ({
+      totalCount: data.totalCount,
+      pageSize: data.pageSize,
+      orders: data.orders.map(
+        (item: any) => convert(orderConvertMap, item, "a2b") as Order
+      ),
+    }))
+  );
 }
 
 export function getOrder(orderId: number) {
@@ -473,19 +495,22 @@ export function markOrderSent(orderId: number, trackingNumber: string) {
 }
 
 export function getDiscounts(search: string, page: number) {
-  return request({
-    method: "GET",
-    url: "/admins/discounts",
-    needAuth: true,
-    params: {
-      search,
-      page,
-    },
-  }).then(({ data }) => ({
-    totalCount: data.totalCount,
-    pageSize: data.pageSize,
-    discounts: data.discounts,
-  }));
+  return cancelableRequest((abortController) =>
+    request({
+      method: "GET",
+      url: "/admins/discounts",
+      needAuth: true,
+      params: {
+        search,
+        page,
+      },
+      signal: abortController.signal,
+    }).then(({ data }) => ({
+      totalCount: data.totalCount,
+      pageSize: data.pageSize,
+      discounts: data.discounts,
+    }))
+  );
 }
 
 export function newDiscount(data: {
@@ -550,20 +575,23 @@ export function getCooperationRequests(
   page: number,
   status: "approved" | "rejected" | "pending"
 ) {
-  return request({
-    method: "GET",
-    url: "/admins/cooperations",
-    needAuth: true,
-    params: {
-      search,
-      page,
-      status,
-    },
-  }).then(({ data }) => ({
-    totalCount: data.totalCount,
-    pageSize: data.pageSize,
-    cooperations: data.cooperations,
-  }));
+  return cancelableRequest((abortController) =>
+    request({
+      method: "GET",
+      url: "/admins/cooperations",
+      needAuth: true,
+      params: {
+        search,
+        page,
+        status,
+      },
+      signal: abortController.signal,
+    }).then(({ data }) => ({
+      totalCount: data.totalCount,
+      pageSize: data.pageSize,
+      cooperations: data.cooperations,
+    }))
+  );
 }
 
 export function updateCooperationRequest(
@@ -589,22 +617,25 @@ export function getFinancialRecords(
   paymentStatus: "successful" | "unsuccessful" | null,
   page: number
 ) {
-  return request({
-    method: "GET",
-    url: "/admins/transactions",
-    needAuth: true,
-    params: {
-      search,
-      startAt: startAt || undefined,
-      endAt: endAt || undefined,
-      status: paymentStatus || undefined,
-      page,
-    },
-  }).then(({ data }) => ({
-    totalCount: data.totalCount,
-    pageSize: data.pageSize,
-    records: data.transactions,
-  }));
+  return cancelableRequest((abortController) =>
+    request({
+      method: "GET",
+      url: "/admins/transactions",
+      needAuth: true,
+      params: {
+        search,
+        startAt: startAt || undefined,
+        endAt: endAt || undefined,
+        status: paymentStatus || undefined,
+        page,
+      },
+      signal: abortController.signal,
+    }).then(({ data }) => ({
+      totalCount: data.totalCount,
+      pageSize: data.pageSize,
+      records: data.transactions,
+    }))
+  );
 }
 
 export function newFinancialRecord(data: {
@@ -659,20 +690,23 @@ export function getWithdrawalRequests(
   page: number,
   status: "pending" | "rejected" | "done"
 ) {
-  return request({
-    method: "GET",
-    url: "/admins/withdrawals",
-    needAuth: true,
-    params: {
-      search,
-      page,
-      status,
-    },
-  }).then(({ data }) => ({
-    totalCount: data.totalCount,
-    pageSize: data.pageSize,
-    withdrawals: data.withdrawals,
-  }));
+  return cancelableRequest((abortController) =>
+    request({
+      method: "GET",
+      url: "/admins/withdrawals",
+      needAuth: true,
+      params: {
+        search,
+        page,
+        status,
+      },
+      signal: abortController.signal,
+    }).then(({ data }) => ({
+      totalCount: data.totalCount,
+      pageSize: data.pageSize,
+      withdrawals: data.withdrawals,
+    }))
+  );
 }
 
 export function doWithdrawalRequests(
@@ -740,19 +774,22 @@ export function updateBindingTariffs(data: BindingTariffs) {
 }
 
 export function getBlogPosts(search: string, page: number) {
-  return request({
-    method: "GET",
-    url: "/admins/blogs",
-    needAuth: true,
-    params: {
-      search,
-      page,
-    },
-  }).then(({ data }) => ({
-    totalCount: data.totalCount,
-    pageSize: data.pageSize,
-    posts: data.blogs,
-  }));
+  return cancelableRequest((abortController) =>
+    request({
+      method: "GET",
+      url: "/admins/blogs",
+      needAuth: true,
+      params: {
+        search,
+        page,
+      },
+      signal: abortController.signal,
+    }).then(({ data }) => ({
+      totalCount: data.totalCount,
+      pageSize: data.pageSize,
+      posts: data.blogs,
+    }))
+  );
 }
 
 export function getBlogPost(postId: number) {
@@ -847,35 +884,41 @@ export function deleteBlogCategory(categoryId: number) {
 }
 
 export function getDedicatedDiscountCodeReports(search: string, page: number) {
-  return request({
-    method: "GET",
-    url: "/admins/marketings/discounts",
-    needAuth: true,
-    params: {
-      search,
-      page,
-    },
-  }).then(({ data }) => ({
-    totalCount: data.totalCount,
-    pageSize: data.pageSize,
-    reports: data.marketings,
-  }));
+  return cancelableRequest((abortController) =>
+    request({
+      method: "GET",
+      url: "/admins/marketings/discounts",
+      needAuth: true,
+      params: {
+        search,
+        page,
+      },
+      signal: abortController.signal,
+    }).then(({ data }) => ({
+      totalCount: data.totalCount,
+      pageSize: data.pageSize,
+      reports: data.marketings,
+    }))
+  );
 }
 
 export function getDedicatedLinkReports(search: string, page: number) {
-  return request({
-    method: "GET",
-    url: "/admins/marketings/referrals",
-    needAuth: true,
-    params: {
-      search,
-      page,
-    },
-  }).then(({ data }) => ({
-    totalCount: data.totalCount,
-    pageSize: data.pageSize,
-    reports: data.marketings,
-  }));
+  return cancelableRequest((abortController) =>
+    request({
+      method: "GET",
+      url: "/admins/marketings/referrals",
+      needAuth: true,
+      params: {
+        search,
+        page,
+      },
+      signal: abortController.signal,
+    }).then(({ data }) => ({
+      totalCount: data.totalCount,
+      pageSize: data.pageSize,
+      reports: data.marketings,
+    }))
+  );
 }
 
 export function getCustomerReports(
@@ -896,50 +939,53 @@ export function getCustomerReports(
     | "lowestToMostPayment",
   page: number
 ) {
-  return request({
-    method: "GET",
-    url: "/admins/customers-report",
-    needAuth: true,
-    params: {
-      search,
-      paperSize: paperSize !== null ? paperSize : undefined,
-      paperColor:
-        paperColor !== null
-          ? {
-              blackAndWhite: "black_and_white",
-              fullColor: "full_color",
-              normalColor: "normal_color",
-            }[paperColor]
-          : undefined,
-      paperSide:
-        paperSide !== null
-          ? {
-              singleSided: "single_sided",
-              doubleSided: "double_sided",
-            }[paperSide]
-          : undefined,
-      sortOrder: {
-        withoutOrder: "without_order",
-        oneOrder: "one_order",
-        twoOrder: "two_order",
-        threeAndMoreOrder: "three_and_more_order",
-        mostToLowestOrder: "most_to_lowest_order",
-        lowestToMostOrder: "lowest_to_most_order",
-        mostToLowestBalance: "most_to_lowest_balance",
-        lowestToMostBalance: "lowest_to_most_balance",
-        mostToLowestPayment: "most_to_lowest_payment",
-        lowestToMostPayment: "lowest_to_most_payment",
-      }[sortOrder],
-      page,
-    },
-  }).then(({ data }) => ({
-    totalCount: data.totalCount,
-    pageSize: data.pageSize,
-    totalCreditor: data.totalCreditor,
-    totalDebtor: data.totalDebtor,
-    totalOrdersCount: data.totalOrdersCount,
-    reports: data.customersReport,
-  }));
+  return cancelableRequest((abortController) =>
+    request({
+      method: "GET",
+      url: "/admins/customers-report",
+      needAuth: true,
+      params: {
+        search,
+        paperSize: paperSize !== null ? paperSize : undefined,
+        paperColor:
+          paperColor !== null
+            ? {
+                blackAndWhite: "black_and_white",
+                fullColor: "full_color",
+                normalColor: "normal_color",
+              }[paperColor]
+            : undefined,
+        paperSide:
+          paperSide !== null
+            ? {
+                singleSided: "single_sided",
+                doubleSided: "double_sided",
+              }[paperSide]
+            : undefined,
+        sortOrder: {
+          withoutOrder: "without_order",
+          oneOrder: "one_order",
+          twoOrder: "two_order",
+          threeAndMoreOrder: "three_and_more_order",
+          mostToLowestOrder: "most_to_lowest_order",
+          lowestToMostOrder: "lowest_to_most_order",
+          mostToLowestBalance: "most_to_lowest_balance",
+          lowestToMostBalance: "lowest_to_most_balance",
+          mostToLowestPayment: "most_to_lowest_payment",
+          lowestToMostPayment: "lowest_to_most_payment",
+        }[sortOrder],
+        page,
+      },
+      signal: abortController.signal,
+    }).then(({ data }) => ({
+      totalCount: data.totalCount,
+      pageSize: data.pageSize,
+      totalCreditor: data.totalCreditor,
+      totalDebtor: data.totalDebtor,
+      totalOrdersCount: data.totalOrdersCount,
+      reports: data.customersReport,
+    }))
+  );
 }
 
 export function getCustomerReportsExcel(
