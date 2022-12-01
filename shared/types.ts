@@ -60,7 +60,7 @@ export interface PrintFolder {
 export interface PrintFile {
   id: number;
   name: string;
-  countOfPages: number;
+  countOfPages: number | null;
 }
 
 export interface BindingOptions {

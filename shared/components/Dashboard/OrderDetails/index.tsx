@@ -77,7 +77,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
               <div className={styles.Files}>
                 {order.printFolders.map((printFolder, index) => {
                   const uploadedPages = printFolder.printFiles.reduce(
-                    (result, item) => result + item.countOfPages,
+                    (result, item) => result + (item.countOfPages || 0),
                     0
                   );
 
