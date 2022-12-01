@@ -1,59 +1,63 @@
 import styles from "./style.module.scss";
 import { FormattedDate, FormattedNumber } from "react-intl";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { useRouter } from "next/router";
 import Head from "next/head";
+import { Post } from "@/shared/types";
+import { getBlogPost } from "@/main/api";
 import Layout from "@/main/components/Layout";
 import DateIcon from "@/shared/assets/icons/date.svg";
 import ViewIcon from "@/shared/assets/icons/view.svg";
-import { Post } from "@/shared/types";
-import { useState } from "react";
-import { useRouter } from "next/router";
-import DataLoader from "@/shared/components/DataLoader";
-import { getBlogPost } from "@/main/api";
 
-export default function BlogPost() {
+export const getServerSideProps: GetServerSideProps<{
+  data: Post;
+}> = async (context) => {
+  try {
+    const data = await getBlogPost(context.query.slug as string);
+    return { props: { data } };
+  } catch {
+    return { notFound: true };
+  }
+};
+
+export default function BlogPost({
+  data,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
   const slug = router.query.slug as string;
-
-  const [data, setData] = useState<Post>();
 
   return (
     <Layout>
       <Head>
-        <title>وبلاگ</title>
+        <title>{data.pageTitle} - وبلاگ</title>
+        <meta name="description" content={data.metaDescription} />
+        <meta name="keywords" content={data.keywords} />
       </Head>
       <div className={styles.Container}>
-        <DataLoader
-          load={() => {
-            if (router.isReady) return getBlogPost(slug);
-          }}
-          deps={[router.isReady]}
-          setData={setData}
-        >
-          <div className={styles.Post}>
-            <div className={styles.PostThumbnail}>
-              {data?.thumbnailUrl && (
-                <img src={data.thumbnailUrl} alt={data.thumbnailAlt || ""} />
-              )}
-            </div>
-            <div className={styles.PostHeader}>
-              <div className={styles.PostMetaData}>
-                <div>
-                  <DateIcon />
-                  <FormattedDate value={data?.lastUpdateDate} />
-                </div>
-                <div>
-                  <ViewIcon />
-                  <FormattedNumber value={data?.countOfViews || 0} />
-                </div>
-              </div>
-              <h1 className={styles.PostTitle}>{data?.title}</h1>
-            </div>
-            <div
-              className={styles.PostContent}
-              dangerouslySetInnerHTML={{ __html: data?.body || "" }}
-            />
+        <div className={styles.Post}>
+          <div className={styles.PostThumbnail}>
+            {data.thumbnailUrl && (
+              <img src={data.thumbnailUrl} alt={data.thumbnailAlt || ""} />
+            )}
           </div>
-        </DataLoader>
+          <div className={styles.PostHeader}>
+            <div className={styles.PostMetaData}>
+              <div>
+                <DateIcon />
+                <FormattedDate value={new Date(new Date(data.updatedAt))} />
+              </div>
+              <div>
+                <ViewIcon />
+                <FormattedNumber value={data.countOfViews || 0} />
+              </div>
+            </div>
+            <h1 className={styles.PostTitle}>{data.title}</h1>
+          </div>
+          <div
+            className={styles.PostContent}
+            dangerouslySetInnerHTML={{ __html: data.body || "" }}
+          />
+        </div>
       </div>
     </Layout>
   );

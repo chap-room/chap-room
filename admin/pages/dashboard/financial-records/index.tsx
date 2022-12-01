@@ -167,7 +167,13 @@ export default function DashboardFinancialRecordList() {
         />
         <DataLoader
           load={() =>
-            getFinancialRecords(search, startDate, endDate, paymentStatus, page)
+            getFinancialRecords(
+              search,
+              startDate?.toISOString() || null,
+              endDate?.toISOString() || null,
+              paymentStatus,
+              page
+            )
           }
           deps={[search, startDate, endDate, paymentStatus, page]}
           setData={setData}

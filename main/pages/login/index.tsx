@@ -26,11 +26,9 @@ export default function Login() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    isLoggedIn()
-      .then((userData) => {
-        if (userData) router.replace("/dashboard");
-      })
-      .catch(() => {});
+    isLoggedIn().then((userData) => {
+      if (userData) router.replace("/dashboard");
+    });
   }, []);
 
   const formValidation = useValidation(

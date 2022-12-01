@@ -1,17 +1,18 @@
 import styles from "./style.module.scss";
 import { useState } from "react";
-import TextInput from "@/shared/components/TextInput";
-import Button from "@/shared/components/Button";
-import BottomActions from "@/shared/components/Dashboard/BottomActions";
 import {
   useValidation,
   validateNotEmpty,
   validateLength,
   validatePasswordRepeat,
   optionalValidate,
+  validatePhoneNumber,
 } from "@/shared/utils/validation";
 import { englishToPersianNumbers } from "@/shared/utils/numbers";
+import TextInput from "@/shared/components/TextInput";
 import ErrorList from "@/shared/components/ErrorList";
+import Button from "@/shared/components/Button";
+import BottomActions from "@/shared/components/Dashboard/BottomActions";
 
 interface ProfileFormData {
   phoneNumber: string;
@@ -23,14 +24,18 @@ interface ProfileFormProps {
   defaultValues?: Partial<ProfileFormData>;
   onSave: (data: ProfileFormData) => Promise<any>;
   inputsVarient?: "outlined" | "shadow";
+  canEditPhoneNumber?: boolean;
 }
 
 export default function ProfileForm({
   defaultValues,
   onSave,
   inputsVarient,
+  canEditPhoneNumber,
 }: ProfileFormProps) {
-  const [phoneNumber] = useState(defaultValues?.phoneNumber || "");
+  const [phoneNumber, setPhoneNumber] = useState(
+    defaultValues?.phoneNumber || ""
+  );
   const [name, setName] = useState(defaultValues?.name || "");
   const [password, setPassword] = useState(defaultValues?.password || "");
   const [passwordRepeat, setPasswordRepeat] = useState(
@@ -41,6 +46,7 @@ export default function ProfileForm({
 
   const formValidation = useValidation(
     {
+      phoneNumber: [validatePhoneNumber()],
       name: [validateNotEmpty()],
       password: [
         optionalValidate({
@@ -57,6 +63,7 @@ export default function ProfileForm({
       ],
     },
     {
+      phoneNumber,
       name,
       password,
       passwordRepeat,
@@ -68,7 +75,19 @@ export default function ProfileForm({
       <div className={styles.Form}>
         <div className={styles.Label}>شماره موبایل:</div>
         <div className={styles.Input}>
-          {englishToPersianNumbers(phoneNumber)}
+          {canEditPhoneNumber ? (
+            <>
+              <TextInput
+                inputProps={{ type: "number", placeholder: "شماره موبایل" }}
+                varient={inputsVarient}
+                value={phoneNumber}
+                onChange={setPhoneNumber}
+              />
+              <ErrorList errors={formValidation.errors.name} />
+            </>
+          ) : (
+            englishToPersianNumbers(phoneNumber)
+          )}
         </div>
         <div className={styles.Label}>نام کامل:</div>
         <div className={styles.Input}>

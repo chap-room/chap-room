@@ -39,43 +39,55 @@ export default function CustomerReportTable({
               <span className={styles.MobileLabel}>تاریخ ثبت نام:</span>
               <span className={styles.Date}>
                 <span>
-                  <FormattedDate value={customerReport.registrationDate} />
+                  <FormattedDate value={new Date(customerReport.createdAt)} />
                 </span>
                 <span>
                   <FormattedTime
-                    value={customerReport.registrationDate}
-                    hour12
+                    value={new Date(customerReport.createdAt)}
+                    timeStyle="medium"
                   />
                 </span>
               </span>
             </td>
             <td>
               <span className={styles.MobileLabel}>تاریخ اولین سفارش:</span>
-              <span className={styles.Date}>
-                <span>
-                  <FormattedDate value={customerReport.firstOrderDate} />
+              {customerReport.firstOrderAt ? (
+                <span className={styles.Date}>
+                  <span>
+                    <FormattedDate
+                      value={new Date(customerReport.firstOrderAt)}
+                    />
+                  </span>
+                  <span>
+                    <FormattedTime
+                      value={new Date(customerReport.firstOrderAt)}
+                      timeStyle="medium"
+                    />
+                  </span>
                 </span>
-                <span>
-                  <FormattedTime
-                    value={customerReport.firstOrderDate}
-                    timeStyle="medium"
-                  />
-                </span>
-              </span>
+              ) : (
+                "ندارد"
+              )}
             </td>
             <td>
               <span className={styles.MobileLabel}>تاریخ آخرین سفارش:</span>
-              <span className={styles.Date}>
-                <span>
-                  <FormattedDate value={customerReport.lastOrderDate} />
+              {customerReport.lastOrderAt ? (
+                <span className={styles.Date}>
+                  <span>
+                    <FormattedDate
+                      value={new Date(customerReport.lastOrderAt)}
+                    />
+                  </span>
+                  <span>
+                    <FormattedTime
+                      value={new Date(customerReport.lastOrderAt)}
+                      timeStyle="medium"
+                    />
+                  </span>
                 </span>
-                <span>
-                  <FormattedTime
-                    value={customerReport.lastOrderDate}
-                    timeStyle="medium"
-                  />
-                </span>
-              </span>
+              ) : (
+                "ندارد"
+              )}
             </td>
             <td>
               <span className={styles.MobileLabel}>کل مبلغ پرداختی:</span>

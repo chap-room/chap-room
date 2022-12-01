@@ -13,10 +13,13 @@ interface BaseData {
 
 interface BarChartProps<DT extends BaseData> {
   data: DT[];
-  setTooltipData?: (
-    data: { item: DT; position: { left: number; top: number } } | null
-  ) => void;
+  setTooltipData?: (data: ChartTooltipData<DT> | null) => void;
   hideY?: boolean;
+}
+
+export interface ChartTooltipData<DT extends BaseData> {
+  item: DT;
+  position: { left: number; top: number };
 }
 
 function createGradient(ctx: CanvasRenderingContext2D, area: ChartArea) {

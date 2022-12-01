@@ -20,11 +20,11 @@
       gap: 20px;
 
       .Title {
-        flex: 1;
         margin: 0;
         color: #5e5e5e;
         font-size: 32px;
         font-weight: bold;
+        white-space: nowrap;
       }
     }
 

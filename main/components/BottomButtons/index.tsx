@@ -1,31 +1,19 @@
 import styles from "./style.module.scss";
-import { useEffect, useState } from "react";
 import Link from "next/link";
-import { isLoggedIn } from "@/main/api";
+import { useUserData } from "@/main/context/userData";
 import NavLink from "@/shared/components/NavLink";
 import OrdersIcon from "@/shared/assets/icons/orders.svg";
 import Logo from "@/shared/assets/images/logo.svg";
 import PricesIcon from "@/shared/assets/icons/money.svg";
 
 export default function BottomButtons() {
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
-
-  useEffect(() => {
-    try {
-      const userData = JSON.parse(localStorage.getItem("userData") || "");
-      if (userData) setIsUserLoggedIn(true);
-    } catch {}
-
-    isLoggedIn()
-      .then((userData) => setIsUserLoggedIn(!!userData))
-      .catch(() => {});
-  }, []);
+  const userData = useUserData();
 
   return (
     <>
       <div className={styles.Container}>
         <div className={styles.BottomButtons}>
-          <Link href={isUserLoggedIn ? "/dashboard/orders/new" : "/auth"}>
+          <Link href={userData.isLoggedIn ? "/dashboard/orders/new" : "/auth"}>
             <div className={styles.NavLink}>
               <OrdersIcon />
               <div>سفارش پرینت</div>

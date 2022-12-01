@@ -1,5 +1,5 @@
 import styles from "./style.module.scss";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FormattedNumber } from "react-intl";
 import Link from "next/link";
 import { PrintTariffs } from "@/shared/types";
@@ -8,11 +8,15 @@ import {
   validateNotEmpty,
   validateInt,
 } from "@/shared/utils/validation";
+import { useUserData } from "@/main/context/userData";
 import Button from "@/shared/components/Button";
 import Select from "@/shared/components/Select";
 import TextInput from "@/shared/components/TextInput";
 import ErrorList from "@/shared/components/ErrorList";
-import { isLoggedIn } from "@/main/api";
+import {
+  englishToPersianNumbers,
+  persianToEnglishNumbers,
+} from "@/shared/utils/numbers";
 
 interface PrintPriceCalculatorProps {
   printTariffs: PrintTariffs;
@@ -21,6 +25,8 @@ interface PrintPriceCalculatorProps {
 export default function PrintPriceCalculator({
   printTariffs,
 }: PrintPriceCalculatorProps) {
+  const userData = useUserData();
+
   const [printColor, setPrintColor] = useState<
     "blackAndWhite" | "normalColor" | "fullColor" | null
   >(null);
@@ -68,19 +74,6 @@ export default function PrintPriceCalculator({
     pagePrice = breakpoint[printSide!];
     calculatedPrice = (parseInt(countOfPages) || 0) * pagePrice;
   }
-
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
-
-  useEffect(() => {
-    try {
-      const userData = JSON.parse(localStorage.getItem("userData") || "");
-      if (userData) setIsUserLoggedIn(true);
-    } catch {}
-
-    isLoggedIn()
-      .then((userData) => setIsUserLoggedIn(!!userData))
-      .catch(() => {});
-  }, []);
 
   return (
     <div className={styles.Calculator}>
@@ -136,65 +129,9 @@ export default function PrintPriceCalculator({
           <TextInput
             inputProps={{ placeholder: "تعداد برگ" }}
             varient="shadow-without-bg"
-            value={countOfPages
-              .split("")
-              .map(
-                (char) =>
-                  ({
-                    "0": "۰",
-                    "۰": "۰",
-                    "1": "۱",
-                    "۱": "۱",
-                    "2": "۲",
-                    "۲": "۲",
-                    "3": "۳",
-                    "۳": "۳",
-                    "4": "۴",
-                    "۴": "۴",
-                    "5": "۵",
-                    "۵": "۵",
-                    "6": "۶",
-                    "۶": "۶",
-                    "7": "۷",
-                    "۷": "۷",
-                    "8": "۸",
-                    "۸": "۸",
-                    "9": "۹",
-                    "۹": "۹",
-                  }[char])
-              )
-              .join("")}
+            value={englishToPersianNumbers(countOfPages)}
             onChange={(newValue) =>
-              setCountOfPages(
-                newValue
-                  .split("")
-                  .map(
-                    (char) =>
-                      ({
-                        "۰": "0",
-                        "0": "0",
-                        "۱": "1",
-                        "1": "1",
-                        "۲": "2",
-                        "2": "2",
-                        "۳": "3",
-                        "3": "3",
-                        "۴": "4",
-                        "4": "4",
-                        "۵": "5",
-                        "5": "5",
-                        "۶": "6",
-                        "6": "6",
-                        "۷": "7",
-                        "7": "7",
-                        "۸": "8",
-                        "8": "8",
-                        "۹": "9",
-                        "9": "9",
-                      }[char])
-                  )
-                  .join("")
-              )
+              setCountOfPages(persianToEnglishNumbers(newValue, false))
             }
             height={48}
           />
@@ -214,13 +151,12 @@ export default function PrintPriceCalculator({
       <div className={styles.Bottom}>
         {calculatedPrice && (
           <div>
-            <span>قیمت کل: </span>
-            <span>
-              <FormattedNumber value={calculatedPrice} /> تومان
-            </span>
+            <div>
+              قیمت کل: <FormattedNumber value={calculatedPrice} /> تومان
+            </div>
           </div>
         )}
-        <Link href={isUserLoggedIn ? "/dashboard/orders/new" : "/auth"}>
+        <Link href={userData.isLoggedIn ? "/dashboard/orders/new" : "/auth"}>
           <Button varient="gradient" style={{ padding: "0 30px" }}>
             سفارش پرینت
           </Button>

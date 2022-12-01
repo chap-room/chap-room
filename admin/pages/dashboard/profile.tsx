@@ -2,6 +2,7 @@ import { ReactElement, useState } from "react";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import { getProfile, updateProfile } from "@/admin/api";
+import { useDashboardData } from "@/admin/context/dashboardData";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
@@ -11,6 +12,8 @@ import DataLoader from "@/shared/components/DataLoader";
 import ProfileForm from "@/shared/components/Dashboard/ProfileForm";
 
 export default function DashboardProfile() {
+  const dashboardData = useDashboardData();
+
   const [data, setData] = useState<{
     avatar: string | null;
     name: string;
@@ -35,13 +38,17 @@ export default function DashboardProfile() {
         <MobileContentHeader backTo="/dashboard" title="اطلاعات من" />
         <DataLoader load={() => getProfile()} setData={setData}>
           <ProfileForm
+            canEditPhoneNumber
             defaultValues={{
               phoneNumber: data.phoneNumber,
               name: data.name,
             }}
             onSave={(userFormData) =>
-              updateProfile(userFormData.name, userFormData.password)
-                .then(toast.success)
+              updateProfile(userFormData)
+                .then((message) => {
+                  toast.success(message);
+                  dashboardData.dataLoaderState.reload();
+                })
                 .catch(toast.error)
             }
           />

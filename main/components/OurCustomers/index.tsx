@@ -89,7 +89,7 @@ export default function OurCustomers() {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [customerListContainerRef]);
 
   return (
     <div className={styles.OurCustomers}>

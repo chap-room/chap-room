@@ -27,7 +27,7 @@ interface DiscountFormData {
   type: "fixed" | "percentage" | "page";
   value: number;
   usageLimit: number | null;
-  expireDate: Date | null;
+  expireAt: string | null;
 }
 
 interface DiscountFormProps {
@@ -69,10 +69,10 @@ export default function DiscountForm({
     defaultValues?.usageLimit?.toString() || ""
   );
   const [hasExpireDate, setHasExpireDate] = useState(
-    defaultValues ? defaultValues.expireDate !== null : false
+    defaultValues ? defaultValues.expireAt !== null : false
   );
   const [expireDate, setExpireDate] = useState<Date | null>(
-    defaultValues?.expireDate || null
+    defaultValues?.expireAt ? new Date(defaultValues.expireAt) : null
   );
   const [isExpireDateValid, setIsExpireDateValid] = useState(
     expireDate !== null
@@ -278,9 +278,8 @@ export default function DiscountForm({
               type,
               value: parseInt(value),
               usageLimit: hasUsageLimit ? parseInt(usageLimit) : null,
-              expireDate: hasExpireDate
-                ? new Date("2022-07-13T07:24:52")
-                : null, // TODO
+              expireAt:
+                hasExpireDate && expireDate ? expireDate.toISOString() : null,
             }).finally(() => setIsSubmitting(false));
           }}
           loading={isSubmitting}

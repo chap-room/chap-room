@@ -142,10 +142,13 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
               <div className={styles.Label}>تاریخ سفارش:</div>
               <div className={styles.OrderDate}>
                 <span>
-                  <FormattedDate value={order.date} />
+                  <FormattedDate value={new Date(order.createdAt)} />
                 </span>
                 <span>
-                  <FormattedTime value={order.date} timeStyle="medium" />
+                  <FormattedTime
+                    value={new Date(order.createdAt)}
+                    timeStyle="medium"
+                  />
                 </span>
               </div>
             </div>
@@ -277,11 +280,11 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                 </div>
                 <div>
                   <div>
-                    <FormattedDate value={order.lastUpdateDate} />
+                    <FormattedDate value={new Date(order.updatedAt)} />
                   </div>
                   <div>
                     <FormattedTime
-                      value={order.lastUpdateDate}
+                      value={new Date(order.updatedAt)}
                       timeStyle="medium"
                     />
                   </div>
@@ -302,14 +305,14 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
           <td className={styles.Cell25}>
             <div className={styles.Cell}>
               <div className={styles.Label}>تاریخ ارسال:</div>
-              {order.postageDate ? (
+              {order.postageAt ? (
                 <div className={styles.OrderPostageDate}>
                   <span>
-                    <FormattedDate value={order.postageDate} />
+                    <FormattedDate value={new Date(order.postageAt)} />
                   </span>
                   <span>
                     <FormattedTime
-                      value={order.postageDate}
+                      value={new Date(order.postageAt)}
                       timeStyle="medium"
                     />
                   </span>

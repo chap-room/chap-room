@@ -1,6 +1,7 @@
 import styles from "./style.module.scss";
 import { ReactElement, useState } from "react";
 import { FormattedDate, FormattedNumber } from "react-intl";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 import Layout from "@/main/components/Layout";
 import DateIcon from "@/shared/assets/icons/date.svg";
@@ -18,29 +19,42 @@ import EmptyNote from "@/shared/components/Dashboard/EmptyNote";
 import Pagination from "@/shared/components/Pagination";
 import Link from "next/link";
 
-export default function Blog() {
+export const getServerSideProps: GetServerSideProps<{
+  data: {
+    totalCount: number;
+    pageSize: number;
+    posts: Post[];
+  };
+  categoriesData: {
+    totalBlogs: number;
+    categories: PostCategory[];
+  };
+  popularPostData: Post[];
+}> = async () => {
+  const data = await getBlogPosts(1);
+  const categoriesData = await getBlogCategories();
+  const popularPostData = (await getBlogPosts(1, "popular")).posts;
+
+  return {
+    props: {
+      data,
+      categoriesData,
+      popularPostData,
+    },
+  };
+};
+
+export default function Blog(
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) {
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
     null
   );
 
-  const [data, setData] = useState<{
-    totalCount: number;
-    pageSize: number;
-    posts: Post[];
-  }>({
-    totalCount: 0,
-    pageSize: 0,
-    posts: [],
-  });
+  const [data, setData] = useState(props.data);
+  const { categoriesData, popularPostData } = props;
 
   const [page, setPage] = useState(1);
-
-  const [categoriesData, setCategoriesData] = useState<{
-    totalBlogs: number;
-    categories: PostCategory[];
-  }>({ totalBlogs: 0, categories: [] });
-
-  const [popularPostData, setPopularPostData] = useState<Post[]>([]);
 
   return (
     <>
@@ -57,6 +71,7 @@ export default function Blog() {
             }
             deps={[selectedCategoryId, page]}
             setData={setData}
+            initialFetch={false}
           >
             <div className={styles.Posts}>
               {data.posts.map((post) => (
@@ -77,7 +92,9 @@ export default function Blog() {
                     <div>
                       <div>
                         <DateIcon />
-                        <FormattedDate value={post.lastUpdateDate} />
+                        <FormattedDate
+                          value={new Date(new Date(post.updatedAt))}
+                        />
                       </div>
                       <div>
                         <ViewIcon />
@@ -104,71 +121,63 @@ export default function Blog() {
           <div className={styles.Sidebar}>
             <div className={styles.Widget}>
               <div className={styles.WidgetTitle}>دسته بندی</div>
-              <DataLoader
-                load={() => getBlogCategories()}
-                setData={setCategoriesData}
-              >
-                <div className={styles.CategoryList}>
+              <div className={styles.CategoryList}>
+                <div
+                  onClick={() => {
+                    setSelectedCategoryId(null);
+                    setPage(1);
+                  }}
+                >
+                  <Radio checked={selectedCategoryId === null} />
+                  <div>همه</div>
+                  <div>
+                    <FormattedNumber value={categoriesData.totalBlogs} />
+                  </div>
+                </div>
+                {categoriesData.categories.map((category) => (
                   <div
+                    key={category.id}
                     onClick={() => {
-                      setSelectedCategoryId(null);
+                      setSelectedCategoryId(category.id);
                       setPage(1);
                     }}
                   >
-                    <Radio checked={selectedCategoryId === null} />
-                    <div>همه</div>
+                    <Radio checked={selectedCategoryId === category.id} />
+                    <div>{category.name}</div>
                     <div>
-                      <FormattedNumber value={categoriesData.totalBlogs} />
+                      <FormattedNumber value={category.countOfBlogs} />
                     </div>
                   </div>
-                  {categoriesData.categories.map((category) => (
-                    <div
-                      key={category.id}
-                      onClick={() => {
-                        setSelectedCategoryId(category.id);
-                        setPage(1);
-                      }}
-                    >
-                      <Radio checked={selectedCategoryId === category.id} />
-                      <div>{category.name}</div>
-                      <div>
-                        <FormattedNumber value={category.countOfBlogs} />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </DataLoader>
+                ))}
+              </div>
             </div>
             <div className={styles.Widget}>
               <div className={styles.WidgetTitle}>محبوبترین مقالات</div>
-              <DataLoader
-                load={() => getBlogPosts(1, "popular")}
-                setData={(data) => setPopularPostData(data.posts)}
-              >
-                <div className={styles.PopularPosts}>
-                  {popularPostData.map((post) => (
-                    <div key={post.id}>
-                      {post.thumbnailUrl && (
-                        <div className={styles.PostThumbnail}>
-                          <img
-                            src={post.thumbnailUrl}
-                            alt={post.thumbnailAlt || ""}
-                          />
-                        </div>
-                      )}
+              <div className={styles.PopularPosts}>
+                {popularPostData.map((post) => (
+                  <div key={post.id}>
+                    {post.thumbnailUrl && (
+                      <div className={styles.PostThumbnail}>
+                        <img
+                          src={post.thumbnailUrl}
+                          alt={post.thumbnailAlt || ""}
+                        />
+                      </div>
+                    )}
+                    <div>
+                      <div>{post.title}</div>
                       <div>
-                        <div>{post.title}</div>
-                        <div>
-                          <FormattedDate value={post.lastUpdateDate} />
-                        </div>
+                        <FormattedDate
+                          value={new Date(new Date(post.updatedAt))}
+                        />
                       </div>
                     </div>
-                  ))}
-                  {!popularPostData.length && (
-                    <EmptyNote>هیچ بلاگی وجود ندارد</EmptyNote>
-                  )}
-                </div>
-              </DataLoader>
+                  </div>
+                ))}
+                {!popularPostData.length && (
+                  <EmptyNote>هیچ بلاگی وجود ندارد</EmptyNote>
+                )}
+              </div>
             </div>
           </div>
         </div>

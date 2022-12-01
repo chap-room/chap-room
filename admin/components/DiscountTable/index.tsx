@@ -86,13 +86,13 @@ export default function DiscountTable({
                     </span>
                   </span>
                 )}
-                {discount.expireDate && (
+                {discount.expireAt && (
                   <span>
                     <span>تاریخ انقضا:</span>
                     <span>
-                      <FormattedDate value={discount.expireDate} />{" "}
+                      <FormattedDate value={new Date(discount.expireAt)} />{" "}
                       <FormattedTime
-                        value={discount.expireDate}
+                        value={discount.expireAt}
                         timeStyle="medium"
                       />
                     </span>

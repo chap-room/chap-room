@@ -1,5 +1,5 @@
 import styles from "./style.module.scss";
-import { ReactElement, useEffect, useRef, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { FormattedNumber } from "react-intl";
 import toast from "react-hot-toast";
@@ -8,7 +8,6 @@ import Link from "next/link";
 import { Tariffs } from "@/shared/types";
 import {
   getTariffs,
-  isLoggedIn,
   reportReferralView,
   sendCooperationRequest,
 } from "@/main/api";
@@ -16,6 +15,7 @@ import {
   englishToPersianNumbers,
   persianToEnglishNumbers,
 } from "@/shared/utils/numbers";
+import { useUserData } from "@/main/context/userData";
 import ExpandMoreIcon from "@/shared/assets/icons/expandMore.svg";
 import GiftImage from "@/main/assets/images/gift.svg";
 import CalculatorImage from "@/main/assets/images/calculator.svg";
@@ -37,21 +37,8 @@ import CirclePlayIcon from "@/main/assets/icons/circlePlay.svg";
 import OurCustomers from "@/main/components/OurCustomers";
 
 export default function Home() {
+  const userData = useUserData();
   const router = useRouter();
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
-
-  useEffect(() => {
-    if (router.asPath === "/auth") return;
-
-    try {
-      const userData = JSON.parse(localStorage.getItem("userData") || "");
-      if (userData) setIsUserLoggedIn(true);
-    } catch {}
-
-    isLoggedIn()
-      .then((userData) => setIsUserLoggedIn(!!userData))
-      .catch(() => {});
-  }, []);
 
   useEffect(() => {
     if (router.isReady) {
@@ -102,7 +89,9 @@ export default function Home() {
                 کشور ارائه میکند.
               </p>
               <div>
-                <Link href={isUserLoggedIn ? "/dashboard/orders/new" : "/auth"}>
+                <Link
+                  href={userData.isLoggedIn ? "/dashboard/orders/new" : "/auth"}
+                >
                   <Button varient="gradient">سفارش پرینت</Button>
                 </Link>
                 <Link href="/tariffs">

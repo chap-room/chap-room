@@ -11,7 +11,6 @@ export interface AdminUserRole {
 // all amounts in toman
 export interface Order {
   id: number;
-  date: Date;
   status: "canceled" | "pending" | "preparing" | "sent";
   recipientName: string;
   recipientPhoneNumber: string;
@@ -21,16 +20,18 @@ export interface Order {
   recipientDeliveryAddress: string;
   amount: number;
   postageFee: number;
-  postageDate: Date | null;
+  postageAt: string | null;
   postageMethod: string | null;
   discountAmount: number | null;
   discountCode: string | null;
   gatewayPaidAmount: number;
   walletPaidAmount: number;
   cancelReason: string | null;
-  lastUpdateDate: Date;
   trackingNumber: string | null;
+  trackingUrl: string | null;
   printFolders: PrintFolder[];
+  createdAt: string;
+  updatedAt: string;
   user: User;
 }
 
@@ -82,7 +83,7 @@ export interface Address {
 
 export interface Transaction {
   id: number;
-  date: Date;
+  createdAt: Date;
   amount: number;
   description: string;
   orderId: number | null;
@@ -100,12 +101,12 @@ export interface Discount {
   value: number;
   usageLimit: number | null;
   timesUsed: number | null;
-  expireDate: Date | null;
+  expireAt: string | null;
 }
 
 export interface CooperationRequest {
   id: number;
-  date: Date;
+  createdAt: string;
   phoneNumber: string;
   description: string | null;
   status: "approved" | "rejected" | "pending";
@@ -113,7 +114,7 @@ export interface CooperationRequest {
 
 export interface FinancialRecord {
   id: number;
-  date: Date;
+  createdAt: string;
   user: User;
   amount: number;
   description: string;
@@ -125,7 +126,7 @@ export interface FinancialRecord {
 
 export interface WithdrawalRequest {
   id: number;
-  date: Date;
+  createdAt: string;
   amount: number;
   user: User;
   iban: number;
@@ -200,8 +201,8 @@ export interface Post {
   thumbnailAlt: string | null;
   display: boolean;
   body: string;
-  createDate: string;
-  lastUpdateDate: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface PostCategory {
@@ -212,7 +213,7 @@ export interface PostCategory {
 
 export interface DedicatedLinkReport {
   orderId: number;
-  date: Date;
+  createdAt: string;
   user: User;
   buyer: User;
   amount: number;
@@ -223,7 +224,7 @@ export interface DedicatedLinkReport {
 
 export interface DedicatedDiscountCodeReport {
   orderId: number;
-  date: Date;
+  createdAt: string;
   user: User;
   buyer: User;
   amount: number;
@@ -242,7 +243,7 @@ export interface CustomerReport {
   marketingBalance: number;
   countOfOrders: number;
   totalPaidAmount: number;
-  registrationDate: Date;
-  firstOrderDate: Date;
-  lastOrderDate: Date;
+  createdAt: string;
+  firstOrderAt: string | null;
+  lastOrderAt: string | null;
 }

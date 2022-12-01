@@ -1,18 +1,14 @@
 import {
-  Address,
   BindingOptions,
-  Order,
   Post,
   PrintFile,
   PrintFolder,
   Tariffs,
-  Transaction,
 } from "@/shared/types";
 import axios, { AxiosRequestConfig } from "axios";
 import Router from "next/router";
 import { convert } from "@/shared/utils/convert";
 import { orderConvertMap, printFoldersConvertMap } from "@/main/convertMaps";
-import { blogPostConvertMap } from "@/admin/convertMaps";
 
 export function getAccessToken() {
   return localStorage.getItem("userAccessToken");
@@ -67,9 +63,13 @@ export async function request({
 
         resolve(response.data);
       })
-      .catch(({ response, message, code }) => {
-        if (code === "ERR_CANCELED") {
+      .catch((error) => {
+        if (axios.isCancel(error)) {
           reject("لغو شده");
+        }
+        const { response, message } = error;
+        if (message === "Network Error") {
+          reject("خطای شبکه");
         }
         if (response?.status === 401) {
           logout();
@@ -132,7 +132,6 @@ export function getBlogPosts(page: number, blogType?: "popular") {
   return request({
     method: "GET",
     url: "/public/blogs",
-    needAuth: true,
     params: {
       page,
       blogType,
@@ -140,9 +139,7 @@ export function getBlogPosts(page: number, blogType?: "popular") {
   }).then(({ data }) => ({
     totalCount: data.totalCount,
     pageSize: data.pageSize,
-    posts: data.blogs.map((item: any) =>
-      convert(blogPostConvertMap, item, "a2b")
-    ) as Post[],
+    posts: data.blogs as Post[],
   }));
 }
 
@@ -150,8 +147,7 @@ export function getBlogPost(slug: string) {
   return request({
     method: "GET",
     url: `/public/blogs/slug/${slug}`,
-    needAuth: true,
-  }).then(({ data }) => convert(blogPostConvertMap, data, "a2b") as Post);
+  }).then(({ data }) => data);
 }
 
 export function getBlogCategories() {
@@ -165,16 +161,13 @@ export function getBlogPostsByCategory(categoryId: number, page: number) {
   return request({
     method: "GET",
     url: `/public/blogs/category-id/${categoryId}`,
-    needAuth: true,
     params: {
       page,
     },
   }).then(({ data }) => ({
     totalCount: data.totalCount,
     pageSize: data.pageSize,
-    posts: data.blogs.map((item: any) =>
-      convert(blogPostConvertMap, item, "a2b")
-    ) as Post[],
+    posts: data.blogs,
   }));
 }
 
@@ -330,7 +323,7 @@ export function getDashboard() {
       phoneNumber: data.phoneNumber,
       inProgressOrders: data.inProgressOrders.map((item: any) =>
         convert(orderConvertMap, item, "a2b")
-      ) as Order[],
+      ),
     }))
     .then((dashboardData) => {
       localStorage.setItem(
@@ -360,7 +353,7 @@ export function getOrders(page: number) {
     pageSize: data.pageSize,
     orders: data.orders.map((item: any) =>
       convert(orderConvertMap, item, "a2b")
-    ) as Order[],
+    ),
   }));
 }
 
@@ -369,7 +362,7 @@ export function getOrder(orderId: number) {
     method: "GET",
     url: `/users/orders/id/${orderId}`,
     needAuth: true,
-  }).then(({ data }) => convert(orderConvertMap, data, "a2b") as Order);
+  }).then(({ data }) => convert(orderConvertMap, data, "a2b"));
 }
 
 export function cancelOrder(orderId: number) {
@@ -421,9 +414,7 @@ export function getPrintFolders() {
     url: "/users/folders",
     needAuth: true,
   }).then(({ data }) =>
-    data.map(
-      (item: any) => convert(printFoldersConvertMap, item, "a2b") as PrintFolder
-    )
+    data.map((item: any) => convert(printFoldersConvertMap, item, "a2b"))
   );
 }
 
@@ -432,9 +423,7 @@ export function getPrintFolder(printFolderId: number) {
     method: "GET",
     url: `/users/folders/id/${printFolderId}`,
     needAuth: true,
-  }).then(
-    ({ data }) => convert(printFoldersConvertMap, data, "a2b") as PrintFolder
-  );
+  }).then(({ data }) => convert(printFoldersConvertMap, data, "a2b"));
 }
 
 export function newPrintFolder(data: {
@@ -552,7 +541,7 @@ export function getAddresses(page: number) {
   }).then(({ data }) => ({
     totalCount: data.totalCount,
     pageSize: data.pageSize,
-    addresses: data.addresses as Address[],
+    addresses: data.addresses,
   }));
 }
 
@@ -586,19 +575,7 @@ export function getAddress(addressId: number) {
     method: "GET",
     url: `/users/addresses/id/${addressId}`,
     needAuth: true,
-  }).then(
-    ({ data }) =>
-      ({
-        id: data.id,
-        label: data.label,
-        recipientName: data.recipientName,
-        recipientPhoneNumber: data.recipientPhoneNumber,
-        recipientPostalCode: data.recipientPostalCode,
-        recipientDeliveryProvince: data.recipientDeliveryProvince,
-        recipientDeliveryCity: data.recipientDeliveryCity,
-        recipientDeliveryAddress: data.recipientDeliveryAddress,
-      } as Address)
-  );
+  }).then(({ data }) => data);
 }
 
 export function updateAddress(
@@ -640,14 +617,7 @@ export function getTransactions(page: number) {
   }).then(({ data }) => ({
     totalCount: data.totalCount,
     pageSize: data.pageSize,
-    transactions: data.transactions.map((item: any) => ({
-      id: item.id,
-      date: new Date(item.createdAt),
-      amount: item.amount,
-      description: item.description,
-      orderId: item.orderId,
-      status: item.status,
-    })) as Transaction[],
+    transactions: data.transactions,
   }));
 }
 
@@ -702,14 +672,11 @@ export function isLoggedIn() {
     });
 }
 
-export function updateProfile(name: string, password: string) {
+export function updateProfile(data: { name: string; password: string }) {
   return request({
     method: "PUT",
     url: "/users/profile",
     needAuth: true,
-    data: {
-      name,
-      password,
-    },
+    data,
   }).then(({ data }) => data.message);
 }

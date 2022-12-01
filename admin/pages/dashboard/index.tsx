@@ -2,19 +2,18 @@ import styles from "./style.module.scss";
 import { ReactElement, useState } from "react";
 import { FormattedNumber } from "react-intl";
 import Head from "next/head";
-import { AdminUserRole } from "@/shared/types";
-import { getDashboard, request } from "@/admin/api";
+import { request } from "@/admin/api";
 import { englishToPersianNumbers } from "@/shared/utils/numbers";
+import { DashboardData, useDashboardData } from "@/admin/context/dashboardData";
 import Avatar from "@/shared/components/Dashboard/Avatar";
 import DashboardLayout from "@/admin/components/Layout";
 import DashboardNavLinks from "@/admin/components/NavLinks";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
-import BarChart from "@/admin/components/BarChart";
+import BarChart, { ChartTooltipData } from "@/admin/components/BarChart";
 import IranMap from "@/admin/components/IranMap";
 import DataLoader, { DataLoaderView } from "@/shared/components/DataLoader";
 import FilterSelect from "@/admin/components/FilterSelect";
-import { DashboardData, useDashboardData } from "@/admin/context/dashboardData";
 
 export default function DashboardMain() {
   const dashboardData = useDashboardData();
@@ -44,72 +43,34 @@ interface DashboardNonMobilePorps {
 }
 
 export function DashboardNonMobile({ data }: DashboardNonMobilePorps) {
-  const [sidebarData, setSidebarData] = useState<{
-    countOfInProgressOrders: number;
-    countOfPendingCooperations: number;
-    countOfPendingWithdrawals: number;
-  }>({
-    countOfInProgressOrders: 0,
-    countOfPendingCooperations: 0,
-    countOfPendingWithdrawals: 0,
-  });
-
   const [salesTicker, setSalesTicker] = useState<
     "daily" | "weekly" | "monthly"
   >("daily");
-  const [salesData, setSalesData] = useState<{
-    totalSales: number;
-    chart: {
-      time: string;
-      debtor: number;
-      creditor: number;
-    }[];
-  }>(data.sales);
-  const [salesTooltipData, setSalesTooltipData] = useState<{
-    item: {
-      label: string;
-      value: number;
-      debtor: number;
-      creditor: number;
-    };
-    position: { left: number; top: number };
-  } | null>(null);
+  const [salesData, setSalesData] = useState(data.sales);
+  const [salesTooltipData, setSalesTooltipData] = useState<ChartTooltipData<{
+    label: string;
+    value: number;
+    debtor: number;
+    creditor: number;
+  }> | null>(null);
 
   const [usersTicker, setUsersTicker] = useState<
     "daily" | "weekly" | "monthly"
   >("daily");
-  const [usersData, setUsersData] = useState<{
-    totalUsers: number;
-    chart: {
-      time: string;
-      count: number;
-    }[];
-  }>(data.users);
-  const [usersTooltipData, setUsersTooltipData] = useState<{
-    item: {
-      label: string;
-      value: number;
-    };
-    position: { left: number; top: number };
-  } | null>(null);
+  const [usersData, setUsersData] = useState(data.users);
+  const [usersTooltipData, setUsersTooltipData] = useState<ChartTooltipData<{
+    label: string;
+    value: number;
+  }> | null>(null);
 
   const [ordersTicker, setOrdersTicker] = useState<
     "daily" | "weekly" | "monthly"
   >("daily");
-  const [ordersData, setOrdersData] = useState<{
-    totalOrders: number;
-    chart: {
-      time: string;
-      count: number;
-    }[];
-  }>(data.orders);
-  const [ordersTooltipData, setOrdersTooltipData] = useState<{
-    item: {
-      label: string;
-      value: number;
-    };
-    position: { left: number; top: number };
-  } | null>(null);
+  const [ordersData, setOrdersData] = useState(data.orders);
+  const [ordersTooltipData, setOrdersTooltipData] = useState<ChartTooltipData<{
+    label: string;
+    value: number;
+  }> | null>(null);
 
   const [usersOrdersTicker, setUsersOrdersTicker] = useState<
     "daily" | "weekly" | "monthly"
@@ -117,24 +78,12 @@ export function DashboardNonMobile({ data }: DashboardNonMobilePorps) {
   const [usersOrdersFilter, setUsersOrdersFilter] = useState<
     "one" | "two" | "three"
   >("one");
-  const [usersOrdersData, setUsersOrdersData] = useState<{
-    totalUsersWithOneOrder: number;
-    totalUsersWithTwoOrder: number;
-    totalUsersWithThreeOrder: number;
-    chart: {
-      time: string;
-      count: number;
-    }[];
-  }>(data.usersOrders);
-  const [usersOrdersTooltipData, setUsersOrdersTooltipData] = useState<{
-    item: {
+  const [usersOrdersData, setUsersOrdersData] = useState(data.usersOrders);
+  const [usersOrdersTooltipData, setUsersOrdersTooltipData] =
+    useState<ChartTooltipData<{
       label: string;
       value: number;
-    };
-    position: { left: number; top: number };
-  } | null>(null);
-
-  const [provincesOrders, setProvincesOrders] = useState(data.provincesOrders);
+    }> | null>(null);
 
   return (
     <div className={styles.NonMobile}>
@@ -446,7 +395,7 @@ export function DashboardNonMobile({ data }: DashboardNonMobilePorps) {
               <div>سفارش بر اساس استان</div>
             </div>
           </div>
-          <IranMap data={provincesOrders} />
+          <IranMap data={data.provincesOrders} />
         </SectionContent>
       </div>
     </div>

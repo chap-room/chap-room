@@ -1,33 +1,8 @@
-import {
-  blogPostConvertMap,
-  cooperationRequestConvertMap,
-  customerReportConvertMap,
-  dedicatedDiscountCodeReportConvertMap,
-  dedicatedLinkReportConvertMap,
-  discountConvertMap,
-  financialRecordConvertMap,
-} from "./convertMaps";
-import {
-  Address,
-  AdminUserRole,
-  BindingTariffs,
-  CooperationRequest,
-  CustomerReport,
-  DedicatedDiscountCodeReport,
-  DedicatedLinkReport,
-  Discount,
-  FinancialRecord,
-  Order,
-  Post,
-  PostCategory,
-  PrintTariffs,
-  User,
-  WithdrawalRequest,
-} from "@/shared/types";
+import { orderConvertMap } from "@/main/convertMaps";
+import { PostCategory, BindingTariffs, PrintTariffs } from "@/shared/types";
 import { convert } from "@/shared/utils/convert";
 import axios, { AxiosRequestConfig } from "axios";
 import Router from "next/router";
-import { orderConvertMap } from "@/main/convertMaps";
 
 export function getAccessToken() {
   return localStorage.getItem("adminAccessToken");
@@ -81,9 +56,13 @@ export async function request({
 
         resolve(response.data);
       })
-      .catch(({ response, message, code }) => {
-        if (code === "ERR_CANCELED") {
+      .catch((error) => {
+        if (axios.isCancel(error)) {
           reject("لغو شده");
+        }
+        const { response, message } = error;
+        if (message === "Network Error") {
+          reject("خطای شبکه");
         }
         if (response?.status === 401) {
           logout();
@@ -105,7 +84,12 @@ export function isLoggedIn() {
     url: "/admins/profile",
     needAuth: true,
     redirectIfNotLogin: false,
-  }).then(() => {});
+  })
+    .then(() => true)
+    .catch((message) => {
+      if (message === "لطفا دوباره وارد شوید") return false;
+      throw message;
+    });
 }
 
 export function resendCode(phoneNumber: string) {
@@ -294,10 +278,10 @@ export function getUserOrders(userId: number, page: number) {
       id: data.user.id,
       name: data.user.name,
       phoneNumber: data.user.phoneNumber,
-    } as User,
+    },
     orders: data.orders.map((item: any) =>
       convert(orderConvertMap, item, "a2b")
-    ) as Order[],
+    ),
   }));
 }
 
@@ -316,8 +300,8 @@ export function getUserAddresses(userId: number, page: number) {
       id: data.user.id,
       name: data.user.name,
       phoneNumber: data.user.phoneNumber,
-    } as User,
-    addresses: data.addresses as Address[],
+    },
+    addresses: data.addresses,
   }));
 }
 
@@ -326,19 +310,7 @@ export function getAddress(addressId: number) {
     method: "GET",
     url: `/admins/addresses/id/${addressId}`,
     needAuth: true,
-  }).then(
-    ({ data }) =>
-      ({
-        id: data.id,
-        label: data.label,
-        recipientName: data.recipientName,
-        recipientPhoneNumber: data.recipientPhoneNumber,
-        recipientPostalCode: data.recipientPostalCode,
-        recipientDeliveryProvince: data.recipientDeliveryProvince,
-        recipientDeliveryCity: data.recipientDeliveryCity,
-        recipientDeliveryAddress: data.recipientDeliveryAddress,
-      } as Address)
-  );
+  }).then(({ data }) => data);
 }
 
 export function updateAddress(
@@ -449,7 +421,7 @@ export function getOrders(
     pageSize: data.pageSize,
     orders: data.orders.map((item: any) =>
       convert(orderConvertMap, item, "a2b")
-    ) as Order[],
+    ),
   }));
 }
 
@@ -458,7 +430,7 @@ export function getOrder(orderId: number) {
     method: "GET",
     url: `/admins/orders/id/${orderId}`,
     needAuth: true,
-  }).then(({ data }) => convert(orderConvertMap, data, "a2b") as Order);
+  }).then(({ data }) => convert(orderConvertMap, data, "a2b"));
 }
 
 export function cancelOrder(orderId: number, cancelReason: string) {
@@ -508,9 +480,7 @@ export function getDiscounts(search: string, page: number) {
   }).then(({ data }) => ({
     totalCount: data.totalCount,
     pageSize: data.pageSize,
-    discounts: data.discounts.map((item: any) =>
-      convert(discountConvertMap, item, "a2b")
-    ) as Discount[],
+    discounts: data.discounts,
   }));
 }
 
@@ -523,13 +493,13 @@ export function newDiscount(data: {
   type: "fixed" | "percentage" | "page";
   value: number;
   usageLimit: number | null;
-  expireDate: Date | null;
+  expireAt: string | null;
 }) {
   return request({
     method: "POST",
     url: "/admins/discounts",
     needAuth: true,
-    data: convert(discountConvertMap, data, "b2a"),
+    data,
   }).then(({ data }) => data.message);
 }
 
@@ -538,7 +508,7 @@ export function getDiscount(discountId: number) {
     method: "GET",
     url: `/admins/discounts/id/${discountId}`,
     needAuth: true,
-  }).then(({ data }) => convert(discountConvertMap, data, "a2b") as Discount);
+  }).then(({ data }) => data);
 }
 
 export function updateDiscount(
@@ -552,14 +522,14 @@ export function updateDiscount(
     type: "fixed" | "percentage" | "page";
     value: number;
     usageLimit: number | null;
-    expireDate: Date | null;
+    expireAt: string | null;
   }
 ) {
   return request({
     method: "PUT",
     url: `/admins/discounts/id/${discountId}`,
     needAuth: true,
-    data: convert(discountConvertMap, data, "b2a"),
+    data,
   }).then(({ data }) => data.message);
 }
 
@@ -588,9 +558,7 @@ export function getCooperationRequests(
   }).then(({ data }) => ({
     totalCount: data.totalCount,
     pageSize: data.pageSize,
-    cooperations: data.cooperations.map((item: any) =>
-      convert(cooperationRequestConvertMap, item, "a2b")
-    ) as CooperationRequest[],
+    cooperations: data.cooperations,
   }));
 }
 
@@ -612,8 +580,8 @@ export function updateCooperationRequest(
 
 export function getFinancialRecords(
   search: string,
-  startDate: Date | null,
-  endDate: Date | null,
+  startAt: string | null,
+  endAt: string | null,
   paymentStatus: "successful" | "unsuccessful" | null,
   page: number
 ) {
@@ -623,17 +591,15 @@ export function getFinancialRecords(
     needAuth: true,
     params: {
       search,
-      startAt: startDate ? startDate.toISOString() : undefined,
-      endAt: endDate ? endDate.toISOString() : undefined,
+      startAt: startAt || undefined,
+      endAt: endAt || undefined,
       status: paymentStatus || undefined,
       page,
     },
   }).then(({ data }) => ({
     totalCount: data.totalCount,
     pageSize: data.pageSize,
-    records: data.transactions.map((item: any) =>
-      convert(financialRecordConvertMap, item, "a2b")
-    ) as FinancialRecord[],
+    records: data.transactions,
   }));
 }
 
@@ -647,7 +613,7 @@ export function newFinancialRecord(data: {
     method: "POST",
     url: "/admins/transactions",
     needAuth: true,
-    data: convert(financialRecordConvertMap, data, "b2a"),
+    data,
   }).then(({ data }) => data.message);
 }
 
@@ -656,10 +622,7 @@ export function getFinancialRecord(financialRecordId: number) {
     method: "GET",
     url: `/admins/transactions/id/${financialRecordId}`,
     needAuth: true,
-  }).then(
-    ({ data }) =>
-      convert(financialRecordConvertMap, data, "a2b") as FinancialRecord
-  );
+  }).then(({ data }) => data);
 }
 
 export function updateFinancialRecord(
@@ -675,7 +638,7 @@ export function updateFinancialRecord(
     method: "PUT",
     url: `/admins/transactions/id/${financialRecordId}`,
     needAuth: true,
-    data: convert(financialRecordConvertMap, data, "b2a"),
+    data,
   }).then(({ data }) => data.message);
 }
 
@@ -704,9 +667,7 @@ export function getWithdrawalRequests(
   }).then(({ data }) => ({
     totalCount: data.totalCount,
     pageSize: data.pageSize,
-    withdrawals: data.withdrawals.map((item: any) =>
-      convert(cooperationRequestConvertMap, item, "a2b")
-    ) as WithdrawalRequest[],
+    withdrawals: data.withdrawals,
   }));
 }
 
@@ -745,7 +706,7 @@ export function getPrintTariffs() {
     method: "GET",
     url: "/admins/tariffs/print",
     needAuth: true,
-  }).then(({ data }) => data as PrintTariffs);
+  }).then(({ data }) => data);
 }
 
 export function updatePrintPrice(data: PrintTariffs) {
@@ -762,7 +723,7 @@ export function getBindingTariffs() {
     method: "GET",
     url: "/admins/tariffs/binding",
     needAuth: true,
-  }).then(({ data }) => data as BindingTariffs);
+  }).then(({ data }) => data);
 }
 
 export function updateBindingTariffs(data: BindingTariffs) {
@@ -786,9 +747,7 @@ export function getBlogPosts(search: string, page: number) {
   }).then(({ data }) => ({
     totalCount: data.totalCount,
     pageSize: data.pageSize,
-    posts: data.blogs.map((item: any) =>
-      convert(blogPostConvertMap, item, "a2b")
-    ) as Post[],
+    posts: data.blogs,
   }));
 }
 
@@ -797,7 +756,7 @@ export function getBlogPost(postId: number) {
     method: "GET",
     url: `/admins/blogs/id/${postId}`,
     needAuth: true,
-  }).then(({ data }) => convert(blogPostConvertMap, data, "a2b") as Post);
+  }).then(({ data }) => data);
 }
 
 export function newBlogPost(data: {
@@ -895,9 +854,7 @@ export function getDedicatedDiscountCodeReports(search: string, page: number) {
   }).then(({ data }) => ({
     totalCount: data.totalCount,
     pageSize: data.pageSize,
-    reports: data.marketings.map((item: any) =>
-      convert(dedicatedDiscountCodeReportConvertMap, item, "a2b")
-    ) as DedicatedDiscountCodeReport[],
+    reports: data.marketings,
   }));
 }
 
@@ -913,9 +870,7 @@ export function getDedicatedLinkReports(search: string, page: number) {
   }).then(({ data }) => ({
     totalCount: data.totalCount,
     pageSize: data.pageSize,
-    reports: data.marketings.map((item: any) =>
-      convert(dedicatedLinkReportConvertMap, item, "a2b")
-    ) as DedicatedLinkReport[],
+    reports: data.marketings,
   }));
 }
 
@@ -979,9 +934,7 @@ export function getCustomerReports(
     totalCreditor: data.totalCreditor,
     totalDebtor: data.totalDebtor,
     totalOrdersCount: data.totalOrdersCount,
-    reports: data.customersReport.map((item: any) =>
-      convert(customerReportConvertMap, item, "a2b")
-    ) as CustomerReport[],
+    reports: data.customersReport,
   }));
 }
 
@@ -1055,14 +1008,15 @@ export function getProfile() {
   }));
 }
 
-export function updateProfile(name: string, password: string) {
+export function updateProfile(data: {
+  phoneNumber: string;
+  name: string;
+  password: string;
+}) {
   return request({
     method: "PUT",
     url: "/admins/profile",
     needAuth: true,
-    data: {
-      name,
-      password,
-    },
+    data,
   }).then(({ data }) => data.message);
 }

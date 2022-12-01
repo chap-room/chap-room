@@ -79,11 +79,9 @@ export default function ForgotPassword() {
   );
 
   useEffect(() => {
-    isLoggedIn()
-      .then((userData) => {
-        if (userData) router.replace("/dashboard");
-      })
-      .catch(() => {});
+    isLoggedIn().then((userData) => {
+      if (userData) router.replace("/dashboard");
+    });
   }, []);
 
   return (

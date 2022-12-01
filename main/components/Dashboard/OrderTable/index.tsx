@@ -37,10 +37,13 @@ export default function OrderTable({
               <span className={styles.MobileLabel}>تاریخ سفارش:</span>
               <span className={styles.Date}>
                 <span>
-                  <FormattedDate value={order.date} />
+                  <FormattedDate value={new Date(order.createdAt)} />
                 </span>
                 <span>
-                  <FormattedTime value={order.date} timeStyle="medium" />
+                  <FormattedTime
+                    value={new Date(order.createdAt)}
+                    timeStyle="medium"
+                  />
                 </span>
               </span>
             </td>
@@ -50,38 +53,34 @@ export default function OrderTable({
             </td>
             <td>
               <span className={styles.MobileLabel}>وضعیت:</span>
-              {(() => {
-                switch (order.status) {
-                  case "pending":
-                    return (
-                      <span className={styles.Pending}>در انتظار بررسی</span>
-                    );
-                  case "preparing":
-                    return (
-                      <span className={styles.Preparing}>
-                        در حال آماده سازی
-                      </span>
-                    );
-                  case "sent":
-                    return (
-                      <a
-                        href="/"
-                        target="_blank"
-                        className={styles.TrackingLink}
-                      >
-                        رهگیری مرسوله
-                      </a>
-                    );
-                  case "canceled":
-                    return (
-                      <span className={styles.Canceled}>
-                        بازگشت وجه به کیف پول
-                        <br />
-                        {order.cancelReason}
-                      </span>
-                    );
-                }
-              })()}
+              {order.status === "pending" ? (
+                <span className={styles.Pending}>در انتظار بررسی</span>
+              ) : order.status === "preparing" ? (
+                <span className={styles.Preparing}>در حال آماده سازی</span>
+              ) : order.status === "sent" ? (
+                order.trackingNumber || order.trackingUrl ? (
+                  <div>
+                    {order.trackingNumber && (
+                      <div>{englishToPersianNumbers(order.trackingNumber)}</div>
+                    )}
+                    {order.trackingUrl && (
+                      <div>
+                        <a href={order.trackingUrl} target="_blank">
+                          رهگیری مرسوله
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <span className={styles.Sent}>ارسال شده</span>
+                )
+              ) : order.status === "canceled" ? (
+                <span className={styles.Canceled}>
+                  بازگشت وجه به کیف پول
+                  <br />
+                  {order.cancelReason}
+                </span>
+              ) : undefined}
             </td>
             <td>
               <button

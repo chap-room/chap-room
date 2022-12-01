@@ -32,54 +32,53 @@ export default function Wallet() {
         }}
       >
         <div className={styles.Balance}>
-          موجودی:{" "}
-          <span>
-            <DataLoaderView
-              state={dashboardData.walletDataLoaderState}
-              size="small"
-            >
+          <DataLoaderView
+            state={dashboardData.walletDataLoaderState}
+            size="small"
+          >
+            موجودی:{" "}
+            <span>
               <FormattedNumber
                 value={
                   (dashboardData.data?.walletBalance || 0) +
                   (dashboardData.data?.marketingBalance || 0)
                 }
               />
-            </DataLoaderView>
-          </span>{" "}
-          <span>تومان</span>
+            </span>{" "}
+            <span>تومان</span>
+          </DataLoaderView>
         </div>
         <div className={styles.Spacer} />
         <ExpandMoreIcon className={styles.ExpandMoreIcon} />
       </div>
       <div className={styles.WalletDetails}>
-        <div>
-          موجودی کیف پول:
-          <div className={styles.Spacer} />
-          <span>
-            <DataLoaderView
-              state={dashboardData.walletDataLoaderState}
-              size="small"
-            >
-              <FormattedNumber value={dashboardData.data?.walletBalance || 0} />
-            </DataLoaderView>
-          </span>{" "}
-          تومان
-        </div>
-        <div>
-          موجودی فروش بازاریابی:
-          <div className={styles.Spacer} />
-          <span>
-            <DataLoaderView
-              state={dashboardData.walletDataLoaderState}
-              size="small"
-            >
-              <FormattedNumber
-                value={dashboardData.data?.marketingBalance || 0}
-              />
-            </DataLoaderView>
-          </span>{" "}
-          تومان
-        </div>
+        <DataLoaderView
+          state={dashboardData.walletDataLoaderState}
+          size="small"
+        >
+          <div className={styles.WalletBalance}>
+            <div>موجودی کیف پول:</div>
+            <div>
+              <span>
+                <FormattedNumber
+                  value={dashboardData.data?.walletBalance || 0}
+                />
+              </span>{" "}
+              تومان
+            </div>
+          </div>
+          <div className={styles.MarketingBalance}>
+            <div>موجودی فروش بازاریابی:</div>
+            <div>
+              <span>
+                <FormattedNumber
+                  value={dashboardData.data?.marketingBalance || 0}
+                />
+              </span>{" "}
+              تومان
+            </div>
+          </div>
+        </DataLoaderView>
         <button
           className={styles.IncreasBalance}
           onClick={() => setShowIncreasBalanceDialog(true)}

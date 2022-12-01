@@ -69,11 +69,9 @@ export default function Register() {
   );
 
   useEffect(() => {
-    isLoggedIn()
-      .then((userData) => {
-        if (userData) router.replace("/dashboard");
-      })
-      .catch(() => {});
+    isLoggedIn().then((userData) => {
+      if (userData) router.replace("/dashboard");
+    });
   }, []);
 
   return (

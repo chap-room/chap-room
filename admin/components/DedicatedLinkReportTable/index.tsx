@@ -30,11 +30,13 @@ export default function DedicatedLinkReportTable({
               <span className={styles.MobileLabel}>تاریخ:</span>
               <span className={styles.Date}>
                 <span>
-                  <FormattedDate value={dedicatedLinkReport.date} />
+                  <FormattedDate
+                    value={new Date(dedicatedLinkReport.createdAt)}
+                  />
                 </span>
                 <span>
                   <FormattedTime
-                    value={dedicatedLinkReport.date}
+                    value={new Date(dedicatedLinkReport.createdAt)}
                     timeStyle="medium"
                   />
                 </span>

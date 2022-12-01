@@ -31,12 +31,14 @@ export default function DedicatedDiscountCodeReportTable({
               <span className={styles.MobileLabel}>تاریخ:</span>
               <span className={styles.Date}>
                 <span>
-                  <FormattedDate value={dedicatedDiscountCodeReport.date} />
+                  <FormattedDate
+                    value={new Date(dedicatedDiscountCodeReport.createdAt)}
+                  />
                 </span>
                 <span>
                   <FormattedTime
-                    value={dedicatedDiscountCodeReport.date}
-                    hour12
+                    value={new Date(dedicatedDiscountCodeReport.createdAt)}
+                    timeStyle="medium"
                   />
                 </span>
               </span>

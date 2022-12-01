@@ -38,11 +38,11 @@ export default function FinancialRecordTable({
               <span className={styles.MobileLabel}>تاریخ:</span>
               <span className={styles.Date}>
                 <span>
-                  <FormattedDate value={financialRecord.date} />
+                  <FormattedDate value={new Date(financialRecord.createdAt)} />
                 </span>
                 <span>
                   <FormattedTime
-                    value={financialRecord.date}
+                    value={new Date(financialRecord.createdAt)}
                     timeStyle="medium"
                   />
                 </span>

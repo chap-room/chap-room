@@ -234,6 +234,8 @@
       display: flex;
       flex-direction: row;
       gap: 10px;
+      cursor: pointer;
+      user-select: none;
 
       @media (min-width: 513px) {
         display: none;

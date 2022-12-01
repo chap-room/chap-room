@@ -113,6 +113,8 @@
     }
 
     .BottomButtonsPlaceholder {
+      padding-top: 10px;
+
       @media (min-width: 897px) {
         display: none;
       }

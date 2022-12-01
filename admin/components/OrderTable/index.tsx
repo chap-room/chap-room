@@ -48,10 +48,13 @@ export default function OrderTable({
               <span className={styles.MobileLabel}>تاریخ سفارش:</span>
               <span className={styles.Date}>
                 <span>
-                  <FormattedDate value={order.date} />
+                  <FormattedDate value={new Date(order.createdAt)} />
                 </span>
                 <span>
-                  <FormattedTime value={order.date} timeStyle="medium" />
+                  <FormattedTime
+                    value={new Date(order.createdAt)}
+                    timeStyle="medium"
+                  />
                 </span>
               </span>
             </td>
@@ -82,21 +85,29 @@ export default function OrderTable({
                   }
                 </div>
                 <div>
-                  <FormattedDate value={order.lastUpdateDate} />
+                  <FormattedDate value={new Date(order.updatedAt)} />
                 </div>
               </div>
             </td>
             <td>
               <span className={styles.MobileLabel}>کد پیگیری:</span>
               {order.status === "sent" ? (
-                <div className={styles.TrackingNumber}>
-                  <div>{order.trackingNumber}</div>
+                order.trackingNumber || order.trackingUrl ? (
                   <div>
-                    <a href="/" target="_blank">
-                      رهگیری مرسوله
-                    </a>
+                    {order.trackingNumber && (
+                      <div>{englishToPersianNumbers(order.trackingNumber)}</div>
+                    )}
+                    {order.trackingUrl && (
+                      <div>
+                        <a href={order.trackingUrl} target="_blank">
+                          رهگیری مرسوله
+                        </a>
+                      </div>
+                    )}
                   </div>
-                </div>
+                ) : (
+                  <span className={styles.Sent}>ارسال شده</span>
+                )
               ) : (
                 <span className={styles.NotApplicable}>-</span>
               )}

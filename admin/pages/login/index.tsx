@@ -33,11 +33,9 @@ export default function Login() {
   const [isResending, setIsResending] = useState(false);
 
   useEffect(() => {
-    isLoggedIn()
-      .then(() => {
-        router.replace("/dashboard");
-      })
-      .catch(() => {});
+    isLoggedIn().then((result) => {
+      if (result) router.replace("/dashboard");
+    });
   }, []);
 
   const formValidation = useValidation(

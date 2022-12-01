@@ -170,11 +170,13 @@ export default function OrderSearch() {
                           <td>
                             <div className={styles.Date}>
                               <div>
-                                <FormattedDate value={order.date} />
+                                <FormattedDate
+                                  value={new Date(order.createdAt)}
+                                />
                               </div>
                               <div>
                                 <FormattedTime
-                                  value={order.date}
+                                  value={new Date(order.createdAt)}
                                   timeStyle="medium"
                                 />
                               </div>
@@ -206,20 +208,37 @@ export default function OrderSearch() {
                                 }
                               </div>
                               <div>
-                                <FormattedDate value={order.lastUpdateDate} />
+                                <FormattedDate
+                                  value={new Date(order.updatedAt)}
+                                />
                               </div>
                             </div>
                           </td>
                           <td>
                             {order.status === "sent" ? (
-                              <>
-                                <div>{order.trackingNumber}</div>
+                              order.trackingNumber || order.trackingUrl ? (
                                 <div>
-                                  <a href="/" target="_blank">
-                                    رهگیری مرسوله
-                                  </a>
+                                  {order.trackingNumber && (
+                                    <div>
+                                      {englishToPersianNumbers(
+                                        order.trackingNumber
+                                      )}
+                                    </div>
+                                  )}
+                                  {order.trackingUrl && (
+                                    <div>
+                                      <a
+                                        href={order.trackingUrl}
+                                        target="_blank"
+                                      >
+                                        رهگیری مرسوله
+                                      </a>
+                                    </div>
+                                  )}
                                 </div>
-                              </>
+                              ) : (
+                                <span className={styles.Sent}>ارسال شده</span>
+                              )
                             ) : (
                               <span className={styles.NotApplicable}>-</span>
                             )}

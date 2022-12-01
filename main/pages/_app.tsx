@@ -5,6 +5,7 @@ import { IntlProvider } from "react-intl";
 import { Toaster } from "react-hot-toast";
 import { NextPage } from "next";
 import { AppProps } from "next/app";
+import PageLoadingIndicator from "@/shared/components/PageLoadingIndicator";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -23,6 +24,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <IntlProvider locale="fa">
       {getLayout(<Component {...pageProps} />)}
+      <PageLoadingIndicator />
       {isBrowser && <Toaster position="bottom-center" />}
     </IntlProvider>
   );

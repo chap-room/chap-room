@@ -49,15 +49,12 @@ export const printFoldersConvertMap: ConvertMap = [
 ];
 
 export const orderConvertMap: ConvertMap = [
-  [["createdAt", "date"], convertDate],
-  [["postageAt", "postageDate"], convertDate],
   [
     "postageMethod",
     {
       express_mail: "expressMail",
     },
   ],
-  [["updatedAt", "lastUpdateDate"], convertDate],
   [
     ["folders", "printFolders"],
     (items: any[], direction) =>

@@ -50,11 +50,13 @@ export default function CooperationRequestTable({
               <span className={styles.MobileLabel}>تاریخ:</span>
               <span className={styles.Date}>
                 <span>
-                  <FormattedDate value={cooperationRequest.date} />
+                  <FormattedDate
+                    value={new Date(cooperationRequest.createdAt)}
+                  />
                 </span>
                 <span>
                   <FormattedTime
-                    value={cooperationRequest.date}
+                    value={new Date(cooperationRequest.createdAt)}
                     timeStyle="medium"
                   />
                 </span>

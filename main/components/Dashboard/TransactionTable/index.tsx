@@ -28,10 +28,13 @@ export default function TransactionTable({
               <span className={styles.MobileLabel}>تاریخ:</span>
               <span className={styles.Date}>
                 <span>
-                  <FormattedDate value={transaction.date} />
+                  <FormattedDate value={new Date(transaction.createdAt)} />
                 </span>
                 <span>
-                  <FormattedTime value={transaction.date} timeStyle="medium" />
+                  <FormattedTime
+                    value={new Date(transaction.createdAt)}
+                    timeStyle="medium"
+                  />
                 </span>
               </span>
             </td>

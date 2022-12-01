@@ -38,11 +38,13 @@ export default function WithdrawalRequestTable({
               <span className={styles.MobileLabel}>تاریخ:</span>
               <span className={styles.Date}>
                 <span>
-                  <FormattedDate value={withdrawalRequest.date} />
+                  <FormattedDate
+                    value={new Date(withdrawalRequest.createdAt)}
+                  />
                 </span>
                 <span>
                   <FormattedTime
-                    value={withdrawalRequest.date}
+                    value={new Date(withdrawalRequest.createdAt)}
                     timeStyle="medium"
                   />
                 </span>
