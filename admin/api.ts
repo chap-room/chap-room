@@ -84,11 +84,11 @@ export async function request({
 }
 
 export function cancelableRequest<DT>(
-  config: (abortController: AbortController) => Promise<DT>
+  request: (signal: AbortSignal) => Promise<DT>
 ): [Promise<DT | null>, AbortController] {
   const abortController = new AbortController();
   return [
-    config(abortController).catch((message) => {
+    request(abortController.signal).catch((message) => {
       if (message === "لغو شده") return null;
       throw message;
     }),
@@ -198,7 +198,7 @@ export function getDashboard() {
 }
 
 export function getUsers(search: string, page: number) {
-  return cancelableRequest((abortController) =>
+  return cancelableRequest((signal) =>
     request({
       method: "GET",
       url: "/admins/users",
@@ -207,7 +207,7 @@ export function getUsers(search: string, page: number) {
         search,
         page,
       },
-      signal: abortController.signal,
+      signal,
     }).then(({ data }) => ({
       totalCount: data.totalCount,
       pageSize: data.pageSize,
@@ -362,7 +362,7 @@ export function deleteAddress(addressId: number) {
 }
 
 export function getAdmins(search: string, page: number) {
-  return cancelableRequest((abortController) =>
+  return cancelableRequest((signal) =>
     request({
       method: "GET",
       url: "/admins",
@@ -371,7 +371,7 @@ export function getAdmins(search: string, page: number) {
         search,
         page,
       },
-      signal: abortController.signal,
+      signal,
     }).then(({ data }) => ({
       totalCount: data.totalCount,
       pageSize: data.pageSize,
@@ -434,13 +434,13 @@ export function getOrders(
   page: number,
   status: "canceled" | "pending" | "preparing" | "sent" | null
 ) {
-  return cancelableRequest((abortController) =>
+  return cancelableRequest((signal) =>
     request({
       method: "GET",
       url: "/admins/orders",
       needAuth: true,
       params: { search, page, status: status !== null ? status : undefined },
-      signal: abortController.signal,
+      signal,
     }).then(({ data }) => ({
       totalCount: data.totalCount,
       pageSize: data.pageSize,
@@ -495,7 +495,7 @@ export function markOrderSent(orderId: number, trackingNumber: string) {
 }
 
 export function getDiscounts(search: string, page: number) {
-  return cancelableRequest((abortController) =>
+  return cancelableRequest((signal) =>
     request({
       method: "GET",
       url: "/admins/discounts",
@@ -504,7 +504,7 @@ export function getDiscounts(search: string, page: number) {
         search,
         page,
       },
-      signal: abortController.signal,
+      signal,
     }).then(({ data }) => ({
       totalCount: data.totalCount,
       pageSize: data.pageSize,
@@ -575,7 +575,7 @@ export function getCooperationRequests(
   page: number,
   status: "approved" | "rejected" | "pending"
 ) {
-  return cancelableRequest((abortController) =>
+  return cancelableRequest((signal) =>
     request({
       method: "GET",
       url: "/admins/cooperations",
@@ -585,7 +585,7 @@ export function getCooperationRequests(
         page,
         status,
       },
-      signal: abortController.signal,
+      signal,
     }).then(({ data }) => ({
       totalCount: data.totalCount,
       pageSize: data.pageSize,
@@ -617,7 +617,7 @@ export function getFinancialRecords(
   paymentStatus: "successful" | "unsuccessful" | null,
   page: number
 ) {
-  return cancelableRequest((abortController) =>
+  return cancelableRequest((signal) =>
     request({
       method: "GET",
       url: "/admins/transactions",
@@ -629,7 +629,7 @@ export function getFinancialRecords(
         status: paymentStatus || undefined,
         page,
       },
-      signal: abortController.signal,
+      signal,
     }).then(({ data }) => ({
       totalCount: data.totalCount,
       pageSize: data.pageSize,
@@ -690,7 +690,7 @@ export function getWithdrawalRequests(
   page: number,
   status: "pending" | "rejected" | "done"
 ) {
-  return cancelableRequest((abortController) =>
+  return cancelableRequest((signal) =>
     request({
       method: "GET",
       url: "/admins/withdrawals",
@@ -700,7 +700,7 @@ export function getWithdrawalRequests(
         page,
         status,
       },
-      signal: abortController.signal,
+      signal,
     }).then(({ data }) => ({
       totalCount: data.totalCount,
       pageSize: data.pageSize,
@@ -774,7 +774,7 @@ export function updateBindingTariffs(data: BindingTariffs) {
 }
 
 export function getBlogPosts(search: string, page: number) {
-  return cancelableRequest((abortController) =>
+  return cancelableRequest((signal) =>
     request({
       method: "GET",
       url: "/admins/blogs",
@@ -783,7 +783,7 @@ export function getBlogPosts(search: string, page: number) {
         search,
         page,
       },
-      signal: abortController.signal,
+      signal,
     }).then(({ data }) => ({
       totalCount: data.totalCount,
       pageSize: data.pageSize,
@@ -798,6 +798,34 @@ export function getBlogPost(postId: number) {
     url: `/admins/blogs/id/${postId}`,
     needAuth: true,
   }).then(({ data }) => data);
+}
+
+export function uploadBlogPostImage(
+  file: File,
+  setProgress: (progress: number) => void
+) {
+  let data = new FormData();
+  data.append("attachment", file);
+  data.append("fileName", file.name);
+
+  return cancelableRequest((signal) =>
+    request({
+      method: "POST",
+      url: "/admins/blogs-uploader",
+      needAuth: true,
+      data,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      onUploadProgress: function (progressEvent) {
+        setProgress(progressEvent.progress || 0);
+      },
+      signal,
+    }).then(({ data }) => ({
+      message: data.message,
+      url: data.url,
+    }))
+  );
 }
 
 export function newBlogPost(data: {
@@ -884,7 +912,7 @@ export function deleteBlogCategory(categoryId: number) {
 }
 
 export function getDedicatedDiscountCodeReports(search: string, page: number) {
-  return cancelableRequest((abortController) =>
+  return cancelableRequest((signal) =>
     request({
       method: "GET",
       url: "/admins/marketings/discounts",
@@ -893,7 +921,7 @@ export function getDedicatedDiscountCodeReports(search: string, page: number) {
         search,
         page,
       },
-      signal: abortController.signal,
+      signal,
     }).then(({ data }) => ({
       totalCount: data.totalCount,
       pageSize: data.pageSize,
@@ -903,7 +931,7 @@ export function getDedicatedDiscountCodeReports(search: string, page: number) {
 }
 
 export function getDedicatedLinkReports(search: string, page: number) {
-  return cancelableRequest((abortController) =>
+  return cancelableRequest((signal) =>
     request({
       method: "GET",
       url: "/admins/marketings/referrals",
@@ -912,7 +940,7 @@ export function getDedicatedLinkReports(search: string, page: number) {
         search,
         page,
       },
-      signal: abortController.signal,
+      signal,
     }).then(({ data }) => ({
       totalCount: data.totalCount,
       pageSize: data.pageSize,
@@ -939,7 +967,7 @@ export function getCustomerReports(
     | "lowestToMostPayment",
   page: number
 ) {
-  return cancelableRequest((abortController) =>
+  return cancelableRequest((signal) =>
     request({
       method: "GET",
       url: "/admins/customers-report",
@@ -976,7 +1004,7 @@ export function getCustomerReports(
         }[sortOrder],
         page,
       },
-      signal: abortController.signal,
+      signal,
     }).then(({ data }) => ({
       totalCount: data.totalCount,
       pageSize: data.pageSize,

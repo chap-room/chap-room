@@ -31,9 +31,9 @@ export const getServerSideProps: GetServerSideProps<{
   };
   popularPostData: Post[];
 }> = async () => {
-  const data = await getBlogPosts(1);
+  const data = (await getBlogPosts(1)[0])!;
   const categoriesData = await getBlogCategories();
-  const popularPostData = (await getBlogPosts(1, "popular")).posts;
+  const popularPostData = (await getBlogPosts(1, "popular")[0])!.posts;
 
   return {
     props: {

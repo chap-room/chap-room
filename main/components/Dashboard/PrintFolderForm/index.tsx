@@ -25,7 +25,10 @@ import Switch from "@/shared/components/Switch";
 import Select from "@/shared/components/Select";
 import ErrorList from "@/shared/components/ErrorList";
 import TextInput from "@/shared/components/TextInput";
-import DataLoader from "@/shared/components/DataLoader";
+import DataLoader, {
+  DataLoaderView,
+  useDataLoader,
+} from "@/shared/components/DataLoader";
 import TextArea from "@/shared/components/TextArea";
 import BottomActions from "@/shared/components/Dashboard/BottomActions";
 import UploadArea from "@/main/components/Dashboard/UploadArea";
@@ -70,9 +73,7 @@ export default function PrintFolderForm({
   const [printFiles, setPrintFiles] = useState(defaultValues?.printFiles || []);
   const [inUploadPrintFiles, setInUploadPrintFiles] = useState<File[]>([]);
   const [filesManuallySent, setFilesManuallySent] = useState(
-    defaultValues && defaultValues.filesManuallySent !== undefined
-      ? defaultValues.filesManuallySent
-      : true
+    defaultValues?.filesManuallySent || false
   );
 
   const [currentStep, setCurrentStep] = useState<"1" | "2">("1");
@@ -138,7 +139,7 @@ export default function PrintFolderForm({
     {
       printFiles: [
         optionalValidate({
-          enabled: filesManuallySent,
+          enabled: !filesManuallySent,
           validator: validateNotEmpty(),
         }),
       ],
@@ -216,7 +217,7 @@ export default function PrintFolderForm({
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const pagePriceView = usePrintFolderPrice({
+  const printPrice = usePrintFolderPrice({
     isValid: step1FormValidation.isValid && step2FormValidation.isValid,
     printColor: printColor!,
     printSize: printSize!,
@@ -241,6 +242,16 @@ export default function PrintFolderForm({
         ? parseInt(countOfCopies)
         : null,
   });
+
+  const printPriceView = (
+    <DataLoaderView state={printPrice.dataLoaderState} size="small">
+      {printPrice.data && (
+        <div className={styles.PrintPriceView}>
+          مبلغ: <FormattedNumber value={printPrice.data} /> تومان
+        </div>
+      )}
+    </DataLoaderView>
+  );
 
   const cancelButton = (
     <Button varient="none" style={{ fontSize: 18 }} onClick={() => onCancel()}>
@@ -304,8 +315,8 @@ export default function PrintFolderForm({
                   <div className={styles.SendFile}>
                     <div className={styles.Title}>ارسال فایل ها</div>
                     <div className={styles.FilesSendMethod}>
-                      <div onClick={() => setFilesManuallySent(true)}>
-                        <Radio checked={filesManuallySent} />
+                      <div onClick={() => setFilesManuallySent(false)}>
+                        <Radio checked={!filesManuallySent} />
                         از طریق سایت
                       </div>
                       <div
@@ -319,14 +330,14 @@ export default function PrintFolderForm({
                                 " اگر می خواهید از تلگرام و ایتا استفاده کنید،" +
                                 "ابتدا تمام فایل های لیست را حذف کنید."
                             );
-                          else setFilesManuallySent(false);
+                          else setFilesManuallySent(true);
                         }}
                       >
-                        <Radio checked={!filesManuallySent} />
+                        <Radio checked={filesManuallySent} />
                         از طریق تلگرام و ایتا
                       </div>
                     </div>
-                    {filesManuallySent && (
+                    {!filesManuallySent && (
                       <div className={styles.ManualUploadFiles}>
                         <UploadArea
                           onSelectFile={(file) =>
@@ -389,7 +400,7 @@ export default function PrintFolderForm({
                         </div>
                       </div>
                     )}
-                    {!filesManuallySent && (
+                    {filesManuallySent && (
                       <DataLoader
                         load={() =>
                           request({
@@ -719,7 +730,7 @@ export default function PrintFolderForm({
                   )}
                 </div>
                 <div className={styles.StepBottomActionsContainer}>
-                  <BottomActions start={pagePriceView}>
+                  <BottomActions start={printPriceView}>
                     <Button
                       varient="none"
                       style={{ fontSize: 18 }}
@@ -736,7 +747,7 @@ export default function PrintFolderForm({
         ]}
       />
       <div className={styles.MobileBottomActions}>
-        {pagePriceView}
+        {printPriceView}
         {submitButton}
       </div>
     </div>
@@ -798,41 +809,29 @@ function UploadPrintFile({
   onComplete,
   onError,
 }: UploadPrintFileProps) {
-  const abortController = useRef(new AbortController());
   const [progress, setProgress] = useState(0);
+  const uploadState = useDataLoader({
+    load: () => uploadPrintFile(file, setProgress),
+    setData: ({ message, fileId, countOfPages }) => {
+      toast.success(message);
+      onComplete({
+        id: fileId,
+        name: file.name,
+        countOfPages,
+      });
+    },
+  });
 
   useEffect(() => {
-    uploadPrintFile(file, setProgress, abortController.current)
-      .then(({ message, fileId, countOfPages }) => {
-        toast.success(message);
-        onComplete({
-          id: fileId,
-          name: file.name,
-          countOfPages,
-        });
-      })
-      .catch((message) => {
-        toast.error(message);
-        onError();
-      });
-
-    return () => {
-      abortController.current.abort();
-    };
-  }, [file]);
+    if (uploadState.isError) onError();
+  }, [uploadState.isError]);
 
   return (
     <div className={styles.InUploadPrintFile}>
       <div>
         <div>{file.name}</div>
         <div className={styles.CencelIcon}>
-          <IconButton
-            size={36}
-            onClick={() => {
-              abortController.current.abort();
-              onCancel();
-            }}
-          >
+          <IconButton size={36} onClick={() => onCancel}>
             <CloseIcon />
           </IconButton>
         </div>
@@ -862,64 +861,33 @@ function usePrintFolderPrice({
   bindingOptions: BindingOptions | null;
   countOfCopies: number | null;
 }) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [price, setPrice] = useState<number | null>(null);
+  const [data, setData] = useState<number | null>(null);
+  const dataLoaderState = useDataLoader({
+    load: () =>
+      isValid
+        ? calculatePrintFolderPrice({
+            printColor,
+            printSize,
+            printSide,
+            countOfPages,
+            bindingOptions,
+            countOfCopies,
+          })
+        : Promise.resolve(null),
+    setData,
+    deps: [
+      isValid,
+      printColor,
+      printSize,
+      printSide,
+      countOfPages,
+      bindingOptions,
+      countOfCopies,
+    ],
+  });
 
-  function fetchData() {
-    const abortController = new AbortController();
-    if (isValid) {
-      setIsLoading(true);
-      setIsError(false);
-      calculatePrintFolderPrice(
-        {
-          printColor,
-          printSize,
-          printSide,
-          countOfPages,
-          bindingOptions,
-          countOfCopies,
-        },
-        abortController
-      )
-        .then((amount) => {
-          setPrice(amount);
-          setIsLoading(false);
-        })
-        .catch((message) => {
-          if (message === "لغو شده") return;
-          toast.error(message);
-          setIsError(true);
-          setIsLoading(false);
-        });
-    }
-
-    return () => abortController.abort();
-  }
-
-  useEffect(fetchData, [
-    printColor,
-    printSize,
-    printSide,
-    countOfPages,
-    bindingOptions?.bindingType,
-    bindingOptions?.bindingMethod,
-    bindingOptions?.countOfFiles || null,
-    bindingOptions?.coverColor,
-    countOfCopies,
-  ]);
-
-  return !isValid ? (
-    <></>
-  ) : isLoading ? (
-    <SmallLoader />
-  ) : isError ? (
-    <Button varient="filled" onClick={fetchData}>
-      سعی مجدد
-    </Button>
-  ) : (
-    <div className={styles.PrintPriceView}>
-      مبلغ: <FormattedNumber value={price || 0} /> تومان
-    </div>
-  );
+  return {
+    data,
+    dataLoaderState,
+  };
 }

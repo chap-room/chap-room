@@ -5,7 +5,7 @@ import { Editor as TinymceReact } from "@tinymce/tinymce-react";
 import VazirMatnFontFace from "!!css-loader!vazirmatn/Vazirmatn-font-face.css";
 // @ts-ignore
 import IransansFontFace from "!!css-loader!@/shared/assets/scss/iransans.scss";
-import { request } from "@/admin/api";
+import { request, uploadBlogPostImage } from "@/admin/api";
 
 interface EditorProps {
   id: string;
@@ -99,22 +99,10 @@ export default function Editor({
         automatic_uploads: true,
         file_picker_types: "image",
         images_upload_handler: (blobInfo, progress) => {
-          const data = new FormData();
-          data.append("attachment", blobInfo.blob(), blobInfo.filename());
-          data.append("fileName", blobInfo.filename());
-
-          return request({
-            method: "POST",
-            url: "/admins/blogs-uploader",
-            needAuth: true,
-            data,
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-            onUploadProgress: function (progressEvent) {
-              progress(progressEvent.progress || 0);
-            },
-          }).then(({ data }) => data.url);
+          return uploadBlogPostImage(
+            new File([blobInfo.blob()], blobInfo.filename()),
+            progress
+          )[0].then((data) => data!.url);
         },
       }}
     />

@@ -51,7 +51,7 @@ export function useDataLoader<DT>({
       setIsError(false);
       (Array.isArray(funcReturn) ? funcReturn[0] : funcReturn)
         .then((data) => {
-          if (data) {
+          if (data !== null) {
             setData(data);
             setIsLoading(false);
           }
@@ -67,8 +67,10 @@ export function useDataLoader<DT>({
       : null;
 
     return () => {
-      if (currentRequestAbortController.current)
+      if (currentRequestAbortController.current) {
         currentRequestAbortController.current.abort();
+        currentRequestAbortController.current = null;
+      }
     };
   };
 

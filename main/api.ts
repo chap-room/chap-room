@@ -86,6 +86,19 @@ export async function request({
   });
 }
 
+export function cancelableRequest<DT>(
+  request: (signal: AbortSignal) => Promise<DT>
+): [Promise<DT | null>, AbortController] {
+  const abortController = new AbortController();
+  return [
+    request(abortController.signal).catch((message) => {
+      if (message === "لغو شده") return null;
+      throw message;
+    }),
+    abortController,
+  ];
+}
+
 export function reportReferralView(slug: string) {
   return request({
     method: "PUT",
@@ -130,18 +143,21 @@ export function submitContactUs(
 }
 
 export function getBlogPosts(page: number, blogType?: "popular") {
-  return request({
-    method: "GET",
-    url: "/public/blogs",
-    params: {
-      page,
-      blogType,
-    },
-  }).then(({ data }) => ({
-    totalCount: data.totalCount,
-    pageSize: data.pageSize,
-    posts: data.blogs as Post[],
-  }));
+  return cancelableRequest((signal) =>
+    request({
+      method: "GET",
+      url: "/public/blogs",
+      params: {
+        page,
+        blogType,
+      },
+      signal,
+    }).then(({ data }) => ({
+      totalCount: data.totalCount,
+      pageSize: data.pageSize,
+      posts: data.blogs as Post[],
+    }))
+  );
 }
 
 export function getBlogPost(slug: string) {
@@ -376,30 +392,31 @@ export function cancelOrder(orderId: number) {
 
 export function uploadPrintFile(
   file: File,
-  onProgress: (progress: number) => void,
-  abortController: AbortController
+  setProgress: (progress: number) => void
 ) {
   let data = new FormData();
   data.append("attachment", file);
   data.append("fileName", file.name);
 
-  return request({
-    method: "POST",
-    url: "/users/files",
-    needAuth: true,
-    data,
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-    onUploadProgress: function (progressEvent) {
-      onProgress(progressEvent.progress || 0);
-    },
-    signal: abortController.signal,
-  }).then(({ data }) => ({
-    message: data.message,
-    fileId: data.id,
-    countOfPages: data.countOfPages,
-  }));
+  return cancelableRequest((signal) =>
+    request({
+      method: "POST",
+      url: "/users/files",
+      needAuth: true,
+      data,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      onUploadProgress: function (progressEvent) {
+        setProgress(progressEvent.progress || 0);
+      },
+      signal,
+    }).then(({ data }) => ({
+      message: data.message,
+      fileId: data.id,
+      countOfPages: data.countOfPages,
+    }))
+  );
 }
 
 export function deletePrintFile(printFileId: number) {
@@ -473,24 +490,23 @@ export function updatePrintFolder(
   }).then(({ data }) => data.message);
 }
 
-export function calculatePrintFolderPrice(
-  data: {
-    printColor: "blackAndWhite" | "normalColor" | "fullColor";
-    printSize: "a4" | "a5" | "a3";
-    printSide: "singleSided" | "doubleSided";
-    countOfPages: number;
-    bindingOptions: BindingOptions | null;
-    countOfCopies: number | null;
-  },
-  abortController: AbortController
-) {
-  return request({
-    method: "POST",
-    url: "/users/folders/price-calculator",
-    needAuth: true,
-    data: convert(printFoldersConvertMap, data, "b2a"),
-    signal: abortController.signal,
-  }).then(({ data }) => data.amount);
+export function calculatePrintFolderPrice(data: {
+  printColor: "blackAndWhite" | "normalColor" | "fullColor";
+  printSize: "a4" | "a5" | "a3";
+  printSide: "singleSided" | "doubleSided";
+  countOfPages: number;
+  bindingOptions: BindingOptions | null;
+  countOfCopies: number | null;
+}) {
+  return cancelableRequest((signal) =>
+    request({
+      method: "POST",
+      url: "/users/folders/price-calculator",
+      needAuth: true,
+      data: convert(printFoldersConvertMap, data, "b2a"),
+      signal,
+    }).then(({ data }) => data.amount)
+  );
 }
 
 export function deletePrintFolder(printFolderId: number) {

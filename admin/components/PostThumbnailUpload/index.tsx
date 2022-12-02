@@ -6,8 +6,9 @@ import ProgressBar from "@/shared/components/ProgressBar";
 import CloseIcon from "@/shared/assets/icons/close.svg";
 import IconButton from "@/shared/components/IconButton";
 import toast from "react-hot-toast";
-import { request } from "@/admin/api";
+import { request, uploadBlogPostImage } from "@/admin/api";
 import Button from "@/shared/components/Button";
+import { useDataLoader } from "@/shared/components/DataLoader";
 
 interface PostThumbnailUploadProps {
   value: string | null;
@@ -23,48 +24,27 @@ export default function PostThumbnailUpload({
   const [dragActive, setDragActive] = useState(false);
 
   const [inUploadFile, setInUploadFile] = useState<File | null>(null);
-  const abortController = useRef<AbortController>();
   const [progress, setProgress] = useState(0);
 
-  useEffect(() => {
-    if (!inUploadFile) return;
-
-    abortController.current = new AbortController();
-
-    let data = new FormData();
-    data.append("attachment", inUploadFile);
-    data.append("fileName", inUploadFile.name);
-
-    request({
-      method: "POST",
-      url: "/admins/blogs-uploader",
-      needAuth: true,
-      data,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      onUploadProgress: function (progressEvent) {
-        setProgress(progressEvent.progress || 0);
-      },
-      signal: abortController.current.signal,
-    })
-      .then(({ data }) => data)
-      .then(({ message, url }) => {
-        toast.success(message);
-        onChange(url);
-        setInUploadFile(null);
-        setProgress(0);
-      })
-      .catch((message) => {
-        toast.error(message);
-        setInUploadFile(null);
-        setProgress(0);
-      });
-
-    return () => {
-      abortController.current?.abort();
-    };
-  }, [inUploadFile]);
+  const abortControllerRef = useRef<AbortController>();
+  useDataLoader({
+    load: () => {
+      if (inUploadFile) {
+        const request = uploadBlogPostImage(inUploadFile, setProgress);
+        request[0].finally(() => {
+          setInUploadFile(null);
+          setProgress(0);
+        });
+        abortControllerRef.current = request[1];
+        return request;
+      }
+    },
+    deps: [inUploadFile],
+    setData: ({ message, url }) => {
+      toast.success(message);
+      onChange(url);
+    },
+  });
 
   return (
     <div className={styles.Container}>
@@ -111,11 +91,7 @@ export default function PostThumbnailUpload({
             <div className={styles.CencelIcon}>
               <IconButton
                 size={36}
-                onClick={() => {
-                  abortController.current?.abort();
-                  setInUploadFile(null);
-                  setProgress(0);
-                }}
+                onClick={() => abortControllerRef.current?.abort()}
               >
                 <CloseIcon />
               </IconButton>
