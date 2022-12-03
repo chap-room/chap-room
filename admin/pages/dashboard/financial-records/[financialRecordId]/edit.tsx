@@ -55,7 +55,7 @@ export default function DashboardFinancialRecordEdit() {
           <FinancialRecordForm
             defaultValues={data}
             onSave={(financialRecordData) => {
-              updateFinancialRecord(financialRecordId, {
+              return updateFinancialRecord(financialRecordId, {
                 ...financialRecordData,
                 userId: financialRecordData.user.id,
               })
