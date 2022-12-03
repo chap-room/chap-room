@@ -21,13 +21,15 @@ export default function WorkWithUs() {
         <div>
           <div>
             <div>
-              <h1>همکاری در فروش</h1>
-              <p>
-                در صورتی که شما با دانش آموزان یا دانشجویان ارتباط دارید،
-                می‌توانید وارد پنل کاربری خود شوید و از قسمت پنل بازاریابی لینک
-                اختصاصی خود را دریافت و به کاربران خود جهت ثبت سفارش ارائه کنید
-                تا با خرید کاربران از سود فروش برخوردار شوید
-              </p>
+              <div>
+                <h1>همکاری در فروش</h1>
+                <p>
+                  در صورتی که شما با دانش آموزان یا دانشجویان ارتباط دارید،
+                  می‌توانید وارد پنل کاربری خود شوید و از قسمت پنل بازاریابی
+                  لینک اختصاصی خود را دریافت و به کاربران خود جهت ثبت سفارش
+                  ارائه کنید تا با خرید کاربران از سود فروش برخوردار شوید
+                </p>
+              </div>
             </div>
             <div>
               <HappyPeopleImage />
@@ -57,7 +59,7 @@ export default function WorkWithUs() {
             </ul>
           </div>
           <div>
-            <MobileMarketingImage />
+            <MobileMarketingImage style={{ maxWidth: 420 }} />
           </div>
         </div>
       </div>
@@ -77,7 +79,7 @@ export default function WorkWithUs() {
             </p>
           </div>
           <div>
-            <SocialMediaImage />
+            <SocialMediaImage style={{ maxWidth: 400 }} />
           </div>
         </div>
       </div>

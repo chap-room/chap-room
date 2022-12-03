@@ -11,6 +11,7 @@ import {
   markOrderSent,
 } from "@/admin/api";
 import { englishToPersianNumbers } from "@/shared/utils/numbers";
+import { useDashboardData } from "@/admin/context/dashboardData";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -26,6 +27,7 @@ import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDi
 import OrderSentDialog from "@/admin/components/OrderSentDialog";
 
 export default function DashboardOrderDetails() {
+  const dashboardData = useDashboardData();
   const router = useRouter();
   const orderId = parseInt(router.query.orderId as string);
 
@@ -67,7 +69,7 @@ export default function DashboardOrderDetails() {
               }
             >
               <Button varient="none" style={{ padding: 0 }}>
-                انصراف و بازگشت <ArrowBackIcon />
+                بازگشت <ArrowBackIcon />
               </Button>
             </Link>
           }
@@ -134,6 +136,7 @@ export default function DashboardOrderDetails() {
                     toast.success(message);
                     setShowCancelDialog(false);
                     if (reloadRef.current) reloadRef.current();
+                    dashboardData.loaderState.reload();
                   })
                   .catch(toast.error)
               }
@@ -148,6 +151,7 @@ export default function DashboardOrderDetails() {
                   toast.success(message);
                   setShowConfirmDialog(false);
                   if (reloadRef.current) reloadRef.current();
+                  dashboardData.loaderState.reload();
                 })
                 .catch(toast.error)
             }
@@ -163,6 +167,7 @@ export default function DashboardOrderDetails() {
                     toast.success(message);
                     setShowMarkSentDialog(false);
                     if (reloadRef.current) reloadRef.current();
+                    dashboardData.loaderState.reload();
                   })
                   .catch(toast.error)
               }

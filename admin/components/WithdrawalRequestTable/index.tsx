@@ -29,6 +29,8 @@ export default function WithdrawalRequestTable({
           <th>شماره شبا</th>
           <th>نام صاحب حساب</th>
           <th style={{ width: "1%" }}>عملیات</th>
+          <th>توضیحات</th>
+          <th>کد پیگیری</th>
         </tr>
       </thead>
       <tbody>
@@ -99,28 +101,25 @@ export default function WithdrawalRequestTable({
                   </button>
                 </div>
               )}
-              {withdrawalRequest.status !== "pending" && (
-                <div className={styles.Details}>
-                  {withdrawalRequest.rejectReason && (
-                    <div>
-                      <span>علت:</span>
-                      <span>{withdrawalRequest.rejectReason}</span>
-                    </div>
-                  )}
-                  {withdrawalRequest.transactionDate && (
-                    <div>
-                      <span>تاریخ انجام تراکنش:</span>
-                      <span>{withdrawalRequest.transactionDate}</span>
-                    </div>
-                  )}
-                  {withdrawalRequest.trackingNumber && (
-                    <div>
-                      <span>کد پیگیری تراکنش:</span>
-                      <span>{withdrawalRequest.trackingNumber}</span>
-                    </div>
-                  )}
-                </div>
+            </td>
+            <td>
+              <span className={styles.MobileLabel}>span:</span>
+              {withdrawalRequest.rejectReason && (
+                <div>{withdrawalRequest.rejectReason}</div>
               )}
+            </td>
+            <td>
+              <span className={styles.MobileLabel}>کد پیگیری:</span>
+              <div>
+                {withdrawalRequest.transactionDate && (
+                  <div>
+                    {englishToPersianNumbers(withdrawalRequest.transactionDate)}
+                  </div>
+                )}
+                {withdrawalRequest.trackingNumber && (
+                  <div>{withdrawalRequest.trackingNumber}</div>
+                )}
+              </div>
             </td>
           </tr>
         ))}

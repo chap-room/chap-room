@@ -52,8 +52,38 @@
       > div:first-child {
         margin-bottom: 20px;
 
-        > div > button {
-          flex: 1;
+        > div {
+          @media (max-width: 896px) {
+            width: 100%;
+            max-width: 292px;
+            margin: 0 auto;
+            justify-content: space-between;
+          }
+
+          > button {
+            flex: 1;
+
+            @media (max-width: 896px) {
+              flex: unset;
+
+              &:not(:nth-child(4)) {
+                width: 44px;
+                height: 44px;
+                border-radius: 22px;
+
+                > span {
+                  display: none;
+                }
+              }
+
+              &:nth-child(4) {
+                width: 100%;
+                max-width: 100px;
+                height: 44px;
+                border-radius: 22px;
+              }
+            }
+          }
         }
       }
 

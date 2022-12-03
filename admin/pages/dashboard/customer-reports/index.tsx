@@ -247,7 +247,9 @@ export default function DashboardCustomerReport() {
           <CustomerReportTable
             customerReports={data.reports}
             onSeeUserOrderList={(userId) =>
-              router.push(`/dashboard/users/${userId}/orders`)
+              router.push(
+                `/dashboard/users/${userId}/orders?fromCustomerReports=true`
+              )
             }
           />
           {!data.reports.length && <EmptyNote>هیچ گزارشی وجود ندارد</EmptyNote>}

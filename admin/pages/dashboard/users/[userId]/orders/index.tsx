@@ -11,6 +11,7 @@ import {
   markOrderSent,
 } from "@/admin/api";
 import { englishToPersianNumbers } from "@/shared/utils/numbers";
+import { useDashboardData } from "@/admin/context/dashboardData";
 import DataLoader from "@/shared/components/DataLoader";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
@@ -27,6 +28,7 @@ import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDi
 import OrderSentDialog from "@/admin/components/OrderSentDialog";
 
 export default function DashboardUserOrderList() {
+  const dashboardData = useDashboardData();
   const router = useRouter();
   const userId = parseInt(router.query.userId as string); // TODO 404
 
@@ -68,14 +70,27 @@ export default function DashboardUserOrderList() {
               : undefined
           }
           end={
-            <Link href="/dashboard/users">
+            <Link
+              href={
+                router.query.fromCustomerReports === "true"
+                  ? "/dashboard/customer-reports"
+                  : "/dashboard/users"
+              }
+            >
               <Button varient="none" style={{ padding: 0 }}>
                 بازگشت <ArrowBackIcon />
               </Button>
             </Link>
           }
         />
-        <MobileContentHeader backTo="/dashboard/users" title="همه سفارش ها" />
+        <MobileContentHeader
+          backTo={
+            router.query.fromCustomerReports === "true"
+              ? "/dashboard/customer-reports"
+              : "/dashboard/users"
+          }
+          title="همه سفارش ها"
+        />
         <DataLoader
           load={() => {
             if (router.isReady) return getUserOrders(userId, page);
@@ -114,6 +129,7 @@ export default function DashboardUserOrderList() {
                   .then((message) => {
                     toast.success(message);
                     setPendingOrderCancelRequest(null);
+                    dashboardData.loaderState.reload();
                   })
                   .catch(toast.error)
               }
@@ -129,6 +145,7 @@ export default function DashboardUserOrderList() {
                 .then((message) => {
                   toast.success(message);
                   setPendingOrderConfirmRequest(null);
+                  dashboardData.loaderState.reload();
                 })
                 .catch(toast.error)
             }
@@ -145,6 +162,7 @@ export default function DashboardUserOrderList() {
                   .then((message) => {
                     toast.success(message);
                     setPendingMarkOrderSentRequest(null);
+                    dashboardData.loaderState.reload();
                   })
                   .catch(toast.error)
               }

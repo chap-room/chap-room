@@ -112,45 +112,57 @@
           }
         }
 
-        .SeeUserOrdersButton {
-          display: inline-flex;
-          height: 30px;
-          flex-direction: row;
-          justify-content: center;
+        .SeeUserOrdersButtonContainer {
+          display: flex;
+          flex-direction: column;
           align-items: center;
-          border-radius: 20px;
-          box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
-          padding: 0 20px;
-          font-size: 12px;
-          user-select: none;
-          cursor: pointer;
-          border: none;
-          background-color: #0077b5;
-          color: #ffffff;
 
-          @media (max-width: 800px) {
-            font-size: 0;
-            width: 100%;
-          }
+          > div:first-child,
+          > div:last-child {
+            height: 10px;
 
-          .MobileLabel {
-            font-size: 12px;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-
-            @media (min-width: 801px) {
+            @media (max-width: 800px) {
               display: none;
             }
+
+            &.CountOfOrders {
+              margin-top: 2px;
+              color: #0077b5;
+              font-size: 8px;
+            }
           }
-        }
 
-        .CountOfOrders {
-          margin-top: 5px;
-          color: #0077b5;
+          .SeeUserOrdersButton {
+            display: inline-flex;
+            height: 30px;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+            box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
+            padding: 0 20px;
+            font-size: 12px;
+            user-select: none;
+            cursor: pointer;
+            border: none;
+            background-color: #0077b5;
+            color: #ffffff;
 
-          @media (max-width: 800px) {
-            display: none;
+            @media (max-width: 800px) {
+              font-size: 0;
+              width: 100%;
+            }
+
+            .MobileLabel {
+              font-size: 12px;
+              display: inline-flex;
+              justify-content: center;
+              align-items: center;
+
+              @media (min-width: 801px) {
+                display: none;
+              }
+            }
           }
         }
       }

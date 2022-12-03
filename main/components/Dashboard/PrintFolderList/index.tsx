@@ -48,10 +48,10 @@ export default function PrintFolderList({
             <div className={styles.Label}>فایلها:</div>
             <div className={styles.Content}>
               {printFolder.filesManuallySent
-                ? printFolder.printFiles
+                ? "از طریق تلگرام و ایتا"
+                : printFolder.printFiles
                     .map((printFile) => printFile.name)
-                    .join(" / ")
-                : "از طریق تلگرام و ایتا"}
+                    .join(" / ")}
             </div>
             <div className={styles.Label}>خلاصه سفارش:</div>
             <div className={styles.Content}>

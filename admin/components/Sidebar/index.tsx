@@ -15,9 +15,9 @@ export default function DashboardSidebar() {
             ? {
                 isLoading: false,
                 isError: false,
-                reload: dashboardData.dataLoaderState.reload,
+                reload: dashboardData.loaderState.reload,
               }
-            : dashboardData.dataLoaderState
+            : dashboardData.loaderState
         }
       >
         {dashboardData.data !== null && (

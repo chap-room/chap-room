@@ -116,7 +116,7 @@ export default function DashboardOrderList() {
                   toast.success(message);
                   setPendingOrderCancelRequest(null);
                   if (reloadRef.current) reloadRef.current();
-                  dashboardData.dataLoaderState.reload();
+                  dashboardData.loaderState.reload();
                 })
                 .catch(toast.error)
             }

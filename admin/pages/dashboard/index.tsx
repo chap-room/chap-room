@@ -1,5 +1,5 @@
 import styles from "./style.module.scss";
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { FormattedNumber } from "react-intl";
 import Head from "next/head";
 import { request } from "@/admin/api";
@@ -18,13 +18,19 @@ import FilterSelect from "@/admin/components/FilterSelect";
 export default function DashboardMain() {
   const dashboardData = useDashboardData();
 
+  useEffect(() => {
+    if (!dashboardData.loaderState.isLoading) {
+      dashboardData.loaderState.reload();
+    }
+  }, []);
+
   return (
     <>
       <Head>
         <title>داشبورد</title>
       </Head>
       <AdminSectionHeader title="داشبورد" />
-      <DataLoaderView state={dashboardData.dataLoaderState}>
+      <DataLoaderView state={dashboardData.loaderState}>
         <div className={styles.Container}>
           <DashboardNonMobile data={dashboardData.data!} />
           <DashboardMobile data={dashboardData.data!} />

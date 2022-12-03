@@ -248,7 +248,7 @@ export default function OrderForm() {
                       `/dashboard/orders/payment-result?isSuccessful=true&orderId=${orderId}`
                     );
                     if (paidWithWallet) {
-                      dashboardData.dataLoaderState.reload();
+                      dashboardData.loaderState.reload();
                     }
                   }
                   if (paymentUrl) window.location.href = paymentUrl;

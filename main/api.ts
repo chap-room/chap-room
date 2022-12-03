@@ -88,11 +88,11 @@ export async function request({
 
 export function cancelableRequest<DT>(
   request: (signal: AbortSignal) => Promise<DT>
-): [Promise<DT | null>, AbortController] {
+): [Promise<DT | undefined>, AbortController] {
   const abortController = new AbortController();
   return [
     request(abortController.signal).catch((message) => {
-      if (message === "لغو شده") return null;
+      if (message === "لغو شده") return undefined;
       throw message;
     }),
     abortController,
@@ -417,14 +417,6 @@ export function uploadPrintFile(
       countOfPages: data.countOfPages,
     }))
   );
-}
-
-export function deletePrintFile(printFileId: number) {
-  return request({
-    method: "DELETE",
-    url: `/users/files/id/${printFileId}`,
-    needAuth: true,
-  }).then(({ data }) => data.message);
 }
 
 export function getPrintFolders() {

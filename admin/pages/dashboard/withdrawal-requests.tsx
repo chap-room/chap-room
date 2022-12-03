@@ -8,6 +8,7 @@ import {
   getWithdrawalRequests,
   rejectWithdrawalRequests,
 } from "@/admin/api";
+import { useDashboardData } from "@/admin/context/dashboardData";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
@@ -25,6 +26,7 @@ import WithdrawalRequestRejectDialog from "@/admin/components/WithdrawalRequestR
 
 export default function DashboardWithdrawalRequests() {
   const intl = useIntl();
+  const dashboardData = useDashboardData();
 
   const [data, setData] = useState<{
     totalCount: number;
@@ -150,6 +152,7 @@ export default function DashboardWithdrawalRequests() {
                     toast.success(message);
                     setPendingWithdrawalRequestDoneRequest(null);
                     if (reloadRef.current) reloadRef.current();
+                    dashboardData.loaderState.reload();
                   })
                   .catch(toast.error)
               }
@@ -167,6 +170,7 @@ export default function DashboardWithdrawalRequests() {
                     toast.success(message);
                     setPendingWithdrawalRequestRejectRequest(null);
                     if (reloadRef.current) reloadRef.current();
+                    dashboardData.loaderState.reload();
                   })
                   .catch(toast.error)
               }

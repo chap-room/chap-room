@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import Head from "next/head";
 import { CooperationRequest } from "@/shared/types";
 import { getCooperationRequests, updateCooperationRequest } from "@/admin/api";
+import { useDashboardData } from "@/admin/context/dashboardData";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
@@ -21,6 +22,7 @@ import CooperationRequestRejectDialog from "@/admin/components/CooperationReques
 
 export default function DashboardCooperationRequests() {
   const intl = useIntl();
+  const dashboardData = useDashboardData();
 
   const [data, setData] = useState<{
     totalCount: number;
@@ -171,6 +173,8 @@ export default function DashboardCooperationRequests() {
                     toast.success(message);
                     setPendingCooperationRequestAcceptRequest(null);
                     if (reloadRef.current) reloadRef.current();
+                    if (itemsStatus === null)
+                      dashboardData.loaderState.reload();
                   })
                   .catch(toast.error)
               }
@@ -196,6 +200,8 @@ export default function DashboardCooperationRequests() {
                     toast.success(message);
                     setPendingCooperationRequestRejectRequest(null);
                     if (reloadRef.current) reloadRef.current();
+                    if (itemsStatus === null)
+                      dashboardData.loaderState.reload();
                   })
                   .catch(toast.error)
               }

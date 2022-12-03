@@ -98,7 +98,7 @@ export default function Wallet() {
             .then((message) => {
               toast.success(message);
               setShowWithdrawBalanceDialog(false);
-              dashboardData.walletDataLoaderState.reload();
+              dashboardData.loaderState.reload();
             })
             .catch(toast.error)
         }

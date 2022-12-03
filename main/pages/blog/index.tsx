@@ -102,7 +102,7 @@ export default function Blog(
                       </div>
                     </div>
                     <Link href={`/blog/${encodeURIComponent(post.slug)}`}>
-                      <Button varient="filled">مشاهده بیشتز</Button>
+                      <Button varient="filled">مشاهده بیشتر</Button>
                     </Link>
                   </div>
                 </div>

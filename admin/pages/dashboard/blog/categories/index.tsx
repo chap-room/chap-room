@@ -51,7 +51,7 @@ export default function DashboardBlogCategories() {
       </Head>
       <AdminSectionHeader
         title="وبلاگ"
-        description="ــ وبلاگ ها را از این قسمت مدیریت کنید"
+        description="ــ بلاگ ها را از این قسمت مدیریت کنید"
       />
       <SectionContent>
         <ContentHeader

@@ -50,11 +50,11 @@ export default function DashboardBlog() {
       </Head>
       <AdminSectionHeader
         title="وبلاگ"
-        description="ــ وبلاگ ها را از این قسمت مدیریت کنید"
+        description="ــ بلاگ ها را از این قسمت مدیریت کنید"
       />
       <SectionContent>
         <ContentHeader
-          title="همه وبلاگ ها"
+          title="همه بلاگ ها"
           subTitle={
             data.totalCount
               ? `(${intl.formatNumber(data.totalCount)})`

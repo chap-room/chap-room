@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 import { BindingOptions, PrintFile, Tariffs } from "@/shared/types";
 import {
   uploadPrintFile,
-  deletePrintFile,
   getTariffs,
   calculatePrintFolderPrice,
   request,
@@ -760,8 +759,6 @@ interface UploadedPrintFileProps {
 }
 
 function UploadedPrintFile({ printFile, onDelete }: UploadedPrintFileProps) {
-  const [isDeleting, setIsDeleting] = useState(false);
-
   return (
     <div className={styles.UploadedPrintFile}>
       <div>
@@ -775,20 +772,7 @@ function UploadedPrintFile({ printFile, onDelete }: UploadedPrintFileProps) {
         )}
       </div>
       <div className={styles.DeleteIcon}>
-        <IconButton
-          size={36}
-          onClick={() => {
-            setIsDeleting(true);
-            deletePrintFile(printFile.id)
-              .then((message) => {
-                toast.success(message);
-                onDelete();
-              })
-              .catch(toast.error)
-              .finally(() => setIsDeleting(false));
-          }}
-          disabled={isDeleting}
-        >
+        <IconButton size={36} onClick={() => onDelete()}>
           <DeleteIcon />
         </IconButton>
       </div>

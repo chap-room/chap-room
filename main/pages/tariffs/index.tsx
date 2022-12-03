@@ -38,15 +38,27 @@ export default function TariffsPage() {
                 options={[
                   {
                     id: "a4",
-                    label: "سایز A4",
+                    label: (
+                      <>
+                        <span>سایز </span>A4
+                      </>
+                    ),
                   },
                   {
                     id: "a5",
-                    label: "سایز A5",
+                    label: (
+                      <>
+                        <span>سایز </span>A5
+                      </>
+                    ),
                   },
                   {
                     id: "a3",
-                    label: "سایز A3",
+                    label: (
+                      <>
+                        <span>سایز </span>A3
+                      </>
+                    ),
                   },
                   {
                     id: "binding",

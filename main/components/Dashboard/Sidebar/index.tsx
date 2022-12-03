@@ -11,7 +11,7 @@ export default function DashboardSidebar() {
 
   return (
     <div className={styles.Sidebar}>
-      <DataLoaderView state={dashboardData.dataLoaderState}>
+      <DataLoaderView state={dashboardData.loaderState}>
         <Wallet />
         <DashboardNavLinks />
         {dashboardData.data !== null && (

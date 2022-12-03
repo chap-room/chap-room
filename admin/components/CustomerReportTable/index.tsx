@@ -126,15 +126,18 @@ export default function CustomerReportTable({
               </div>
             </td>
             <td>
-              <button
-                className={styles.SeeUserOrdersButton}
-                onClick={() => onSeeUserOrderList(customerReport.id)}
-              >
-                مشاهده
-                <span className={styles.MobileLabel}>سفارش ها</span>
-              </button>
-              <div className={styles.CountOfOrders}>
-                {customerReport.countOfOrders}
+              <div className={styles.SeeUserOrdersButtonContainer}>
+                <div />
+                <button
+                  className={styles.SeeUserOrdersButton}
+                  onClick={() => onSeeUserOrderList(customerReport.id)}
+                >
+                  مشاهده
+                  <span className={styles.MobileLabel}>سفارش ها</span>
+                </button>
+                <div className={styles.CountOfOrders}>
+                  {customerReport.countOfOrders}
+                </div>
               </div>
             </td>
           </tr>

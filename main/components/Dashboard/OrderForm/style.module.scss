@@ -106,7 +106,7 @@
 .Payment {
   display: flex;
   flex-direction: row;
-  gap: 30px;
+  gap: 15px;
 
   @media (max-width: 768px) {
     flex-direction: column-reverse;
@@ -116,6 +116,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    align-items: stretch;
 
     @media (min-width: 769px) {
       flex: 1;
@@ -146,19 +147,24 @@
 
     .FoldersAmount {
       flex: 1;
+
+      @media (max-width: 896px) {
+        margin: 0 15px;
+      }
     }
 
     .DiscountCode {
       display: flex;
       flex-direction: row;
       gap: 20px;
-      width: 100%;
+      box-sizing: border-box;
       max-width: 250px;
       padding-bottom: 15px;
       border-bottom: 1px solid #9c9c9c;
 
       @media (max-width: 896px) {
         max-width: unset;
+        margin: 0 15px;
       }
 
       > div:first-child {
@@ -169,6 +175,12 @@
 
       > button {
         background-color: #7d00ff;
+      }
+    }
+
+    .Amounts {
+      @media (max-width: 896px) {
+        margin: 0 15px;
       }
     }
   }
@@ -235,6 +247,11 @@
         border-top: 1px solid #9c9c9c;
       }
     }
+  }
+
+  .BottomActionsContainer {
+    margin-top: auto;
+    margin: 0 15px 15px;
   }
 }
 

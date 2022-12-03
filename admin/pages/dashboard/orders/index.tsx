@@ -10,6 +10,7 @@ import {
   getOrders,
   markOrderSent,
 } from "@/admin/api";
+import { useDashboardData } from "@/admin/context/dashboardData";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
@@ -28,6 +29,7 @@ import OrderSentDialog from "@/admin/components/OrderSentDialog";
 
 export default function DashboardOrderList() {
   const intl = useIntl();
+  const dashboardData = useDashboardData();
   const router = useRouter();
 
   const [data, setData] = useState<{
@@ -146,6 +148,7 @@ export default function DashboardOrderList() {
                     toast.success(message);
                     setPendingOrderCancelRequest(null);
                     if (reloadRef.current) reloadRef.current();
+                    dashboardData.loaderState.reload();
                   })
                   .catch(toast.error)
               }
@@ -162,6 +165,7 @@ export default function DashboardOrderList() {
                   toast.success(message);
                   setPendingOrderConfirmRequest(null);
                   if (reloadRef.current) reloadRef.current();
+                  dashboardData.loaderState.reload();
                 })
                 .catch(toast.error)
             }
@@ -177,6 +181,7 @@ export default function DashboardOrderList() {
                     toast.success(message);
                     setPendingMarkOrderSentRequest(null);
                     if (reloadRef.current) reloadRef.current();
+                    dashboardData.loaderState.reload();
                   })
                   .catch(toast.error)
               }

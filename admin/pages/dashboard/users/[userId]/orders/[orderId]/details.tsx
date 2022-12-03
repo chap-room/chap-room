@@ -11,6 +11,7 @@ import {
   markOrderSent,
 } from "@/admin/api";
 import { englishToPersianNumbers } from "@/shared/utils/numbers";
+import { useDashboardData } from "@/admin/context/dashboardData";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -26,6 +27,7 @@ import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDi
 import OrderSentDialog from "@/admin/components/OrderSentDialog";
 
 export default function DashboardUserOrderDetails() {
+  const dashboardData = useDashboardData();
   const router = useRouter();
   const userId = parseInt(router.query.userId as string);
   const orderId = parseInt(router.query.orderId as string);
@@ -125,6 +127,7 @@ export default function DashboardUserOrderDetails() {
                     toast.success(message);
                     setShowCancelDialog(false);
                     if (reloadRef.current) reloadRef.current();
+                    dashboardData.loaderState.reload();
                   })
                   .catch(toast.error)
               }
@@ -139,6 +142,7 @@ export default function DashboardUserOrderDetails() {
                   toast.success(message);
                   setShowConfirmDialog(false);
                   if (reloadRef.current) reloadRef.current();
+                  dashboardData.loaderState.reload();
                 })
                 .catch(toast.error)
             }
@@ -154,6 +158,7 @@ export default function DashboardUserOrderDetails() {
                     toast.success(message);
                     setShowMarkSentDialog(false);
                     if (reloadRef.current) reloadRef.current();
+                    dashboardData.loaderState.reload();
                   })
                   .catch(toast.error)
               }

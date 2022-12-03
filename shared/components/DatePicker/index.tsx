@@ -84,9 +84,9 @@ export default function DatePicker({
       offset(8),
       flip({ padding: 8 }),
       size({
-        apply({ elements, availableWidth }) {
+        apply({ rects, elements }) {
           Object.assign(elements.floating.style, {
-            maxWidth: `${Math.min(availableWidth, 300)}px`,
+            width: `${Math.min(rects.reference.width, 300)}px`,
           });
         },
         padding: 8,

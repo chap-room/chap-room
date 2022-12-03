@@ -96,14 +96,17 @@ export default function UserTable({
               </button>
             </td>
             <td>
-              <button
-                className={styles.SeeUserOrdersButton}
-                onClick={() => onSeeUserOrderList(user.id)}
-              >
-                مشاهده
-                <span className={styles.MobileLabel}>سفارش ها</span>
-              </button>
-              <div className={styles.CountOfOrders}>{user.countOfOrders}</div>
+              <div className={styles.SeeUserOrdersButtonContainer}>
+                <div />
+                <button
+                  className={styles.SeeUserOrdersButton}
+                  onClick={() => onSeeUserOrderList(user.id)}
+                >
+                  مشاهده
+                  <span className={styles.MobileLabel}>سفارش ها</span>
+                </button>
+                <div className={styles.CountOfOrders}>{user.countOfOrders}</div>
+              </div>
             </td>
             <td>
               <span className={styles.MobileLabel}>عملیات:</span>

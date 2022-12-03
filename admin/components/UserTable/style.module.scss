@@ -73,10 +73,6 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-
-            > button {
-              width: 100%;
-            }
           }
         }
 
@@ -178,19 +174,40 @@
         .SeeUserAddressesButton {
           background-color: #f5f5ff;
           color: #464646;
-        }
-
-        .SeeUserOrdersButton {
-          background-color: #0077b5;
-          color: #ffffff;
-        }
-
-        .CountOfOrders {
-          margin-top: 5px;
-          color: #0077b5;
 
           @media (max-width: 800px) {
-            display: none;
+            width: 100%;
+          }
+        }
+
+        .SeeUserOrdersButtonContainer {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          @media (max-width: 800px) {
+            width: 100%;
+            align-items: stretch;
+          }
+
+          > div:first-child,
+          > div:last-child {
+            height: 10px;
+
+            @media (max-width: 800px) {
+              display: none;
+            }
+
+            &.CountOfOrders {
+              margin-top: 2px;
+              color: #0077b5;
+              font-size: 8px;
+            }
+          }
+
+          .SeeUserOrdersButton {
+            background-color: #0077b5;
+            color: #ffffff;
           }
         }
 

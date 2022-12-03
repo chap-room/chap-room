@@ -47,7 +47,7 @@ export default function DashboardProfile() {
               updateProfile(userFormData)
                 .then((message) => {
                   toast.success(message);
-                  dashboardData.dataLoaderState.reload();
+                  dashboardData.loaderState.reload();
                 })
                 .catch(toast.error)
             }

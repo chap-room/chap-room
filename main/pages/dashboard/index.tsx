@@ -31,6 +31,12 @@ export default function DashboardMain() {
   const router = useRouter();
 
   useEffect(() => {
+    if (!dashboardData.loaderState.isLoading) {
+      dashboardData.loaderState.reload();
+    }
+  }, []);
+
+  useEffect(() => {
     if (router.isReady) {
       if (router.query.isDeposit === "true") {
         if (router.query.isSuccessful === "true") {
@@ -50,11 +56,11 @@ export default function DashboardMain() {
         <title>داشبورد</title>
       </Head>
       <SectionHeader title="داشبورد" />
-      <DataLoaderView state={dashboardData.dataLoaderState}>
+      <DataLoaderView state={dashboardData.loaderState}>
         <DashboardNonMobile
           data={dashboardData.data!}
           relaod={() => {
-            dashboardData.dataLoaderState.reload();
+            dashboardData.loaderState.reload();
           }}
         />
         <DashboardMobile data={dashboardData.data!} />

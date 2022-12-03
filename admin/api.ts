@@ -85,11 +85,11 @@ export async function request({
 
 export function cancelableRequest<DT>(
   request: (signal: AbortSignal) => Promise<DT>
-): [Promise<DT | null>, AbortController] {
+): [Promise<DT | undefined>, AbortController] {
   const abortController = new AbortController();
   return [
     request(abortController.signal).catch((message) => {
-      if (message === "لغو شده") return null;
+      if (message === "لغو شده") return undefined;
       throw message;
     }),
     abortController,
@@ -187,6 +187,24 @@ export function passwordResetSet(
       newPassword,
     },
   });
+}
+
+export function getGlobalOrders(search: string, page: number) {
+  return cancelableRequest((signal) =>
+    request({
+      method: "GET",
+      url: "/admins/orders/global",
+      needAuth: true,
+      params: { search, page },
+      signal,
+    }).then(({ data }) => ({
+      totalCount: data.totalCount,
+      pageSize: data.pageSize,
+      orders: data.orders.map(
+        (item: any) => convert(orderConvertMap, item, "a2b") as Order
+      ),
+    }))
+  );
 }
 
 export function getDashboard() {

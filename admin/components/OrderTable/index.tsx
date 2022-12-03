@@ -93,7 +93,9 @@ export default function OrderTable({
               <span className={styles.MobileLabel}>کد پیگیری:</span>
               {order.status === "sent" ? (
                 <div>
-                  <div className={styles.Sent}>ارسال شده</div>
+                  {order.trackingNumber && (
+                    <div>{englishToPersianNumbers(order.trackingNumber)}</div>
+                  )}
                   {order.trackingUrl && (
                     <div>
                       <a href={order.trackingUrl} target="_blank">

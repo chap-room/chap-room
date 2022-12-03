@@ -12,7 +12,7 @@ import Loader from "@/shared/components/Loader";
 import SmallLoader from "@/shared/components/SmallLoader";
 
 interface UseDataLoaderProps<DT> {
-  load: () => Promise<DT> | [Promise<DT | null>, AbortController] | void;
+  load: () => Promise<DT> | [Promise<DT | undefined>, AbortController] | void;
   setData: (data: DT) => void;
   deps?: unknown[];
   initialFetch?: boolean;
@@ -51,7 +51,7 @@ export function useDataLoader<DT>({
       setIsError(false);
       (Array.isArray(funcReturn) ? funcReturn[0] : funcReturn)
         .then((data) => {
-          if (data !== null) {
+          if (data !== undefined) {
             setData(data);
             setIsLoading(false);
           }
@@ -111,7 +111,7 @@ export function DataLoaderView({
 }
 
 interface DataLoaderProps<DT> {
-  load: () => Promise<DT> | [Promise<DT | null>, AbortController] | void;
+  load: () => Promise<DT> | [Promise<DT | undefined>, AbortController] | void;
   setData: (data: DT) => void;
   deps?: unknown[];
   initialFetch?: boolean;

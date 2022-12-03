@@ -12,23 +12,18 @@ import {
   size,
   useFocus,
 } from "@floating-ui/react-dom-interactions";
-import {
-  FormattedDate,
-  FormattedNumber,
-  FormattedTime,
-  useIntl,
-} from "react-intl";
+import { FormattedDate, FormattedTime } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import { Order } from "@/shared/types";
 import {
   cancelOrder,
   confirmOrder,
-  getOrders,
+  getGlobalOrders,
   markOrderSent,
-  request,
 } from "@/admin/api";
 import { englishToPersianNumbers } from "@/shared/utils/numbers";
+import { useDashboardData } from "@/admin/context/dashboardData";
 import SearchInput from "@/admin/components/SearchInput";
 import DataLoader from "@/shared/components/DataLoader";
 import EmptyNote from "@/shared/components/Dashboard/EmptyNote";
@@ -36,10 +31,11 @@ import Pagination from "@/shared/components/Pagination";
 import OrderCancelDialog from "@/admin/components/OrderCancelDialog";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
 import OrderSentDialog from "@/admin/components/OrderSentDialog";
-import { orderConvertMap } from "@/main/convertMaps";
-import { convert } from "@/shared/utils/convert";
 
 export default function OrderSearch() {
+  const dashboardData = useDashboardData();
+  const router = useRouter();
+
   const [open, setOpen] = useState(false);
   const [isFirstOpen, setIsFirstOpen] = useState(true);
 
@@ -48,8 +44,6 @@ export default function OrderSearch() {
       setIsFirstOpen(false);
     }
   }, [open]);
-
-  const router = useRouter();
 
   const [data, setData] = useState<{
     totalCount: number;
@@ -131,21 +125,8 @@ export default function OrderSearch() {
             >
               <div>
                 <DataLoader
-                  load={() =>
-                    request({
-                      method: "GET",
-                      url: "/admins/orders/global",
-                      needAuth: true,
-                      params: { search, page },
-                    }).then(({ data }) => ({
-                      totalCount: data.totalCount,
-                      pageSize: data.pageSize,
-                      orders: data.orders.map((item: any) =>
-                        convert(orderConvertMap, item, "a2b")
-                      ) as Order[],
-                    }))
-                  }
-                  deps={[search, page, null]}
+                  load={() => getGlobalOrders(search, page)}
+                  deps={[search, page]}
                   setData={setData}
                   reloadRef={reloadRef}
                   initialFetch={isFirstOpen}
@@ -217,7 +198,13 @@ export default function OrderSearch() {
                           <td>
                             {order.status === "sent" ? (
                               <div>
-                                <div className={styles.Sent}>ارسال شده</div>
+                                {order.trackingNumber && (
+                                  <div>
+                                    {englishToPersianNumbers(
+                                      order.trackingNumber
+                                    )}
+                                  </div>
+                                )}
                                 {order.trackingUrl && (
                                   <div>
                                     <a href={order.trackingUrl} target="_blank">
@@ -305,6 +292,7 @@ export default function OrderSearch() {
                 setPendingOrderCancelRequest(null);
                 setOpen(true);
                 if (reloadRef.current) reloadRef.current();
+                dashboardData.loaderState.reload();
               })
               .catch(toast.error)
           }
@@ -323,6 +311,7 @@ export default function OrderSearch() {
               setPendingOrderConfirmRequest(null);
               setOpen(true);
               if (reloadRef.current) reloadRef.current();
+              dashboardData.loaderState.reload();
             })
             .catch(toast.error)
         }
@@ -342,6 +331,7 @@ export default function OrderSearch() {
                 setPendingMarkOrderSentRequest(null);
                 setOpen(true);
                 if (reloadRef.current) reloadRef.current();
+                dashboardData.loaderState.reload();
               })
               .catch(toast.error)
           }

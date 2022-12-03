@@ -120,7 +120,7 @@ export default function PaymentStage({ actions }: PaymentStageProps) {
               {discountCode === null ? "اعمال" : "حذف"}
             </Button>
           </div>
-          <div>
+          <div className={styles.Amounts}>
             <div className={styles.Amount}>
               <div>هزینه ارسال:</div>
               <div>

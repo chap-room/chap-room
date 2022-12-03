@@ -123,7 +123,7 @@ export default function DashboardNavLinks({
       <NavLink href="/dashboard/blog">
         <a className={styles.NavLink}>
           <BlogIcon />
-          <div className={styles.Text}>بلاگ</div>
+          <div className={styles.Text}>وبلاگ</div>
           <div className={styles.Arrow}>
             <NavigateBeforeIcon />
           </div>
