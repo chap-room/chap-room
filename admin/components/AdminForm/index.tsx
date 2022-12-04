@@ -79,10 +79,10 @@ export default function AdminForm({
           />
           <ErrorList errors={formValidation.errors.phoneNumber} />
         </div>
-        <div className={styles.Label}>نام کامل:</div>
+        <div className={styles.Label}>نام و نام خانوادگی:</div>
         <div className={styles.Input}>
           <TextInput
-            inputProps={{ placeholder: "نام کامل" }}
+            inputProps={{ placeholder: "نام و نام خانوادگی" }}
             value={name}
             onChange={setName}
           />

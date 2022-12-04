@@ -106,7 +106,7 @@ export default function PrintFolderForm({
   const [coverColor, setCoverColor] = useState(
     defaultValues && defaultValues.bindingOptions
       ? defaultValues.bindingOptions.coverColor
-      : "colorful"
+      : "blackAndWhite"
   );
   const [needSpecialDescription, setNeedSpecialDescription] = useState(
     defaultValues ? defaultValues.description !== null : false
@@ -664,17 +664,17 @@ export default function PrintFolderForm({
                         <div className={styles.RadioList}>
                           <div>
                             <Radio
-                              checked={coverColor === "colorful"}
-                              onChecked={() => setCoverColor("colorful")}
-                            />
-                            رنگی
-                          </div>
-                          <div>
-                            <Radio
                               checked={coverColor === "blackAndWhite"}
                               onChecked={() => setCoverColor("blackAndWhite")}
                             />
                             سیاه و سفید
+                          </div>
+                          <div>
+                            <Radio
+                              checked={coverColor === "colorful"}
+                              onChecked={() => setCoverColor("colorful")}
+                            />
+                            رنگی
                           </div>
                         </div>
                       </div>
@@ -874,7 +874,14 @@ function usePrintFolderPrice({
       printSize,
       printSide,
       countOfPages,
-      bindingOptions,
+      bindingOptions
+        ? [
+            bindingOptions.bindingMethod,
+            bindingOptions.bindingType,
+            bindingOptions.countOfFiles,
+            bindingOptions.coverColor,
+          ].join("-")
+        : null,
       countOfCopies,
     ],
   });

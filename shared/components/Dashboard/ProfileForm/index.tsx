@@ -89,10 +89,10 @@ export default function ProfileForm({
             englishToPersianNumbers(phoneNumber)
           )}
         </div>
-        <div className={styles.Label}>نام کامل:</div>
+        <div className={styles.Label}>نام و نام خانوادگی:</div>
         <div className={styles.Input}>
           <TextInput
-            inputProps={{ placeholder: "نام کامل" }}
+            inputProps={{ placeholder: "نام و نام خانوادگی" }}
             varient={inputsVarient}
             value={name}
             onChange={setName}

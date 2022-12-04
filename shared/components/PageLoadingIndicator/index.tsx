@@ -1,15 +1,17 @@
 import styles from "./style.module.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import Loader from "@/shared/components/Loader";
 
 export default function PageLoadingIndicator() {
   const router = useRouter();
+  const routerRef = useRef(router);
+  routerRef.current = router;
 
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     const start = (url: string) => {
-      if (url.split("?")[0] !== router.pathname) setLoading(true);
+      if (url.split("?")[0] !== routerRef.current.pathname) setLoading(true);
     };
     const end = () => {
       setLoading(false);
