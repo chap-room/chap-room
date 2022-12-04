@@ -46,18 +46,18 @@
       }
 
       &:global(.active) {
-        color: #0077b5;
-        fill: #0077b5;
+        color: #5800b3;
+        fill: #5800b3;
 
         &::after {
           content: "";
           display: block;
           position: absolute;
-          bottom: -13px;
-          height: 8px;
+          bottom: -11px;
+          height: 6px;
           width: 100%;
-          border-radius: 0 0 8px 8px;
-          background-color: #0377a5;
+          border-radius: 0 0 6px 6px;
+          background-color: #5800b3;
         }
       }
     }

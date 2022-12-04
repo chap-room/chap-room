@@ -13,7 +13,7 @@ export default function BottomButtons() {
     <>
       <div className={styles.Container}>
         <div className={styles.BottomButtons}>
-          <Link href={userData.isLoggedIn ? "/dashboard/orders/new" : "/auth"}>
+          <Link href={userData.isLoggedIn ? "/dashboard/orders/new" : "/login"}>
             <div className={styles.NavLink}>
               <OrdersIcon />
               <div>سفارش پرینت</div>

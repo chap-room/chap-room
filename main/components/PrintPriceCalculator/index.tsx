@@ -156,7 +156,7 @@ export default function PrintPriceCalculator({
             </div>
           </div>
         )}
-        <Link href={userData.isLoggedIn ? "/dashboard/orders/new" : "/auth"}>
+        <Link href={userData.isLoggedIn ? "/dashboard/orders/new" : "/login"}>
           <Button varient="gradient" style={{ padding: "0 30px" }}>
             سفارش پرینت
           </Button>

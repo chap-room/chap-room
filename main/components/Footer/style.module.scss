@@ -6,9 +6,10 @@
   margin-top: 80px;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: center;
 
   > div {
+    width: 100%;
     max-width: 1360px;
     box-sizing: border-box;
     padding: 5px 140px;
@@ -56,12 +57,14 @@
     display: grid;
     grid-template-columns: auto 1fr 1fr 350px 1fr 1fr auto;
     gap: 10px;
-    margin: -50px -10px 0;
+    margin-top: -50px;
     max-width: 1380px;
+    padding: 5px 130px;
 
     @media (max-width: 1300px) {
+      padding: 5px 140px;
       grid-template-columns: 1fr 1fr;
-      margin: 0;
+      margin-top: 0;
     }
 
     .Symbol {

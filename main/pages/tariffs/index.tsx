@@ -40,7 +40,7 @@ export default function TariffsPage() {
                     id: "a4",
                     label: (
                       <>
-                        <span>سایز </span>A4
+                        <span>سایز</span>A4
                       </>
                     ),
                   },
@@ -48,7 +48,7 @@ export default function TariffsPage() {
                     id: "a5",
                     label: (
                       <>
-                        <span>سایز </span>A5
+                        <span>سایز</span>A5
                       </>
                     ),
                   },
@@ -56,7 +56,7 @@ export default function TariffsPage() {
                     id: "a3",
                     label: (
                       <>
-                        <span>سایز </span>A3
+                        <span>سایز</span>A3
                       </>
                     ),
                   },

@@ -152,8 +152,7 @@ export default function Register() {
                 />
                 <span>
                   با{" "}
-                  <Link href="#">
-                    {/* TODO */}
+                  <Link href="/terms-and-conditions">
                     <a>قوانین و مقررات</a>
                   </Link>{" "}
                   چاپ روم موافق هستم
