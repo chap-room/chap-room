@@ -73,19 +73,20 @@ export default function Blog(
     if (isFirstRender) {
       setIsFirstRender(false);
     } else {
-      if (selectedCategoryId !== null) {
-        router.query.categoryId = selectedCategoryId.toString();
-      } else {
-        delete router.query.categoryId;
-      }
+      const query: Record<string, string> = {};
 
-      if (page > 1) {
-        router.query.page = page.toString();
-      } else {
-        delete router.query.page;
-      }
+      if (selectedCategoryId !== null)
+        query.categoryId = selectedCategoryId.toString();
+      if (page > 1) query.page = page.toString();
 
-      router.push(router);
+      router.push(
+        {
+          pathname: router.pathname,
+          query,
+        },
+        undefined,
+        { shallow: true }
+      );
     }
   }, [selectedCategoryId, page]);
 

@@ -8,8 +8,12 @@ export default function PageLoadingIndicator() {
 
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    const start = () => setLoading(true);
-    const end = () => setLoading(false);
+    const start = (url: string) => {
+      if (url.split("?")[0] !== router.pathname) setLoading(true);
+    };
+    const end = () => {
+      setLoading(false);
+    };
     router.events.on("routeChangeStart", start);
     router.events.on("routeChangeComplete", end);
     router.events.on("routeChangeError", end);

@@ -50,19 +50,19 @@ export default function DashboardDiscountList() {
           setPage(queryPage);
         }
       } else {
-        if (search) {
-          router.query.search = search;
-        } else {
-          delete router.query.search;
-        }
+        const query: Record<string, string> = {};
 
-        if (page > 1) {
-          router.query.page = page.toString();
-        } else {
-          delete router.query.page;
-        }
+        if (search) query.search = search;
+        if (page > 1) query.page = page.toString();
 
-        router.push(router);
+        router.push(
+          {
+            pathname: router.pathname,
+            query,
+          },
+          undefined,
+          { shallow: true }
+        );
       }
     }
   }, [router.isReady, search, page]);

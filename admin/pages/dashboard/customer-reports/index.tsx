@@ -114,43 +114,23 @@ export default function DashboardCustomerReport() {
           setPage(queryPage);
         }
       } else {
-        if (paperSize) {
-          router.query.paperSize = paperSize;
-        } else {
-          delete router.query.paperSize;
-        }
+        const query: Record<string, string> = {};
 
-        if (paperColor) {
-          router.query.paperColor = paperColor;
-        } else {
-          delete router.query.paperColor;
-        }
+        if (paperSize) query.paperSize = paperSize;
+        if (paperColor) query.paperColor = paperColor;
+        if (paperSide) query.paperSide = paperSide;
+        if (sortOrder !== "mostToLowestOrder") query.sortOrder = sortOrder;
+        if (search) query.search = search;
+        if (page > 1) query.page = page.toString();
 
-        if (paperSide) {
-          router.query.paperSide = paperSide;
-        } else {
-          delete router.query.paperSide;
-        }
-
-        if (sortOrder !== "mostToLowestOrder") {
-          router.query.sortOrder = sortOrder;
-        } else {
-          delete router.query.sortOrder;
-        }
-
-        if (search) {
-          router.query.search = search;
-        } else {
-          delete router.query.search;
-        }
-
-        if (page > 1) {
-          router.query.page = page.toString();
-        } else {
-          delete router.query.page;
-        }
-
-        router.push(router);
+        router.push(
+          {
+            pathname: router.pathname,
+            query,
+          },
+          undefined,
+          { shallow: true }
+        );
       }
     }
   }, [
@@ -344,9 +324,7 @@ export default function DashboardCustomerReport() {
           <CustomerReportTable
             customerReports={data.reports}
             onSeeUserOrderList={(userId) =>
-              router.push(
-                `/dashboard/users/${userId}/orders?fromCustomerReports=true`
-              )
+              router.push(`/dashboard/users/${userId}/orders`)
             }
           />
           {!data.reports.length && <EmptyNote>هیچ گزارشی وجود ندارد</EmptyNote>}

@@ -17,17 +17,28 @@ const LastPageContext = createContext<LastPageData>({
 
 export function LastPageProvider({ children }: PropsWithChildren<{}>) {
   const router = useRouter();
-
-  const [currentPage, setCurrentPage] = useState(router.asPath);
-  const [lastPage, setlastPage] = useState<string>();
+  const [pages, setPages] = useState([
+    { pathname: router.pathname, asPath: router.asPath },
+  ]);
+  const [currentPageIndex, setCurrentPageIndex] = useState(0);
 
   useEffect(() => {
-    setCurrentPage(router.asPath);
-    setlastPage(currentPage);
+    const newIndex =
+      pages[currentPageIndex - 1]?.asPath === router.asPath
+        ? currentPageIndex - 1
+        : router.pathname === pages[currentPageIndex].pathname
+        ? currentPageIndex
+        : currentPageIndex + 1;
+    setCurrentPageIndex(newIndex);
+    const newPages = [...pages];
+    newPages[newIndex] = { pathname: router.pathname, asPath: router.asPath };
+    setPages(newPages);
   }, [router.asPath]);
 
   return (
-    <LastPageContext.Provider value={{ lastPage }}>
+    <LastPageContext.Provider
+      value={{ lastPage: pages[currentPageIndex - 1]?.asPath }}
+    >
       {children}
     </LastPageContext.Provider>
   );

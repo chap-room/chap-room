@@ -11,8 +11,10 @@ import BottomButtons from "@/main/components/BottomButtons";
 export default function Footer() {
   return (
     <div className={styles.Footer}>
-      <div className={styles.Logo}>
-        <img src="/assets/images/footerLogo.svg" alt="Footer Logo" />
+      <div className={styles.LogoContainer}>
+        <div className={styles.Logo}>
+          <img src="/assets/images/footerLogo.svg" alt="Footer Logo" />
+        </div>
       </div>
       <div className={styles.FooterContent}>
         <div className={styles.Symbol}>

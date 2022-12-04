@@ -1,5 +1,5 @@
 import styles from "./style.module.scss";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { FormattedNumber } from "react-intl";
 import toast from "react-hot-toast";
 import { BindingOptions, PrintFile, Tariffs } from "@/shared/types";
@@ -35,7 +35,6 @@ import ProgressBar from "@/shared/components/ProgressBar";
 import Radio from "@/shared/components/Radio";
 import InfoTooltip from "@/shared/components/InfoTooltip";
 import IconButton from "@/shared/components/IconButton";
-import SmallLoader from "@/shared/components/SmallLoader";
 import TelegramIcon from "@/main/assets/icons/telegram.svg";
 import EitaaIcon from "@/main/assets/icons/eitaa.svg";
 import CopyIcon from "@/shared/assets/icons/copy.svg";
@@ -218,6 +217,8 @@ export default function PrintFolderForm({
 
   const printPrice = usePrintFolderPrice({
     isValid: step1FormValidation.isValid && step2FormValidation.isValid,
+    printFiles,
+    filesManuallySent,
     printColor: printColor!,
     printSize: printSize!,
     printSide: printSide!,
@@ -830,6 +831,8 @@ function UploadPrintFile({
 
 function usePrintFolderPrice({
   isValid,
+  printFiles,
+  filesManuallySent,
   printColor,
   printSize,
   printSide,
@@ -838,6 +841,8 @@ function usePrintFolderPrice({
   countOfCopies,
 }: {
   isValid: boolean;
+  printFiles: PrintFile[];
+  filesManuallySent: boolean;
   printColor: "blackAndWhite" | "normalColor" | "fullColor";
   printSize: "a4" | "a5" | "a3";
   printSide: "singleSided" | "doubleSided";
@@ -850,6 +855,8 @@ function usePrintFolderPrice({
     load: () =>
       isValid
         ? calculatePrintFolderPrice({
+            printFiles,
+            filesManuallySent,
             printColor,
             printSize,
             printSide,
@@ -861,6 +868,8 @@ function usePrintFolderPrice({
     setData,
     deps: [
       isValid,
+      printFiles,
+      filesManuallySent,
       printColor,
       printSize,
       printSide,

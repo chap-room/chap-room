@@ -52,13 +52,18 @@ export default function DashboardUserOrderList() {
           setPage(queryPage);
         }
       } else {
-        if (page > 1) {
-          router.query.page = page.toString();
-        } else {
-          delete router.query.page;
-        }
+        const query: Record<string, string> = {};
 
-        router.push(router);
+        if (page > 1) query.page = page.toString();
+
+        router.push(
+          {
+            pathname: router.pathname,
+            query,
+          },
+          undefined,
+          { shallow: true }
+        );
       }
     }
   }, [router.isReady, page]);

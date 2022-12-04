@@ -68,16 +68,19 @@ export default function PrintFoldersStage({
           </div>
         </button>
       </div>
-      <BottomActions>
-        <Button
-          varient="filled"
-          style={{ minWidth: 150 }}
-          onClick={actions.finish}
-          disabled={data.length === 0}
-        >
-          مرحله بعد
-        </Button>
-      </BottomActions>
+      <div className={styles.BottomActionsContainer}>
+        <BottomActions>
+          <div />
+          <Button
+            varient="filled"
+            style={{ minWidth: 110 }}
+            onClick={actions.finish}
+            disabled={data.length === 0}
+          >
+            بعدی
+          </Button>
+        </BottomActions>
+      </div>
     </DataLoader>
   );
 }

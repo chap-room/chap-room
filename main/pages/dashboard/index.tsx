@@ -182,9 +182,7 @@ export function DashboardNonMobile({ data, relaod }: DashboardNonMobilePorps) {
           <OrderTable
             orders={data!.inProgressOrders}
             onSeeOrderDetails={(orderId) =>
-              router.push(
-                `/dashboard/orders/${orderId}/details?fromDashboard=true`
-              )
+              router.push(`/dashboard/orders/${orderId}/details`)
             }
             onCancelOrder={setPendingOrderCancelRequest}
           />

@@ -38,7 +38,7 @@ export default function DashboardProfile() {
         <ContentHeader title="اطلاعات من" />
         <MobileContentHeader
           backTo={useLastPage("/dashboard")}
-          title="اطلاعات من"
+          title="تنظیمات پروفایل"
         />
         <DataLoader load={() => getProfile()} setData={setData}>
           <ProfileForm

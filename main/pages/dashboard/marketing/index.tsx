@@ -61,7 +61,7 @@ export default function DashboardMarketing() {
       <SectionContent>
         <MobileContentHeader
           backTo={useLastPage("/dashboard")}
-          title="بازاریابی"
+          title="پنل بازاریابی"
         />
         <DataLoader load={() => getMarketing()} setData={setData}>
           <div className={styles.Container}>

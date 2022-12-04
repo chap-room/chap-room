@@ -181,7 +181,13 @@ export default function PaymentStage({ actions }: PaymentStageProps) {
       </div>
       <div className={styles.BottomActionsContainer}>
         <BottomActions start={amountPayableView}>
-          <Button onClick={actions.back} style={{ fontWeight: 500 }}>
+          <Button
+            onClick={actions.back}
+            style={{
+              fontWeight: 500,
+              padding: "0 5px",
+            }}
+          >
             مرحله قبل
           </Button>
           <Button

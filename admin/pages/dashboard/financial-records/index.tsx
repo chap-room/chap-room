@@ -77,37 +77,22 @@ export default function DashboardFinancialRecordList() {
           setPage(queryPage);
         }
       } else {
-        if (paymentStatus) {
-          router.query.tab = paymentStatus;
-        } else {
-          delete router.query.tab;
-        }
+        const query: Record<string, string> = {};
 
-        if (startDate) {
-          router.query.startDate = startDate.toISOString();
-        } else {
-          delete router.query.startDate;
-        }
+        if (paymentStatus) query.tab = paymentStatus;
+        if (startDate) query.startDate = startDate.toISOString();
+        if (endDate) query.endDate = endDate.toISOString();
+        if (search) query.search = search;
+        if (page > 1) query.page = page.toString();
 
-        if (endDate) {
-          router.query.endDate = endDate.toISOString();
-        } else {
-          delete router.query.endDate;
-        }
-
-        if (search) {
-          router.query.search = search;
-        } else {
-          delete router.query.search;
-        }
-
-        if (page > 1) {
-          router.query.page = page.toString();
-        } else {
-          delete router.query.page;
-        }
-
-        router.push(router);
+        router.push(
+          {
+            pathname: router.pathname,
+            query,
+          },
+          undefined,
+          { shallow: true }
+        );
       }
     }
   }, [router.isReady, paymentStatus, startDate, endDate, search, page]);
@@ -245,9 +230,7 @@ export default function DashboardFinancialRecordList() {
           <FinancialRecordTable
             financialRecords={data.records}
             onSeeDetails={(orderId) =>
-              router.push(
-                `/dashboard/orders/${orderId}/details?fromFinancialRecords=true`
-              )
+              router.push(`/dashboard/orders/${orderId}/details`)
             }
             onEditFinancialRecord={(financialRecordId) =>
               router.push(

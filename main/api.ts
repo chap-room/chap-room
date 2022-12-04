@@ -486,6 +486,8 @@ export function updatePrintFolder(
 }
 
 export function calculatePrintFolderPrice(data: {
+  printFiles: PrintFile[];
+  filesManuallySent: boolean;
   printColor: "blackAndWhite" | "normalColor" | "fullColor";
   printSize: "a4" | "a5" | "a3";
   printSide: "singleSided" | "doubleSided";

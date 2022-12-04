@@ -86,16 +86,22 @@ export default function AddressStage({
       />
       <div className={styles.BottomActionsContainer}>
         <BottomActions>
-          <Button onClick={actions.back} style={{ fontWeight: 500 }}>
+          <Button
+            onClick={actions.back}
+            style={{
+              fontWeight: 500,
+              padding: "0 5px",
+            }}
+          >
             مرحله قبل
           </Button>
           <Button
             varient="filled"
-            style={{ minWidth: 150 }}
+            style={{ minWidth: 110 }}
             onClick={actions.finish}
             disabled={!data.map((item) => item.id).includes(selectedAddressId!)}
           >
-            مرحله بعد
+            بعدی
           </Button>
         </BottomActions>
       </div>
