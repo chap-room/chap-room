@@ -90,7 +90,7 @@ export default function Home() {
               </p>
               <div>
                 <Link
-                  href={userData.isLoggedIn ? "/dashboard/orders/new" : "/auth"}
+                  href={userData.isLoggedIn ? "/dashboard/orders/new" : "/login"}
                 >
                   <Button varient="gradient">سفارش پرینت</Button>
                 </Link>

@@ -540,7 +540,13 @@ export function newDiscount(data: {
   description: string;
   userId: number | null;
   phoneNumber: string | null;
-  type: "fixed" | "percentage" | "page";
+  type:
+    | "fixed"
+    | "percentage"
+    | "page"
+    | "pageBlackAndWhite"
+    | "pageNormalColor"
+    | "pageFullColor";
   value: number;
   usageLimit: number | null;
   expireAt: string | null;
@@ -569,7 +575,13 @@ export function updateDiscount(
     description: string;
     userId: number | null;
     phoneNumber: string | null;
-    type: "fixed" | "percentage" | "page";
+    type:
+      | "fixed"
+      | "percentage"
+      | "page"
+      | "pageBlackAndWhite"
+      | "pageNormalColor"
+      | "pageFullColor";
     value: number;
     usageLimit: number | null;
     expireAt: string | null;

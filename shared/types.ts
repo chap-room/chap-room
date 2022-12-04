@@ -96,7 +96,13 @@ export interface Discount {
   description: string;
   user: User | null;
   phoneNumber: string | null;
-  type: "fixed" | "percentage" | "page";
+  type:
+    | "fixed"
+    | "percentage"
+    | "page"
+    | "pageBlackAndWhite"
+    | "pageNormalColor"
+    | "pageFullColor";
   value: number;
   usageLimit: number | null;
   timesUsed: number | null;
@@ -131,10 +137,11 @@ export interface WithdrawalRequest {
   iban: number;
   accountHolderName: string;
   status: "done" | "rejected" | "pending";
-  rejectReason: string | null;
+  description: string | null;
   transactionDate: string | null;
   trackingNumber: string | null;
 }
+
 export interface Tariffs {
   print: PrintTariffs;
   binding: BindingTariffs;

@@ -24,7 +24,13 @@ interface DiscountFormData {
   description: string;
   user: User | null;
   phoneNumber: string | null;
-  type: "fixed" | "percentage" | "page";
+  type:
+    | "fixed"
+    | "percentage"
+    | "page"
+    | "pageBlackAndWhite"
+    | "pageNormalColor"
+    | "pageFullColor";
   value: number;
   usageLimit: number | null;
   expireAt: string | null;
@@ -201,6 +207,9 @@ export default function DiscountForm({
               fixed: "مبلغ ثابت",
               percentage: "درصدی",
               page: "تعدادی از صفحات",
+              pageBlackAndWhite: "تعدادی از صفحات (سیاه و سفید)",
+              pageNormalColor: "تعدادی از صفحات (رنگ معمولی)",
+              pageFullColor: "تعدادی از صفحات (تمام رنگ)",
             }}
             value={type}
             onChange={setType}
@@ -214,7 +223,14 @@ export default function DiscountForm({
               placeholder: "مقدار تخفیف",
             }}
             suffix={
-              type === "fixed" ? "تومان" : type === "page" ? "صفحه" : "درصد"
+              type === "fixed"
+                ? "تومان"
+                : type === "page" ||
+                  type === "pageBlackAndWhite" ||
+                  type === "pageNormalColor" ||
+                  type === "pageFullColor"
+                ? "صفحه"
+                : "درصد"
             }
             value={value}
             onChange={setValue}

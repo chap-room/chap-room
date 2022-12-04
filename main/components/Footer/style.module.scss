@@ -59,10 +59,12 @@
     gap: 10px;
     margin-top: -50px;
     max-width: 1380px;
-    padding: 5px 130px;
+    
+    @media (min-width: 1301px) {
+      padding: 5px 130px;
+    }
 
     @media (max-width: 1300px) {
-      padding: 5px 140px;
       grid-template-columns: 1fr 1fr;
       margin-top: 0;
     }

@@ -104,8 +104,8 @@ export default function WithdrawalRequestTable({
             </td>
             <td>
               <span className={styles.MobileLabel}>span:</span>
-              {withdrawalRequest.rejectReason && (
-                <div>{withdrawalRequest.rejectReason}</div>
+              {withdrawalRequest.description && (
+                <div>{withdrawalRequest.description}</div>
               )}
             </td>
             <td>

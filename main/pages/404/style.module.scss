@@ -7,54 +7,53 @@
   margin: 0 auto;
   padding-bottom: 180px;
   background-repeat: no-repeat;
-  background-image: url("~@/shared/assets/images/notFoundBackgroundBottom.svg"),
-    url("~@/shared/assets/images/notFoundBackgroundTop.svg");
-  background-position: bottom left, top left;
-  background-size: auto 400px, 425px auto;
+  background-image: url("~@/shared/assets/images/notFoundBackground.svg");
+  background-position: bottom left;
+  background-size: auto 400px;
 
   @media (max-width: 1148px) {
-    background-size: auto 350px, 375px auto;
+    background-size: auto 350px;
     padding-bottom: 180px;
   }
 
   @media (max-width: 1088px) {
-    background-size: auto 300px, 325px auto;
+    background-size: auto 300px;
     padding-bottom: 150px;
   }
 
   @media (max-width: 1024px) {
-    background-size: auto 275px, 300px auto;
+    background-size: auto 275px;
     padding-bottom: 125px;
   }
 
   @media (max-width: 896px) {
-    background-position: bottom center, top left;
-    background-size: auto 330px, 350px auto;
+    background-position: bottom center;
+    background-size: auto 330px;
     padding-bottom: 330px;
   }
 
   @media (max-width: 768px) {
-    background-size: auto 270px, 300px auto;
+    background-size: auto 270px;
     padding-bottom: 270px;
   }
 
   @media (max-width: 640px) {
-    background-size: auto 220px, 260px auto;
+    background-size: auto 220px;
     padding-bottom: 220px;
   }
 
   @media (max-width: 576px) {
-    background-size: auto 170px, 220px auto;
+    background-size: auto 170px;
     padding-bottom: 170px;
   }
 
   @media (max-width: 512px) {
-    background-size: auto 150px, 180px auto;
+    background-size: auto 150px;
     padding-bottom: 150px;
   }
 
   @media (max-width: 448px) {
-    background-size: auto 130px, 150px auto;
+    background-size: auto 130px;
     padding-bottom: 130px;
   }
 
@@ -111,7 +110,7 @@
     }
 
     .ErrorNumber {
-      font-size: 72px;
+      font-size: 100px;
       font-weight: bold;
       color: #5800b3;
 
@@ -133,8 +132,9 @@
     }
 
     p {
-      font-size: 16px;
       margin: 0;
+      font-size: 16px;
+      color: #464646;
 
       @media (max-width: 896px) {
         font-size: 14px;
