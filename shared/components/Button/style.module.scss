@@ -54,7 +54,8 @@
     }
 
     &.None,
-    &.Outlined {
+    &.Outlined,
+    &.ContentTitleNone {
       &::after {
         border-top-color: #2578fa;
         border-left-color: #2578fa;
@@ -78,6 +79,10 @@
     fill: #0077b5;
     background-color: transparent;
     box-shadow: none;
+
+    &:disabled {
+      color: #cccccc;
+    }
   }
 
   &.Gradient {
@@ -94,15 +99,10 @@
     color: #2578fa;
     fill: #2578fa;
     background-color: #eeeeee;
-  }
 
-  &.ContentTitleOutlined {
-    height: 34px;
-    font-size: 14px;
-    color: #0077b5;
-    fill: #0077b5;
-    background-color: #eeeeee;
-    border: 1px solid #0077b5;
+    &:disabled {
+      color: #cccccc;
+    }
   }
 
   &.ContentTitleNone {
@@ -115,18 +115,17 @@
     box-shadow: none;
     padding: 0;
 
-    &.Loading {
-      font-size: 0;
-
-      > svg {
-        display: none;
-      }
-
-      &::after {
-        border-top-color: #0077b5;
-        border-left-color: #0077b5;
-        border-right-color: #0077b5;
-      }
+    &:disabled {
+      color: #cccccc;
     }
+  }
+
+  &.ContentTitleOutlined {
+    height: 34px;
+    font-size: 14px;
+    color: #0077b5;
+    fill: #0077b5;
+    background-color: #eeeeee;
+    border: 1px solid #0077b5;
   }
 }

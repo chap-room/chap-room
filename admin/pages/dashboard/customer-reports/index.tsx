@@ -184,18 +184,22 @@ export default function DashboardCustomerReport() {
             </div>
           }
           end={
-            <Button
-              varient="content-title-none"
-              style={{ padding: 0 }}
-              disabled={isGeneratingExcel}
-              loading={isGeneratingExcel}
-              onClick={() => generatrExcel()}
-            >
-              دانلود اکسل براساس فیلتر
-              <FilledIconContainer style={{ marginRight: 10 }}>
-                <DownloadIcon />
-              </FilledIconContainer>
-            </Button>
+            !isGeneratingExcel ? (
+              <Button
+                varient="content-title-none"
+                style={{ padding: 0 }}
+                disabled={isGeneratingExcel}
+                loading={isGeneratingExcel}
+                onClick={() => generatrExcel()}
+              >
+                دانلود اکسل براساس فیلتر
+                <FilledIconContainer style={{ marginRight: 10 }}>
+                  <DownloadIcon />
+                </FilledIconContainer>
+              </Button>
+            ) : (
+              <IconButton loading={true} varient="filled" size={34} />
+            )
           }
         />
         <MobileContentHeader
