@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import Head from "next/head";
 import { getProfile, updateProfile } from "@/main/api";
 import { useDashboardData } from "@/admin/context/dashboardData";
+import { useLastPage } from "@/shared/context/lastPage";
 import DashboardLayout from "@/main/components/Dashboard/Layout";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
@@ -35,7 +36,10 @@ export default function DashboardProfile() {
       />
       <SectionContent>
         <ContentHeader title="اطلاعات من" />
-        <MobileContentHeader backTo="/dashboard" title="اطلاعات من" />
+        <MobileContentHeader
+          backTo={useLastPage("/dashboard")}
+          title="اطلاعات من"
+        />
         <DataLoader load={() => getProfile()} setData={setData}>
           <ProfileForm
             inputsVarient="shadow"

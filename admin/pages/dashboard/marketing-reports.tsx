@@ -1,5 +1,6 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import {
   DedicatedDiscountCodeReport,
   DedicatedLinkReport,
@@ -8,6 +9,7 @@ import {
   getDedicatedDiscountCodeReports,
   getDedicatedLinkReports,
 } from "@/admin/api";
+import { useLastPage } from "@/shared/context/lastPage";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
@@ -23,6 +25,7 @@ import EmptyNote from "@/shared/components/Dashboard/EmptyNote";
 import Pagination from "@/shared/components/Pagination";
 
 export default function DashboardMarketingReport() {
+  const router = useRouter();
   const [tab, setTab] = useState<"link" | "discount-code">("link");
 
   const [dedicatedLinkData, setDedicatedLinkData] = useState<{
@@ -39,6 +42,48 @@ export default function DashboardMarketingReport() {
 
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
+
+  const [isFirstReady, setIsFirstReady] = useState(true);
+  useEffect(() => {
+    if (router.isReady) {
+      if (isFirstReady) {
+        setIsFirstReady(false);
+        if (
+          router.query.tab === "link" ||
+          router.query.tab === "discount-code"
+        ) {
+          setTab(router.query.tab);
+        }
+        if (router.query.search) {
+          setSearch(router.query.search as string);
+        }
+        const queryPage = parseInt(router.query.page as string);
+        if (!isNaN(queryPage) && queryPage > 1) {
+          setPage(queryPage);
+        }
+      } else {
+        if (tab) {
+          router.query.tab = tab;
+        } else {
+          delete router.query.tab;
+        }
+
+        if (search) {
+          router.query.search = search;
+        } else {
+          delete router.query.search;
+        }
+
+        if (page > 1) {
+          router.query.page = page.toString();
+        } else {
+          delete router.query.page;
+        }
+
+        router.push(router);
+      }
+    }
+  }, [router.isReady, tab, search, page]);
 
   return (
     <>
@@ -93,7 +138,10 @@ export default function DashboardMarketingReport() {
             />
           }
         />
-        <MobileContentHeader backTo="/dashboard" title="گزارش ها" />
+        <MobileContentHeader
+          backTo={useLastPage("/dashboard")}
+          title="گزارش ها"
+        />
         {tab === "link" && (
           <DataLoader
             load={() => getDedicatedLinkReports(search, page)}

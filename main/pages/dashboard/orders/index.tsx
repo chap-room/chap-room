@@ -1,4 +1,4 @@
-import { ReactElement, useRef, useState } from "react";
+import { ReactElement, useEffect, useRef, useState } from "react";
 import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Order } from "@/shared/types";
 import { cancelOrder, getOrders } from "@/main/api";
 import { useDashboardData } from "@/main/context/dashboardData";
+import { useLastPage } from "@/shared/context/lastPage";
 import OrdersIcon from "@/shared/assets/icons/orders.svg";
 import AddIcon from "@/shared/assets/icons/add.svg";
 import DashboardLayout from "@/main/components/Dashboard/Layout";
@@ -39,6 +40,27 @@ export default function DashboardOrderList() {
   });
 
   const [page, setPage] = useState(1);
+
+  const [isFirstReady, setIsFirstReady] = useState(true);
+  useEffect(() => {
+    if (router.isReady) {
+      if (isFirstReady) {
+        setIsFirstReady(false);
+        const queryPage = parseInt(router.query.page as string);
+        if (!isNaN(queryPage) && queryPage > 1) {
+          setPage(queryPage);
+        }
+      } else {
+        if (page > 1) {
+          router.query.page = page.toString();
+        } else {
+          delete router.query.page;
+        }
+
+        router.push(router);
+      }
+    }
+  }, [router.isReady, page]);
 
   const [pendingOrderCancelRequest, setPendingOrderCancelRequest] = useState<
     number | null
@@ -75,7 +97,7 @@ export default function DashboardOrderList() {
           }
         />
         <MobileContentHeader
-          backTo="/dashboard"
+          backTo={useLastPage("/dashboard")}
           title="همه سفارش ها"
           end={
             <Link href="/dashboard/orders/new">

@@ -1,11 +1,12 @@
-import { ReactElement, useRef, useState } from "react";
+import { ReactElement, useEffect, useRef, useState } from "react";
 import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
-import { deleteAddress, getAddresses } from "@/main/api";
 import { Address } from "@/shared/types";
+import { deleteAddress, getAddresses } from "@/main/api";
+import { useLastPage } from "@/shared/context/lastPage";
 import AddressesIcon from "@/main/assets/icons/addresses.svg";
 import AddIcon from "@/shared/assets/icons/add.svg";
 import DashboardLayout from "@/main/components/Dashboard/Layout";
@@ -33,6 +34,27 @@ export default function DashboardAddresseList() {
   }>({ totalCount: 0, pageSize: 0, addresses: [] });
 
   const [page, setPage] = useState(1);
+
+  const [isFirstReady, setIsFirstReady] = useState(true);
+  useEffect(() => {
+    if (router.isReady) {
+      if (isFirstReady) {
+        setIsFirstReady(false);
+        const queryPage = parseInt(router.query.page as string);
+        if (!isNaN(queryPage) && queryPage > 1) {
+          setPage(queryPage);
+        }
+      } else {
+        if (page > 1) {
+          router.query.page = page.toString();
+        } else {
+          delete router.query.page;
+        }
+
+        router.push(router);
+      }
+    }
+  }, [router.isReady, page]);
 
   const [pendingDeleteRequest, setPendingDeleteRequest] = useState<
     number | null
@@ -69,7 +91,7 @@ export default function DashboardAddresseList() {
           }
         />
         <MobileContentHeader
-          backTo="/dashboard"
+          backTo={useLastPage("/dashboard")}
           title="آدرس های من"
           end={
             <Link href="/dashboard/addresses/new">

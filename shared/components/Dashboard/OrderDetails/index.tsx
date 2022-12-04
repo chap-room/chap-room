@@ -85,6 +85,8 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                     <div key={index}>
                       <div>پوشه {englishToPersianNumbers(index + 1)}:</div>
                       {printFolder.filesManuallySent ? (
+                        <div>از طریق تلگرام و ایتا</div>
+                      ) : (
                         <div>
                           <span>
                             <FormattedNumber
@@ -107,8 +109,6 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                             صفحه
                           </span>
                         </div>
-                      ) : (
-                        <div>از طریق تلگرام و ایتا</div>
                       )}
                     </div>
                   );

@@ -1,3 +1,6 @@
+import Cookies from "js-cookie";
+import axios, { AxiosRequestConfig } from "axios";
+import Router from "next/router";
 import { orderConvertMap } from "@/main/convertMaps";
 import {
   PostCategory,
@@ -6,19 +9,19 @@ import {
   Order,
 } from "@/shared/types";
 import { convert } from "@/shared/utils/convert";
-import axios, { AxiosRequestConfig } from "axios";
-import Router from "next/router";
+
+let isServer = typeof window === "undefined" ? true : false;
 
 export function getAccessToken() {
-  return localStorage.getItem("adminAccessToken");
+  return isServer ? "" : Cookies.get("adminAccessToken");
 }
 
 export function setAccessToken(token: string) {
-  localStorage.setItem("adminAccessToken", token);
+  Cookies.set("adminAccessToken", token);
 }
 
 export function logout() {
-  localStorage.removeItem("adminAccessToken");
+  Cookies.remove("adminAccessToken");
 }
 
 const api = axios.create({

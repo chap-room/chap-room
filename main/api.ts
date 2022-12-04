@@ -1,3 +1,6 @@
+import Cookies from "js-cookie";
+import axios, { AxiosRequestConfig } from "axios";
+import Router from "next/router";
 import {
   BindingOptions,
   Order,
@@ -6,21 +9,21 @@ import {
   PrintFolder,
   Tariffs,
 } from "@/shared/types";
-import axios, { AxiosRequestConfig } from "axios";
-import Router from "next/router";
 import { convert } from "@/shared/utils/convert";
 import { orderConvertMap, printFoldersConvertMap } from "@/main/convertMaps";
 
+let isServer = typeof window === "undefined" ? true : false;
+
 export function getAccessToken() {
-  return localStorage.getItem("userAccessToken");
+  return isServer ? "" : Cookies.get("userAccessToken");
 }
 
 export function setAccessToken(token: string) {
-  localStorage.setItem("userAccessToken", token);
+  Cookies.set("userAccessToken", token);
 }
 
 export function logout() {
-  localStorage.removeItem("userAccessToken");
+  Cookies.remove("userAccessToken");
   localStorage.removeItem("userData");
 }
 

@@ -1,6 +1,7 @@
 import styles from "./style.module.scss";
-import { ReactElement, useRef, useState } from "react";
+import { ReactElement, useEffect, useRef, useState } from "react";
 import { useIntl } from "react-intl";
+import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
@@ -10,6 +11,7 @@ import {
   getBlogCategories,
   newBlogCategory,
 } from "@/admin/api";
+import { useLastPage } from "@/shared/context/lastPage";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -28,6 +30,8 @@ import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDi
 
 export default function DashboardBlogCategories() {
   const intl = useIntl();
+  const router = useRouter();
+
   const [data, setData] = useState<{
     totalCount: number;
     pageSize: number;
@@ -35,6 +39,27 @@ export default function DashboardBlogCategories() {
   }>({ totalCount: 0, pageSize: 0, categories: [] });
 
   const [page, setPage] = useState(1);
+
+  const [isFirstReady, setIsFirstReady] = useState(true);
+  useEffect(() => {
+    if (router.isReady) {
+      if (isFirstReady) {
+        setIsFirstReady(false);
+        const queryPage = parseInt(router.query.page as string);
+        if (!isNaN(queryPage) && queryPage > 1) {
+          setPage(queryPage);
+        }
+      } else {
+        if (page > 1) {
+          router.query.page = page.toString();
+        } else {
+          delete router.query.page;
+        }
+
+        router.push(router);
+      }
+    }
+  }, [router.isReady, page]);
 
   const [newCategoryName, setNewCategoryName] = useState("");
   const [isSubmittingnewCategory, setIsSubmittingnewCategory] = useState(false);
@@ -62,7 +87,7 @@ export default function DashboardBlogCategories() {
               : undefined
           }
           end={
-            <Link href="/dashboard/blog">
+            <Link href={useLastPage("/dashboard/blog")}>
               <Button varient="none" style={{ padding: 0 }}>
                 بازگشت <ArrowBackIcon />
               </Button>
@@ -70,7 +95,7 @@ export default function DashboardBlogCategories() {
           }
         />
         <MobileContentHeader
-          backTo="/dashboard"
+          backTo={useLastPage("/dashboard/blog")}
           title="مدیریت دسته بندی بلاگ ها"
         />
         <Controls

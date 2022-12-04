@@ -4,6 +4,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { newFinancialRecord } from "@/admin/api";
+import { useLastPage } from "@/shared/context/lastPage";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -29,7 +30,7 @@ export default function DashboardNewFinancialRecord() {
         <ContentHeader
           title="ایجاد سند جدید"
           end={
-            <Link href="/dashboard/financial-records">
+            <Link href={useLastPage("/dashboard/financial-records")}>
               <Button varient="none" style={{ padding: 0 }}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
@@ -37,7 +38,7 @@ export default function DashboardNewFinancialRecord() {
           }
         />
         <MobileContentHeader
-          backTo="/dashboard/financial-records"
+          backTo={useLastPage("/dashboard/financial-records")}
           title="ایجاد سند جدید"
         />
         <FinancialRecordForm

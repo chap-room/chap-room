@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
 import { newUser } from "@/admin/api";
+import { useLastPage } from "@/shared/context/lastPage";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -29,7 +30,7 @@ export default function DashboardNewUser() {
         <ContentHeader
           title="افزودن کاربر جدید"
           end={
-            <Link href="/dashboard/users">
+            <Link href={useLastPage("/dashboard/users")}>
               <Button varient="none" style={{ padding: 0 }}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
@@ -37,7 +38,7 @@ export default function DashboardNewUser() {
           }
         />
         <MobileContentHeader
-          backTo="/dashboard/users"
+          backTo={useLastPage("/dashboard/users")}
           title="افزودن کاربر جدید"
         />
         <UserForm

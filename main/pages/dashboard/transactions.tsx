@@ -1,8 +1,9 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { getTransactions } from "@/main/api";
 import { Transaction } from "@/shared/types";
+import { getTransactions } from "@/main/api";
+import { useLastPage } from "@/shared/context/lastPage";
 import DashboardLayout from "@/main/components/Dashboard/Layout";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
@@ -24,6 +25,27 @@ export default function DashboardTransactions() {
 
   const [page, setPage] = useState(1);
 
+  const [isFirstReady, setIsFirstReady] = useState(true);
+  useEffect(() => {
+    if (router.isReady) {
+      if (isFirstReady) {
+        setIsFirstReady(false);
+        const queryPage = parseInt(router.query.page as string);
+        if (!isNaN(queryPage) && queryPage > 1) {
+          setPage(queryPage);
+        }
+      } else {
+        if (page > 1) {
+          router.query.page = page.toString();
+        } else {
+          delete router.query.page;
+        }
+
+        router.push(router);
+      }
+    }
+  }, [router.isReady, page]);
+
   return (
     <>
       <Head>
@@ -35,7 +57,10 @@ export default function DashboardTransactions() {
       />
       <SectionContent>
         <ContentHeader title="همه سوابق مالی" />
-        <MobileContentHeader backTo="/dashboard" title="تراکنش ها" />
+        <MobileContentHeader
+          backTo={useLastPage("/dashboard")}
+          title="تراکنش ها"
+        />
         <DataLoader
           load={() => getTransactions(page)}
           deps={[page]}

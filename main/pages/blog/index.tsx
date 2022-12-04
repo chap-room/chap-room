@@ -1,6 +1,7 @@
 import styles from "./style.module.scss";
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { FormattedDate, FormattedNumber } from "react-intl";
+import { useRouter } from "next/router";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 import Layout from "@/main/components/Layout";
@@ -18,8 +19,9 @@ import { Post, PostCategory } from "@/shared/types";
 import EmptyNote from "@/shared/components/Dashboard/EmptyNote";
 import Pagination from "@/shared/components/Pagination";
 import Link from "next/link";
-
 export const getServerSideProps: GetServerSideProps<{
+  categoryId: number | null;
+  page: number;
   data: {
     totalCount: number;
     pageSize: number;
@@ -30,13 +32,22 @@ export const getServerSideProps: GetServerSideProps<{
     categories: PostCategory[];
   };
   popularPostData: Post[];
-}> = async () => {
-  const data = (await getBlogPosts(1)[0])!;
+}> = async (context) => {
+  const queryCategoryId = parseInt(context.query.categoryId as string);
+  const categoryId = !isNaN(queryCategoryId) ? queryCategoryId : null;
+  const queryPage = parseInt(context.query.page as string);
+  const page = !isNaN(queryPage) && queryPage > 0 ? queryPage : 1;
+
+  const data = (await (categoryId !== null
+    ? getBlogPostsByCategory(categoryId, page)
+    : getBlogPosts(page)[0]))!;
   const categoriesData = await getBlogCategories();
   const popularPostData = (await getBlogPosts(1, "popular")[0])!.posts;
 
   return {
     props: {
+      categoryId,
+      page,
       data,
       categoriesData,
       popularPostData,
@@ -47,14 +58,36 @@ export const getServerSideProps: GetServerSideProps<{
 export default function Blog(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
-    null
-  );
+  const router = useRouter();
 
   const [data, setData] = useState(props.data);
   const { categoriesData, popularPostData } = props;
 
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(props.page);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(
+    props.categoryId
+  );
+
+  const [isFirstRender, setIsFirstRender] = useState(true);
+  useEffect(() => {
+    if (isFirstRender) {
+      setIsFirstRender(false);
+    } else {
+      if (selectedCategoryId !== null) {
+        router.query.categoryId = selectedCategoryId.toString();
+      } else {
+        delete router.query.categoryId;
+      }
+
+      if (page > 1) {
+        router.query.page = page.toString();
+      } else {
+        delete router.query.page;
+      }
+
+      router.push(router);
+    }
+  }, [selectedCategoryId, page]);
 
   return (
     <>

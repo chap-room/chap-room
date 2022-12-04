@@ -4,6 +4,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { BindingTariffs } from "@/shared/types";
 import { getBindingTariffs, updateBindingTariffs } from "@/admin/api";
+import { useLastPage } from "@/shared/context/lastPage";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -30,14 +31,17 @@ export default function DashboardBindingPrices() {
         <ContentHeader
           title="صحافی"
           end={
-            <Link href="/dashboard/tariffs">
+            <Link href={useLastPage("/dashboard/tariffs")}>
               <Button varient="none" style={{ padding: 0 }}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
             </Link>
           }
         />
-        <MobileContentHeader backTo="/dashboard/tariffs" title="صحافی" />
+        <MobileContentHeader
+          backTo={useLastPage("/dashboard/tariffs")}
+          title="صحافی"
+        />
         <DataLoader load={() => getBindingTariffs()} setData={setData}>
           <BindingTariffsForm
             defaultValues={data}

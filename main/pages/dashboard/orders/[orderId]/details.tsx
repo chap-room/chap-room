@@ -5,6 +5,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { Order } from "@/shared/types";
 import { getOrder } from "@/main/api";
+import { useLastPage } from "@/shared/context/lastPage";
 import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/main/components/Dashboard/Layout";
@@ -44,15 +45,7 @@ export default function DashboardOrderDetails() {
         <ContentHeader
           title={title}
           end={
-            <Link
-              href={
-                router.query.fromTransactions === "true"
-                  ? "/dashboard/transactions"
-                  : router.query.fromDashboard === "true"
-                  ? "/dashboard"
-                  : "/dashboard/orders"
-              }
-            >
+            <Link href={useLastPage("/dashboard/orders")}>
               <Button varient="none" style={{ padding: 0 }}>
                 بازگشت <ArrowBackIcon />
               </Button>
@@ -60,13 +53,7 @@ export default function DashboardOrderDetails() {
           }
         />
         <MobileContentHeader
-          backTo={
-            router.query.fromTransactions === "true"
-              ? "/dashboard/transactions"
-              : router.query.fromDashboard === "true"
-              ? "/dashboard"
-              : "/dashboard/orders"
-          }
+          backTo={useLastPage("/dashboard/orders")}
           title="جزییات"
           subTitle={title}
         />

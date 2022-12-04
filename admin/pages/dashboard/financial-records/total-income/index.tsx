@@ -5,6 +5,7 @@ import moment from "jalali-moment";
 import Head from "next/head";
 import Link from "next/link";
 import { request } from "@/admin/api";
+import { useLastPage } from "@/shared/context/lastPage";
 import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
@@ -93,7 +94,7 @@ export default function DashboardFinancialRecordsTotalIncome() {
             </div>
           }
           end={
-            <Link href="/dashboard/financial-records">
+            <Link href={useLastPage("/dashboard/financial-records")}>
               <Button varient="none" style={{ padding: 0 }}>
                 بازگشت <ArrowBackIcon />
               </Button>
@@ -101,7 +102,7 @@ export default function DashboardFinancialRecordsTotalIncome() {
           }
         />
         <MobileContentHeader
-          backTo="/dashboard/financial-records"
+          backTo={useLastPage("/dashboard/financial-records")}
           title="درامد کل"
         />
         <Controls

@@ -3,6 +3,7 @@ import { ReactElement, useState } from "react";
 import { FormattedNumber } from "react-intl";
 import Head from "next/head";
 import { getMarketing } from "@/main/api";
+import { useLastPage } from "@/shared/context/lastPage";
 import LinkIcon from "@/main/assets/icons/link.svg";
 import PercentIcon from "@/main/assets/icons/percent.svg";
 import DashboardLayout from "@/main/components/Dashboard/Layout";
@@ -58,7 +59,10 @@ export default function DashboardMarketing() {
         description="ــ با استفاده از این سیستم به راحتی می توانید درآمد برای خود ایجاد نمایید"
       />
       <SectionContent>
-        <MobileContentHeader backTo="/dashboard" title="بازاریابی" />
+        <MobileContentHeader
+          backTo={useLastPage("/dashboard")}
+          title="بازاریابی"
+        />
         <DataLoader load={() => getMarketing()} setData={setData}>
           <div className={styles.Container}>
             <div className={styles.DedicatedLink}>

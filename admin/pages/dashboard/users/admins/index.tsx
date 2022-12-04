@@ -1,4 +1,4 @@
-import { ReactElement, useRef, useState } from "react";
+import { ReactElement, useEffect, useRef, useState } from "react";
 import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
@@ -6,6 +6,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { AdminUserRole } from "@/shared/types";
 import { deleteAdmin, getAdmins } from "@/admin/api";
+import { useLastPage } from "@/shared/context/lastPage";
 import AddIcon from "@/shared/assets/icons/add.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -45,6 +46,36 @@ export default function DashboardAdminList() {
 
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
+
+  const [isFirstReady, setIsFirstReady] = useState(true);
+  useEffect(() => {
+    if (router.isReady) {
+      if (isFirstReady) {
+        setIsFirstReady(false);
+        if (router.query.search) {
+          setSearch(router.query.search as string);
+        }
+        const queryPage = parseInt(router.query.page as string);
+        if (!isNaN(queryPage) && queryPage > 1) {
+          setPage(queryPage);
+        }
+      } else {
+        if (search) {
+          router.query.search = search;
+        } else {
+          delete router.query.search;
+        }
+
+        if (page > 1) {
+          router.query.page = page.toString();
+        } else {
+          delete router.query.page;
+        }
+
+        router.push(router);
+      }
+    }
+  }, [router.isReady, search, page]);
 
   const reloadRef = useRef<(() => void) | null>(null);
 
@@ -87,7 +118,7 @@ export default function DashboardAdminList() {
           }
         />
         <MobileContentHeader
-          backTo="/dashboard/users"
+          backTo={useLastPage("/dashboard/users")}
           title="همه ادمین ها"
           end={
             <Link href="/dashboard/users/admins/new">

@@ -1,4 +1,4 @@
-import { ReactElement, useRef, useState } from "react";
+import { ReactElement, useEffect, useRef, useState } from "react";
 import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
@@ -6,6 +6,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { Post } from "@/shared/types";
 import { deleteBlogPost, getBlogPosts } from "@/admin/api";
+import { useLastPage } from "@/shared/context/lastPage";
 import DashboardLayout from "@/admin/components/Layout";
 import AddIcon from "@/shared/assets/icons/add.svg";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -36,6 +37,36 @@ export default function DashboardBlog() {
 
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
+
+  const [isFirstReady, setIsFirstReady] = useState(true);
+  useEffect(() => {
+    if (router.isReady) {
+      if (isFirstReady) {
+        setIsFirstReady(false);
+        if (router.query.search) {
+          setSearch(router.query.search as string);
+        }
+        const queryPage = parseInt(router.query.page as string);
+        if (!isNaN(queryPage) && queryPage > 1) {
+          setPage(queryPage);
+        }
+      } else {
+        if (search) {
+          router.query.search = search;
+        } else {
+          delete router.query.search;
+        }
+
+        if (page > 1) {
+          router.query.page = page.toString();
+        } else {
+          delete router.query.page;
+        }
+
+        router.push(router);
+      }
+    }
+  }, [router.isReady, search, page]);
 
   const [pendingDeleteRequest, setPendingDeleteRequest] = useState<
     number | null
@@ -82,7 +113,7 @@ export default function DashboardBlog() {
           }
         />
         <MobileContentHeader
-          backTo="/dashboard"
+          backTo={useLastPage("/dashboard")}
           title="همه وبلاگ ها"
           end={
             <Link href="/dashboard/blog/posts/new">

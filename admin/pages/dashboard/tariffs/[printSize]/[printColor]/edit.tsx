@@ -5,6 +5,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { PrintTariffs } from "@/shared/types";
 import { getPrintTariffs, updatePrintPrice } from "@/admin/api";
+import { useLastPage } from "@/shared/context/lastPage";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -48,7 +49,7 @@ export default function DashboardEditPrintPrices() {
         <ContentHeader
           title="ویرایش کردن تعرفه ها"
           end={
-            <Link href="/dashboard/tariffs">
+            <Link href={useLastPage("/dashboard/tariffs")}>
               <Button varient="none" style={{ padding: 0 }}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
@@ -56,7 +57,7 @@ export default function DashboardEditPrintPrices() {
           }
         />
         <MobileContentHeader
-          backTo="/dashboard/tariffs"
+          backTo={useLastPage("/dashboard/tariffs")}
           title="ویرایش کردن تعرفه ها"
         />
         <DataLoader load={() => getPrintTariffs()} setData={setData}>

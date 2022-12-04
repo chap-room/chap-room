@@ -145,15 +145,15 @@
   }
 
   &:not([data-items-status="rejected"]) {
-    > thead > tr > th:nth-child(8),
-    > tbody > tr > td:nth-child(8) {
+    > thead > tr > th:nth-child(7),
+    > tbody > tr > td:nth-child(7) {
       display: none;
     }
   }
 
   &:not([data-items-status="done"]) {
-    > thead > tr > th:nth-child(7),
-    > tbody > tr > td:nth-child(7) {
+    > thead > tr > th:nth-child(8),
+    > tbody > tr > td:nth-child(8) {
       display: none;
     }
   }

@@ -1,7 +1,11 @@
 import { ReactElement, useState } from "react";
 import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
+import { FinancialRecord } from "@/shared/types";
+import { getFinancialRecord, updateFinancialRecord } from "@/admin/api";
+import { useLastPage } from "@/shared/context/lastPage";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -9,11 +13,8 @@ import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import ContentHeader from "@/shared/components/Dashboard/ContentHeader";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
 import Button from "@/shared/components/Button";
-import FinancialRecordForm from "@/admin/components/FinancialRecordForm";
-import { FinancialRecord } from "@/shared/types";
-import toast from "react-hot-toast";
 import DataLoader from "@/shared/components/DataLoader";
-import { getFinancialRecord, updateFinancialRecord } from "@/admin/api";
+import FinancialRecordForm from "@/admin/components/FinancialRecordForm";
 
 export default function DashboardFinancialRecordEdit() {
   const router = useRouter();
@@ -34,7 +35,7 @@ export default function DashboardFinancialRecordEdit() {
         <ContentHeader
           title="ویرایش کردن سند"
           end={
-            <Link href="/dashboard/financial-records">
+            <Link href={useLastPage("/dashboard/financial-records")}>
               <Button varient="none" style={{ padding: 0 }}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
@@ -42,7 +43,7 @@ export default function DashboardFinancialRecordEdit() {
           }
         />
         <MobileContentHeader
-          backTo="/dashboard/financial-records"
+          backTo={useLastPage("/dashboard/financial-records")}
           title="ویرایش کردن سند"
         />
         <DataLoader

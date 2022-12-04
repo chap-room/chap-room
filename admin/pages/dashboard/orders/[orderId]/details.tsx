@@ -25,6 +25,7 @@ import BottomActions from "@/shared/components/Dashboard/BottomActions";
 import OrderCancelDialog from "@/admin/components/OrderCancelDialog";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
 import OrderSentDialog from "@/admin/components/OrderSentDialog";
+import { useLastPage } from "@/shared/context/lastPage";
 
 export default function DashboardOrderDetails() {
   const dashboardData = useDashboardData();
@@ -61,13 +62,7 @@ export default function DashboardOrderDetails() {
               : undefined
           }
           end={
-            <Link
-              href={
-                router.query.fromFinancialRecords === "true"
-                  ? "/dashboard/financial-records"
-                  : "/dashboard/orders"
-              }
-            >
+            <Link href={useLastPage("/dashboard/orders")}>
               <Button varient="none" style={{ padding: 0 }}>
                 بازگشت <ArrowBackIcon />
               </Button>
@@ -75,11 +70,7 @@ export default function DashboardOrderDetails() {
           }
         />
         <MobileContentHeader
-          backTo={
-            router.query.fromFinancialRecords === "true"
-              ? "/dashboard/financial-records"
-              : "/dashboard/orders"
-          }
+          backTo={useLastPage("/dashboard/orders")}
           title={title}
         />
         <DataLoader

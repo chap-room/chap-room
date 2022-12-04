@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
 import { newDiscount } from "@/admin/api";
+import { useLastPage } from "@/shared/context/lastPage";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -29,7 +30,7 @@ export default function DashboardNewDiscount() {
         <ContentHeader
           title="ایجاد کد تخفیف جدید"
           end={
-            <Link href="/dashboard/discounts">
+            <Link href={useLastPage("/dashboard/discounts")}>
               <Button varient="none" style={{ padding: 0 }}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
@@ -37,7 +38,7 @@ export default function DashboardNewDiscount() {
           }
         />
         <MobileContentHeader
-          backTo="/dashboard/discounts"
+          backTo={useLastPage("/dashboard/discounts")}
           title="ایجاد کد تخفیف جدید"
         />
         <DiscountForm

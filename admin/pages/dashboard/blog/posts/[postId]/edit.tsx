@@ -5,6 +5,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { Post } from "@/shared/types";
 import { getBlogPost, updateBlogPost } from "@/admin/api";
+import { useLastPage } from "@/shared/context/lastPage";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -34,7 +35,7 @@ export default function DashboardEditPost() {
         <ContentHeader
           title="ویرایش کردن بلاگ"
           end={
-            <Link href="/dashboard/blog">
+            <Link href={useLastPage("/dashboard/blog")}>
               <Button varient="none" style={{ padding: 0 }}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
@@ -42,7 +43,7 @@ export default function DashboardEditPost() {
           }
         />
         <MobileContentHeader
-          backTo="/dashboard/blog"
+          backTo={useLastPage("/dashboard/blog")}
           title="ویرایش کردن بلاگ"
         />
         <DataLoader

@@ -1,10 +1,11 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
 import { Address, User } from "@/shared/types";
 import { deleteAddress, getUserAddresses } from "@/admin/api";
+import { useLastPage } from "@/shared/context/lastPage";
 import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
@@ -32,6 +33,27 @@ export default function DashboardUserAddressList() {
 
   const [page, setPage] = useState(1);
 
+  const [isFirstReady, setIsFirstReady] = useState(true);
+  useEffect(() => {
+    if (router.isReady) {
+      if (isFirstReady) {
+        setIsFirstReady(false);
+        const queryPage = parseInt(router.query.page as string);
+        if (!isNaN(queryPage) && queryPage > 1) {
+          setPage(queryPage);
+        }
+      } else {
+        if (page > 1) {
+          router.query.page = page.toString();
+        } else {
+          delete router.query.page;
+        }
+
+        router.push(router);
+      }
+    }
+  }, [router.isReady, page]);
+
   const [pendingAddressDeleteRequest, setPendingAddressDeleteRequest] =
     useState<number | null>(null);
 
@@ -55,14 +77,17 @@ export default function DashboardUserAddressList() {
               : undefined
           }
           end={
-            <Link href="/dashboard/users">
+            <Link href={useLastPage("/dashboard/users")}>
               <Button varient="none" style={{ padding: 0 }}>
                 بازگشت <ArrowBackIcon />
               </Button>
             </Link>
           }
         />
-        <MobileContentHeader backTo="/dashboard/users" title="آدرس ها" />
+        <MobileContentHeader
+          backTo={useLastPage("/dashboard/users")}
+          title="آدرس ها"
+        />
         <DataLoader
           load={() => {
             if (router.isReady) return getUserAddresses(userId, page);

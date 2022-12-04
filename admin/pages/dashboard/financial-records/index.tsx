@@ -1,4 +1,4 @@
-import { ReactElement, useRef, useState } from "react";
+import { ReactElement, useEffect, useRef, useState } from "react";
 import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
@@ -6,6 +6,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { FinancialRecord } from "@/shared/types";
 import { deleteFinancialRecord, getFinancialRecords } from "@/admin/api";
+import { useLastPage } from "@/shared/context/lastPage";
 import AddIcon from "@/shared/assets/icons/add.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -48,6 +49,68 @@ export default function DashboardFinancialRecordList() {
     "successful" | "unsuccessful" | null
   >(null);
   const [page, setPage] = useState(1);
+
+  const [isFirstReady, setIsFirstReady] = useState(true);
+  useEffect(() => {
+    if (router.isReady) {
+      if (isFirstReady) {
+        setIsFirstReady(false);
+        if (
+          router.query.tab === "successful" ||
+          router.query.tab === "unsuccessful"
+        ) {
+          setPaymentStatus(router.query.tab);
+        }
+        const startDateObject = new Date(router.query.startDate as string);
+        if (!isNaN(startDateObject as unknown as number)) {
+          setStartDate(startDateObject);
+        }
+        const endDateObject = new Date(router.query.endDate as string);
+        if (!isNaN(endDateObject as unknown as number)) {
+          setEndDate(endDateObject);
+        }
+        if (router.query.search) {
+          setSearch(router.query.search as string);
+        }
+        const queryPage = parseInt(router.query.page as string);
+        if (!isNaN(queryPage) && queryPage > 1) {
+          setPage(queryPage);
+        }
+      } else {
+        if (paymentStatus) {
+          router.query.tab = paymentStatus;
+        } else {
+          delete router.query.tab;
+        }
+
+        if (startDate) {
+          router.query.startDate = startDate.toISOString();
+        } else {
+          delete router.query.startDate;
+        }
+
+        if (endDate) {
+          router.query.endDate = endDate.toISOString();
+        } else {
+          delete router.query.endDate;
+        }
+
+        if (search) {
+          router.query.search = search;
+        } else {
+          delete router.query.search;
+        }
+
+        if (page > 1) {
+          router.query.page = page.toString();
+        } else {
+          delete router.query.page;
+        }
+
+        router.push(router);
+      }
+    }
+  }, [router.isReady, paymentStatus, startDate, endDate, search, page]);
 
   const [
     pendingFinancialRecordCodeDeleteRequest,
@@ -95,7 +158,7 @@ export default function DashboardFinancialRecordList() {
           }
         />
         <MobileContentHeader
-          backTo="/dashboard"
+          backTo={useLastPage("/dashboard")}
           title="لیست سوابق مالی"
           end={
             <Link href="/dashboard/financial-records/new">

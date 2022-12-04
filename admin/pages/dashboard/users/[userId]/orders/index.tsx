@@ -1,4 +1,4 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
@@ -10,6 +10,7 @@ import {
   getUserOrders,
   markOrderSent,
 } from "@/admin/api";
+import { useLastPage } from "@/shared/context/lastPage";
 import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import { useDashboardData } from "@/admin/context/dashboardData";
 import DataLoader from "@/shared/components/DataLoader";
@@ -41,6 +42,27 @@ export default function DashboardUserOrderList() {
 
   const [page, setPage] = useState(1);
 
+  const [isFirstReady, setIsFirstReady] = useState(true);
+  useEffect(() => {
+    if (router.isReady) {
+      if (isFirstReady) {
+        setIsFirstReady(false);
+        const queryPage = parseInt(router.query.page as string);
+        if (!isNaN(queryPage) && queryPage > 1) {
+          setPage(queryPage);
+        }
+      } else {
+        if (page > 1) {
+          router.query.page = page.toString();
+        } else {
+          delete router.query.page;
+        }
+
+        router.push(router);
+      }
+    }
+  }, [router.isReady, page]);
+
   const [pendingOrderCancelRequest, setPendingOrderCancelRequest] = useState<
     number | null
   >(null);
@@ -70,13 +92,7 @@ export default function DashboardUserOrderList() {
               : undefined
           }
           end={
-            <Link
-              href={
-                router.query.fromCustomerReports === "true"
-                  ? "/dashboard/customer-reports"
-                  : "/dashboard/users"
-              }
-            >
+            <Link href={useLastPage("/dashboard/users")}>
               <Button varient="none" style={{ padding: 0 }}>
                 بازگشت <ArrowBackIcon />
               </Button>
@@ -84,11 +100,7 @@ export default function DashboardUserOrderList() {
           }
         />
         <MobileContentHeader
-          backTo={
-            router.query.fromCustomerReports === "true"
-              ? "/dashboard/customer-reports"
-              : "/dashboard/users"
-          }
+          backTo={useLastPage("/dashboard/users")}
           title="همه سفارش ها"
         />
         <DataLoader

@@ -1,5 +1,5 @@
 import styles from "./style.module.scss";
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { FormattedNumber } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
@@ -7,6 +7,7 @@ import Head from "next/head";
 import { CustomerReport } from "@/shared/types";
 import { getCustomerReports, getCustomerReportsExcel } from "@/admin/api";
 import { englishToPersianNumbers } from "@/shared/utils/numbers";
+import { useLastPage } from "@/shared/context/lastPage";
 import DownloadIcon from "@/admin/assets/icons/download.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -44,7 +45,6 @@ export default function DashboardCustomerReport() {
     reports: [],
   });
 
-  const [search, setSearch] = useState("");
   const [paperSize, setPaperSize] = useState<"a4" | "a5" | "a3" | null>(null);
   const [paperColor, setPaperColor] = useState<
     "blackAndWhite" | "fullColor" | "normalColor" | null
@@ -65,6 +65,103 @@ export default function DashboardCustomerReport() {
     | "lowestToMostPayment"
   >("mostToLowestOrder");
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+
+  const [isFirstReady, setIsFirstReady] = useState(true);
+  useEffect(() => {
+    if (router.isReady) {
+      if (isFirstReady) {
+        setIsFirstReady(false);
+        if (
+          router.query.paperSize === "a4" ||
+          router.query.paperSize === "a5" ||
+          router.query.paperSize === "a3"
+        ) {
+          setPaperSize(router.query.paperSize);
+        }
+        if (
+          router.query.paperColor === "blackAndWhite" ||
+          router.query.paperColor === "fullColor" ||
+          router.query.paperColor === "normalColor"
+        ) {
+          setPaperColor(router.query.paperColor);
+        }
+        if (
+          router.query.paperSide === "singleSided" ||
+          router.query.paperSide === "doubleSided"
+        ) {
+          setPaperSide(router.query.paperSide);
+        }
+        if (
+          router.query.sortOrder === "withoutOrder" ||
+          router.query.sortOrder === "oneOrder" ||
+          router.query.sortOrder === "twoOrder" ||
+          router.query.sortOrder === "threeAndMoreOrder" ||
+          router.query.sortOrder === "mostToLowestOrder" ||
+          router.query.sortOrder === "lowestToMostOrder" ||
+          router.query.sortOrder === "mostToLowestBalance" ||
+          router.query.sortOrder === "lowestToMostBalance" ||
+          router.query.sortOrder === "mostToLowestPayment" ||
+          router.query.sortOrder === "lowestToMostPayment"
+        ) {
+          setSortOrder(router.query.sortOrder);
+        }
+        if (router.query.search) {
+          setSearch(router.query.search as string);
+        }
+        const queryPage = parseInt(router.query.page as string);
+        if (!isNaN(queryPage) && queryPage > 1) {
+          setPage(queryPage);
+        }
+      } else {
+        if (paperSize) {
+          router.query.paperSize = paperSize;
+        } else {
+          delete router.query.paperSize;
+        }
+
+        if (paperColor) {
+          router.query.paperColor = paperColor;
+        } else {
+          delete router.query.paperColor;
+        }
+
+        if (paperSide) {
+          router.query.paperSide = paperSide;
+        } else {
+          delete router.query.paperSide;
+        }
+
+        if (sortOrder !== "mostToLowestOrder") {
+          router.query.sortOrder = sortOrder;
+        } else {
+          delete router.query.sortOrder;
+        }
+
+        if (search) {
+          router.query.search = search;
+        } else {
+          delete router.query.search;
+        }
+
+        if (page > 1) {
+          router.query.page = page.toString();
+        } else {
+          delete router.query.page;
+        }
+
+        router.push(router);
+      }
+    }
+  }, [
+    router.isReady,
+    paperSize,
+    paperColor,
+    paperSide,
+    sortOrder,
+    search,
+    page,
+  ]);
 
   const [isGeneratingExcel, setIsGeneratingExcel] = useState(false);
   function generatrExcel() {
@@ -122,7 +219,7 @@ export default function DashboardCustomerReport() {
           }
         />
         <MobileContentHeader
-          backTo="/dashboard"
+          backTo={useLastPage("/dashboard")}
           title="کاربران"
           end={
             <IconButton

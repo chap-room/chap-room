@@ -1,10 +1,12 @@
-import { ReactElement, useRef, useState } from "react";
+import { ReactElement, useEffect, useRef, useState } from "react";
 import { useIntl } from "react-intl";
+import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import { CooperationRequest } from "@/shared/types";
 import { getCooperationRequests, updateCooperationRequest } from "@/admin/api";
 import { useDashboardData } from "@/admin/context/dashboardData";
+import { useLastPage } from "@/shared/context/lastPage";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
@@ -23,6 +25,7 @@ import CooperationRequestRejectDialog from "@/admin/components/CooperationReques
 export default function DashboardCooperationRequests() {
   const intl = useIntl();
   const dashboardData = useDashboardData();
+  const router = useRouter();
 
   const [data, setData] = useState<{
     totalCount: number;
@@ -35,6 +38,48 @@ export default function DashboardCooperationRequests() {
   >(null);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
+
+  const [isFirstReady, setIsFirstReady] = useState(true);
+  useEffect(() => {
+    if (router.isReady) {
+      if (isFirstReady) {
+        setIsFirstReady(false);
+        if (
+          router.query.tab === "approved" ||
+          router.query.tab === "rejected"
+        ) {
+          setItemsStatus(router.query.tab);
+        }
+        if (router.query.search) {
+          setSearch(router.query.search as string);
+        }
+        const queryPage = parseInt(router.query.page as string);
+        if (!isNaN(queryPage) && queryPage > 1) {
+          setPage(queryPage);
+        }
+      } else {
+        if (itemsStatus) {
+          router.query.tab = itemsStatus;
+        } else {
+          delete router.query.tab;
+        }
+
+        if (search) {
+          router.query.search = search;
+        } else {
+          delete router.query.search;
+        }
+
+        if (page > 1) {
+          router.query.page = page.toString();
+        } else {
+          delete router.query.page;
+        }
+
+        router.push(router);
+      }
+    }
+  }, [router.isReady, itemsStatus, search, page]);
 
   const [
     pendingCooperationRequestAcceptRequest,
@@ -96,7 +141,7 @@ export default function DashboardCooperationRequests() {
             />
           }
         />
-        <MobileContentHeader backTo="/dashboard" title={title} />
+        <MobileContentHeader backTo={useLastPage("/dashboard")} title={title} />
         <Controls
           start={
             <SearchInput

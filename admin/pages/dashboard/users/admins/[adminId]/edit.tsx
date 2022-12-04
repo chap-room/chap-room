@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
 import { getAdmin, updateAdmin } from "@/admin/api";
+import { useLastPage } from "@/shared/context/lastPage";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -36,7 +37,7 @@ export default function DashboardEditAdmin() {
         <ContentHeader
           title="ویرایش کردن ادمین"
           end={
-            <Link href="/dashboard/users/admins">
+            <Link href={useLastPage("/dashboard/users/admins")}>
               <Button varient="none" style={{ padding: 0 }}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
@@ -44,7 +45,7 @@ export default function DashboardEditAdmin() {
           }
         />
         <MobileContentHeader
-          backTo="/dashboard/users/admins"
+          backTo={useLastPage("/dashboard/users/admins")}
           title="ویرایش کردن ادمین"
         />
         <DataLoader
