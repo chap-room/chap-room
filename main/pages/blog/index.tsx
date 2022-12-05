@@ -2,24 +2,25 @@ import styles from "./style.module.scss";
 import { ReactElement, useEffect, useState } from "react";
 import { FormattedDate, FormattedNumber } from "react-intl";
 import { useRouter } from "next/router";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
-import Layout from "@/main/components/Layout";
-import DateIcon from "@/shared/assets/icons/date.svg";
-import ViewIcon from "@/shared/assets/icons/view.svg";
-import Radio from "@/shared/components/Radio";
-import Button from "@/shared/components/Button";
-import DataLoader from "@/shared/components/DataLoader";
+import Link from "next/link";
+import { Post, PostCategory } from "@/shared/types";
 import {
   getBlogCategories,
   getBlogPosts,
   getBlogPostsByCategory,
 } from "@/main/api";
-import { Post, PostCategory } from "@/shared/types";
+import Layout from "@/main/components/Layout";
+import DataLoader from "@/shared/components/DataLoader";
+import DateIcon from "@/shared/assets/icons/date.svg";
+import ViewIcon from "@/shared/assets/icons/view.svg";
+import Radio from "@/shared/components/Radio";
+import Button from "@/shared/components/Button";
 import EmptyNote from "@/shared/components/Dashboard/EmptyNote";
 import Pagination from "@/shared/components/Pagination";
-import Link from "next/link";
-export const getServerSideProps: GetServerSideProps<{
+
+interface PageProps {
   categoryId: number | null;
   page: number;
   data: {
@@ -32,7 +33,11 @@ export const getServerSideProps: GetServerSideProps<{
     categories: PostCategory[];
   };
   popularPostData: Post[];
-}> = async (context) => {
+}
+
+export const getServerSideProps: GetServerSideProps<PageProps> = async (
+  context
+) => {
   const queryCategoryId = parseInt(context.query.categoryId as string);
   const categoryId = !isNaN(queryCategoryId) ? queryCategoryId : null;
   const queryPage = parseInt(context.query.page as string);
@@ -55,9 +60,7 @@ export const getServerSideProps: GetServerSideProps<{
   };
 };
 
-export default function Blog(
-  props: InferGetServerSidePropsType<typeof getServerSideProps>
-) {
+export default function Blog(props: PageProps) {
   const router = useRouter();
 
   const [data, setData] = useState(props.data);

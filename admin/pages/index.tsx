@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { isLoggedIn } from "@/admin/api";
+import { getIsLoggedIn } from "@/admin/api";
 import DataLoader from "@/shared/components/DataLoader";
 
 export default function Home() {
@@ -7,8 +7,10 @@ export default function Home() {
 
   return (
     <DataLoader
-      load={() => isLoggedIn()}
-      setData={(result) => router.replace(result ? "/dashboard" : "/login")}
+      load={() => getIsLoggedIn()}
+      setData={(isLoggedIn) =>
+        router.replace(isLoggedIn ? "/dashboard" : "/login")
+      }
     />
   );
 }

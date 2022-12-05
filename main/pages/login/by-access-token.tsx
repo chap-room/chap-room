@@ -15,18 +15,26 @@ export default function LoginByAcessToken() {
         method: "GET",
         url: "/users/profile",
         needAuth: true,
-        redirectIfNotLogin: false,
+        nullIfNotLogin: false,
       })
-        .then(({ data }) => ({
-          marketingBalance: data.marketingBalance,
-          walletBalance: data.walletBalance,
-          avatar: data.avatar,
-          name: data.name,
-          phoneNumber: data.phoneNumber,
-        }))
+        .then((responseBody) =>
+          responseBody === null
+            ? null
+            : {
+                marketingBalance: responseBody.data.marketingBalance,
+                walletBalance: responseBody.data.walletBalance,
+                avatar: responseBody.data.avatar,
+                name: responseBody.data.name,
+                phoneNumber: responseBody.data.phoneNumber,
+              }
+        )
         .then((userData) => {
           localStorage.setItem("userData", JSON.stringify(userData));
-          router.replace("/dashboard");
+          if (userData) {
+            router.replace("/dashboard");
+          } else {
+            router.replace("/login");
+          }
         })
         .catch((message) => {
           toast.error(message);

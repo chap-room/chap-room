@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { isLoggedIn } from "@/main/api";
+import { getIsLoggedIn } from "@/main/api";
 import { DataLoaderState, useDataLoader } from "@/shared/components/DataLoader";
 
 export interface UserData {
@@ -27,7 +27,7 @@ const UserDataContext = createContext<{
 export function UserDataProvider({ children }: PropsWithChildren<{}>) {
   const [value, setValue] = useState<UserData | null>(null);
   const loaderState = useDataLoader({
-    load: () => isLoggedIn(),
+    load: () => getIsLoggedIn(),
     setData: setValue,
   });
 

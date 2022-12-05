@@ -5,7 +5,12 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
 import toast from "react-hot-toast";
-import { isLoggedIn, register, registerConfirm, resendCode } from "@/main/api";
+import {
+  getIsLoggedIn,
+  register,
+  registerConfirm,
+  resendCode,
+} from "@/main/api";
 import {
   useValidation,
   validateInt,
@@ -69,8 +74,8 @@ export default function Register() {
   );
 
   useEffect(() => {
-    isLoggedIn().then((userData) => {
-      if (userData) router.replace("/dashboard");
+    getIsLoggedIn().then((isLoggedIn) => {
+      if (isLoggedIn) router.replace("/dashboard");
     });
   }, []);
 

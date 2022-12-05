@@ -1,7 +1,6 @@
 import styles from "./style.module.scss";
 import { FormattedDate, FormattedNumber } from "react-intl";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { useRouter } from "next/router";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { Post } from "@/shared/types";
 import { getBlogPost } from "@/main/api";
@@ -9,23 +8,21 @@ import Layout from "@/main/components/Layout";
 import DateIcon from "@/shared/assets/icons/date.svg";
 import ViewIcon from "@/shared/assets/icons/view.svg";
 
-export const getServerSideProps: GetServerSideProps<{
+interface PageProps {
   data: Post;
-}> = async (context) => {
+}
+
+export const getServerSideProps: GetServerSideProps<PageProps> = async (
+  context
+) => {
   try {
-    const data = await getBlogPost(context.query.slug as string);
-    return { props: { data } };
+    return { props: { data: await getBlogPost(context.query.slug as string) } };
   } catch {
     return { notFound: true };
   }
 };
 
-export default function BlogPost({
-  data,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const router = useRouter();
-  const slug = router.query.slug as string;
-
+export default function BlogPost({ data }: PageProps) {
   return (
     <Layout>
       <Head>

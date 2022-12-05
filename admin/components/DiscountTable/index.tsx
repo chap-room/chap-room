@@ -68,12 +68,24 @@ export default function DiscountTable({
                       <>
                         <FormattedNumber value={discount.value} /> درصد
                       </>
-                    ) : discount.type === "page" ||
-                      discount.type === "pageBlackAndWhite" ||
-                      discount.type === "pageNormalColor" ||
-                      discount.type === "pageFullColor" ? (
+                    ) : discount.type === "page" ? (
                       <>
                         <FormattedNumber value={discount.value} /> صفحه
+                      </>
+                    ) : discount.type === "pageBlackAndWhite" ? (
+                      <>
+                        <FormattedNumber value={discount.value} /> صفحه (سیاه و
+                        سفید)
+                      </>
+                    ) : discount.type === "pageNormalColor" ? (
+                      <>
+                        <FormattedNumber value={discount.value} /> صفحه (رنگ
+                        معمولی)
+                      </>
+                    ) : discount.type === "pageFullColor" ? (
+                      <>
+                        <FormattedNumber value={discount.value} /> صفحه (تمام
+                        رنگ)
                       </>
                     ) : (
                       <></>

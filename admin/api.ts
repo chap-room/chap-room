@@ -11,17 +11,20 @@ import {
 import { convert } from "@/shared/utils/convert";
 
 let isServer = typeof window === "undefined" ? true : false;
+let adminAccessToken: string | undefined;
 
 export function getAccessToken() {
-  return isServer ? "" : Cookies.get("adminAccessToken");
+  return isServer ? adminAccessToken : Cookies.get("adminAccessToken");
 }
 
 export function setAccessToken(token: string) {
-  Cookies.set("adminAccessToken", token);
+  if (isServer) adminAccessToken = token;
+  else Cookies.set("adminAccessToken", token);
 }
 
 export function logout() {
-  Cookies.remove("adminAccessToken");
+  if (isServer) adminAccessToken = undefined;
+  else Cookies.remove("adminAccessToken");
 }
 
 const api = axios.create({
@@ -32,21 +35,24 @@ const api = axios.create({
   responseType: "json",
 });
 
-interface requestConfig extends AxiosRequestConfig<any> {
+interface RequestConfig extends AxiosRequestConfig<any> {
   needAuth?: boolean;
-  redirectIfNotLogin?: boolean;
+  nullIfNotLogin?: boolean;
 }
 
-export async function request({
+export function request({
   needAuth,
-  redirectIfNotLogin = true,
+  nullIfNotLogin = false,
   ...config
-}: requestConfig) {
+}: RequestConfig) {
   return new Promise<any>((resolve, reject) => {
     if (needAuth && !getAccessToken()) {
-      reject("لطفا دوباره وارد شوید");
-      if (redirectIfNotLogin) {
-        Router.push(`/login?redirectTo=${encodeURIComponent(Router.asPath)}`);
+      if (nullIfNotLogin) {
+        resolve(null);
+      } else {
+        reject("لطفا دوباره وارد شوید");
+        if (!isServer)
+          Router.push(`/login?redirectTo=${encodeURIComponent(Router.asPath)}`);
       }
       return;
     }
@@ -74,11 +80,14 @@ export async function request({
         }
         if (response?.status === 401) {
           logout();
-          reject("لطفا دوباره وارد شوید");
-          if (redirectIfNotLogin) {
-            Router.push(
-              `/login?redirectTo=${encodeURIComponent(Router.asPath)}`
-            );
+          if (nullIfNotLogin) {
+            resolve(null);
+          } else {
+            reject("لطفا دوباره وارد شوید");
+            if (!isServer)
+              Router.push(
+                `/login?redirectTo=${encodeURIComponent(Router.asPath)}`
+              );
           }
         }
         reject(response?.data?.error?.message || message || "");
@@ -99,18 +108,13 @@ export function cancelableRequest<DT>(
   ];
 }
 
-export function isLoggedIn() {
+export function getIsLoggedIn() {
   return request({
     method: "GET",
     url: "/admins/profile",
     needAuth: true,
-    redirectIfNotLogin: false,
-  })
-    .then(() => true)
-    .catch((message) => {
-      if (message === "لطفا دوباره وارد شوید") return false;
-      throw message;
-    });
+    nullIfNotLogin: false,
+  }).then((responseBody) => (responseBody === null ? false : true));
 }
 
 export function resendCode(phoneNumber: string) {

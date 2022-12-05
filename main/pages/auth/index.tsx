@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
-import { isLoggedIn } from "@/main/api";
+import { getIsLoggedIn } from "@/main/api";
 import LogoWithName from "@/shared/assets/images/logoWithName.svg";
 import ArrowForwardIcon from "@/shared/assets/icons/arrowForward.svg";
 import Image from "@/main/assets/images/auth.svg";
@@ -14,8 +14,8 @@ export default function Auth() {
   const router = useRouter();
 
   useEffect(() => {
-    isLoggedIn().then((userData) => {
-      if (userData) router.replace("/dashboard");
+    getIsLoggedIn().then((isLoggedIn) => {
+      if (isLoggedIn) router.replace("/dashboard");
     });
   }, []);
 

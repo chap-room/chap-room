@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
 import {
-  isLoggedIn,
+  getIsLoggedIn,
   passwordReset,
   passwordResetConfirmCode,
   passwordResetSet,
@@ -79,8 +79,8 @@ export default function ForgotPassword() {
   );
 
   useEffect(() => {
-    isLoggedIn().then((result) => {
-      if (result) router.replace("/dashboard");
+    getIsLoggedIn().then((isLoggedIn) => {
+      if (isLoggedIn) router.replace("/dashboard");
     });
   }, []);
 
