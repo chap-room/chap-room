@@ -113,7 +113,7 @@ export function getIsLoggedIn() {
     method: "GET",
     url: "/admins/profile",
     needAuth: true,
-    nullIfNotLogin: false,
+    nullIfNotLogin: true,
   }).then((responseBody) => (responseBody === null ? false : true));
 }
 

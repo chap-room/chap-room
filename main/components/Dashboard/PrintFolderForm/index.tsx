@@ -15,7 +15,10 @@ import {
   validateInt,
   validateNotEmpty,
 } from "@/shared/utils/validation";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
+import {
+  englishToPersianNumbers,
+  persianToEnglishNumbers,
+} from "@/shared/utils/numbers";
 import DeleteIcon from "@/shared/assets/icons/delete.svg";
 import CloseIcon from "@/shared/assets/icons/close.svg";
 import Button from "@/shared/components/Button";
@@ -240,7 +243,7 @@ export default function PrintFolderForm({
         ? 1
         : toBePrintedInSeveralCopies
         ? parseInt(countOfCopies)
-        : null,
+        : 1,
   });
 
   const printPriceView = (
@@ -416,6 +419,22 @@ export default function PrintFolderForm({
                           <div className={styles.FolderCode}>
                             <div>کد پوشه {englishToPersianNumbers(index)}:</div>
                             <div>
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="210"
+                                height="55"
+                              >
+                                <rect
+                                  x="0.5"
+                                  y="0.5"
+                                  width="209"
+                                  height="54"
+                                  stroke="#707070"
+                                  stroke-width="1"
+                                  stroke-dasharray="10 10"
+                                  fill="none"
+                                />
+                              </svg>
                               <div>
                                 <CopyToClipboard
                                   text={
@@ -517,12 +536,15 @@ export default function PrintFolderForm({
                         <div className={styles.InputContainer}>
                           <TextInput
                             inputProps={{
-                              type: "number",
                               placeholder: "تعداد برگ",
                             }}
                             varient="shadow-without-bg"
-                            value={countOfPages}
-                            onChange={setCountOfPages}
+                            value={englishToPersianNumbers(countOfPages)}
+                            onChange={(newValue) =>
+                              setCountOfPages(
+                                persianToEnglishNumbers(newValue, false)
+                              )
+                            }
                             height={48}
                           />
                           <ErrorList
@@ -638,12 +660,15 @@ export default function PrintFolderForm({
                               <div className={styles.NumberOfFiles}>
                                 <TextInput
                                   inputProps={{
-                                    type: "number",
                                     placeholder: "تعداد",
                                   }}
                                   varient="shadow-without-bg"
-                                  value={countOfFiles}
-                                  onChange={setCountOfFiles}
+                                  value={englishToPersianNumbers(countOfFiles)}
+                                  onChange={(newValue) =>
+                                    setCountOfFiles(
+                                      persianToEnglishNumbers(newValue, false)
+                                    )
+                                  }
                                   readOnly={bindingMethod !== "countOfFiles"}
                                 />
                               </div>
@@ -662,14 +687,14 @@ export default function PrintFolderForm({
                       <div>
                         <div className={styles.Label}>رنگ جلد:</div>
                         <div className={styles.RadioList}>
-                          <div>
+                          <div style={{ width: 150 }}>
                             <Radio
                               checked={coverColor === "blackAndWhite"}
                               onChecked={() => setCoverColor("blackAndWhite")}
                             />
                             سیاه و سفید
                           </div>
-                          <div>
+                          <div style={{ width: 180 }}>
                             <Radio
                               checked={coverColor === "colorful"}
                               onChecked={() => setCoverColor("colorful")}
@@ -715,12 +740,15 @@ export default function PrintFolderForm({
                       <div className={styles.CopiesCount}>
                         <TextInput
                           inputProps={{
-                            type: "number",
                             placeholder: "تعداد سری ( نسخه )",
                           }}
                           varient="shadow-without-bg"
-                          value={countOfCopies}
-                          onChange={setCountOfCopies}
+                          value={englishToPersianNumbers(countOfCopies)}
+                          onChange={(newValue) =>
+                            setCountOfCopies(
+                              persianToEnglishNumbers(newValue, false)
+                            )
+                          }
                         />
                       </div>
                       <ErrorList
@@ -848,7 +876,7 @@ function usePrintFolderPrice({
   printSide: "singleSided" | "doubleSided";
   countOfPages: number;
   bindingOptions: BindingOptions | null;
-  countOfCopies: number | null;
+  countOfCopies: number;
 }) {
   const [data, setData] = useState<number | null>(null);
   const dataLoaderState = useDataLoader({

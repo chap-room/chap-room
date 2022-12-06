@@ -25,7 +25,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
               <div className={styles.Summary}>
                 {order.printFolders.map((printFolder, index) => (
                   <div key={index}>
-                    <div>پوشه {index + 1}:</div>
+                    <div>پوشه {englishToPersianNumbers(index + 1)}:</div>
                     <div>
                       {[
                         {
@@ -124,7 +124,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
               <div className={styles.Descriptions}>
                 {order.printFolders.map((printFolder, index) => (
                   <div key={index}>
-                    <div>پوشه {index + 1}:</div>
+                    <div>پوشه {englishToPersianNumbers(index + 1)}:</div>
                     <div>
                       {printFolder.description
                         ? printFolder.description
@@ -305,14 +305,14 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
           <td className={styles.Cell25}>
             <div className={styles.Cell}>
               <div className={styles.Label}>تاریخ ارسال:</div>
-              {order.postageAt ? (
+              {order.sendAt ? (
                 <div className={styles.OrderPostageDate}>
                   <span>
-                    <FormattedDate value={new Date(order.postageAt)} />
+                    <FormattedDate value={new Date(order.sendAt)} />
                   </span>
                   <span>
                     <FormattedTime
-                      value={new Date(order.postageAt)}
+                      value={new Date(order.sendAt)}
                       timeStyle="medium"
                     />
                   </span>

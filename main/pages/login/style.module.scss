@@ -115,8 +115,9 @@
   }
 
   &::after {
+    flex: 1;
     display: block;
-    content: '';
-    height: 94px;
+    content: "";
+    max-height: 94px;
   }
 }

@@ -123,7 +123,9 @@ export default function OrderForm() {
         subTitle={
           currentStage === OrderFormStages.newPrintFolder ||
           currentStage === OrderFormStages.editPrintFolder
-            ? "پوشه اول خود را سفارش دهید"
+            ? printFolderIndex === 1
+              ? "پوشه اول خود را سفارش دهید"
+              : "پوشه خود را سفارش دهید"
             : currentStage === OrderFormStages.newAddress ||
               currentStage === OrderFormStages.editAddress
             ? "مشخصات گیرنده را وارد کنید"

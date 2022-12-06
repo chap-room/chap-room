@@ -15,7 +15,7 @@ export default function LoginByAcessToken() {
         method: "GET",
         url: "/users/profile",
         needAuth: true,
-        nullIfNotLogin: false,
+        nullIfNotLogin: true,
       })
         .then((responseBody) =>
           responseBody === null

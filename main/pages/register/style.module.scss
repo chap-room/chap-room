@@ -139,4 +139,11 @@
       }
     }
   }
+
+  &::after {
+    flex: 1;
+    display: block;
+    content: "";
+    max-height: 94px;
+  }
 }

@@ -386,6 +386,11 @@
         max-width: 640px;
         padding: 0 30px;
       }
+
+      @media (max-width: 512px) {
+        padding: 0;
+        transform: translateX(40px);
+      }
     }
 
     > div:last-child {

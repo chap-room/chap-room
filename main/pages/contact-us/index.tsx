@@ -105,7 +105,9 @@ export default function ContactUs() {
             <h2>نشانی</h2>
             <ul>
               <li>شعبه {englishToPersianNumbers(1)}: تهران، خیابان فخر راضی</li>
-              <li>شعبه {englishToPersianNumbers(2)}: اصفهان، خیابان پروین</li>
+              <li>
+                شعبه {englishToPersianNumbers(2)}: اصفهان، خیابان احمدآباد
+              </li>
             </ul>
           </div>
           <div>

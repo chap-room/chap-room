@@ -20,7 +20,7 @@ export interface Order {
   recipientDeliveryAddress: string;
   amount: number;
   postageFee: number;
-  postageAt: string | null;
+  sendAt: string | null;
   postageMethod: string | null;
   discountAmount: number | null;
   discountCode: string | null;
