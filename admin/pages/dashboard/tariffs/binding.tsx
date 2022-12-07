@@ -37,10 +37,7 @@ export default function DashboardBindingPrices() {
             </Link>
           }
         />
-        <MobileContentHeader
-          backTo="/dashboard/tariffs"
-          title="صحافی"
-        />
+        <MobileContentHeader backTo="/dashboard/tariffs" title="صحافی" />
         <DataLoader load={() => getBindingTariffs()} setData={setData}>
           <BindingTariffsForm
             defaultValues={data}

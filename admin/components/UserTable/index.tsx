@@ -57,17 +57,13 @@ export default function UserTable({
               <span className={styles.MobileLabel}>موجودی:</span>
               <div className={styles.UserWallet}>
                 <div>
-                  {formatNumber(
-                    user.walletBalance + user.marketingBalance
-                  )}{" "}
+                  {formatNumber(user.walletBalance + user.marketingBalance)}{" "}
                   تومان
                 </div>
                 <div>
                   <div>
                     <span>کیف پول:</span>
-                    <span>
-                      {formatNumber(user.walletBalance)} تومان
-                    </span>
+                    <span>{formatNumber(user.walletBalance)} تومان</span>
                   </div>
                   <span className={styles.Spacer} />
                   <div>
@@ -78,9 +74,7 @@ export default function UserTable({
                       <InfoIcon />
                     </span>
                     <span>بازاریابی:</span>
-                    <span>
-                      {formatNumber(user.marketingBalance)} تومان
-                    </span>
+                    <span>{formatNumber(user.marketingBalance)} تومان</span>
                   </div>
                 </div>
               </div>

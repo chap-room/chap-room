@@ -8,7 +8,7 @@ export function formatNumber(value: string | number) {
         ? char + numberSeparator
         : char
     )
-    .join('');
+    .join("");
 }
 
 const listSeparator = "، ";
@@ -22,5 +22,5 @@ export function formatList(value: string[]) {
         ? listSeparator + item
         : listLastSeparator + item
     )
-    .join('');
+    .join("");
 }

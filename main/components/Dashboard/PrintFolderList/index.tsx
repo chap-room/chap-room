@@ -84,9 +84,7 @@ export default function PrintFolderList({
                         blackAndWhite: "جلد سیاه و سفید",
                       }[printFolder.bindingOptions.coverColor],
                     ]),
-                `${formatNumber(
-                  printFolder.countOfCopies || 1
-                )} نسخه`,
+                `${formatNumber(printFolder.countOfCopies || 1)} نسخه`,
               ].join(" / ")}
             </div>
             {printFolder.description && (

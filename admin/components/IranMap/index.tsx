@@ -196,22 +196,18 @@ export default function IranMap({ data }: IranMapProps) {
             <div>
               <div>تعداد سفارش:</div>
               <div>
-                {formatNumber(data[hoveredProvinceName].totalOrders)}{" "}
-                سفارش
+                {formatNumber(data[hoveredProvinceName].totalOrders)} سفارش
               </div>
             </div>
             <div>
               <div>تعداد کاربر:</div>
               <div>
-                {formatNumber(data[hoveredProvinceName].totalUsers)}{" "}
-                کاربر
+                {formatNumber(data[hoveredProvinceName].totalUsers)} کاربر
               </div>
             </div>
             <div>
               <div>فروش:</div>
-              <div>
-                {formatNumber(data[hoveredProvinceName].sale)} تومان
-              </div>
+              <div>{formatNumber(data[hoveredProvinceName].sale)} تومان</div>
             </div>
           </div>
         </div>

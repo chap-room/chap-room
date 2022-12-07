@@ -65,17 +65,11 @@ export default function DiscountTable({
                     ) : discount.type === "page" ? (
                       `${formatNumber(discount.value)} صفحه`
                     ) : discount.type === "pageBlackAndWhite" ? (
-                      `${formatNumber(
-                        discount.value
-                      )} صفحه (سیاه و سفید)`
+                      `${formatNumber(discount.value)} صفحه (سیاه و سفید)`
                     ) : discount.type === "pageNormalColor" ? (
-                      `${formatNumber(
-                        discount.value
-                      )} صفحه (رنگ معمولی)`
+                      `${formatNumber(discount.value)} صفحه (رنگ معمولی)`
                     ) : discount.type === "pageFullColor" ? (
-                      `${formatNumber(
-                        discount.value
-                      )} صفحه (تمام رنگ)`
+                      `${formatNumber(discount.value)} صفحه (تمام رنگ)`
                     ) : (
                       <></>
                     )}

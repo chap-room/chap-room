@@ -168,9 +168,7 @@ export default function Blog(props: PageProps) {
                 >
                   <Radio checked={selectedCategoryId === null} />
                   <div>همه</div>
-                  <div>
-                    {formatNumber(categoriesData.totalBlogs)}
-                  </div>
+                  <div>{formatNumber(categoriesData.totalBlogs)}</div>
                 </div>
                 {categoriesData.categories.map((category) => (
                   <div

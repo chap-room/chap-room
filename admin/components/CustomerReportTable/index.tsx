@@ -94,15 +94,13 @@ export default function CustomerReportTable({
                   <div>
                     <span>کیف پول:</span>
                     <span>
-                      {formatNumber(customerReport.walletBalance)}{" "}
-                      تومان
+                      {formatNumber(customerReport.walletBalance)} تومان
                     </span>
                   </div>
                   <div>
                     <span>بازاریابی:</span>
                     <span>
-                      {formatNumber(customerReport.marketingBalance)}{" "}
-                      تومان
+                      {formatNumber(customerReport.marketingBalance)} تومان
                     </span>
                   </div>
                 </div>

@@ -36,10 +36,7 @@ export default function DashboardNewPost() {
             </Link>
           }
         />
-        <MobileContentHeader
-          backTo="/dashboard/blog"
-          title="ایجاد بلاگ جدید"
-        />
+        <MobileContentHeader backTo="/dashboard/blog" title="ایجاد بلاگ جدید" />
         <PostForm
           onSave={(postFormData) =>
             newBlogPost(postFormData)

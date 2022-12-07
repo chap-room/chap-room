@@ -76,9 +76,7 @@ export default function OrderForm() {
           text: "",
         }}
       />
-      <div className={styles.SemiCircleProgressBarText}>
-        {progress}/3
-      </div>
+      <div className={styles.SemiCircleProgressBarText}>{progress}/3</div>
     </div>
   );
 

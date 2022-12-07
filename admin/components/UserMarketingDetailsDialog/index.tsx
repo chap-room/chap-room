@@ -93,16 +93,12 @@ export default function UserMarketingDetailsDialog({
               <div className={styles.Separator} />
               <div>
                 <div>کل فروش</div>
-                <div>
-                  {formatNumber(data!.referral.totalSale)} تومان
-                </div>
+                <div>{formatNumber(data!.referral.totalSale)} تومان</div>
               </div>
               <div className={styles.Separator} />
               <div>
                 <div>سهم کاربر</div>
-                <div>
-                  {formatNumber(data!.referral.benefit)} تومان
-                </div>
+                <div>{formatNumber(data!.referral.benefit)} تومان</div>
               </div>
             </div>
           </div>
@@ -127,16 +123,12 @@ export default function UserMarketingDetailsDialog({
               <div className={styles.Separator} />
               <div>
                 <div>کل فروش</div>
-                <div>
-                  {formatNumber(data!.discount.totalSales)} تومان
-                </div>
+                <div>{formatNumber(data!.discount.totalSales)} تومان</div>
               </div>
               <div className={styles.Separator} />
               <div>
                 <div>سهم کاربر</div>
-                <div>
-                  {formatNumber(data!.discount.benefit)} تومان
-                </div>
+                <div>{formatNumber(data!.discount.benefit)} تومان</div>
               </div>
             </div>
           </div>

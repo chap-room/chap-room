@@ -108,9 +108,7 @@ export default function DashboardWithdrawalRequests() {
         <ContentHeader
           title={title}
           subTitle={
-            data.totalCount
-              ? `(${formatNumber(data.totalCount)})`
-              : undefined
+            data.totalCount ? `(${formatNumber(data.totalCount)})` : undefined
           }
           end={
             <SwitchButtons

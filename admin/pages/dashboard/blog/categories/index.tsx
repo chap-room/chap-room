@@ -85,9 +85,7 @@ export default function DashboardBlogCategories() {
         <ContentHeader
           title="مدیریت دسته بندی بلاگ ها"
           subTitle={
-            data.totalCount
-              ? `(${formatNumber(data.totalCount)})`
-              : undefined
+            data.totalCount ? `(${formatNumber(data.totalCount)})` : undefined
           }
           end={
             <Link href="/dashboard/blog">

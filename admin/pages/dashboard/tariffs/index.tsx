@@ -36,10 +36,7 @@ export default function DashboardPrintPricesList() {
             </Link>
           }
         />
-        <MobileContentHeader
-          backTo="/dashboard"
-          title="لیست تعرفه ها"
-        />
+        <MobileContentHeader backTo="/dashboard" title="لیست تعرفه ها" />
         <DataLoader load={() => getPrintTariffs()} setData={setData}>
           <PrintTariffsTable
             printTariffs={data!}

@@ -132,10 +132,7 @@ export default function DashboardMarketingReport() {
             />
           }
         />
-        <MobileContentHeader
-          backTo="/dashboard"
-          title="گزارش ها"
-        />
+        <MobileContentHeader backTo="/dashboard" title="گزارش ها" />
         {tab === "link" && (
           <DataLoader
             load={() => getDedicatedLinkReports(search, page)}

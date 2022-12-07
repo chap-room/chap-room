@@ -67,8 +67,7 @@ export default function DedicatedLinkReportTable({
               <span className={styles.MobileLabel}>پورسانت کاربر:</span>
               <span className={styles.Commission}>
                 <span>
-                  {formatNumber(dedicatedLinkReport.referralBenefit)}{" "}
-                  تومان
+                  {formatNumber(dedicatedLinkReport.referralBenefit)} تومان
                 </span>
                 <span>({dedicatedLinkReport.referralCommission}٪)</span>
               </span>

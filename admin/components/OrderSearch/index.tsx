@@ -171,7 +171,10 @@ export default function OrderSearch() {
                           </td>
                           <td>{order.recipientName}</td>
                           <td>
-                            <div className={styles.Status} data-status={order.status}>
+                            <div
+                              className={styles.Status}
+                              data-status={order.status}
+                            >
                               <div>
                                 {
                                   {

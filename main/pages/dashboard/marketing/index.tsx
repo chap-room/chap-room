@@ -88,30 +88,22 @@ export default function DashboardMarketing() {
                 <div className={styles.Status}>
                   <div>
                     <div>تعداد مشاهده</div>
-                    <div>
-                      {formatNumber(data!.referral.viewCount)}
-                    </div>
+                    <div>{formatNumber(data!.referral.viewCount)}</div>
                   </div>
                   <div className={styles.Separator} />
                   <div>
                     <div>تعداد فروش</div>
-                    <div>
-                      {formatNumber(data!.referral.sellCount)}
-                    </div>
+                    <div>{formatNumber(data!.referral.sellCount)}</div>
                   </div>
                   <div className={styles.Separator} />
                   <div>
                     <div>کل فروش</div>
-                    <div>
-                      {formatNumber(data!.referral.totalSale)} تومان
-                    </div>
+                    <div>{formatNumber(data!.referral.totalSale)} تومان</div>
                   </div>
                   <div className={styles.Separator} />
                   <div>
                     <div>سهم کاربر</div>
-                    <div>
-                      {formatNumber(data!.referral.benefit)} تومان
-                    </div>
+                    <div>{formatNumber(data!.referral.benefit)} تومان</div>
                   </div>
                 </div>
               </div>
@@ -141,23 +133,17 @@ export default function DashboardMarketing() {
                 <div className={styles.Status}>
                   <div>
                     <div>دفعات استفاده</div>
-                    <div>
-                      {formatNumber(data!.discount.timesUsed)}
-                    </div>
+                    <div>{formatNumber(data!.discount.timesUsed)}</div>
                   </div>
                   <div className={styles.Separator} />
                   <div>
                     <div>کل فروش</div>
-                    <div>
-                      {formatNumber(data!.discount.totalSales)} تومان
-                    </div>
+                    <div>{formatNumber(data!.discount.totalSales)} تومان</div>
                   </div>
                   <div className={styles.Separator} />
                   <div>
                     <div>سهم کاربر</div>
-                    <div>
-                      {formatNumber(data!.discount.benefit)} تومان
-                    </div>
+                    <div>{formatNumber(data!.discount.benefit)} تومان</div>
                   </div>
                 </div>
               </div>

@@ -77,8 +77,7 @@ export default function DashboardFinancialRecordsTotalIncome() {
             <div className={styles.SubTitle}>
               {data.totalCreditor !== 0 && (
                 <div>
-                  (بستانکار کل: {formatNumber(data.totalCreditor)}{" "}
-                  تومان)
+                  (بستانکار کل: {formatNumber(data.totalCreditor)} تومان)
                 </div>
               )}
               {data.totalDebtor !== 0 && (
@@ -208,18 +207,14 @@ export default function DashboardFinancialRecordsTotalIncome() {
                 <div>
                   <div>بستانکار:</div>
                   <div>
-                    <div>
-                      {formatNumber(tooltipData.item.creditor)}
-                    </div>
+                    <div>{formatNumber(tooltipData.item.creditor)}</div>
                     <div>تومان</div>
                   </div>
                 </div>
                 <div>
                   <div>بدهکار:</div>
                   <div>
-                    <div>
-                      {formatNumber(tooltipData.item.debtor)}
-                    </div>
+                    <div>{formatNumber(tooltipData.item.debtor)}</div>
                     <div>تومان</div>
                   </div>
                 </div>

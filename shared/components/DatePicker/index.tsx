@@ -235,9 +235,7 @@ function MonthPicker({
         <button title="سال قبل" onClick={() => onPrevYear()}>
           <NextIcon />
         </button>
-        <span className={styles.title}>
-          {year.jYear()}
-        </span>
+        <span className={styles.title}>{year.jYear()}</span>
         <button title="سال بعد" onClick={() => onNextYear()}>
           <PrevIcon />
         </button>

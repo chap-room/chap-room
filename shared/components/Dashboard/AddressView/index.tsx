@@ -35,12 +35,8 @@ export default function AddressView({
       </div>
       <div>{address.recipientName}</div>
       <div>
-        <div>
-          شماره تلفن: {address.recipientPhoneNumber}
-        </div>
-        <div>
-          کد پستی: {address.recipientPostalCode}
-        </div>
+        <div>شماره تلفن: {address.recipientPhoneNumber}</div>
+        <div>کد پستی: {address.recipientPostalCode}</div>
       </div>
       <div>
         نشانی: استان {address.recipientDeliveryProvince}، شهر{" "}

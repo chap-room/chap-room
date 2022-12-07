@@ -35,10 +35,7 @@ export default function DashboardProfile() {
       />
       <SectionContent>
         <ContentHeader title="اطلاعات من" />
-        <MobileContentHeader
-          backTo="/dashboard"
-          title="تنظیمات پروفایل"
-        />
+        <MobileContentHeader backTo="/dashboard" title="تنظیمات پروفایل" />
         <DataLoader load={() => getProfile()} setData={setData}>
           <ProfileForm
             inputsVarient="shadow"
