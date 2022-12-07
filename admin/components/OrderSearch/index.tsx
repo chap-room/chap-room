@@ -12,7 +12,6 @@ import {
   size,
   useFocus,
 } from "@floating-ui/react-dom-interactions";
-import { FormattedDate, FormattedTime } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import { Order } from "@/shared/types";
@@ -22,10 +21,10 @@ import {
   getGlobalOrders,
   markOrderSent,
 } from "@/admin/api";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import { useDashboardData } from "@/admin/context/dashboardData";
 import SearchInput from "@/admin/components/SearchInput";
 import DataLoader from "@/shared/components/DataLoader";
+import { FormattedDate, FormattedTime } from "@/shared/components/Formatted";
 import EmptyNote from "@/shared/components/Dashboard/EmptyNote";
 import Pagination from "@/shared/components/Pagination";
 import OrderCancelDialog from "@/admin/components/OrderCancelDialog";
@@ -147,19 +146,14 @@ export default function OrderSearch() {
                     <tbody>
                       {data.orders.map((order) => (
                         <tr key={order.id}>
-                          <td>{englishToPersianNumbers(order.id)}</td>
+                          <td>{order.id}</td>
                           <td>
                             <div className={styles.Date}>
                               <div>
-                                <FormattedDate
-                                  value={new Date(order.createdAt)}
-                                />
+                                <FormattedDate value={order.createdAt} />
                               </div>
                               <div>
-                                <FormattedTime
-                                  value={new Date(order.createdAt)}
-                                  timeStyle="medium"
-                                />
+                                <FormattedTime value={order.createdAt} />
                               </div>
                             </div>
                           </td>
@@ -177,7 +171,7 @@ export default function OrderSearch() {
                           </td>
                           <td>{order.recipientName}</td>
                           <td>
-                            <div className={styles.Status}>
+                            <div className={styles.Status} data-status={order.status}>
                               <div>
                                 {
                                   {
@@ -189,9 +183,7 @@ export default function OrderSearch() {
                                 }
                               </div>
                               <div>
-                                <FormattedDate
-                                  value={new Date(order.updatedAt)}
-                                />
+                                <FormattedDate value={order.updatedAt} />
                               </div>
                             </div>
                           </td>
@@ -199,11 +191,7 @@ export default function OrderSearch() {
                             {order.status === "sent" ? (
                               <div>
                                 {order.trackingNumber && (
-                                  <div>
-                                    {englishToPersianNumbers(
-                                      order.trackingNumber
-                                    )}
-                                  </div>
+                                  <div>{order.trackingNumber}</div>
                                 )}
                                 {order.trackingUrl && (
                                   <div>

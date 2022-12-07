@@ -9,7 +9,6 @@ import {
   getDedicatedDiscountCodeReports,
   getDedicatedLinkReports,
 } from "@/admin/api";
-import { useLastPage } from "@/shared/context/lastPage";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
@@ -134,7 +133,7 @@ export default function DashboardMarketingReport() {
           }
         />
         <MobileContentHeader
-          backTo={useLastPage("/dashboard")}
+          backTo="/dashboard"
           title="گزارش ها"
         />
         {tab === "link" && (

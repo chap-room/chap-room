@@ -10,7 +10,6 @@ import {
   getOrder,
   markOrderSent,
 } from "@/admin/api";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import { useDashboardData } from "@/admin/context/dashboardData";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
@@ -25,7 +24,6 @@ import BottomActions from "@/shared/components/Dashboard/BottomActions";
 import OrderCancelDialog from "@/admin/components/OrderCancelDialog";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
 import OrderSentDialog from "@/admin/components/OrderSentDialog";
-import { useLastPage } from "@/shared/context/lastPage";
 
 export default function DashboardOrderDetails() {
   const dashboardData = useDashboardData();
@@ -40,7 +38,7 @@ export default function DashboardOrderDetails() {
 
   const reloadRef = useRef<(() => void) | null>(null);
 
-  const title = `سفارش ${englishToPersianNumbers(orderId)}`;
+  const title = `سفارش ${orderId}`;
 
   return (
     <>
@@ -55,14 +53,16 @@ export default function DashboardOrderDetails() {
         <ContentHeader
           title={title}
           subTitle={
-            data
-              ? `(${data.user.name} / ${englishToPersianNumbers(
-                  data.user.phoneNumber
-                )})`
-              : undefined
+            data ? `(${data.user.name} / ${data.user.phoneNumber})` : undefined
           }
           end={
-            <Link href={useLastPage("/dashboard/orders")}>
+            <Link
+              href={
+                typeof router.query.from === "string"
+                  ? router.query.from
+                  : "/dashboard/orders"
+              }
+            >
               <Button varient="none" style={{ padding: 0 }}>
                 بازگشت <ArrowBackIcon />
               </Button>
@@ -70,7 +70,11 @@ export default function DashboardOrderDetails() {
           }
         />
         <MobileContentHeader
-          backTo={useLastPage("/dashboard/orders")}
+          backTo={
+            typeof router.query.from === "string"
+              ? router.query.from
+              : "/dashboard/orders"
+          }
           title={title}
         />
         <DataLoader

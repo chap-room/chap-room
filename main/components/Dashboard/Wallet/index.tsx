@@ -1,8 +1,8 @@
 import styles from "./style.module.scss";
 import { useState } from "react";
-import { FormattedNumber } from "react-intl";
 import toast from "react-hot-toast";
 import { walletDeposit, walletWithdrawal } from "@/main/api";
+import { formatNumber } from "@/shared/utils/format";
 import { useDashboardData } from "@/main/context/dashboardData";
 import ExpandMoreIcon from "@/shared/assets/icons/expandMore.svg";
 import IncreasBalanceDialog from "@/main/components/Dashboard/IncreasBalanceDialog";
@@ -14,7 +14,8 @@ export default function Wallet() {
   const [showIncreasBalanceDialog, setShowIncreasBalanceDialog] =
     useState(false);
   const [showWithdrawBalanceDialog, setShowWithdrawBalanceDialog] =
-    useState(false);console.log(dashboardData);
+    useState(false);
+  console.log(dashboardData);
 
   return (
     <div
@@ -33,12 +34,10 @@ export default function Wallet() {
         <div className={styles.Balance}>
           موجودی:{" "}
           <span>
-            <FormattedNumber
-              value={
-                (dashboardData.data?.walletBalance || 0) +
+            {formatNumber(
+              (dashboardData.data?.walletBalance || 0) +
                 (dashboardData.data?.marketingBalance || 0)
-              }
-            />
+            )}
           </span>{" "}
           <span>تومان</span>
         </div>
@@ -49,9 +48,7 @@ export default function Wallet() {
         <div className={styles.WalletBalance}>
           <div>موجودی کیف پول:</div>
           <div>
-            <span>
-              <FormattedNumber value={dashboardData.data?.walletBalance || 0} />
-            </span>{" "}
+            <span>{formatNumber(dashboardData.data?.walletBalance || 0)}</span>{" "}
             تومان
           </div>
         </div>
@@ -59,9 +56,7 @@ export default function Wallet() {
           <div>موجودی فروش بازاریابی:</div>
           <div>
             <span>
-              <FormattedNumber
-                value={dashboardData.data?.marketingBalance || 0}
-              />
+              {formatNumber(dashboardData.data?.marketingBalance || 0)}
             </span>{" "}
             تومان
           </div>

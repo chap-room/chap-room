@@ -8,7 +8,6 @@ import {
   optionalValidate,
   validatePhoneNumber,
 } from "@/shared/utils/validation";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import TextInput from "@/shared/components/TextInput";
 import ErrorList from "@/shared/components/ErrorList";
 import Button from "@/shared/components/Button";
@@ -86,7 +85,7 @@ export default function ProfileForm({
               <ErrorList errors={formValidation.errors.name} />
             </>
           ) : (
-            englishToPersianNumbers(phoneNumber)
+            phoneNumber
           )}
         </div>
         <div className={styles.Label}>نام و نام خانوادگی:</div>

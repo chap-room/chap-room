@@ -1,6 +1,5 @@
 import styles from "./style.module.scss";
 import { useMemo } from "react";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import PrevIcon from "@/shared/assets/icons/navigateBefore.svg";
 import NextIcon from "@/shared/assets/icons/navigateNext.svg";
 
@@ -116,7 +115,7 @@ export default function Pagination({
             data-selected={pageNumber === currentPage}
             onClick={() => onPageChange(pageNumber)}
           >
-            {englishToPersianNumbers(pageNumber)}
+            {pageNumber}
           </button>
         )
       )}

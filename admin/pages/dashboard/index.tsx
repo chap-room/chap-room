@@ -1,9 +1,8 @@
 import styles from "./style.module.scss";
 import { ReactElement, useEffect, useState } from "react";
-import { FormattedNumber } from "react-intl";
 import Head from "next/head";
 import { request } from "@/admin/api";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
+import { formatNumber } from "@/shared/utils/format";
 import { DashboardData, useDashboardData } from "@/admin/context/dashboardData";
 import Avatar from "@/shared/components/Dashboard/Avatar";
 import DashboardLayout from "@/admin/components/Layout";
@@ -110,10 +109,7 @@ export function DashboardNonMobile({ data }: DashboardNonMobilePorps) {
                 />
               </div>
               <div>
-                <div>
-                  کل فروش: <FormattedNumber value={salesData.totalSales} />{" "}
-                  تومان
-                </div>
+                <div>کل فروش: {formatNumber(salesData.totalSales)} تومان</div>
               </div>
             </div>
             <DataLoader
@@ -130,7 +126,7 @@ export function DashboardNonMobile({ data }: DashboardNonMobilePorps) {
             >
               <BarChart
                 data={salesData.chart.map(({ time, creditor, debtor }) => ({
-                  label: englishToPersianNumbers(time),
+                  label: time,
                   value: creditor - debtor,
                   creditor,
                   debtor,
@@ -152,9 +148,7 @@ export function DashboardNonMobile({ data }: DashboardNonMobilePorps) {
                       <div>بستانکار:</div>
                       <div>
                         <div>
-                          <FormattedNumber
-                            value={salesTooltipData.item.creditor}
-                          />
+                          {formatNumber(salesTooltipData.item.creditor)}
                         </div>
                         <div>تومان</div>
                       </div>
@@ -162,11 +156,7 @@ export function DashboardNonMobile({ data }: DashboardNonMobilePorps) {
                     <div>
                       <div>بدهکار:</div>
                       <div>
-                        <div>
-                          <FormattedNumber
-                            value={salesTooltipData.item.debtor}
-                          />
-                        </div>
+                        <div>{formatNumber(salesTooltipData.item.debtor)}</div>
                         <div>تومان</div>
                       </div>
                     </div>
@@ -191,8 +181,7 @@ export function DashboardNonMobile({ data }: DashboardNonMobilePorps) {
               </div>
               <div>
                 <div>
-                  کل کاربران: <FormattedNumber value={usersData.totalUsers} />{" "}
-                  کاربر
+                  کل کاربران: {formatNumber(usersData.totalUsers)} کاربر
                 </div>
               </div>
             </div>
@@ -210,7 +199,7 @@ export function DashboardNonMobile({ data }: DashboardNonMobilePorps) {
             >
               <BarChart
                 data={usersData.chart.map(({ time, count }) => ({
-                  label: englishToPersianNumbers(time),
+                  label: time,
                   value: count,
                 }))}
                 setTooltipData={setUsersTooltipData}
@@ -225,10 +214,7 @@ export function DashboardNonMobile({ data }: DashboardNonMobilePorps) {
                     top: usersTooltipData.position.top,
                   }}
                 >
-                  <div>
-                    <FormattedNumber value={usersTooltipData.item.value} />{" "}
-                    کاربر
-                  </div>
+                  <div>{formatNumber(usersTooltipData.item.value)} کاربر</div>
                 </div>
               )}
             </DataLoader>
@@ -251,8 +237,7 @@ export function DashboardNonMobile({ data }: DashboardNonMobilePorps) {
               </div>
               <div>
                 <div>
-                  کل سفارشات: <FormattedNumber value={ordersData.totalOrders} />{" "}
-                  سفارش
+                  کل سفارشات: {formatNumber(ordersData.totalOrders)} سفارش
                 </div>
               </div>
             </div>
@@ -270,7 +255,7 @@ export function DashboardNonMobile({ data }: DashboardNonMobilePorps) {
             >
               <BarChart
                 data={ordersData.chart.map(({ time, count }) => ({
-                  label: englishToPersianNumbers(time),
+                  label: time,
                   value: count,
                 }))}
                 setTooltipData={setOrdersTooltipData}
@@ -285,10 +270,7 @@ export function DashboardNonMobile({ data }: DashboardNonMobilePorps) {
                     top: ordersTooltipData.position.top,
                   }}
                 >
-                  <div>
-                    <FormattedNumber value={ordersTooltipData.item.value} />{" "}
-                    سفارش
-                  </div>
+                  <div>{formatNumber(ordersTooltipData.item.value)} سفارش</div>
                 </div>
               )}
             </DataLoader>
@@ -308,9 +290,9 @@ export function DashboardNonMobile({ data }: DashboardNonMobilePorps) {
                 />
                 <FilterSelect
                   options={{
-                    one: `${englishToPersianNumbers(1)} سفارش`,
-                    two: `${englishToPersianNumbers(2)} سفارش`,
-                    three: `${englishToPersianNumbers(3)} سفارش و بیشتر`,
+                    one: "1 سفارش",
+                    two: "2 سفارش",
+                    three: "3 سفارش و بیشتر",
                   }}
                   value={usersOrdersFilter}
                   onChange={setUsersOrdersFilter}
@@ -322,29 +304,23 @@ export function DashboardNonMobile({ data }: DashboardNonMobilePorps) {
                   مشاهده کل
                   <div className={styles.UsersOrdersSeeAllTooltip}>
                     <div>
-                      <div>{englishToPersianNumbers(1)} سفارش:</div>
+                      <div>1 سفارش:</div>
                       <div>
-                        <FormattedNumber
-                          value={usersOrdersData.totalUsersWithOneOrder}
-                        />{" "}
+                        {formatNumber(usersOrdersData.totalUsersWithOneOrder)}{" "}
                         کاربر
                       </div>
                     </div>
                     <div>
-                      <div>{englishToPersianNumbers(2)} سفارش:</div>
+                      <div>2 سفارش:</div>
                       <div>
-                        <FormattedNumber
-                          value={usersOrdersData.totalUsersWithTwoOrder}
-                        />{" "}
+                        {formatNumber(usersOrdersData.totalUsersWithTwoOrder)}{" "}
                         کاربر
                       </div>
                     </div>
                     <div>
-                      <div>{englishToPersianNumbers(3)} سفارش و بیشتر:</div>
+                      <div>3 سفارش و بیشتر:</div>
                       <div>
-                        <FormattedNumber
-                          value={usersOrdersData.totalUsersWithThreeOrder}
-                        />{" "}
+                        {formatNumber(usersOrdersData.totalUsersWithThreeOrder)}{" "}
                         کاربر
                       </div>
                     </div>
@@ -369,7 +345,7 @@ export function DashboardNonMobile({ data }: DashboardNonMobilePorps) {
             >
               <BarChart
                 data={usersOrdersData.chart.map(({ time, count }) => ({
-                  label: englishToPersianNumbers(time),
+                  label: time,
                   value: count,
                 }))}
                 setTooltipData={setUsersOrdersTooltipData}
@@ -385,10 +361,7 @@ export function DashboardNonMobile({ data }: DashboardNonMobilePorps) {
                   }}
                 >
                   <div>
-                    <FormattedNumber
-                      value={usersOrdersTooltipData.item.value}
-                    />{" "}
-                    کاربر
+                    {formatNumber(usersOrdersTooltipData.item.value)} کاربر
                   </div>
                 </div>
               )}

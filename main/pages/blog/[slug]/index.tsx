@@ -1,9 +1,10 @@
 import styles from "./style.module.scss";
-import { FormattedDate, FormattedNumber } from "react-intl";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { Post } from "@/shared/types";
 import { getBlogPost } from "@/main/api";
+import { formatNumber } from "@/shared/utils/format";
+import { FormattedDate } from "@/shared/components/Formatted";
 import Layout from "@/main/components/Layout";
 import DateIcon from "@/shared/assets/icons/date.svg";
 import ViewIcon from "@/shared/assets/icons/view.svg";
@@ -45,7 +46,7 @@ export default function BlogPost({ data }: PageProps) {
               </div>
               <div>
                 <ViewIcon />
-                <FormattedNumber value={data.countOfViews || 0} />
+                {formatNumber(data.countOfViews || 0)}
               </div>
             </div>
             <h1 className={styles.PostTitle}>{data.title}</h1>

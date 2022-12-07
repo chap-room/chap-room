@@ -1,9 +1,8 @@
 import styles from "./style.module.scss";
 import { useState } from "react";
-import { FormattedNumber } from "react-intl";
 import { getUserMarketing } from "@/admin/api";
 import { User } from "@/shared/types";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
+import { formatNumber } from "@/shared/utils/format";
 import Dialog from "@/shared/components/Dialog";
 import DataLoader from "@/shared/components/DataLoader";
 import CopyableText from "@/shared/components/CopyableText";
@@ -62,11 +61,7 @@ export default function UserMarketingDetailsDialog({
       onClose={onClose}
       title="اطلاعات بازاریابی"
       subTitle={
-        data.user
-          ? `(${data.user.name} / ${englishToPersianNumbers(
-              data.user.phoneNumber
-            )})`
-          : undefined
+        data.user ? `(${data.user.name} / ${data.user.phoneNumber})` : undefined
       }
       fullScreenInMobile
     >
@@ -80,37 +75,33 @@ export default function UserMarketingDetailsDialog({
         <div className={styles.Container}>
           <div className={styles.DedicatedLink}>
             <div className={styles.Title}>لینک اختصاصی شما</div>
-            <CopyableText text={`https://chaproom.ir/?${data!.referral.slug}`}>
+            <CopyableText text={`https://chaproom.com/?${data!.referral.slug}`}>
               <div style={{ color: "#7d00ff" }}>
-                https://chaproom.ir/?{data!.referral.slug}
+                https://chaproom.com/?{data!.referral.slug}
               </div>
             </CopyableText>
             <div className={styles.Status}>
               <div>
                 <div>تعداد مشاهده</div>
-                <div>
-                  <FormattedNumber value={data!.referral.viewCount} />
-                </div>
+                <div>{formatNumber(data!.referral.viewCount)}</div>
               </div>
               <div className={styles.Separator} />
               <div>
                 <div>تعداد فروش</div>
-                <div>
-                  <FormattedNumber value={data!.referral.sellCount} />
-                </div>
+                <div>{formatNumber(data!.referral.sellCount)}</div>
               </div>
               <div className={styles.Separator} />
               <div>
                 <div>کل فروش</div>
                 <div>
-                  <FormattedNumber value={data!.referral.totalSale} /> تومان
+                  {formatNumber(data!.referral.totalSale)} تومان
                 </div>
               </div>
               <div className={styles.Separator} />
               <div>
                 <div>سهم کاربر</div>
                 <div>
-                  <FormattedNumber value={data!.referral.benefit} /> تومان
+                  {formatNumber(data!.referral.benefit)} تومان
                 </div>
               </div>
             </div>
@@ -121,10 +112,7 @@ export default function UserMarketingDetailsDialog({
             <div className={styles.DiscountCodes}>
               {data!.discount.data.map((item) => (
                 <div key={item.value}>
-                  <span>
-                    کد تخفیف{" "}
-                    <FormattedNumber value={item.value / 100} style="percent" />
-                  </span>
+                  <span>کد تخفیف {item.value}٪</span>
                   <CopyableText text="HGVFCD">
                     <div style={{ color: "#7d00ff" }}>{item.code}</div>
                   </CopyableText>
@@ -134,22 +122,20 @@ export default function UserMarketingDetailsDialog({
             <div className={styles.Status}>
               <div>
                 <div>دفعات استفاده</div>
-                <div>
-                  <FormattedNumber value={data!.discount.timesUsed} />
-                </div>
+                <div>{formatNumber(data!.discount.timesUsed)}</div>
               </div>
               <div className={styles.Separator} />
               <div>
                 <div>کل فروش</div>
                 <div>
-                  <FormattedNumber value={data!.discount.totalSales} /> تومان
+                  {formatNumber(data!.discount.totalSales)} تومان
                 </div>
               </div>
               <div className={styles.Separator} />
               <div>
                 <div>سهم کاربر</div>
                 <div>
-                  <FormattedNumber value={data!.discount.benefit} /> تومان
+                  {formatNumber(data!.discount.benefit)} تومان
                 </div>
               </div>
             </div>

@@ -1,6 +1,7 @@
 import styles from "./style.module.scss";
 import { Transaction } from "@/shared/types";
-import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
+import { formatNumber } from "@/shared/utils/format";
+import { FormattedDate, FormattedTime } from "@/shared/components/Formatted";
 
 interface TransactionTableProps {
   transactions: Transaction[];
@@ -28,19 +29,16 @@ export default function TransactionTable({
               <span className={styles.MobileLabel}>تاریخ:</span>
               <span className={styles.Date}>
                 <span>
-                  <FormattedDate value={new Date(transaction.createdAt)} />
+                  <FormattedDate value={transaction.createdAt} />
                 </span>
                 <span>
-                  <FormattedTime
-                    value={new Date(transaction.createdAt)}
-                    timeStyle="medium"
-                  />
+                  <FormattedTime value={transaction.createdAt} />
                 </span>
               </span>
             </td>
             <td>
               <span className={styles.MobileLabel}>مبلغ:</span>
-              <FormattedNumber value={transaction.amount} /> تومان
+              {formatNumber(transaction.amount)} تومان
             </td>
             <td>
               <span className={styles.MobileLabel}>جزییات:</span>

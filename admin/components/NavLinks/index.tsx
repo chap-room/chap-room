@@ -1,6 +1,7 @@
 import styles from "./style.module.scss";
 import { useRouter } from "next/router";
 import { logout } from "@/admin/api";
+import { formatNumber } from "@/shared/utils/format";
 import NavLink from "@/shared/components/NavLink";
 import NavigateBeforeIcon from "@/shared/assets/icons/navigateBefore.svg";
 import DashboardIcon from "@/shared/assets/icons/dashboard.svg";
@@ -16,7 +17,6 @@ import MarketingReportIcon from "@/admin/assets/icons/marketingReport.svg";
 import CustomerReportIcon from "@/admin/assets/icons/customerReport.svg";
 import ProfileIcon from "@/shared/assets/icons/profile.svg";
 import LogoutIcon from "@/shared/assets/icons/logout.svg";
-import { FormattedNumber } from "react-intl";
 
 interface DashboardNavLinksProps {
   sidebarData: {
@@ -57,7 +57,7 @@ export default function DashboardNavLinks({
           <div className={styles.Text}>سفارش ها</div>
           {sidebarData.countOfInProgressOrders > 0 && (
             <div className={styles.Count}>
-              <FormattedNumber value={sidebarData.countOfInProgressOrders} />
+              {formatNumber(sidebarData.countOfInProgressOrders)}
             </div>
           )}
           <div className={styles.Arrow}>
@@ -80,7 +80,7 @@ export default function DashboardNavLinks({
           <div className={styles.Text}>درخواست های همکاری</div>
           {sidebarData.countOfPendingCooperations > 0 && (
             <div className={styles.Count}>
-              <FormattedNumber value={sidebarData.countOfPendingCooperations} />
+              {formatNumber(sidebarData.countOfPendingCooperations)}
             </div>
           )}
           <div className={styles.Arrow}>
@@ -103,7 +103,7 @@ export default function DashboardNavLinks({
           <div className={styles.Text}>درخواست های برداشت</div>
           {sidebarData.countOfPendingWithdrawals > 0 && (
             <div className={styles.Count}>
-              <FormattedNumber value={sidebarData.countOfPendingWithdrawals} />
+              {formatNumber(sidebarData.countOfPendingWithdrawals)}
             </div>
           )}
           <div className={styles.Arrow}>

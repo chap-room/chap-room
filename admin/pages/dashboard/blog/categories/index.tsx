@@ -1,6 +1,5 @@
 import styles from "./style.module.scss";
 import { ReactElement, useEffect, useRef, useState } from "react";
-import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
@@ -11,7 +10,7 @@ import {
   getBlogCategories,
   newBlogCategory,
 } from "@/admin/api";
-import { useLastPage } from "@/shared/context/lastPage";
+import { formatNumber } from "@/shared/utils/format";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -29,7 +28,6 @@ import Pagination from "@/shared/components/Pagination";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
 
 export default function DashboardBlogCategories() {
-  const intl = useIntl();
   const router = useRouter();
 
   const [data, setData] = useState<{
@@ -88,11 +86,11 @@ export default function DashboardBlogCategories() {
           title="مدیریت دسته بندی بلاگ ها"
           subTitle={
             data.totalCount
-              ? `(${intl.formatNumber(data.totalCount)})`
+              ? `(${formatNumber(data.totalCount)})`
               : undefined
           }
           end={
-            <Link href={useLastPage("/dashboard/blog")}>
+            <Link href="/dashboard/blog">
               <Button varient="none" style={{ padding: 0 }}>
                 بازگشت <ArrowBackIcon />
               </Button>
@@ -100,7 +98,7 @@ export default function DashboardBlogCategories() {
           }
         />
         <MobileContentHeader
-          backTo={useLastPage("/dashboard/blog")}
+          backTo="/dashboard/blog"
           title="مدیریت دسته بندی بلاگ ها"
         />
         <Controls

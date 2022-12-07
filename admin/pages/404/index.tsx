@@ -1,7 +1,6 @@
 import styles from "./style.module.scss";
 import Head from "next/head";
 import Link from "next/link";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import LogoWithName from "@/shared/assets/images/logoWithName.svg";
 import Button from "@/shared/components/Button";
 
@@ -19,7 +18,7 @@ export default function NotFound() {
         </Link>
       </div>
       <div className={styles.Content}>
-        <div className={styles.ErrorNumber}>{englishToPersianNumbers(404)}</div>
+        <div className={styles.ErrorNumber}>404</div>
         <h1>این صفحه در دسترس نیست</h1>
         <p>
           این صفحه موجود نیست یا پاک شده است!

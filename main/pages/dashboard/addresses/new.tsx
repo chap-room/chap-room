@@ -4,7 +4,6 @@ import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
 import { newAddress } from "@/main/api";
-import { useLastPage } from "@/shared/context/lastPage";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/main/components/Dashboard/Layout";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
@@ -30,7 +29,7 @@ export default function DashboardNewAddresse() {
         <ContentHeader
           title="افزودن آدرس جدید"
           end={
-            <Link href={useLastPage("/dashboard/addresses")}>
+            <Link href="/dashboard/addresses">
               <Button varient="none" style={{ padding: 0 }}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
@@ -38,7 +37,7 @@ export default function DashboardNewAddresse() {
           }
         />
         <MobileContentHeader
-          backTo={useLastPage("/dashboard/addresses")}
+          backTo="/dashboard/addresses"
           title="افزودن آدرس جدید"
         />
         <AddressForm

@@ -1,6 +1,6 @@
 import styles from "./style.module.scss";
 import { useEffect, useState } from "react";
-import { FormattedNumber } from "react-intl";
+import { formatNumber } from "@/shared/utils/format";
 
 function useMouse() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -196,23 +196,21 @@ export default function IranMap({ data }: IranMapProps) {
             <div>
               <div>تعداد سفارش:</div>
               <div>
-                <FormattedNumber
-                  value={data[hoveredProvinceName].totalOrders}
-                />{" "}
+                {formatNumber(data[hoveredProvinceName].totalOrders)}{" "}
                 سفارش
               </div>
             </div>
             <div>
               <div>تعداد کاربر:</div>
               <div>
-                <FormattedNumber value={data[hoveredProvinceName].totalUsers} />{" "}
+                {formatNumber(data[hoveredProvinceName].totalUsers)}{" "}
                 کاربر
               </div>
             </div>
             <div>
               <div>فروش:</div>
               <div>
-                <FormattedNumber value={data[hoveredProvinceName].sale} /> تومان
+                {formatNumber(data[hoveredProvinceName].sale)} تومان
               </div>
             </div>
           </div>

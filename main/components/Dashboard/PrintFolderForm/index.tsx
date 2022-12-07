@@ -1,6 +1,5 @@
 import styles from "./style.module.scss";
 import { useEffect, useState } from "react";
-import { FormattedNumber } from "react-intl";
 import toast from "react-hot-toast";
 import { BindingOptions, PrintFile, Tariffs } from "@/shared/types";
 import {
@@ -15,10 +14,6 @@ import {
   validateInt,
   validateNotEmpty,
 } from "@/shared/utils/validation";
-import {
-  englishToPersianNumbers,
-  persianToEnglishNumbers,
-} from "@/shared/utils/numbers";
 import DeleteIcon from "@/shared/assets/icons/delete.svg";
 import CloseIcon from "@/shared/assets/icons/close.svg";
 import Button from "@/shared/components/Button";
@@ -250,7 +245,7 @@ export default function PrintFolderForm({
     <DataLoaderView state={printPrice.dataLoaderState} size="small">
       {printPrice.data && (
         <div className={styles.PrintPriceView}>
-          مبلغ: <FormattedNumber value={printPrice.data} /> تومان
+          مبلغ: {printPrice.data} تومان
         </div>
       )}
     </DataLoaderView>
@@ -301,7 +296,7 @@ export default function PrintFolderForm({
         !step2FormValidation.isValid
       }
     >
-      ثبت پوشه {englishToPersianNumbers(index)}
+      ثبت پوشه {index}
     </Button>
   );
 
@@ -417,7 +412,7 @@ export default function PrintFolderForm({
                       >
                         <div className={styles.SocialMediaUploadFiles}>
                           <div className={styles.FolderCode}>
-                            <div>کد پوشه {englishToPersianNumbers(index)}:</div>
+                            <div>کد پوشه {index}:</div>
                             <div>
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -445,11 +440,7 @@ export default function PrintFolderForm({
                                     <CopyIcon width={20} height={20} />
                                   </IconButton>
                                 </CopyToClipboard>
-                                <div>
-                                  {englishToPersianNumbers(
-                                    socialMediaFileSendData?.folderCode || ""
-                                  )}
-                                </div>
+                                <div>{socialMediaFileSendData?.folderCode}</div>
                               </div>
                             </div>
                           </div>
@@ -465,10 +456,7 @@ export default function PrintFolderForm({
                             <div className={styles.EitaaAccount}>
                               <EitaaIcon />
                               <div>
-                                {englishToPersianNumbers(
-                                  socialMediaFileSendData?.phoneNumberToSendFile ||
-                                    ""
-                                )}
+                                {socialMediaFileSendData?.phoneNumberToSendFile}
                               </div>
                             </div>
                           </div>
@@ -536,15 +524,12 @@ export default function PrintFolderForm({
                         <div className={styles.InputContainer}>
                           <TextInput
                             inputProps={{
+                              type: "number",
                               placeholder: "تعداد برگ",
                             }}
                             varient="shadow-without-bg"
-                            value={englishToPersianNumbers(countOfPages)}
-                            onChange={(newValue) =>
-                              setCountOfPages(
-                                persianToEnglishNumbers(newValue, false)
-                              )
-                            }
+                            value={countOfPages}
+                            onChange={setCountOfPages}
                             height={48}
                           />
                           <ErrorList
@@ -557,12 +542,7 @@ export default function PrintFolderForm({
                             setData={setTariffs}
                             size="small"
                           >
-                            {pagePrice && (
-                              <>
-                                قیمت هر برگ:{" "}
-                                <FormattedNumber value={pagePrice} /> تومان
-                              </>
-                            )}
+                            {pagePrice && `قیمت هر برگ: ${pagePrice} تومان`}
                           </DataLoader>
                         </div>
                       </div>
@@ -660,15 +640,12 @@ export default function PrintFolderForm({
                               <div className={styles.NumberOfFiles}>
                                 <TextInput
                                   inputProps={{
+                                    type: "number",
                                     placeholder: "تعداد",
                                   }}
                                   varient="shadow-without-bg"
-                                  value={englishToPersianNumbers(countOfFiles)}
-                                  onChange={(newValue) =>
-                                    setCountOfFiles(
-                                      persianToEnglishNumbers(newValue, false)
-                                    )
-                                  }
+                                  value={countOfFiles}
+                                  onChange={setCountOfFiles}
                                   readOnly={bindingMethod !== "countOfFiles"}
                                 />
                               </div>
@@ -740,15 +717,12 @@ export default function PrintFolderForm({
                       <div className={styles.CopiesCount}>
                         <TextInput
                           inputProps={{
+                            type: "number",
                             placeholder: "تعداد سری ( نسخه )",
                           }}
                           varient="shadow-without-bg"
-                          value={englishToPersianNumbers(countOfCopies)}
-                          onChange={(newValue) =>
-                            setCountOfCopies(
-                              persianToEnglishNumbers(newValue, false)
-                            )
-                          }
+                          value={countOfCopies}
+                          onChange={setCountOfCopies}
                         />
                       </div>
                       <ErrorList
@@ -792,13 +766,7 @@ function UploadedPrintFile({ printFile, onDelete }: UploadedPrintFileProps) {
     <div className={styles.UploadedPrintFile}>
       <div>
         {printFile.name}
-        {printFile.countOfPages && (
-          <>
-            {" ("}
-            <FormattedNumber value={printFile.countOfPages} />
-            {" صفحه)"}
-          </>
-        )}
+        {printFile.countOfPages && ` (${printFile.countOfPages} صفحه)`}
       </div>
       <div className={styles.DeleteIcon}>
         <IconButton size={36} onClick={() => onDelete()}>
@@ -850,7 +818,7 @@ function UploadPrintFile({
         </div>
       </div>
       <div>
-        <FormattedNumber value={progress} style="percent" />
+        {progress * 100}٪
         <ProgressBar progress={progress} />
       </div>
     </div>

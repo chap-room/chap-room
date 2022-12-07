@@ -1,14 +1,13 @@
 import styles from "./style.module.scss";
-import { FormattedNumber } from "react-intl";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import toast from "react-hot-toast";
+import { uploadBlogPostImage } from "@/admin/api";
+import { useDataLoader } from "@/shared/components/DataLoader";
 import UploadImage from "@/shared/assets/images/upload.svg";
 import ProgressBar from "@/shared/components/ProgressBar";
 import CloseIcon from "@/shared/assets/icons/close.svg";
 import IconButton from "@/shared/components/IconButton";
-import toast from "react-hot-toast";
-import { request, uploadBlogPostImage } from "@/admin/api";
 import Button from "@/shared/components/Button";
-import { useDataLoader } from "@/shared/components/DataLoader";
 
 interface PostThumbnailUploadProps {
   value: string | null;
@@ -98,7 +97,7 @@ export default function PostThumbnailUpload({
             </div>
           </div>
           <div>
-            <FormattedNumber value={progress} style="percent" />
+            {progress * 100}٪
             <ProgressBar progress={progress} />
           </div>
         </div>

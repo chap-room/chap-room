@@ -1,20 +1,13 @@
 import styles from "./style.module.scss";
 import { Order } from "@/shared/types";
-import {
-  FormattedDate,
-  FormattedNumber,
-  FormattedTime,
-  useIntl,
-} from "react-intl";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
+import { FormattedDate, FormattedTime } from "@/shared/components/Formatted";
+import { formatNumber } from "@/shared/utils/format";
 
 interface OrderDetailsProps {
   order: Order;
 }
 
 export default function OrderDetails({ order }: OrderDetailsProps) {
-  const intl = useIntl();
-
   return (
     <table className={styles.OrderDetails} key={order.id}>
       <tbody>
@@ -25,7 +18,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
               <div className={styles.Summary}>
                 {order.printFolders.map((printFolder, index) => (
                   <div key={index}>
-                    <div>پوشه {englishToPersianNumbers(index + 1)}:</div>
+                    <div>پوشه {formatNumber(index + 1)}:</div>
                     <div>
                       {[
                         {
@@ -37,7 +30,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                         { singleSided: "یک رو", doubleSided: "دو رو" }[
                           printFolder.printSide
                         ],
-                        `${intl.formatNumber(printFolder.countOfPages)} صفحه`,
+                        `${formatNumber(printFolder.countOfPages)} صفحه`,
                         ...(printFolder.bindingOptions === null
                           ? []
                           : [
@@ -53,7 +46,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                                     allFilesTogether: "هر فایل جدا",
                                     eachFileSeparated: "همه فایل ها با هم",
                                   }[printFolder.bindingOptions.bindingMethod]
-                                : `${intl.formatNumber(
+                                : `${formatNumber(
                                     printFolder.bindingOptions.countOfFiles || 0
                                   )} فایل`,
                               {
@@ -61,9 +54,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                                 blackAndWhite: "جلد سیاه و سفید",
                               }[printFolder.bindingOptions.coverColor],
                             ]),
-                        `${intl.formatNumber(
-                          printFolder.countOfCopies || 1
-                        )} نسخه`,
+                        `${formatNumber(printFolder.countOfCopies || 1)} نسخه`,
                       ].join(" / ")}
                     </div>
                   </div>
@@ -83,16 +74,13 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
 
                   return (
                     <div key={index}>
-                      <div>پوشه {englishToPersianNumbers(index + 1)}:</div>
+                      <div>پوشه {formatNumber(index + 1)}:</div>
                       {printFolder.filesManuallySent ? (
                         <div>از طریق تلگرام و ایتا</div>
                       ) : (
                         <div>
                           <span>
-                            <FormattedNumber
-                              value={printFolder.printFiles.length}
-                            />{" "}
-                            فایل
+                            {formatNumber(printFolder.printFiles.length)} فایل
                           </span>
                           <a href={printFolder.filesUrl} target="_blank">
                             دانلود
@@ -104,9 +92,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                                 : styles.NotMatch
                             }
                           >
-                            مجموع:{" "}
-                            <FormattedNumber value={printFolder.countOfPages} />{" "}
-                            صفحه
+                            مجموع: {formatNumber(printFolder.countOfPages)} صفحه
                           </span>
                         </div>
                       )}
@@ -124,7 +110,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
               <div className={styles.Descriptions}>
                 {order.printFolders.map((printFolder, index) => (
                   <div key={index}>
-                    <div>پوشه {englishToPersianNumbers(index + 1)}:</div>
+                    <div>پوشه {formatNumber(index + 1)}:</div>
                     <div>
                       {printFolder.description
                         ? printFolder.description
@@ -142,13 +128,10 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
               <div className={styles.Label}>تاریخ سفارش:</div>
               <div className={styles.OrderDate}>
                 <span>
-                  <FormattedDate value={new Date(order.createdAt)} />
+                  <FormattedDate value={order.createdAt} />
                 </span>
                 <span>
-                  <FormattedTime
-                    value={new Date(order.createdAt)}
-                    timeStyle="medium"
-                  />
+                  <FormattedTime value={order.createdAt} />
                 </span>
               </div>
             </div>
@@ -162,13 +145,13 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
           <td className={styles.Cell25}>
             <div className={styles.Cell}>
               <div className={styles.Label}>شماره تماس تحویل گیرنده:</div>
-              <div>{englishToPersianNumbers(order.recipientPhoneNumber)}</div>
+              <div>{order.recipientPhoneNumber}</div>
             </div>
           </td>
           <td className={styles.Cell25}>
             <div className={styles.Cell}>
               <div className={styles.Label}>کدپستی تحویل گیرنده:</div>
-              <div>{englishToPersianNumbers(order.recipientPostalCode)}</div>
+              <div>{order.recipientPostalCode}</div>
             </div>
           </td>
         </tr>
@@ -188,15 +171,11 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
             <div className={styles.Cell}>
               <div className={styles.Label}>مبلغ سفارش:</div>
               <div className={styles.OrderAmount}>
-                <div>
-                  <FormattedNumber value={order.amount} /> تومان
-                </div>
+                <div>{formatNumber(order.amount)} تومان</div>
                 {order.postageFee && (
                   <div>
                     <span>ارسال:</span>
-                    <span>
-                      <FormattedNumber value={order.postageFee} /> تومان
-                    </span>
+                    <span>{formatNumber(order.postageFee)} تومان</span>
                   </div>
                 )}
               </div>
@@ -207,9 +186,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
               <div className={styles.Label}>مبلغ تخفیف:</div>
               {order.discountAmount ? (
                 <div className={styles.DiscountAmount}>
-                  <div>
-                    <FormattedNumber value={order.discountAmount} /> تومان
-                  </div>
+                  <div>{formatNumber(order.discountAmount)} تومان</div>
                   {order.discountCode && (
                     <div>
                       <span>کد:</span>
@@ -232,17 +209,13 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                 {!!order.gatewayPaidAmount && (
                   <div>
                     <div>درگاه پرداخت:</div>
-                    <div>
-                      <FormattedNumber value={order.gatewayPaidAmount} /> تومان
-                    </div>
+                    <div>{formatNumber(order.gatewayPaidAmount)} تومان</div>
                   </div>
                 )}
                 {!!order.walletPaidAmount && (
                   <div>
                     <div>کیف پول:</div>
-                    <div>
-                      <FormattedNumber value={order.walletPaidAmount} /> تومان
-                    </div>
+                    <div>{formatNumber(order.walletPaidAmount)} تومان</div>
                   </div>
                 )}
               </div>
@@ -253,17 +226,8 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
           <td className={styles.Cell25}>
             <div className={styles.Cell}>
               <div className={styles.Label}>وضعیت سفارش:</div>
-              <div className={styles.OrderStatus}>
-                <div
-                  className={
-                    {
-                      canceled: styles.Canceled,
-                      pending: styles.Pending,
-                      preparing: styles.Preparing,
-                      sent: styles.Sent,
-                    }[order.status]
-                  }
-                >
+              <div className={styles.OrderStatus} data-status={order.status}>
+                <div>
                   <div>
                     {
                       {
@@ -279,15 +243,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                   )}
                 </div>
                 <div>
-                  <div>
-                    <FormattedDate value={new Date(order.updatedAt)} />
-                  </div>
-                  <div>
-                    <FormattedTime
-                      value={new Date(order.updatedAt)}
-                      timeStyle="medium"
-                    />
-                  </div>
+                  <FormattedDate value={order.updatedAt} />
                 </div>
               </div>
             </div>
@@ -295,27 +251,15 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
           <td className={styles.Cell25}>
             <div className={styles.Cell}>
               <div className={styles.Label}>کد پیگیری پستی:</div>
-              <div>
-                {order.trackingNumber
-                  ? englishToPersianNumbers(order.trackingNumber)
-                  : "---"}
-              </div>
+              <div>{order.trackingNumber ? order.trackingNumber : "---"}</div>
             </div>
           </td>
           <td className={styles.Cell25}>
             <div className={styles.Cell}>
               <div className={styles.Label}>تاریخ ارسال:</div>
-              {order.sendAt ? (
-                <div className={styles.OrderPostageDate}>
-                  <span>
-                    <FormattedDate value={new Date(order.sendAt)} />
-                  </span>
-                  <span>
-                    <FormattedTime
-                      value={new Date(order.sendAt)}
-                      timeStyle="medium"
-                    />
-                  </span>
+              {order.sentAt ? (
+                <div>
+                  <FormattedDate value={order.sentAt} />
                 </div>
               ) : (
                 "---"

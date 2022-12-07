@@ -1,13 +1,11 @@
 import styles from "./style.module.scss";
 import { ReactElement, useEffect, useState } from "react";
-import { FormattedNumber } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import { CustomerReport } from "@/shared/types";
 import { getCustomerReports, getCustomerReportsExcel } from "@/admin/api";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
-import { useLastPage } from "@/shared/context/lastPage";
+import { formatNumber } from "@/shared/utils/format";
 import DownloadIcon from "@/admin/assets/icons/download.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -170,16 +168,12 @@ export default function DashboardCustomerReport() {
                 مجموع بر اساس فیلتر:
               </div>
               <div>
-                تعداد: <FormattedNumber value={data.totalCount} /> کاربر -{" "}
-                <FormattedNumber value={data.totalOrdersCount} /> سفارش
+                تعداد: {formatNumber(data.totalCount)} کاربر -{" "}
+                {formatNumber(data.totalOrdersCount)} سفارش
               </div>
-              <div>
-                {"("}بستانکار کل: <FormattedNumber value={data.totalCreditor} />{" "}
-                تومان{")"}
-              </div>
+              <div>(بستانکار کل: {formatNumber(data.totalCreditor)} تومان)</div>
               <div style={{ color: "#f20f4b" }}>
-                {"("}بدهکار کل: <FormattedNumber value={data.totalDebtor} />{" "}
-                تومان{")"}
+                (بدهکار کل: {formatNumber(data.totalDebtor)} تومان)
               </div>
             </div>
           }
@@ -203,7 +197,7 @@ export default function DashboardCustomerReport() {
           }
         />
         <MobileContentHeader
-          backTo={useLastPage("/dashboard")}
+          backTo="/dashboard"
           title="کاربران"
           end={
             <IconButton
@@ -292,11 +286,9 @@ export default function DashboardCustomerReport() {
                       mostToLowestPayment: "بیشترین به کمترین پرداختی",
                       lowestToMostPayment: "کمترین به بیشترین پرداختی",
                       withoutOrder: "بدون سفارش",
-                      oneOrder: `${englishToPersianNumbers(1)} سفارش`,
-                      twoOrder: `${englishToPersianNumbers(2)} سفارش`,
-                      threeAndMoreOrder: `${englishToPersianNumbers(
-                        3
-                      )} سفارش و بیشتر`,
+                      oneOrder: "1 سفارش",
+                      twoOrder: "2 سفارش",
+                      threeAndMoreOrder: "3 سفارش و بیشتر",
                     }}
                     value={sortOrder}
                     onChange={(newValue) => {
@@ -328,7 +320,11 @@ export default function DashboardCustomerReport() {
           <CustomerReportTable
             customerReports={data.reports}
             onSeeUserOrderList={(userId) =>
-              router.push(`/dashboard/users/${userId}/orders`)
+              router.push(
+                `/dashboard/users/${userId}/orders?from=${encodeURIComponent(
+                  router.asPath
+                )}`
+              )
             }
           />
           {!data.reports.length && <EmptyNote>هیچ گزارشی وجود ندارد</EmptyNote>}

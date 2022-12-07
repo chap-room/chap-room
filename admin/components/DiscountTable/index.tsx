@@ -1,7 +1,7 @@
 import styles from "./style.module.scss";
-import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
 import { Discount } from "@/shared/types";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
+import { formatNumber } from "@/shared/utils/format";
+import { FormattedDate, FormattedTime } from "@/shared/components/Formatted";
 import EditIcon from "@/shared/assets/icons/edit.svg";
 import DeletetIcon from "@/shared/assets/icons/delete.svg";
 import IconButton from "@/shared/components/IconButton";
@@ -44,12 +44,10 @@ export default function DiscountTable({
                 <span>
                   <span>{discount.user.name}</span>
                   <br />
-                  <span>
-                    {englishToPersianNumbers(discount.user.phoneNumber)}
-                  </span>
+                  <span>{discount.user.phoneNumber}</span>
                 </span>
               ) : discount.phoneNumber !== null ? (
-                <span>{englishToPersianNumbers(discount.phoneNumber)}</span>
+                <span>{discount.phoneNumber}</span>
               ) : (
                 <span>عمومی</span>
               )}
@@ -61,32 +59,23 @@ export default function DiscountTable({
                   <span>مقدار:</span>
                   <span>
                     {discount.type === "fixed" ? (
-                      <>
-                        <FormattedNumber value={discount.value} /> تومان
-                      </>
+                      `${formatNumber(discount.value)} تومان`
                     ) : discount.type === "percentage" ? (
-                      <>
-                        <FormattedNumber value={discount.value} /> درصد
-                      </>
+                      `${formatNumber(discount.value)} درصد`
                     ) : discount.type === "page" ? (
-                      <>
-                        <FormattedNumber value={discount.value} /> صفحه
-                      </>
+                      `${formatNumber(discount.value)} صفحه`
                     ) : discount.type === "pageBlackAndWhite" ? (
-                      <>
-                        <FormattedNumber value={discount.value} /> صفحه (سیاه و
-                        سفید)
-                      </>
+                      `${formatNumber(
+                        discount.value
+                      )} صفحه (سیاه و سفید)`
                     ) : discount.type === "pageNormalColor" ? (
-                      <>
-                        <FormattedNumber value={discount.value} /> صفحه (رنگ
-                        معمولی)
-                      </>
+                      `${formatNumber(
+                        discount.value
+                      )} صفحه (رنگ معمولی)`
                     ) : discount.type === "pageFullColor" ? (
-                      <>
-                        <FormattedNumber value={discount.value} /> صفحه (تمام
-                        رنگ)
-                      </>
+                      `${formatNumber(
+                        discount.value
+                      )} صفحه (تمام رنگ)`
                     ) : (
                       <></>
                     )}
@@ -96,8 +85,8 @@ export default function DiscountTable({
                   <span>
                     <span>محدودیت استفاده:</span>
                     <span>
-                      <FormattedNumber value={discount.usageLimit} /> بار /{" "}
-                      <FormattedNumber value={discount.timesUsed || 0} /> بار
+                      {formatNumber(discount.usageLimit)} بار /{" "}
+                      {formatNumber(discount.timesUsed || 0)} بار
                     </span>
                   </span>
                 )}
@@ -105,11 +94,8 @@ export default function DiscountTable({
                   <span>
                     <span>تاریخ انقضا:</span>
                     <span>
-                      <FormattedDate value={new Date(discount.expireAt)} />{" "}
-                      <FormattedTime
-                        value={discount.expireAt}
-                        timeStyle="medium"
-                      />
+                      <FormattedDate value={discount.expireAt} />{" "}
+                      <FormattedTime value={discount.expireAt} />
                     </span>
                   </span>
                 )}

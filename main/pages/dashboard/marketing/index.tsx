@@ -1,9 +1,7 @@
 import styles from "./style.module.scss";
 import { ReactElement, useState } from "react";
-import { FormattedNumber } from "react-intl";
 import Head from "next/head";
 import { getMarketing } from "@/main/api";
-import { useLastPage } from "@/shared/context/lastPage";
 import LinkIcon from "@/main/assets/icons/link.svg";
 import PercentIcon from "@/main/assets/icons/percent.svg";
 import DashboardLayout from "@/main/components/Dashboard/Layout";
@@ -12,6 +10,7 @@ import SectionContent from "@/shared/components/Dashboard/SectionContent";
 import MobileContentHeader from "@/shared/components/Dashboard/MobileContentHeader";
 import DataLoader from "@/shared/components/DataLoader";
 import CopyableText from "@/shared/components/CopyableText";
+import { formatNumber } from "@/shared/utils/format";
 
 export default function DashboardMarketing() {
   const [data, setData] = useState<{
@@ -59,10 +58,7 @@ export default function DashboardMarketing() {
         description="ــ با استفاده از این سیستم به راحتی می توانید درآمد برای خود ایجاد نمایید"
       />
       <SectionContent>
-        <MobileContentHeader
-          backTo={useLastPage("/dashboard")}
-          title="پنل بازاریابی"
-        />
+        <MobileContentHeader backTo="/dashboard" title="پنل بازاریابی" />
         <DataLoader load={() => getMarketing()} setData={setData}>
           <div className={styles.Container}>
             <div className={styles.DedicatedLink}>
@@ -75,8 +71,7 @@ export default function DashboardMarketing() {
                   لینک شما تا یک ماه بعد (حتی اگر کاربر شما توسط لینک‌های دیگر
                   وارد سایت چاپ روم شود) کاربر خریدی انجام دهد،{" "}
                   <span className={styles.Highlight}>
-                    {<FormattedNumber value={data!.referral.commission} />} درصد
-                    از خرید آن مشتری
+                    {data!.referral.commission} درصد از خرید آن مشتری
                   </span>{" "}
                   در پنل بازاریابی شما لحاظ می‌شود.
                 </div>
@@ -84,38 +79,38 @@ export default function DashboardMarketing() {
               <div>
                 <div className={styles.Title}>لینک اختصاصی شما</div>
                 <CopyableText
-                  text={`https://chaproom.ir/?${data!.referral.slug}`}
+                  text={`https://chaproom.com/?${data!.referral.slug}`}
                 >
                   <div style={{ color: "#7d00ff" }}>
-                    https://chaproom.ir/?{data!.referral.slug}
+                    https://chaproom.com/?{data!.referral.slug}
                   </div>
                 </CopyableText>
                 <div className={styles.Status}>
                   <div>
                     <div>تعداد مشاهده</div>
                     <div>
-                      <FormattedNumber value={data!.referral.viewCount} />
+                      {formatNumber(data!.referral.viewCount)}
                     </div>
                   </div>
                   <div className={styles.Separator} />
                   <div>
                     <div>تعداد فروش</div>
                     <div>
-                      <FormattedNumber value={data!.referral.sellCount} />
+                      {formatNumber(data!.referral.sellCount)}
                     </div>
                   </div>
                   <div className={styles.Separator} />
                   <div>
                     <div>کل فروش</div>
                     <div>
-                      <FormattedNumber value={data!.referral.totalSale} /> تومان
+                      {formatNumber(data!.referral.totalSale)} تومان
                     </div>
                   </div>
                   <div className={styles.Separator} />
                   <div>
                     <div>سهم کاربر</div>
                     <div>
-                      <FormattedNumber value={data!.referral.benefit} /> تومان
+                      {formatNumber(data!.referral.benefit)} تومان
                     </div>
                   </div>
                 </div>
@@ -136,13 +131,7 @@ export default function DashboardMarketing() {
                 <div className={styles.DiscountCodes}>
                   {data!.discount.data.map((item) => (
                     <div key={item.value}>
-                      <span>
-                        کد تخفیف{" "}
-                        <FormattedNumber
-                          value={item.value / 100}
-                          style="percent"
-                        />
-                      </span>
+                      <span>کد تخفیف {item.value}٪</span>
                       <CopyableText text={item.code}>
                         <div style={{ color: "#7d00ff" }}>{item.code}</div>
                       </CopyableText>
@@ -153,22 +142,21 @@ export default function DashboardMarketing() {
                   <div>
                     <div>دفعات استفاده</div>
                     <div>
-                      <FormattedNumber value={data!.discount.timesUsed} />
+                      {formatNumber(data!.discount.timesUsed)}
                     </div>
                   </div>
                   <div className={styles.Separator} />
                   <div>
                     <div>کل فروش</div>
                     <div>
-                      <FormattedNumber value={data!.discount.totalSales} />{" "}
-                      تومان
+                      {formatNumber(data!.discount.totalSales)} تومان
                     </div>
                   </div>
                   <div className={styles.Separator} />
                   <div>
                     <div>سهم کاربر</div>
                     <div>
-                      <FormattedNumber value={data!.discount.benefit} /> تومان
+                      {formatNumber(data!.discount.benefit)} تومان
                     </div>
                   </div>
                 </div>

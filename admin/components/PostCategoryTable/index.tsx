@@ -1,7 +1,6 @@
 import styles from "./style.module.scss";
-import { FormattedNumber } from "react-intl";
 import { PostCategory } from "@/shared/types";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
+import { formatNumber } from "@/shared/utils/format";
 import DeletetIcon from "@/shared/assets/icons/delete.svg";
 import IconButton from "@/shared/components/IconButton";
 
@@ -31,7 +30,7 @@ export default function PostCategoryTable({
           <tr key={category.id}>
             <td>
               <span className={styles.MobileLabel}>#:</span>
-              <div>{englishToPersianNumbers(startCountFrom + index)}</div>
+              <div>{startCountFrom + index}</div>
             </td>
             <td>
               <span className={styles.MobileLabel}>نام دسته بندی:</span>
@@ -39,9 +38,7 @@ export default function PostCategoryTable({
             </td>
             <td>
               <span className={styles.MobileLabel}>تعداد بلاگ:</span>
-              <div>
-                <FormattedNumber value={category.countOfBlogs} />
-              </div>
+              <div>{formatNumber(category.countOfBlogs)}</div>
             </td>
             <td>
               <span className={styles.MobileLabel}>عملیات:</span>

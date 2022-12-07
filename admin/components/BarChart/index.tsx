@@ -4,7 +4,6 @@ import { Bar } from "react-chartjs-2";
 import { ChartJSOrUndefined } from "react-chartjs-2/dist/types";
 import { ChartArea, ChartData, ChartOptions, defaults } from "chart.js/auto";
 import "chart.js/auto";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
 
 interface BaseData {
   label: string;
@@ -128,7 +127,7 @@ export default function BarChart<DT extends BaseData>({
             callback: (tickValue) => {
               tickValue = tickValue as number;
               if (Math.floor(tickValue) === tickValue) {
-                return englishToPersianNumbers(tickValue);
+                return tickValue;
               }
             },
           },

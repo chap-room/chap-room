@@ -1,6 +1,5 @@
 import styles from "./style.module.scss";
 import { useState } from "react";
-import { FormattedNumber } from "react-intl";
 import Link from "next/link";
 import { PrintTariffs } from "@/shared/types";
 import {
@@ -8,15 +7,12 @@ import {
   validateNotEmpty,
   validateInt,
 } from "@/shared/utils/validation";
+import { formatNumber } from "@/shared/utils/format";
 import { useUserData } from "@/main/context/userData";
 import Button from "@/shared/components/Button";
 import Select from "@/shared/components/Select";
 import TextInput from "@/shared/components/TextInput";
 import ErrorList from "@/shared/components/ErrorList";
-import {
-  englishToPersianNumbers,
-  persianToEnglishNumbers,
-} from "@/shared/utils/numbers";
 
 interface PrintPriceCalculatorProps {
   printTariffs: PrintTariffs;
@@ -127,12 +123,10 @@ export default function PrintPriceCalculator({
       <div className={styles.Row}>
         <div className={styles.Input}>
           <TextInput
-            inputProps={{ placeholder: "تعداد برگ" }}
+            inputProps={{ type: "number", placeholder: "تعداد برگ" }}
             varient="shadow-without-bg"
-            value={englishToPersianNumbers(countOfPages)}
-            onChange={(newValue) =>
-              setCountOfPages(persianToEnglishNumbers(newValue, false))
-            }
+            value={countOfPages}
+            onChange={setCountOfPages}
             height={48}
           />
           <ErrorList errors={formValidation.errors.countOfPages} />
@@ -141,9 +135,7 @@ export default function PrintPriceCalculator({
           {pagePrice && (
             <>
               <span>قیمت هر برگ: </span>
-              <span>
-                <FormattedNumber value={pagePrice} /> تومان
-              </span>
+              <span>{formatNumber(pagePrice)} تومان</span>
             </>
           )}
         </div>
@@ -151,9 +143,7 @@ export default function PrintPriceCalculator({
       <div className={styles.Bottom}>
         {calculatedPrice && (
           <div>
-            <div>
-              قیمت کل: <FormattedNumber value={calculatedPrice} /> تومان
-            </div>
+            <div>قیمت کل: {formatNumber(calculatedPrice)} تومان</div>
           </div>
         )}
         <Link href={userData.isLoggedIn ? "/dashboard/orders/new" : "/login"}>

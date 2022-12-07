@@ -1,7 +1,7 @@
 import styles from "./style.module.scss";
-import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
 import { DedicatedDiscountCodeReport } from "@/shared/types";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
+import { formatNumber } from "@/shared/utils/format";
+import { FormattedDate, FormattedTime } from "@/shared/components/Formatted";
 
 interface DedicatedDiscountCodeReportTableProps {
   dedicatedDiscountCodeReports: DedicatedDiscountCodeReport[];
@@ -32,13 +32,12 @@ export default function DedicatedDiscountCodeReportTable({
               <span className={styles.Date}>
                 <span>
                   <FormattedDate
-                    value={new Date(dedicatedDiscountCodeReport.createdAt)}
+                    value={dedicatedDiscountCodeReport.createdAt}
                   />
                 </span>
                 <span>
                   <FormattedTime
-                    value={new Date(dedicatedDiscountCodeReport.createdAt)}
-                    timeStyle="medium"
+                    value={dedicatedDiscountCodeReport.createdAt}
                   />
                 </span>
               </span>
@@ -49,11 +48,7 @@ export default function DedicatedDiscountCodeReportTable({
                 <div className={styles.UserName}>
                   {dedicatedDiscountCodeReport.user.name}
                 </div>
-                <div>
-                  {englishToPersianNumbers(
-                    dedicatedDiscountCodeReport.user.phoneNumber
-                  )}
-                </div>
+                <div>{dedicatedDiscountCodeReport.user.phoneNumber}</div>
               </div>
             </td>
             <td>
@@ -62,62 +57,37 @@ export default function DedicatedDiscountCodeReportTable({
                 <div className={styles.UserName}>
                   {dedicatedDiscountCodeReport.buyer.name}
                 </div>
-                <div>
-                  {englishToPersianNumbers(
-                    dedicatedDiscountCodeReport.buyer.phoneNumber
-                  )}
-                </div>
+                <div>{dedicatedDiscountCodeReport.buyer.phoneNumber}</div>
               </div>
             </td>
             <td>
               <span className={styles.MobileLabel}>شماره سفارش:</span>
-              {englishToPersianNumbers(dedicatedDiscountCodeReport.orderId)}
+              {dedicatedDiscountCodeReport.orderId}
             </td>
             <td>
               <span className={styles.MobileLabel}>مبلغ سفارش:</span>
-              <FormattedNumber
-                value={dedicatedDiscountCodeReport.amount}
-              />{" "}
-              تومان
+              {dedicatedDiscountCodeReport.amount} تومان
             </td>
             <td>
               <span className={styles.MobileLabel}>تخفیف خریدار:</span>
               <span className={styles.Commission}>
                 <span>
-                  <FormattedNumber
-                    value={dedicatedDiscountCodeReport.discountAmount}
-                  />{" "}
+                  {formatNumber(dedicatedDiscountCodeReport.discountAmount)}{" "}
                   تومان
                 </span>
-                <span>
-                  (
-                  <FormattedNumber
-                    value={dedicatedDiscountCodeReport.discountValue / 100}
-                    style="percent"
-                  />
-                  )
-                </span>
+                <span>({dedicatedDiscountCodeReport.discountValue}٪ )</span>
               </span>
             </td>
             <td>
               <span className={styles.MobileLabel}>پورسانت کاربر:</span>
               <span className={styles.Commission}>
                 <span>
-                  <FormattedNumber
-                    value={dedicatedDiscountCodeReport.discountBenefit}
-                  />{" "}
+                  {formatNumber(dedicatedDiscountCodeReport.discountBenefit)}{" "}
                   تومان
                 </span>
                 <span>
                   {"("}
-                  <FormattedNumber
-                    value={
-                      dedicatedDiscountCodeReport.discountBenefitPercentage /
-                      100
-                    }
-                    style="percent"
-                  />
-                  {")"}
+                  {dedicatedDiscountCodeReport.discountBenefitPercentage}٪{")"}
                 </span>
               </span>
             </td>

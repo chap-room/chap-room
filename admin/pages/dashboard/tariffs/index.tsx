@@ -4,7 +4,6 @@ import Head from "next/head";
 import Link from "next/link";
 import { PrintTariffs } from "@/shared/types";
 import { getPrintTariffs } from "@/admin/api";
-import { useLastPage } from "@/shared/context/lastPage";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
@@ -38,7 +37,7 @@ export default function DashboardPrintPricesList() {
           }
         />
         <MobileContentHeader
-          backTo={useLastPage("/dashboard")}
+          backTo="/dashboard"
           title="لیست تعرفه ها"
         />
         <DataLoader load={() => getPrintTariffs()} setData={setData}>

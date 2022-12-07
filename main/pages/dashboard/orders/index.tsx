@@ -1,13 +1,12 @@
 import { ReactElement, useEffect, useRef, useState } from "react";
-import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
 import { Order } from "@/shared/types";
 import { cancelOrder, getOrders } from "@/main/api";
+import { formatNumber } from "@/shared/utils/format";
 import { useDashboardData } from "@/main/context/dashboardData";
-import { useLastPage } from "@/shared/context/lastPage";
 import OrdersIcon from "@/shared/assets/icons/orders.svg";
 import AddIcon from "@/shared/assets/icons/add.svg";
 import DashboardLayout from "@/main/components/Dashboard/Layout";
@@ -25,7 +24,6 @@ import Pagination from "@/shared/components/Pagination";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
 
 export default function DashboardOrderList() {
-  const intl = useIntl();
   const dashboardData = useDashboardData();
   const router = useRouter();
 
@@ -86,9 +84,7 @@ export default function DashboardOrderList() {
         <ContentHeader
           title="همه سفارش ها"
           subTitle={
-            data.totalCount
-              ? `(${intl.formatNumber(data.totalCount)})`
-              : undefined
+            data.totalCount ? `(${formatNumber(data.totalCount)})` : undefined
           }
           end={
             <Link href="/dashboard/orders/new">
@@ -102,7 +98,7 @@ export default function DashboardOrderList() {
           }
         />
         <MobileContentHeader
-          backTo={useLastPage("/dashboard")}
+          backTo="/dashboard"
           title="سفارش های من"
           end={
             <Link href="/dashboard/orders/new">
@@ -121,7 +117,11 @@ export default function DashboardOrderList() {
           <OrderTable
             orders={data.orders}
             onSeeOrderDetails={(orderId) =>
-              router.push(`/dashboard/orders/${orderId}/details`)
+              router.push(
+                `/dashboard/orders/${orderId}/details?from=${encodeURIComponent(
+                  router.asPath
+                )}`
+              )
             }
             onCancelOrder={setPendingOrderCancelRequest}
           />

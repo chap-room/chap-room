@@ -1,7 +1,7 @@
 import styles from "./style.module.scss";
-import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
 import { DedicatedLinkReport } from "@/shared/types";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
+import { FormattedDate, FormattedTime } from "@/shared/components/Formatted";
+import { formatNumber } from "@/shared/utils/format";
 
 interface DedicatedLinkReportTableProps {
   dedicatedLinkReports: DedicatedLinkReport[];
@@ -30,15 +30,10 @@ export default function DedicatedLinkReportTable({
               <span className={styles.MobileLabel}>تاریخ:</span>
               <span className={styles.Date}>
                 <span>
-                  <FormattedDate
-                    value={new Date(dedicatedLinkReport.createdAt)}
-                  />
+                  <FormattedDate value={dedicatedLinkReport.createdAt} />
                 </span>
                 <span>
-                  <FormattedTime
-                    value={new Date(dedicatedLinkReport.createdAt)}
-                    timeStyle="medium"
-                  />
+                  <FormattedTime value={dedicatedLinkReport.createdAt} />
                 </span>
               </span>
             </td>
@@ -48,11 +43,7 @@ export default function DedicatedLinkReportTable({
                 <div className={styles.UserName}>
                   {dedicatedLinkReport.user.name}
                 </div>
-                <div>
-                  {englishToPersianNumbers(
-                    dedicatedLinkReport.user.phoneNumber
-                  )}
-                </div>
+                <div>{dedicatedLinkReport.user.phoneNumber}</div>
               </div>
             </td>
             <td>
@@ -61,38 +52,25 @@ export default function DedicatedLinkReportTable({
                 <div className={styles.UserName}>
                   {dedicatedLinkReport.buyer.name}
                 </div>
-                <div>
-                  {englishToPersianNumbers(
-                    dedicatedLinkReport.buyer.phoneNumber
-                  )}
-                </div>
+                <div>{dedicatedLinkReport.buyer.phoneNumber}</div>
               </div>
             </td>
             <td>
               <span className={styles.MobileLabel}>شماره سفارش:</span>
-              {englishToPersianNumbers(dedicatedLinkReport.orderId)}
+              {dedicatedLinkReport.orderId}
             </td>
             <td>
               <span className={styles.MobileLabel}>مبلغ سفارش:</span>
-              <FormattedNumber value={dedicatedLinkReport.amount} /> تومان
+              {formatNumber(dedicatedLinkReport.amount)} تومان
             </td>
             <td>
               <span className={styles.MobileLabel}>پورسانت کاربر:</span>
               <span className={styles.Commission}>
                 <span>
-                  <FormattedNumber
-                    value={dedicatedLinkReport.referralBenefit}
-                  />{" "}
+                  {formatNumber(dedicatedLinkReport.referralBenefit)}{" "}
                   تومان
                 </span>
-                <span>
-                  {"("}
-                  <FormattedNumber
-                    value={dedicatedLinkReport.referralCommission / 100}
-                    style="percent"
-                  />
-                  {")"}
-                </span>
+                <span>({dedicatedLinkReport.referralCommission}٪)</span>
               </span>
             </td>
             <td>

@@ -5,7 +5,6 @@ import Head from "next/head";
 import Link from "next/link";
 import { Address } from "@/shared/types";
 import { updateAddress, getAddress } from "@/main/api";
-import { useLastPage } from "@/shared/context/lastPage";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/main/components/Dashboard/Layout";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
@@ -35,7 +34,13 @@ export default function DashboardEditAddresse() {
         <ContentHeader
           title="ویرایش کردن آدرس"
           end={
-            <Link href={useLastPage("/dashboard/addresses")}>
+            <Link
+              href={
+                typeof router.query.from === "string"
+                  ? router.query.from
+                  : "/dashboard/addresses"
+              }
+            >
               <Button varient="none" style={{ padding: 0 }}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
@@ -43,7 +48,11 @@ export default function DashboardEditAddresse() {
           }
         />
         <MobileContentHeader
-          backTo={useLastPage("/dashboard/addresses")}
+          backTo={
+            typeof router.query.from === "string"
+              ? router.query.from
+              : "/dashboard/addresses"
+          }
           title="ویرایش کردن آدرس"
         />
         <DataLoader

@@ -5,8 +5,6 @@ import Head from "next/head";
 import Link from "next/link";
 import { Order } from "@/shared/types";
 import { getOrder } from "@/main/api";
-import { useLastPage } from "@/shared/context/lastPage";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/main/components/Dashboard/Layout";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
@@ -24,7 +22,7 @@ export default function DashboardOrderDetails() {
 
   const [data, setData] = useState<Order>();
 
-  const title = `شماره سفارش: ${englishToPersianNumbers(orderId)}`;
+  const title = `شماره سفارش: ${orderId}`;
   const orderDetailsContainerRef = useRef<HTMLDivElement>(null);
 
   function print() {
@@ -45,7 +43,13 @@ export default function DashboardOrderDetails() {
         <ContentHeader
           title={title}
           end={
-            <Link href={useLastPage("/dashboard/orders")}>
+            <Link
+              href={
+                typeof router.query.from === "string"
+                  ? router.query.from
+                  : "/dashboard/orders"
+              }
+            >
               <Button varient="none" style={{ padding: 0 }}>
                 بازگشت <ArrowBackIcon />
               </Button>
@@ -53,7 +57,11 @@ export default function DashboardOrderDetails() {
           }
         />
         <MobileContentHeader
-          backTo={useLastPage("/dashboard/orders")}
+          backTo={
+            typeof router.query.from === "string"
+              ? router.query.from
+              : "/dashboard/orders"
+          }
           title="جزییات"
           subTitle={title}
         />

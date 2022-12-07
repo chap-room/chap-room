@@ -1,12 +1,11 @@
 import { ReactElement, useEffect, useRef, useState } from "react";
-import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
 import { Post } from "@/shared/types";
 import { deleteBlogPost, getBlogPosts } from "@/admin/api";
-import { useLastPage } from "@/shared/context/lastPage";
+import { formatNumber } from "@/shared/utils/format";
 import DashboardLayout from "@/admin/components/Layout";
 import AddIcon from "@/shared/assets/icons/add.svg";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -26,7 +25,6 @@ import Pagination from "@/shared/components/Pagination";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
 
 export default function DashboardBlog() {
-  const intl = useIntl();
   const router = useRouter();
 
   const [data, setData] = useState<{
@@ -87,9 +85,7 @@ export default function DashboardBlog() {
         <ContentHeader
           title="همه بلاگ ها"
           subTitle={
-            data.totalCount
-              ? `(${intl.formatNumber(data.totalCount)})`
-              : undefined
+            data.totalCount ? `(${formatNumber(data.totalCount)})` : undefined
           }
           end={
             <ButtonList gap={15}>
@@ -103,7 +99,7 @@ export default function DashboardBlog() {
               </Link>
               <Link href="/dashboard/blog/posts/new">
                 <Button varient="content-title-none">
-                  ایجاد وبلاگ
+                  ایجاد بلاگ
                   <FilledIconContainer style={{ marginRight: 10 }}>
                     <AddIcon />
                   </FilledIconContainer>
@@ -113,7 +109,7 @@ export default function DashboardBlog() {
           }
         />
         <MobileContentHeader
-          backTo={useLastPage("/dashboard")}
+          backTo="/dashboard"
           title="همه وبلاگ ها"
           end={
             <Link href="/dashboard/blog/posts/new">
@@ -145,7 +141,11 @@ export default function DashboardBlog() {
             posts={data.posts}
             onDeletePost={setPendingDeleteRequest}
             onEditPost={(postId) =>
-              router.push(`/dashboard/blog/posts/${postId}/edit`)
+              router.push(
+                `/dashboard/blog/posts/${postId}/edit?from=${encodeURIComponent(
+                  router.asPath
+                )}`
+              )
             }
           />
           {!data.posts.length && <EmptyNote>هیچ بلاگی وجود ندارد</EmptyNote>}

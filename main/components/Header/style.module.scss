@@ -69,6 +69,7 @@
         fill: #464646;
         white-space: nowrap;
         font-size: 18px;
+        user-select: none;
 
         &:global(.active) {
           color: #0077b5;

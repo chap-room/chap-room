@@ -1,8 +1,7 @@
 import styles from "./style.module.scss";
 import { ReactElement } from "react";
-import { FormattedNumber } from "react-intl";
 import Head from "next/head";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
+import { formatNumber } from "@/shared/utils/format";
 import Layout from "@/main/components/Layout";
 import ExpandMoreIcon from "@/shared/assets/icons/expandMore.svg";
 import TargetImage from "@/main/assets/images/target.svg";
@@ -22,9 +21,8 @@ export default function AboutUs() {
             <div>
               <h2>درباره چاپ روم</h2>
               <p>
-                چاپ روم یک سرویس پرینت و کپی آنلاین است که از سال{" "}
-                {englishToPersianNumbers(1398)} فعالیت خود را در جهت بهینه سازی
-                هزینه های چاپ و پرینت تا {englishToPersianNumbers(90)} درصد آغاز
+                چاپ روم یک سرویس پرینت و کپی آنلاین است که از سال 1398 فعالیت
+                خود را در جهت بهینه سازی هزینه های چاپ و پرینت تا 90 درصد آغاز
                 نمود. شما قادر خواهید بود از طریق وب سایت چاپ روم یا شبکه های
                 اجتماعی سفارش خود را ثبت کنید سپس جزوه یا فایل خود را در قسمت
                 مربوطه آپلود نمایید و با بالاترین کیفیت و سرعت جزوه خود را پرینت
@@ -117,7 +115,7 @@ export default function AboutUs() {
             <h3>ارسال به سراسر کشور</h3>
             <p>
               امکان ارسال سفارشات به کل کشور وجود دارد و همچنین سفارشات بالای{" "}
-              <FormattedNumber value={2000} /> برگ به صورت رایگان ارسال می شود.
+              {formatNumber(2000)} برگ به صورت رایگان ارسال می شود.
             </p>
           </div>
           <div>
@@ -128,7 +126,7 @@ export default function AboutUs() {
             </p>
           </div>
           <div>
-            <h3>پشتیبانی {englishToPersianNumbers(24)} ساعته</h3>
+            <h3>پشتیبانی 24 ساعته</h3>
             <p>
               در صورت داشتن هرگونه سوال پشتیبانان چاپ روم آماده ارائه خدمات
               پشتیبانی به شما هستند.

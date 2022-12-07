@@ -5,7 +5,6 @@ import Head from "next/head";
 import Link from "next/link";
 import { Discount } from "@/shared/types";
 import { getDiscount, updateDiscount } from "@/admin/api";
-import { useLastPage } from "@/shared/context/lastPage";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -35,7 +34,13 @@ export default function DashboardEditUser() {
         <ContentHeader
           title="ویرایش کردن کد تخفیف"
           end={
-            <Link href={useLastPage("/dashboard/discounts")}>
+            <Link
+              href={
+                typeof router.query.from === "string"
+                  ? router.query.from
+                  : "/dashboard/discounts"
+              }
+            >
               <Button varient="none" style={{ padding: 0 }}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
@@ -43,7 +48,11 @@ export default function DashboardEditUser() {
           }
         />
         <MobileContentHeader
-          backTo={useLastPage("/dashboard/discounts")}
+          backTo={
+            typeof router.query.from === "string"
+              ? router.query.from
+              : "/dashboard/discounts"
+          }
           title="ویرایش کردن کد تخفیف"
         />
         <DataLoader
@@ -62,7 +71,11 @@ export default function DashboardEditUser() {
               })
                 .then((message) => {
                   toast.success(message);
-                  router.push("/dashboard/discounts");
+                  router.push(
+                    typeof router.query.from === "string"
+                      ? router.query.from
+                      : "/dashboard/discounts"
+                  );
                 })
                 .catch(toast.error)
             }

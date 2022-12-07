@@ -1,7 +1,6 @@
 import styles from "./style.module.scss";
 import { ReactElement, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { FormattedNumber } from "react-intl";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
@@ -11,10 +10,7 @@ import {
   reportReferralView,
   sendCooperationRequest,
 } from "@/main/api";
-import {
-  englishToPersianNumbers,
-  persianToEnglishNumbers,
-} from "@/shared/utils/numbers";
+import { formatNumber } from "@/shared/utils/format";
 import { useUserData } from "@/main/context/userData";
 import ExpandMoreIcon from "@/shared/assets/icons/expandMore.svg";
 import GiftImage from "@/main/assets/images/gift.svg";
@@ -90,7 +86,9 @@ export default function Home() {
               </p>
               <div>
                 <Link
-                  href={userData.isLoggedIn ? "/dashboard/orders/new" : "/login"}
+                  href={
+                    userData.isLoggedIn ? "/dashboard/orders/new" : "/login"
+                  }
                 >
                   <Button varient="gradient">سفارش پرینت</Button>
                 </Link>
@@ -102,28 +100,16 @@ export default function Home() {
             <div>
               <div className={styles.Steps}>
                 <div>
-                  <span>
-                    <FormattedNumber value={1} />
-                  </span>{" "}
-                  <span>ثبت سفارش</span>
+                  <span>1</span> <span>ثبت سفارش</span>
                 </div>
                 <div>
-                  <span>
-                    <FormattedNumber value={2} />
-                  </span>{" "}
-                  <span>آپلود فایل</span>
+                  <span>2</span> <span>آپلود فایل</span>
                 </div>
                 <div>
-                  <span>
-                    <FormattedNumber value={3} />
-                  </span>{" "}
-                  <span>فرآیند چاپ</span>
+                  <span>3</span> <span>فرآیند چاپ</span>
                 </div>
                 <div>
-                  <span>
-                    <FormattedNumber value={4} />
-                  </span>{" "}
-                  <span>ارسال سفارش</span>
+                  <span>4</span> <span>ارسال سفارش</span>
                 </div>
               </div>
               <div className={styles.Images}>
@@ -161,10 +147,8 @@ export default function Home() {
           <h1>هدیه اولین سفارش</h1>
           <p>
             با ثبت نام در چاپ روم{" "}
-            <span className={styles.Highlight}>
-              {englishToPersianNumbers(30)} صفحه پرینت رایگان
-            </span>{" "}
-            در اولین سفارش هدیه بگیرید.
+            <span className={styles.Highlight}>30 صفحه پرینت رایگان</span> در
+            اولین سفارش هدیه بگیرید.
           </p>
           <Button varient="gradient">دریافت کد هدیه</Button>
         </div>
@@ -202,22 +186,17 @@ export default function Home() {
             <PostageImage />
             <h2>ارسال رایگان</h2>
             <p>
-              جهت رفاه حال مشتریان سفارشات بالای{" "}
-              <FormattedNumber value={2000} /> برگ در هرجای ایران به صورت رایگان
-              ارسال خواهد شد.
+              جهت رفاه حال مشتریان سفارشات بالای {formatNumber(2000)} برگ در
+              هرجای ایران به صورت رایگان ارسال خواهد شد.
             </p>
           </div>
           <div>
             <PriceImage />
-            <h2>
-              {englishToPersianNumbers(1)}/{englishToPersianNumbers(8)} قیمت
-              مصوب
-            </h2>
+            <h2>1/8 قیمت مصوب</h2>
             <p>
               چاپ روم با استفاده از بهترین پرینترها، کاغذهای اورجینال، پایان
-              نامه، جزوه و یا کتاب شما را با قیمت حداقل{" "}
-              {englishToPersianNumbers(1)}/{englishToPersianNumbers(8)} قیمت
-              مصوب .چاپ و تکثیر می‌کند
+              نامه، جزوه و یا کتاب شما را با قیمت حداقل 1/8 قیمت مصوب .چاپ و
+              تکثیر می‌کند
             </p>
           </div>
           <div>
@@ -288,14 +267,13 @@ export default function Home() {
             <div>
               <TextInput
                 inputProps={{
-                  placeholder: englishToPersianNumbers("09xxxxxxxxx"),
+                  type: "number",
+                  placeholder: "09xxxxxxxxx",
                 }}
                 varient="shadow"
-                value={englishToPersianNumbers(cooperationPhoneNumber)}
+                value={cooperationPhoneNumber}
                 onChange={(newValue) =>
-                  setCooperationPhoneNumber(
-                    persianToEnglishNumbers(newValue, false).substring(0, 11)
-                  )
+                  setCooperationPhoneNumber(newValue.substring(0, 11))
                 }
               />
               <Button

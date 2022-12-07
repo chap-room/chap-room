@@ -1,6 +1,5 @@
 import styles from "./style.module.scss";
 import { Address } from "@/shared/types";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import EditIcon from "@/shared/assets/icons/edit.svg";
 import DeletetIcon from "@/shared/assets/icons/delete.svg";
 import ButtonList from "@/shared/components/ButtonList";
@@ -37,10 +36,10 @@ export default function AddressView({
       <div>{address.recipientName}</div>
       <div>
         <div>
-          شماره تلفن: {englishToPersianNumbers(address.recipientPhoneNumber)}
+          شماره تلفن: {address.recipientPhoneNumber}
         </div>
         <div>
-          کد پستی: {englishToPersianNumbers(address.recipientPostalCode)}
+          کد پستی: {address.recipientPostalCode}
         </div>
       </div>
       <div>

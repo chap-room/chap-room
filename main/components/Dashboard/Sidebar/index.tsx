@@ -1,5 +1,4 @@
 import styles from "./style.module.scss";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import { useDashboardData } from "@/main/context/dashboardData";
 import { DataLoaderView } from "@/shared/components/DataLoader";
 import DashboardNavLinks from "@/main/components/Dashboard/NavLinks";
@@ -20,7 +19,7 @@ export default function DashboardSidebar() {
             <div className={styles.Meta}>
               <div>{dashboardData.data.name}</div>
               <div className={styles.PhoneNumber}>
-                {englishToPersianNumbers(dashboardData.data.phoneNumber)}
+                {dashboardData.data.phoneNumber}
               </div>
             </div>
           </div>

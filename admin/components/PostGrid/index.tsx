@@ -1,6 +1,6 @@
 import styles from "./style.module.scss";
-import { FormattedNumber } from "react-intl";
 import { Post } from "@/shared/types";
+import { formatNumber } from "@/shared/utils/format";
 import ViewIcon from "@/shared/assets/icons/view.svg";
 import ButtonList from "@/shared/components/ButtonList";
 
@@ -34,7 +34,7 @@ export default function PostGrid({
           <div className={styles.PostBottom}>
             <div className={styles.PostMetaData}>
               <div>
-                <ViewIcon /> <FormattedNumber value={post.countOfViews} />
+                <ViewIcon /> {formatNumber(post.countOfViews)}
               </div>
             </div>
             <ButtonList>

@@ -1,6 +1,5 @@
 import styles from "./style.module.scss";
 import { ReactElement, useEffect, useState } from "react";
-import { FormattedDate, FormattedNumber } from "react-intl";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
@@ -11,6 +10,8 @@ import {
   getBlogPosts,
   getBlogPostsByCategory,
 } from "@/main/api";
+import { formatNumber } from "@/shared/utils/format";
+import { FormattedDate } from "@/shared/components/Formatted";
 import Layout from "@/main/components/Layout";
 import DataLoader from "@/shared/components/DataLoader";
 import DateIcon from "@/shared/assets/icons/date.svg";
@@ -135,7 +136,7 @@ export default function Blog(props: PageProps) {
                       </div>
                       <div>
                         <ViewIcon />
-                        <FormattedNumber value={post.countOfViews} />
+                        {formatNumber(post.countOfViews)}
                       </div>
                     </div>
                     <Link href={`/blog/${encodeURIComponent(post.slug)}`}>
@@ -168,7 +169,7 @@ export default function Blog(props: PageProps) {
                   <Radio checked={selectedCategoryId === null} />
                   <div>همه</div>
                   <div>
-                    <FormattedNumber value={categoriesData.totalBlogs} />
+                    {formatNumber(categoriesData.totalBlogs)}
                   </div>
                 </div>
                 {categoriesData.categories.map((category) => (
@@ -181,9 +182,7 @@ export default function Blog(props: PageProps) {
                   >
                     <Radio checked={selectedCategoryId === category.id} />
                     <div>{category.name}</div>
-                    <div>
-                      <FormattedNumber value={category.countOfBlogs} />
-                    </div>
+                    <div>{formatNumber(category.countOfBlogs)}</div>
                   </div>
                 ))}
               </div>

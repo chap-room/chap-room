@@ -1,12 +1,10 @@
 import styles from "./style.module.scss";
 import { ReactElement, useState } from "react";
-import { FormattedNumber, IntlShape, useIntl } from "react-intl";
 import moment from "jalali-moment";
 import Head from "next/head";
 import Link from "next/link";
 import { request } from "@/admin/api";
-import { useLastPage } from "@/shared/context/lastPage";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
+import { formatNumber } from "@/shared/utils/format";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -37,8 +35,6 @@ const months = [
 ];
 
 export default function DashboardFinancialRecordsTotalIncome() {
-  const intl = useIntl();
-
   const [data, setData] = useState<{
     totalDebtor: number;
     totalCreditor: number;
@@ -81,20 +77,19 @@ export default function DashboardFinancialRecordsTotalIncome() {
             <div className={styles.SubTitle}>
               {data.totalCreditor !== 0 && (
                 <div>
-                  {"("}بستانکار کل:{" "}
-                  <FormattedNumber value={data.totalCreditor} /> تومان{")"}
+                  (بستانکار کل: {formatNumber(data.totalCreditor)}{" "}
+                  تومان)
                 </div>
               )}
               {data.totalDebtor !== 0 && (
                 <div style={{ color: "#f20f4b" }}>
-                  {"("}بدهکار کل: <FormattedNumber value={data.totalDebtor} />{" "}
-                  تومان{")"}
+                  (بدهکار کل: {formatNumber(data.totalDebtor)} تومان)
                 </div>
               )}
             </div>
           }
           end={
-            <Link href={useLastPage("/dashboard/financial-records")}>
+            <Link href="/dashboard/financial-records">
               <Button varient="none" style={{ padding: 0 }}>
                 بازگشت <ArrowBackIcon />
               </Button>
@@ -102,7 +97,7 @@ export default function DashboardFinancialRecordsTotalIncome() {
           }
         />
         <MobileContentHeader
-          backTo={useLastPage("/dashboard/financial-records")}
+          backTo="/dashboard/financial-records"
           title="درامد کل"
         />
         <Controls
@@ -193,10 +188,7 @@ export default function DashboardFinancialRecordsTotalIncome() {
         >
           <BarChart
             data={data.chart.map(({ time, creditor, debtor }) => ({
-              label:
-                ticker === "monthly"
-                  ? englishToPersianNumbers(time)
-                  : months[parseInt(time) - 1],
+              label: ticker === "monthly" ? time : months[parseInt(time) - 1],
               value: creditor - debtor,
               creditor,
               debtor,
@@ -217,7 +209,7 @@ export default function DashboardFinancialRecordsTotalIncome() {
                   <div>بستانکار:</div>
                   <div>
                     <div>
-                      <FormattedNumber value={tooltipData.item.creditor} />
+                      {formatNumber(tooltipData.item.creditor)}
                     </div>
                     <div>تومان</div>
                   </div>
@@ -226,7 +218,7 @@ export default function DashboardFinancialRecordsTotalIncome() {
                   <div>بدهکار:</div>
                   <div>
                     <div>
-                      <FormattedNumber value={tooltipData.item.debtor} />
+                      {formatNumber(tooltipData.item.debtor)}
                     </div>
                     <div>تومان</div>
                   </div>

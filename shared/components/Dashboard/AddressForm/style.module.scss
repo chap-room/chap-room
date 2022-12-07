@@ -22,7 +22,7 @@
       gap: 10px;
 
       > div:first-child {
-        width: 100%;
+        max-width: unset;
       }
     }
 

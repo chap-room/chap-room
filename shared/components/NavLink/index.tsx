@@ -29,13 +29,9 @@ export default function NavLink({
     childClassNames.push(activeClassName);
   }
 
-  return (
-    <Link {...props}>
-      {cloneElement(child, {
-        className: childClassNames.length
-          ? childClassNames.join(" ")
-          : undefined,
-      })}
-    </Link>
-  );
+  const finalChild = cloneElement(child, {
+    className: childClassNames.length ? childClassNames.join(" ") : undefined,
+  });
+
+  return !isActive ? <Link {...props}>{finalChild}</Link> : finalChild;
 }

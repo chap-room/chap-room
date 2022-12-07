@@ -1,12 +1,11 @@
 import { ReactElement, useEffect, useRef, useState } from "react";
-import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
 import { Discount } from "@/shared/types";
 import { deleteDiscount, getDiscounts } from "@/admin/api";
-import { useLastPage } from "@/shared/context/lastPage";
+import { formatNumber } from "@/shared/utils/format";
 import DashboardLayout from "@/admin/components/Layout";
 import AddIcon from "@/shared/assets/icons/add.svg";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -25,7 +24,6 @@ import Pagination from "@/shared/components/Pagination";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
 
 export default function DashboardDiscountList() {
-  const intl = useIntl();
   const router = useRouter();
 
   const [data, setData] = useState<{
@@ -86,9 +84,7 @@ export default function DashboardDiscountList() {
         <ContentHeader
           title="همه کدهای تخفیف"
           subTitle={
-            data.totalCount
-              ? `(${intl.formatNumber(data.totalCount)})`
-              : undefined
+            data.totalCount ? `(${formatNumber(data.totalCount)})` : undefined
           }
           end={
             <Link href="/dashboard/discounts/new">
@@ -102,7 +98,7 @@ export default function DashboardDiscountList() {
           }
         />
         <MobileContentHeader
-          backTo={useLastPage("/dashboard")}
+          backTo="/dashboard"
           title="همه کدهای تخفیف"
           end={
             <Link href="/dashboard/discounts/new">
@@ -133,7 +129,11 @@ export default function DashboardDiscountList() {
           <DiscountTable
             discounts={data.discounts}
             onEditDiscount={(discountId) =>
-              router.push(`/dashboard/discounts/${discountId}/edit`)
+              router.push(
+                `/dashboard/discounts/${discountId}/edit?from=${encodeURIComponent(
+                  router.asPath
+                )}`
+              )
             }
             onDeleteDiscount={setPendingDeleteRequest}
           />

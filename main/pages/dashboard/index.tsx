@@ -4,7 +4,6 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { cancelOrder } from "@/main/api";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import { DashboardData, useDashboardData } from "@/main/context/dashboardData";
 import { DataLoaderView } from "@/shared/components/DataLoader";
 import OrdersIcon from "@/shared/assets/icons/orders.svg";
@@ -182,7 +181,11 @@ export function DashboardNonMobile({ data, relaod }: DashboardNonMobilePorps) {
           <OrderTable
             orders={data!.inProgressOrders}
             onSeeOrderDetails={(orderId) =>
-              router.push(`/dashboard/orders/${orderId}/details`)
+              router.push(
+                `/dashboard/orders/${orderId}/details?form=${encodeURIComponent(
+                  router.asPath
+                )}`
+              )
             }
             onCancelOrder={setPendingOrderCancelRequest}
           />
@@ -222,9 +225,7 @@ export function DashboardMobile({ data }: DashboardMobilePorps) {
       <div className={styles.User}>
         <Avatar user={data!} />
         <div className={styles.Meta}>
-          <div className={styles.PhoneNumber}>
-            {englishToPersianNumbers(data!.phoneNumber)}
-          </div>
+          <div className={styles.PhoneNumber}>{data!.phoneNumber}</div>
           <div className={styles.Name}>{data!.name}</div>
         </div>
       </div>

@@ -1,5 +1,4 @@
 import { ReactElement, useEffect, useRef, useState } from "react";
-import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
@@ -10,8 +9,8 @@ import {
   getOrders,
   markOrderSent,
 } from "@/admin/api";
+import { formatNumber } from "@/shared/utils/format";
 import { useDashboardData } from "@/admin/context/dashboardData";
-import { useLastPage } from "@/shared/context/lastPage";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
@@ -29,7 +28,6 @@ import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDi
 import OrderSentDialog from "@/admin/components/OrderSentDialog";
 
 export default function DashboardOrderList() {
-  const intl = useIntl();
   const dashboardData = useDashboardData();
   const router = useRouter();
 
@@ -110,9 +108,7 @@ export default function DashboardOrderList() {
         <ContentHeader
           title="همه سفارش ها"
           subTitle={
-            data.totalCount
-              ? `(${intl.formatNumber(data.totalCount)})`
-              : undefined
+            data.totalCount ? `(${formatNumber(data.totalCount)})` : undefined
           }
           end={
             <SwitchButtons
@@ -143,10 +139,7 @@ export default function DashboardOrderList() {
             />
           }
         />
-        <MobileContentHeader
-          backTo={useLastPage("/dashboard")}
-          title="همه سفارش ها"
-        />
+        <MobileContentHeader backTo="/dashboard" title="همه سفارش ها" />
         <Controls
           start={
             <SearchInput
@@ -168,7 +161,11 @@ export default function DashboardOrderList() {
           <OrderTable
             orders={data.orders}
             onSeeOrderDetails={(orderId) =>
-              router.push(`/dashboard/orders/${orderId}/details`)
+              router.push(
+                `/dashboard/orders/${orderId}/details?from=${encodeURIComponent(
+                  router.asPath
+                )}`
+              )
             }
             onCancelOrder={setPendingOrderCancelRequest}
             onConfirmOrder={setPendingOrderConfirmRequest}

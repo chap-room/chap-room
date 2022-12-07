@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import { Transaction } from "@/shared/types";
 import { getTransactions } from "@/main/api";
-import { useLastPage } from "@/shared/context/lastPage";
 import DashboardLayout from "@/main/components/Dashboard/Layout";
 import SectionHeader from "@/shared/components/Dashboard/SectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
@@ -62,10 +61,7 @@ export default function DashboardTransactions() {
       />
       <SectionContent>
         <ContentHeader title="همه سوابق مالی" />
-        <MobileContentHeader
-          backTo={useLastPage("/dashboard")}
-          title="تراکنش های انجام شده"
-        />
+        <MobileContentHeader backTo="/dashboard" title="تراکنش های انجام شده" />
         <DataLoader
           load={() => getTransactions(page)}
           deps={[page]}
@@ -74,7 +70,11 @@ export default function DashboardTransactions() {
           <TransactionTable
             transactions={data.transactions}
             onSeeDetails={(orderId) => {
-              router.push(`/dashboard/orders/${orderId}/details`);
+              router.push(
+                `/dashboard/orders/${orderId}/details?form=${encodeURIComponent(
+                  router.asPath
+                )}`
+              );
             }}
           />
           {!data.transactions.length && (

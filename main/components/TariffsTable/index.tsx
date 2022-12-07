@@ -1,8 +1,7 @@
 import styles from "./style.module.scss";
-import { FormattedNumber } from "react-intl";
+import { useRef, useState } from "react";
 import { PrintPrice, Tariffs } from "@/shared/types";
 import Tabs from "@/main/components/Dashboard/Tabs";
-import { useRef, useState } from "react";
 
 interface TariffsTableProps {
   tariffs: Tariffs;
@@ -69,45 +68,21 @@ export default function TariffsTable({ tariffs, section }: TariffsTableProps) {
               <>
                 <tr>
                   <td>A4</td>
-                  <td>
-                    <FormattedNumber
-                      value={tariffs.binding[bindingType].a4}
-                      useGrouping={false}
-                    />{" "}
-                    تومان
-                  </td>
+                  <td>{tariffs.binding[bindingType].a4} تومان</td>
                 </tr>
                 <tr>
                   <td>A5</td>
-                  <td>
-                    <FormattedNumber
-                      value={tariffs.binding[bindingType].a5}
-                      useGrouping={false}
-                    />{" "}
-                    تومان
-                  </td>
+                  <td>{tariffs.binding[bindingType].a5} تومان</td>
                 </tr>
                 <tr>
                   <td>A3</td>
-                  <td>
-                    <FormattedNumber
-                      value={tariffs.binding[bindingType].a3}
-                      useGrouping={false}
-                    />{" "}
-                    تومان
-                  </td>
+                  <td>{tariffs.binding[bindingType].a3} تومان</td>
                 </tr>
               </>
             ) : (
               <tr>
                 <td>تمام سایز ها</td>
-                <td>
-                  <FormattedNumber
-                    value={tariffs.binding[bindingType]}
-                    useGrouping={false}
-                  />{" "}
-                  تومان
-                </td>
+                <td>{tariffs.binding[bindingType]} تومان</td>
               </tr>
             )}
           </tbody>
@@ -151,38 +126,12 @@ function PrintPriceView({ printPrice }: PrintPriceViewProps) {
           return (
             <tr key={index}>
               <td>
-                {nextBreakpoints ? (
-                  <>
-                    <FormattedNumber
-                      value={breakpoint.at}
-                      useGrouping={false}
-                    />
-                    -
-                    <FormattedNumber
-                      value={nextBreakpoints.at - 1}
-                      useGrouping={false}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <FormattedNumber value={breakpoint.at} /> به بالا
-                  </>
-                )}
+                {nextBreakpoints
+                  ? `${breakpoint.at}-${nextBreakpoints.at - 1}`
+                  : `${breakpoint.at} به بالا`}
               </td>
-              <td>
-                <FormattedNumber
-                  value={breakpoint.singleSided}
-                  useGrouping={false}
-                />{" "}
-                تومان
-              </td>
-              <td>
-                <FormattedNumber
-                  value={breakpoint.doubleSided}
-                  useGrouping={false}
-                />{" "}
-                تومان
-              </td>
+              <td>{breakpoint.singleSided} تومان</td>
+              <td>{breakpoint.doubleSided} تومان</td>
             </tr>
           );
         })}

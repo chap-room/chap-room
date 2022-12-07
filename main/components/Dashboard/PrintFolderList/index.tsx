@@ -1,7 +1,6 @@
 import styles from "./style.module.scss";
-import { FormattedNumber, useIntl } from "react-intl";
 import { PrintFolder } from "@/shared/types";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
+import { formatNumber } from "@/shared/utils/format";
 import EditIcon from "@/shared/assets/icons/edit.svg";
 import DeletetIcon from "@/shared/assets/icons/delete.svg";
 
@@ -16,18 +15,14 @@ export default function PrintFolderList({
   onEditPrintFolder,
   onDeletePrintFolder,
 }: PrintFolderListProps) {
-  const intl = useIntl();
-
   return (
     <div className={styles.PrintFolderList}>
       {printFolders.map((printFolder, index) => (
         <div className={styles.PrintFolder} key={printFolder.id}>
           <div className={styles.Header}>
             <div className={styles.Label}>
-              <span>پوشه {englishToPersianNumbers(index + 1)}</span>
-              <span>
-                (<FormattedNumber value={printFolder.amount} /> تومان)
-              </span>
+              <span>پوشه {index + 1}</span>
+              <span>({formatNumber(printFolder.amount)} تومان)</span>
             </div>
             <div className={styles.Actions}>
               <button
@@ -65,7 +60,7 @@ export default function PrintFolderList({
                 { singleSided: "یک رو", doubleSided: "دو رو" }[
                   printFolder.printSide
                 ],
-                `${intl.formatNumber(printFolder.countOfPages)} صفحه`,
+                `${formatNumber(printFolder.countOfPages)} صفحه`,
                 ...(printFolder.bindingOptions === null
                   ? []
                   : [
@@ -81,7 +76,7 @@ export default function PrintFolderList({
                             allFilesTogether: "هر فایل جدا",
                             eachFileSeparated: "همه فایل ها با هم",
                           }[printFolder.bindingOptions.bindingMethod]
-                        : `${intl.formatNumber(
+                        : `${formatNumber(
                             printFolder.bindingOptions.countOfFiles || 0
                           )} فایل`,
                       {
@@ -89,7 +84,9 @@ export default function PrintFolderList({
                         blackAndWhite: "جلد سیاه و سفید",
                       }[printFolder.bindingOptions.coverColor],
                     ]),
-                `${intl.formatNumber(printFolder.countOfCopies || 1)} نسخه`,
+                `${formatNumber(
+                  printFolder.countOfCopies || 1
+                )} نسخه`,
               ].join(" / ")}
             </div>
             {printFolder.description && (

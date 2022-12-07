@@ -1,12 +1,11 @@
 import { ReactElement, useEffect, useRef, useState } from "react";
-import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
 import { Address } from "@/shared/types";
 import { deleteAddress, getAddresses } from "@/main/api";
-import { useLastPage } from "@/shared/context/lastPage";
+import { formatNumber } from "@/shared/utils/format";
 import AddressesIcon from "@/main/assets/icons/addresses.svg";
 import AddIcon from "@/shared/assets/icons/add.svg";
 import DashboardLayout from "@/main/components/Dashboard/Layout";
@@ -24,7 +23,6 @@ import Pagination from "@/shared/components/Pagination";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
 
 export default function DashboardAddresseList() {
-  const intl = useIntl();
   const router = useRouter();
 
   const [data, setData] = useState<{
@@ -80,9 +78,7 @@ export default function DashboardAddresseList() {
         <ContentHeader
           title="کل آدرس های من"
           subTitle={
-            data.totalCount
-              ? `(${intl.formatNumber(data.totalCount)})`
-              : undefined
+            data.totalCount ? `(${formatNumber(data.totalCount)})` : undefined
           }
           end={
             <Link href="/dashboard/addresses/new">
@@ -96,7 +92,7 @@ export default function DashboardAddresseList() {
           }
         />
         <MobileContentHeader
-          backTo={useLastPage("/dashboard")}
+          backTo="/dashboard"
           title="آدرس های من"
           end={
             <Link href="/dashboard/addresses/new">
@@ -115,7 +111,11 @@ export default function DashboardAddresseList() {
           <AddressList
             addresses={data.addresses}
             onEditAddress={(addressId) =>
-              router.push(`/dashboard/addresses/${addressId}/edit`)
+              router.push(
+                `/dashboard/addresses/${addressId}/edit?from=${encodeURIComponent(
+                  router.asPath
+                )}`
+              )
             }
             onDeleteAddress={setPendingDeleteRequest}
           />

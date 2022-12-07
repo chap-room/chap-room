@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { logout } from "@/main/api";
 import { useUserData } from "@/main/context/userData";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import { DataLoaderView } from "@/shared/components/DataLoader";
 import LogoWithName from "@/shared/assets/images/logoWithName.svg";
 import ButtonList from "@/shared/components/ButtonList";
@@ -132,7 +131,7 @@ export default function Header() {
                       <Avatar user={userData.value} />
                       <div className={styles.Meta}>
                         <div className={styles.PhoneNumber}>
-                          {englishToPersianNumbers(userData.value.phoneNumber)}
+                          {userData.value.phoneNumber}
                         </div>
                         <div className={styles.Name}>{userData.value.name}</div>
                       </div>

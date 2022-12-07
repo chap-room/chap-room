@@ -1,7 +1,7 @@
 import styles from "./style.module.scss";
 import { FinancialRecord } from "@/shared/types";
-import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
+import { FormattedDate, FormattedTime } from "@/shared/components/Formatted";
+import { formatNumber } from "@/shared/utils/format";
 import EditIcon from "@/shared/assets/icons/edit.svg";
 import DeletetIcon from "@/shared/assets/icons/delete.svg";
 import IconButton from "@/shared/components/IconButton";
@@ -38,13 +38,10 @@ export default function FinancialRecordTable({
               <span className={styles.MobileLabel}>تاریخ:</span>
               <span className={styles.Date}>
                 <span>
-                  <FormattedDate value={new Date(financialRecord.createdAt)} />
+                  <FormattedDate value={financialRecord.createdAt} />
                 </span>
                 <span>
-                  <FormattedTime
-                    value={new Date(financialRecord.createdAt)}
-                    timeStyle="medium"
-                  />
+                  <FormattedTime value={financialRecord.createdAt} />
                 </span>
               </span>
             </td>
@@ -54,14 +51,12 @@ export default function FinancialRecordTable({
                 <div className={styles.UserName}>
                   {financialRecord.user.name}
                 </div>
-                <div>
-                  {englishToPersianNumbers(financialRecord.user.phoneNumber)}
-                </div>
+                <div>{financialRecord.user.phoneNumber}</div>
               </div>
             </td>
             <td>
               <span className={styles.MobileLabel}>مبلغ:</span>
-              <FormattedNumber value={financialRecord.amount} /> تومان
+              {formatNumber(financialRecord.amount)} تومان
             </td>
             <td>
               <span className={styles.MobileLabel}>جزییات:</span>

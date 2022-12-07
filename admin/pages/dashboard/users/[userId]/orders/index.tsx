@@ -10,8 +10,6 @@ import {
   getUserOrders,
   markOrderSent,
 } from "@/admin/api";
-import { useLastPage } from "@/shared/context/lastPage";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import { useDashboardData } from "@/admin/context/dashboardData";
 import DataLoader from "@/shared/components/DataLoader";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
@@ -91,13 +89,17 @@ export default function DashboardUserOrderList() {
           title="همه سفارش ها"
           subTitle={
             data.user
-              ? `(${data.user.name} / ${englishToPersianNumbers(
-                  data.user.phoneNumber
-                )})`
+              ? `(${data.user.name} / ${data.user.phoneNumber})`
               : undefined
           }
           end={
-            <Link href={useLastPage("/dashboard/users")}>
+            <Link
+              href={
+                typeof router.query.from === "string"
+                  ? router.query.from
+                  : "/dashboard/users"
+              }
+            >
               <Button varient="none" style={{ padding: 0 }}>
                 بازگشت <ArrowBackIcon />
               </Button>
@@ -105,7 +107,11 @@ export default function DashboardUserOrderList() {
           }
         />
         <MobileContentHeader
-          backTo={useLastPage("/dashboard/users")}
+          backTo={
+            typeof router.query.from === "string"
+              ? router.query.from
+              : "/dashboard/users"
+          }
           title="همه سفارش ها"
         />
         <DataLoader
@@ -119,7 +125,9 @@ export default function DashboardUserOrderList() {
             orders={data.orders}
             onSeeOrderDetails={(orderId) =>
               router.push(
-                `/dashboard/users/${userId}/orders/${orderId}/details`
+                `/dashboard/users/${userId}/orders/${orderId}/details?from=${encodeURIComponent(
+                  router.asPath
+                )}`
               )
             }
             onCancelOrder={setPendingOrderCancelRequest}

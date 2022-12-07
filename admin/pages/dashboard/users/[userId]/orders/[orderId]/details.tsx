@@ -10,7 +10,6 @@ import {
   getOrder,
   markOrderSent,
 } from "@/admin/api";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import { useDashboardData } from "@/admin/context/dashboardData";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
@@ -41,7 +40,7 @@ export default function DashboardUserOrderDetails() {
 
   const reloadRef = useRef<(() => void) | null>(null);
 
-  const title = `سفارش ${englishToPersianNumbers(orderId)}`;
+  const title = `سفارش ${orderId}`;
 
   return (
     <>
@@ -56,14 +55,16 @@ export default function DashboardUserOrderDetails() {
         <ContentHeader
           title={title}
           subTitle={
-            data
-              ? `(${data.user.name} / ${englishToPersianNumbers(
-                  data.user.phoneNumber
-                )})`
-              : undefined
+            data ? `(${data.user.name} / ${data.user.phoneNumber})` : undefined
           }
           end={
-            <Link href={`/dashboard/users/${userId}/orders`}>
+            <Link
+              href={
+                typeof router.query.from === "string"
+                  ? router.query.from
+                  : `/dashboard/users/${userId}/orders`
+              }
+            >
               <Button varient="none" style={{ padding: 0 }}>
                 بازگشت <ArrowBackIcon />
               </Button>
@@ -71,7 +72,11 @@ export default function DashboardUserOrderDetails() {
           }
         />
         <MobileContentHeader
-          backTo={`/dashboard/users/${userId}/orders`}
+          backTo={
+            typeof router.query.from === "string"
+              ? router.query.from
+              : `/dashboard/users/${userId}/orders`
+          }
           title={title}
         />
         <DataLoader

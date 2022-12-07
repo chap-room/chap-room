@@ -1,12 +1,11 @@
 import { ReactElement, useEffect, useRef, useState } from "react";
-import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import { CooperationRequest } from "@/shared/types";
 import { getCooperationRequests, updateCooperationRequest } from "@/admin/api";
+import { formatNumber } from "@/shared/utils/format";
 import { useDashboardData } from "@/admin/context/dashboardData";
-import { useLastPage } from "@/shared/context/lastPage";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
 import SectionContent from "@/shared/components/Dashboard/SectionContent";
@@ -23,7 +22,6 @@ import CooperationRequestAcceptDialog from "@/admin/components/CooperationReques
 import CooperationRequestRejectDialog from "@/admin/components/CooperationRequestRejectDialog";
 
 export default function DashboardCooperationRequests() {
-  const intl = useIntl();
   const dashboardData = useDashboardData();
   const router = useRouter();
 
@@ -110,7 +108,7 @@ export default function DashboardCooperationRequests() {
           title={title}
           subTitle={
             data.totalCount
-              ? `(${intl.formatNumber(data.totalCount)})`
+              ? `(${formatNumber(data.totalCount)})`
               : undefined
           }
           end={
@@ -136,7 +134,7 @@ export default function DashboardCooperationRequests() {
             />
           }
         />
-        <MobileContentHeader backTo={useLastPage("/dashboard")} title={title} />
+        <MobileContentHeader backTo="/dashboard" title={title} />
         <Controls
           start={
             <SearchInput

@@ -5,7 +5,6 @@ import Head from "next/head";
 import Link from "next/link";
 import { FinancialRecord } from "@/shared/types";
 import { getFinancialRecord, updateFinancialRecord } from "@/admin/api";
-import { useLastPage } from "@/shared/context/lastPage";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -35,7 +34,13 @@ export default function DashboardFinancialRecordEdit() {
         <ContentHeader
           title="ویرایش کردن سند"
           end={
-            <Link href={useLastPage("/dashboard/financial-records")}>
+            <Link
+              href={
+                typeof router.query.from === "string"
+                  ? router.query.from
+                  : "/dashboard/financial-records"
+              }
+            >
               <Button varient="none" style={{ padding: 0 }}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
@@ -43,7 +48,11 @@ export default function DashboardFinancialRecordEdit() {
           }
         />
         <MobileContentHeader
-          backTo={useLastPage("/dashboard/financial-records")}
+          backTo={
+            typeof router.query.from === "string"
+              ? router.query.from
+              : "/dashboard/financial-records"
+          }
           title="ویرایش کردن سند"
         />
         <DataLoader
@@ -62,7 +71,11 @@ export default function DashboardFinancialRecordEdit() {
               })
                 .then((message) => {
                   toast.success(message);
-                  router.push("/dashboard/financial-records");
+                  router.push(
+                    typeof router.query.from === "string"
+                      ? router.query.from
+                      : "/dashboard/financial-records"
+                  );
                 })
                 .catch(toast.error);
             }}

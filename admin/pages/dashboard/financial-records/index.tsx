@@ -1,12 +1,11 @@
 import { ReactElement, useEffect, useRef, useState } from "react";
-import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
 import { FinancialRecord } from "@/shared/types";
 import { deleteFinancialRecord, getFinancialRecords } from "@/admin/api";
-import { useLastPage } from "@/shared/context/lastPage";
+import { formatNumber } from "@/shared/utils/format";
 import AddIcon from "@/shared/assets/icons/add.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -29,7 +28,6 @@ import Pagination from "@/shared/components/Pagination";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
 
 export default function DashboardFinancialRecordList() {
-  const intl = useIntl();
   const router = useRouter();
 
   const [data, setData] = useState<{
@@ -117,9 +115,7 @@ export default function DashboardFinancialRecordList() {
         <ContentHeader
           title="لیست سوابق مالی"
           subTitle={
-            data.totalCount
-              ? `(${intl.formatNumber(data.totalCount)})`
-              : undefined
+            data.totalCount ? `(${formatNumber(data.totalCount)})` : undefined
           }
           end={
             <ButtonList gap={15}>
@@ -143,7 +139,7 @@ export default function DashboardFinancialRecordList() {
           }
         />
         <MobileContentHeader
-          backTo={useLastPage("/dashboard")}
+          backTo="/dashboard"
           title="لیست سوابق مالی"
           end={
             <Link href="/dashboard/financial-records/new">
@@ -230,11 +226,17 @@ export default function DashboardFinancialRecordList() {
           <FinancialRecordTable
             financialRecords={data.records}
             onSeeDetails={(orderId) =>
-              router.push(`/dashboard/orders/${orderId}/details`)
+              router.push(
+                `/dashboard/orders/${orderId}/details?from=${encodeURIComponent(
+                  router.asPath
+                )}`
+              )
             }
             onEditFinancialRecord={(financialRecordId) =>
               router.push(
-                `/dashboard/financial-records/${financialRecordId}/edit`
+                `/dashboard/financial-records/${financialRecordId}/edit?from=${encodeURIComponent(
+                  router.asPath
+                )}`
               )
             }
             onDeleteFinancialRecord={setPendingFinancialRecordCodeDeleteRequest}

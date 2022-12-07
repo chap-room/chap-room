@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 import { Address, PrintFolder } from "@/shared/types";
 import { newOrder } from "@/main/api";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import { useDashboardData } from "@/main/context/dashboardData";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import CloseIcon from "@/shared/assets/icons/close.svg";
@@ -78,7 +77,7 @@ export default function OrderForm() {
         }}
       />
       <div className={styles.SemiCircleProgressBarText}>
-        {englishToPersianNumbers(progress)}/{englishToPersianNumbers(3)}
+        {progress}/3
       </div>
     </div>
   );
@@ -102,7 +101,7 @@ export default function OrderForm() {
     OrderFormStages.newPrintFolder,
     OrderFormStages.editPrintFolder,
   ].includes(currentStage)
-    ? `پوشه ${englishToPersianNumbers(printFolderIndex)}`
+    ? `پوشه ${printFolderIndex}`
     : currentStage;
 
   return (

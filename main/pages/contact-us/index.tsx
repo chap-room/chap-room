@@ -8,7 +8,6 @@ import {
   validateNotEmpty,
   validatePhoneNumber,
 } from "@/shared/utils/validation";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import Layout from "@/main/components/Layout";
 import TextInput from "@/shared/components/TextInput";
 import TextArea from "@/shared/components/TextArea";
@@ -104,28 +103,19 @@ export default function ContactUs() {
           <div>
             <h2>نشانی</h2>
             <ul>
-              <li>شعبه {englishToPersianNumbers(1)}: تهران، خیابان فخر راضی</li>
-              <li>
-                شعبه {englishToPersianNumbers(2)}: اصفهان، خیابان احمدآباد
-              </li>
+              <li>شعبه 1: تهران، خیابان فخر راضی</li>
+              <li>شعبه 2: اصفهان، خیابان احمدآباد</li>
             </ul>
           </div>
           <div>
             <div>
               <h2>تماس</h2>
-              <div>
-                ({englishToPersianNumbers(7)} روز هفته{" "}
-                {englishToPersianNumbers(24)} ساعته)
-              </div>
+              <div>(7 روز هفته 24 ساعته)</div>
             </div>
             <ul>
               <li>info@chaproom.com</li>
-              <li className={styles.PhoneNumber}>
-                {englishToPersianNumbers("+98 021-91090772")}
-              </li>
-              <li className={styles.PhoneNumber}>
-                {englishToPersianNumbers("+98 021-91090414")}
-              </li>
+              <li className={styles.PhoneNumber}>+98 021-91090772</li>
+              <li className={styles.PhoneNumber}>+98 021-91090414</li>
             </ul>
           </div>
           <div>

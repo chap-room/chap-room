@@ -60,8 +60,20 @@
             .Status {
               display: flex;
               flex-direction: column;
-              color: #0077b5;
               white-space: nowrap;
+
+              &[data-status="canceled"] {
+                color: #f20f4b;
+              }
+
+              &[data-status="pending"],
+              &[data-status="preparing"] {
+                color: #0077b5;
+              }
+
+              &[data-status="sent"] {
+                color: #14cc9c;
+              }
             }
 
             .CancelReason,

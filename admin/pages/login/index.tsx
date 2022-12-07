@@ -1,6 +1,5 @@
 import styles from "./style.module.scss";
 import { useEffect, useState } from "react";
-import { FormattedNumber } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
@@ -12,7 +11,6 @@ import {
   validateLength,
   validatePhoneNumber,
 } from "@/shared/utils/validation";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import LogoWithName from "@/shared/assets/images/logoWithName.svg";
 import ArrowForwardIcon from "@/shared/assets/icons/arrowForward.svg";
 import Image from "@/shared/assets/images/printing.svg";
@@ -119,7 +117,7 @@ export default function Login() {
                   login(phoneNumber, password)
                     .then(({ message, expireAt }) => {
                       toast.success(message);
-                      setConfirmCodeExpirationDate(expireAt);
+                      setConfirmCodeExpirationDate(new Date(expireAt));
                     })
                     .catch(toast.error)
                     .finally(() => setIsSubmitting(false));
@@ -135,8 +133,7 @@ export default function Login() {
               <div className={styles.Column}>
                 <div className={styles.Title}>تأیید شماره موبایل</div>
                 <div className={styles.SubTitle}>
-                  کد {englishToPersianNumbers(6)} رقمی به شماره{" "}
-                  {englishToPersianNumbers(phoneNumber)} ارسال شد.
+                  کد 6 رقمی به شماره {phoneNumber} ارسال شد.
                 </div>
               </div>
               <div className={styles.Column}>
@@ -157,7 +154,7 @@ export default function Login() {
                     resendCode(phoneNumber)
                       .then(({ message, expireAt }) => {
                         toast.success(message);
-                        setConfirmCodeExpirationDate(expireAt);
+                        setConfirmCodeExpirationDate(new Date(expireAt));
                       })
                       .catch(toast.error)
                       .finally(() => setIsResending(false));
@@ -232,23 +229,16 @@ function CountDown({ date }: CountDownProps) {
     };
   }, [date]);
 
+  const remaningMinutes = Math.floor(remaningTime / 60);
+  const remaningSeconds = Math.floor(remaningTime % 60);
+
   return (
     <>
-      {remaningTime === 0 ? (
-        "منقضی شده"
-      ) : (
-        <>
-          <FormattedNumber
-            value={Math.floor(remaningTime / 60)}
-            minimumIntegerDigits={2}
-          />
-          :
-          <FormattedNumber
-            value={Math.floor(remaningTime % 60)}
-            minimumIntegerDigits={2}
-          />
-        </>
-      )}
+      {remaningTime === 0
+        ? "منقضی شده"
+        : `${remaningMinutes < 10 ? `0${remaningMinutes}` : remaningMinutes}:${
+            remaningMinutes < 10 ? `0${remaningSeconds}` : remaningSeconds
+          }`}
     </>
   );
 }

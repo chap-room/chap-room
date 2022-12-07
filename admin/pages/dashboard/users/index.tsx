@@ -1,11 +1,10 @@
 import { ReactElement, useEffect, useRef, useState } from "react";
-import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
 import { createUserAccessToken, deleteUser, getUsers } from "@/admin/api";
-import { useLastPage } from "@/shared/context/lastPage";
+import { formatNumber } from "@/shared/utils/format";
 import AddIcon from "@/shared/assets/icons/add.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -26,7 +25,6 @@ import UserMarketingDetailsDialog from "@/admin/components/UserMarketingDetailsD
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
 
 export default function DashboardUserList() {
-  const intl = useIntl();
   const router = useRouter();
 
   const [showUserMarketingDetails, setShowUserMarketingDetails] = useState<
@@ -97,9 +95,7 @@ export default function DashboardUserList() {
         <ContentHeader
           title="همه کاربران"
           subTitle={
-            data.totalCount
-              ? `(${intl.formatNumber(data.totalCount)})`
-              : undefined
+            data.totalCount ? `(${formatNumber(data.totalCount)})` : undefined
           }
           end={
             <ButtonList gap={15}>
@@ -123,7 +119,7 @@ export default function DashboardUserList() {
           }
         />
         <MobileContentHeader
-          backTo={useLastPage("/dashboard")}
+          backTo="/dashboard"
           title="همه کاربران"
           end={
             <Link href="/dashboard/users/new">
@@ -155,10 +151,18 @@ export default function DashboardUserList() {
             users={data.users}
             onSeeUserMarketingDetails={setShowUserMarketingDetails}
             onSeeUserOrderList={(userId) =>
-              router.push(`/dashboard/users/${userId}/orders`)
+              router.push(
+                `/dashboard/users/${userId}/orders?from=${encodeURIComponent(
+                  router.asPath
+                )}`
+              )
             }
             onSeeUserAddressList={(userId) =>
-              router.push(`/dashboard/users/${userId}/addresses`)
+              router.push(
+                `/dashboard/users/${userId}/addresses?from=${encodeURIComponent(
+                  router.asPath
+                )}`
+              )
             }
             onDeleteUser={setPendingUserDeleteRequest}
             onLoginAsUser={(userId) => {
@@ -182,7 +186,11 @@ export default function DashboardUserList() {
                 );
             }}
             onEditUser={(userId) =>
-              router.push(`/dashboard/users/${userId}/edit`)
+              router.push(
+                `/dashboard/users/${userId}/edit?from=${encodeURIComponent(
+                  router.asPath
+                )}`
+              )
             }
           />
           {!data.users.length && <EmptyNote>هیچ کاربری وجود ندارد</EmptyNote>}

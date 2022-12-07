@@ -1,6 +1,5 @@
 import styles from "./style.module.scss";
-import { FormattedNumber } from "react-intl";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
+import { formatNumber } from "@/shared/utils/format";
 import InfoIcon from "@/admin/assets/icons/info.svg";
 import LoginIcon from "@/admin/assets/icons/login.svg";
 import EditIcon from "@/shared/assets/icons/edit.svg";
@@ -51,23 +50,23 @@ export default function UserTable({
               <span className={styles.MobileLabel}>کاربر:</span>
               <div>
                 <div className={styles.UserName}>{user.name}</div>
-                <div>{englishToPersianNumbers(user.phoneNumber)}</div>
+                <div>{user.phoneNumber}</div>
               </div>
             </td>
             <td>
               <span className={styles.MobileLabel}>موجودی:</span>
               <div className={styles.UserWallet}>
                 <div>
-                  <FormattedNumber
-                    value={user.walletBalance + user.marketingBalance}
-                  />{" "}
+                  {formatNumber(
+                    user.walletBalance + user.marketingBalance
+                  )}{" "}
                   تومان
                 </div>
                 <div>
                   <div>
                     <span>کیف پول:</span>
                     <span>
-                      <FormattedNumber value={user.walletBalance} /> تومان
+                      {formatNumber(user.walletBalance)} تومان
                     </span>
                   </div>
                   <span className={styles.Spacer} />
@@ -80,7 +79,7 @@ export default function UserTable({
                     </span>
                     <span>بازاریابی:</span>
                     <span>
-                      <FormattedNumber value={user.marketingBalance} /> تومان
+                      {formatNumber(user.marketingBalance)} تومان
                     </span>
                   </div>
                 </div>

@@ -1,19 +1,15 @@
 import styles from "./style.module.scss";
 import { useState } from "react";
-import { FormattedNumber, useIntl } from "react-intl";
 // import { PrintTariffs } from "@/shared/types";
 // import {
 //   useValidation,
 //   validateNotEmpty,
 //   validateInt,
 // } from "@/shared/utils/validation";
+import { formatNumber } from "@/shared/utils/format";
 import Button from "@/shared/components/Button";
 import Select from "@/shared/components/Select";
 import TextInput from "@/shared/components/TextInput";
-import {
-  englishToPersianNumbers,
-  persianToEnglishNumbers,
-} from "@/shared/utils/numbers";
 // import ErrorList from "@/shared/components/ErrorList";
 
 interface BookPriceCalculatorProps {
@@ -22,8 +18,6 @@ interface BookPriceCalculatorProps {
 
 export default function BookPriceCalculator({}: // printTariffs,
 BookPriceCalculatorProps) {
-  const intl = useIntl();
-
   // const [printColor, setPrintColor] = useState<
   //   "blackAndWhite" | "normalColor" | "fullColor" | null
   // >(null);
@@ -90,41 +84,34 @@ BookPriceCalculatorProps) {
       <div className={styles.Row}>
         <div className={styles.Input}>
           <TextInput
-            inputProps={{ placeholder: "تعداد صفحه" }}
+            inputProps={{ type: "number", placeholder: "تعداد صفحه" }}
             varient="shadow-without-bg"
             height={48}
-            value={englishToPersianNumbers(countOfPages)}
-            onChange={(newValue) =>
-              setCountOfPages(persianToEnglishNumbers(newValue, false))
-            }
+            value={countOfPages}
+            onChange={setCountOfPages}
           />
         </div>
         <div className={styles.Input}>
           <TextInput
             inputProps={{
-              placeholder: `تیراژ (حداقل ${englishToPersianNumbers(50)} نسخه)`,
+              type: "number",
+              placeholder: "تیراژ (حداقل 50 نسخه)",
             }}
             varient="shadow-without-bg"
             height={48}
-            value={englishToPersianNumbers(countOfCopies)}
-            onChange={(newValue) =>
-              setCountOfCopies(persianToEnglishNumbers(newValue, false))
-            }
+            value={countOfCopies}
+            onChange={setCountOfCopies}
           />
         </div>
       </div>
       <div className={styles.Row}>
         <div>
           <span>قیمت هر کتاب: </span>
-          <span>
-            <FormattedNumber value={56000} /> تومان
-          </span>
+          <span>{formatNumber(56000)} تومان</span>
         </div>
         <div>
           <span>قیمت کل: </span>
-          <span>
-            <FormattedNumber value={560000} /> تومان
-          </span>
+          <span>{formatNumber(560000)} تومان</span>
         </div>
       </div>
       <div className={styles.Bottom}>

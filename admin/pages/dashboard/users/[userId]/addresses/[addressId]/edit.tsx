@@ -36,7 +36,13 @@ export default function DashboardUserAddressEdit() {
         <ContentHeader
           title="ویرایش کردن آدرس"
           end={
-            <Link href={`/dashboard/users/${userId}/addresses`}>
+            <Link
+              href={
+                typeof router.query.from === "string"
+                  ? router.query.from
+                  : `/dashboard/users/${userId}/addresses`
+              }
+            >
               <Button varient="none" style={{ padding: 0 }}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
@@ -44,7 +50,11 @@ export default function DashboardUserAddressEdit() {
           }
         />
         <MobileContentHeader
-          backTo={`/dashboard/users/${userId}/addresses`}
+          backTo={
+            typeof router.query.from === "string"
+              ? router.query.from
+              : `/dashboard/users/${userId}/addresses`
+          }
           title="ویرایش کردن آدرس"
         />
         <DataLoader
@@ -56,11 +66,16 @@ export default function DashboardUserAddressEdit() {
         >
           <AddressForm
             defaultValues={data}
+            inputsVarient="outlined"
             onSave={(addressFormData) =>
               updateAddress(addressId, addressFormData)
                 .then((message) => {
                   toast.success(message);
-                  router.push(`/dashboard/users/${userId}/addresses`);
+                  router.push(
+                    typeof router.query.from === "string"
+                      ? router.query.from
+                      : `/dashboard/users/${userId}/addresses`
+                  );
                 })
                 .catch(toast.error)
             }

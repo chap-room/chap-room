@@ -1,6 +1,5 @@
 import styles from "./style.module.scss";
 import { AdminUserRole } from "@/shared/types";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import EditIcon from "@/shared/assets/icons/edit.svg";
 import DeletetIcon from "@/shared/assets/icons/delete.svg";
 import IconButton from "@/shared/components/IconButton";
@@ -37,7 +36,7 @@ export default function AdminTable({
               <span className={styles.MobileLabel}>ادمین:</span>
               <div>
                 <div className={styles.UserName}>{admin.name}</div>
-                <div>{englishToPersianNumbers(admin.phoneNumber)}</div>
+                <div>{admin.phoneNumber}</div>
               </div>
             </td>
             <td>

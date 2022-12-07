@@ -1,7 +1,7 @@
 import styles from "./style.module.scss";
-import { FormattedDate, FormattedNumber, FormattedTime } from "react-intl";
 import { Order } from "@/shared/types";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
+import { formatNumber } from "@/shared/utils/format";
+import { FormattedDate, FormattedTime } from "@/shared/components/Formatted";
 
 interface OrderTableProps {
   orders: Order[];
@@ -31,25 +31,22 @@ export default function OrderTable({
           <tr key={order.id}>
             <td>
               <span className={styles.MobileLabel}>شماره سفارش:</span>
-              {englishToPersianNumbers(order.id)}
+              <span>{order.id}</span>
             </td>
             <td>
               <span className={styles.MobileLabel}>تاریخ سفارش:</span>
               <span className={styles.Date}>
                 <span>
-                  <FormattedDate value={new Date(order.createdAt)} />
+                  <FormattedDate value={order.createdAt} />
                 </span>
                 <span>
-                  <FormattedTime
-                    value={new Date(order.createdAt)}
-                    timeStyle="medium"
-                  />
+                  <FormattedTime value={order.createdAt} />
                 </span>
               </span>
             </td>
             <td>
               <span className={styles.MobileLabel}>مبلغ سفارش:</span>
-              <FormattedNumber value={order.amount} /> تومان
+              {formatNumber(order.amount)} تومان
             </td>
             <td>
               <span className={styles.MobileLabel}>وضعیت:</span>

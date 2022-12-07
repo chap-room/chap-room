@@ -5,8 +5,6 @@ import Head from "next/head";
 import Link from "next/link";
 import { Address, User } from "@/shared/types";
 import { deleteAddress, getUserAddresses } from "@/admin/api";
-import { useLastPage } from "@/shared/context/lastPage";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -76,13 +74,17 @@ export default function DashboardUserAddressList() {
           title="آدرس ها"
           subTitle={
             data.user
-              ? `(${data.user.name} / ${englishToPersianNumbers(
-                  data.user.phoneNumber
-                )})`
+              ? `(${data.user.name} / ${data.user.phoneNumber})`
               : undefined
           }
           end={
-            <Link href={useLastPage("/dashboard/users")}>
+            <Link
+              href={
+                typeof router.query.from === "string"
+                  ? router.query.from
+                  : "/dashboard/users"
+              }
+            >
               <Button varient="none" style={{ padding: 0 }}>
                 بازگشت <ArrowBackIcon />
               </Button>
@@ -90,7 +92,11 @@ export default function DashboardUserAddressList() {
           }
         />
         <MobileContentHeader
-          backTo={useLastPage("/dashboard/users")}
+          backTo={
+            typeof router.query.from === "string"
+              ? router.query.from
+              : "/dashboard/users"
+          }
           title="آدرس ها"
         />
         <DataLoader
@@ -104,7 +110,9 @@ export default function DashboardUserAddressList() {
             addresses={data.addresses}
             onEditAddress={(addressId) =>
               router.push(
-                `/dashboard/users/${userId}/addresses/${addressId}/edit`
+                `/dashboard/users/${userId}/addresses/${addressId}/edit?from=${encodeURIComponent(
+                  router.asPath
+                )}`
               )
             }
             onDeleteAddress={setPendingAddressDeleteRequest}

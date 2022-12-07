@@ -1,7 +1,7 @@
 import styles from "./style.module.scss";
 import UploadImage from "@/shared/assets/images/upload.svg";
-import { FormattedList, FormattedNumber } from "react-intl";
 import { useRef, useState } from "react";
+import { formatList, formatNumber } from "@/shared/utils/format";
 
 interface UploadAreaProps {
   onSelectFile: (file: File) => void;
@@ -64,12 +64,8 @@ export default function UploadArea({
         برای انتخاب فایل اینجا کلیک کنید
       </div>
       <div className={styles.Footer}>
-        <div>
-          فرمت مجاز: <FormattedList value={Object.keys(acceptedTypes)} />
-        </div>
-        <div>
-          حداکثر هر فایل: <FormattedNumber value={maxSizeInMB} /> مگابایت
-        </div>
+        <div>فرمت مجاز: {formatList(Object.keys(acceptedTypes))}</div>
+        <div>حداکثر هر فایل: {formatNumber(maxSizeInMB)} مگابایت</div>
       </div>
     </div>
   );

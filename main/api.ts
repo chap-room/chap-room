@@ -233,7 +233,7 @@ export function resendCode(phoneNumber: string) {
     },
   }).then(({ data }) => ({
     message: data.message,
-    expireAt: new Date(data.expireAt),
+    expireAt: data.expireAt,
   }));
 }
 
@@ -254,7 +254,7 @@ export function register(
     },
   }).then(({ data }) => ({
     message: data.message,
-    expireAt: new Date(data.expireAt),
+    expireAt: data.expireAt,
   }));
 }
 
@@ -289,7 +289,7 @@ export function passwordReset(phoneNumber: string) {
     },
   }).then(({ data }) => ({
     message: data.message,
-    expireAt: new Date(data.expireAt),
+    expireAt: data.expireAt,
   }));
 }
 

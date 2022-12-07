@@ -1,6 +1,5 @@
 import styles from "./style.module.scss";
 import { ReactElement, useState } from "react";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import ExpandMoreIcon from "@/shared/assets/icons/expandMore.svg";
 import CaillIcon from "@/main/assets/icons/call.svg";
 import SupportImage from "@/main/assets/images/support.svg";
@@ -72,12 +71,12 @@ export default function FrequentlyAskedQuestions() {
               <div>
                 <CaillIcon />
                 <div>تلفن شعبه تهران</div>
-                <div>{englishToPersianNumbers("021-91090772")}</div>
+                <div>021-91090772</div>
               </div>
               <div>
                 <CaillIcon />
                 <div>تلفن شعبه اصفهان</div>
-                <div>{englishToPersianNumbers("021-91090414")}</div>
+                <div>021-91090414</div>
               </div>
             </div>
           </div>

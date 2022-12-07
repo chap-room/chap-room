@@ -1,5 +1,4 @@
 import { useRef } from "react";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
 
 type Validator = (value: any) => string | void;
 
@@ -51,17 +50,11 @@ export function validateLength(options: {
 }): Validator {
   return (value: string) => {
     if (options.length !== undefined && value.length !== options.length)
-      return `باید ${englishToPersianNumbers(
-        options.length
-      )} کاراکتر داشته باشد`;
+      return `باید ${options.length} کاراکتر داشته باشد`;
     if (options.min !== undefined && value.length < options.min)
-      return `باید حداقل ${englishToPersianNumbers(
-        options.min
-      )} کاراکتر داشته باشد`;
+      return `باید حداقل ${options.min} کاراکتر داشته باشد`;
     if (options.max !== undefined && value.length > options.max)
-      return `باید حداکثر ${englishToPersianNumbers(
-        options.max
-      )} کاراکتر داشته باشد`;
+      return `باید حداکثر ${options.max} کاراکتر داشته باشد`;
   };
 }
 
@@ -90,11 +83,11 @@ export function validateInt(options?: {
       options?.length !== undefined &&
       parseInt(value).toString().length !== options?.length // Remove '+' or '--' Character
     )
-      return `باید ${englishToPersianNumbers(options.length)} رقم داشته باشد`;
+      return `باید ${options.length} رقم داشته باشد`;
     if (options?.min !== undefined && parseInt(value) < options.min)
-      return `باید حداقل ${englishToPersianNumbers(options.min)} باشد`;
+      return `باید حداقل ${options.min} باشد`;
     if (options?.max !== undefined && parseInt(value) > options.max)
-      return `باید حداکثر ${englishToPersianNumbers(options.max)} باشد`;
+      return `باید حداکثر ${options.max} باشد`;
   };
 }
 

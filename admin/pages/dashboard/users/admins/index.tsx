@@ -1,12 +1,11 @@
 import { ReactElement, useEffect, useRef, useState } from "react";
-import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
 import { AdminUserRole } from "@/shared/types";
 import { deleteAdmin, getAdmins } from "@/admin/api";
-import { useLastPage } from "@/shared/context/lastPage";
+import { formatNumber } from "@/shared/utils/format";
 import AddIcon from "@/shared/assets/icons/add.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -26,7 +25,6 @@ import Pagination from "@/shared/components/Pagination";
 import WarningConfirmDialog from "@/shared/components/Dashboard/WarningConfirmDialog";
 
 export default function DashboardAdminList() {
-  const intl = useIntl();
   const router = useRouter();
 
   const [pendingAdminDeleteRequest, setPendingAdminDeleteRequest] = useState<
@@ -92,9 +90,7 @@ export default function DashboardAdminList() {
         <ContentHeader
           title="همه ادمین ها"
           subTitle={
-            data.totalCount
-              ? `(${intl.formatNumber(data.totalCount)})`
-              : undefined
+            data.totalCount ? `(${formatNumber(data.totalCount)})` : undefined
           }
           end={
             <ButtonList gap={15}>
@@ -118,7 +114,7 @@ export default function DashboardAdminList() {
           }
         />
         <MobileContentHeader
-          backTo={useLastPage("/dashboard/users")}
+          backTo="/dashboard/users"
           title="همه ادمین ها"
           end={
             <Link href="/dashboard/users/admins/new">
@@ -150,7 +146,11 @@ export default function DashboardAdminList() {
             admins={data.admins}
             onDeleteAdmin={setPendingAdminDeleteRequest}
             onEditAdmin={(adminId) =>
-              router.push(`/dashboard/users/admins/${adminId}/edit`)
+              router.push(
+                `/dashboard/users/admins/${adminId}/edit?from=${encodeURIComponent(
+                  router.asPath
+                )}`
+              )
             }
           />
           {!data.admins.length && <EmptyNote>هیچ ادمینی وجود ندارد</EmptyNote>}

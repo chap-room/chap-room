@@ -233,32 +233,22 @@
             flex-wrap: wrap;
             gap: 10px;
 
+            &[data-status="canceled"] {
+              color: #f20f4b;
+            }
+
+            &[data-status="pending"],
+            &[data-status="preparing"] {
+              color: #0077b5;
+            }
+
+            &[data-status="sent"] {
+              color: #14cc9c;
+            }
+
             > div:first-child {
               flex: 1;
-
-              &.Canceled {
-                color: #f20f4b;
-              }
-
-              &.Pending,
-              &.Preparing {
-                color: #0077b5;
-              }
-
-              &.Sent {
-                color: #14cc9c;
-              }
             }
-
-            > div:last-child {
-              text-align: end;
-            }
-          }
-
-          .OrderPostageDate {
-            display: flex;
-            flex-direction: row;
-            gap: 10px;
           }
         }
 

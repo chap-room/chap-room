@@ -19,7 +19,6 @@ import {
   useInteractions,
 } from "@floating-ui/react-dom-interactions";
 import moment, { Moment } from "jalali-moment";
-import { englishToPersianNumbers } from "@/shared/utils/numbers";
 import PrevIcon from "@/shared/assets/icons/navigateBefore.svg";
 import NextIcon from "@/shared/assets/icons/navigateNext.svg";
 import TextInput from "@/shared/components/TextInput";
@@ -237,7 +236,7 @@ function MonthPicker({
           <NextIcon />
         </button>
         <span className={styles.title}>
-          {englishToPersianNumbers(year.jYear())}
+          {year.jYear()}
         </span>
         <button title="سال بعد" onClick={() => onNextYear()}>
           <PrevIcon />
@@ -308,7 +307,7 @@ function DayPicker({
           <NextIcon />
         </button>
         <button onClick={() => onClickOnMonth()}>
-          {months[month.jMonth()]} {englishToPersianNumbers(month.jYear())}
+          {months[month.jMonth()]} {month.jYear()}
         </button>
         <button title="ماه بعد" onClick={() => onNextMonth()}>
           <PrevIcon />
@@ -335,7 +334,7 @@ function DayPicker({
             data-is-current-month={day.isSame(month, "jMonth")}
             onClick={() => onSelectDay(day)}
           >
-            {englishToPersianNumbers(day.jDate())}
+            {day.jDate()}
           </button>
         ))}
       </div>

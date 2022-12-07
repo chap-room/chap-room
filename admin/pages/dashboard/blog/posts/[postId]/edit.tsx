@@ -5,7 +5,6 @@ import Head from "next/head";
 import Link from "next/link";
 import { Post } from "@/shared/types";
 import { getBlogPost, updateBlogPost } from "@/admin/api";
-import { useLastPage } from "@/shared/context/lastPage";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -35,7 +34,13 @@ export default function DashboardEditPost() {
         <ContentHeader
           title="ویرایش کردن بلاگ"
           end={
-            <Link href={useLastPage("/dashboard/blog")}>
+            <Link
+              href={
+                typeof router.query.from === "string"
+                  ? router.query.from
+                  : "/dashboard/blog"
+              }
+            >
               <Button varient="none" style={{ padding: 0 }}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
@@ -43,7 +48,11 @@ export default function DashboardEditPost() {
           }
         />
         <MobileContentHeader
-          backTo={useLastPage("/dashboard/blog")}
+          backTo={
+            typeof router.query.from === "string"
+              ? router.query.from
+              : "/dashboard/blog"
+          }
           title="ویرایش کردن بلاگ"
         />
         <DataLoader
@@ -59,7 +68,11 @@ export default function DashboardEditPost() {
               updateBlogPost(postId, postFormData)
                 .then((message) => {
                   toast.success(message);
-                  router.push("/dashboard/blog");
+                  router.push(
+                    typeof router.query.from === "string"
+                      ? router.query.from
+                      : "/dashboard/blog"
+                  );
                 })
                 .catch(toast.error)
             }

@@ -1,6 +1,6 @@
 import styles from "./style.module.scss";
 import { PrintTariffs, PrintPrice } from "@/shared/types";
-import { FormattedNumber } from "react-intl";
+import { formatNumber } from "@/shared/utils/format";
 
 interface PrintTariffsTableProps {
   printTariffs: PrintTariffs;
@@ -137,16 +137,16 @@ function PrintPriceView({ printPrice, printSide }: PrintPriceViewProps) {
         if (nextBreakpoints) {
           return (
             <span key={index}>
-              <FormattedNumber value={breakpoint.at} /> -{" "}
-              <FormattedNumber value={nextBreakpoints.at - 1} />:{" "}
-              <FormattedNumber value={breakpoint[printSide]} /> تومان
+              {formatNumber(breakpoint.at)} -{" "}
+              {formatNumber(nextBreakpoints.at - 1)}:{" "}
+              {formatNumber(breakpoint[printSide])} تومان
             </span>
           );
         } else {
           return (
             <span key={index}>
-              <FormattedNumber value={breakpoint.at} /> به بالا:{" "}
-              <FormattedNumber value={breakpoint[printSide]} /> تومان
+              {formatNumber(breakpoint.at)} به بالا:{" "}
+              {formatNumber(breakpoint[printSide])} تومان
             </span>
           );
         }

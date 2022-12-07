@@ -1,15 +1,15 @@
 import styles from "./style.module.scss";
 import { useState } from "react";
-import { FormattedNumber } from "react-intl";
+import toast from "react-hot-toast";
+import { calculateOrderPrice } from "@/main/api";
+import { formatNumber } from "@/shared/utils/format";
+import DataLoader from "@/shared/components/DataLoader";
 import ZarinpalLogo from "@/main/assets/images/zarinpal.svg";
 import BottomActions from "@/shared/components/Dashboard/BottomActions";
 import Button from "@/shared/components/Button";
 import Radio from "@/shared/components/Radio";
 import CheckBox from "@/shared/components/CheckBox";
 import TextInput from "@/shared/components/TextInput";
-import { calculateOrderPrice } from "@/main/api";
-import toast from "react-hot-toast";
-import DataLoader from "@/shared/components/DataLoader";
 
 interface PaymentStageProps {
   actions: {
@@ -56,10 +56,7 @@ export default function PaymentStage({ actions }: PaymentStageProps) {
       <div>
         {payable ? (
           <>
-            <span>
-              <FormattedNumber value={payable} />
-            </span>{" "}
-            تومان
+            <span>{formatNumber(payable)}</span> تومان
           </>
         ) : (
           "رایگان"
@@ -78,12 +75,8 @@ export default function PaymentStage({ actions }: PaymentStageProps) {
           <div className={styles.FoldersAmount}>
             {data.foldersAmount.map((amount, index) => (
               <div className={styles.Amount} key={index}>
-                <div>
-                  پوشه <FormattedNumber value={index + 1} />:
-                </div>
-                <div>
-                  <FormattedNumber value={amount} /> تومان
-                </div>
+                <div>پوشه {formatNumber(index + 1)}:</div>
+                <div>{formatNumber(amount)} تومان</div>
               </div>
             ))}
           </div>
@@ -123,30 +116,22 @@ export default function PaymentStage({ actions }: PaymentStageProps) {
           <div className={styles.Amounts}>
             <div className={styles.Amount}>
               <div>هزینه ارسال:</div>
-              <div>
-                <FormattedNumber value={data.postageFee} /> تومان
-              </div>
+              <div>{formatNumber(data.postageFee)} تومان</div>
             </div>
             <div className={styles.Amount}>
               <div>مجموع:</div>
-              <div>
-                <FormattedNumber value={total} /> تومان
-              </div>
+              <div>{formatNumber(total)} تومان</div>
             </div>
             {discountCode !== null && data.discountAmount && (
               <div className={styles.Amount}>
                 <div>کسر کد تخفیف:</div>
-                <div>
-                  <FormattedNumber value={data.discountAmount} /> تومان
-                </div>
+                <div>{formatNumber(data.discountAmount)} تومان</div>
               </div>
             )}
             {paidWithWallet && (
               <div className={styles.Amount}>
                 <div>کسر از کیف پول:</div>
-                <div>
-                  <FormattedNumber value={walletUsage} /> تومان
-                </div>
+                <div>{formatNumber(walletUsage)} تومان</div>
               </div>
             )}
           </div>
@@ -172,9 +157,7 @@ export default function PaymentStage({ actions }: PaymentStageProps) {
                 />
                 کیف پول
               </div>
-              <div>
-                موجودی: <FormattedNumber value={data.userBalance} /> تومان
-              </div>
+              <div>موجودی: {formatNumber(data.userBalance)} تومان</div>
             </div>
           </div>
         </div>
