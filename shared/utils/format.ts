@@ -14,7 +14,7 @@ export function formatNumber(value: string | number) {
     )
     .join("");
 
-  return isNegative ? minus + formatted : string;
+  return isNegative ? minus + formatted : formatted;
 }
 
 const listSeparator = "، ";

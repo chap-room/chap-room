@@ -47,7 +47,7 @@ export default function Wallet() {
         <div className={styles.WalletBalance}>
           <div>موجودی کیف پول:</div>
           <div>
-            <span>{formatNumber(-55000 || 0)}</span>{" "}
+            <span>{formatNumber(dashboardData.data?.walletBalance || 0)}</span>{" "}
             تومان
           </div>
         </div>
