@@ -108,11 +108,34 @@ export default function OrderForm() {
         title={title}
         start={isMainStage && SemiCircleProgressBar}
         end={
-          <Link href="/dashboard/orders">
-            <Button varient="none" style={{ padding: 0 }}>
-              انصراف و بازگشت <ArrowBackIcon />
+          isMainStage ? (
+            <Link href="/dashboard/orders">
+              <Button varient="none" style={{ padding: 0 }}>
+                انصراف و بازگشت <ArrowBackIcon />
+              </Button>
+            </Link>
+          ) : (
+            <Button
+              varient="none"
+              onClick={() => {
+                setCurrentStage(
+                  currentStage === OrderFormStages.newPrintFolder ||
+                    currentStage === OrderFormStages.editPrintFolder
+                    ? OrderFormStages.printFolders
+                    : OrderFormStages.address
+                );
+                if (currentStage === OrderFormStages.editAddress) {
+                  setCurrentInEditPrintFolderId(null);
+                }
+                if (currentStage === OrderFormStages.editAddress) {
+                  setCurrentInEditAddressId(null);
+                }
+              }}
+              style={{ padding: 0 }}
+            >
+              بازگشت <ArrowBackIcon />
             </Button>
-          </Link>
+          )
         }
       />
       <MobileContentHeader
