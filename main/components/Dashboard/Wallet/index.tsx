@@ -15,7 +15,6 @@ export default function Wallet() {
     useState(false);
   const [showWithdrawBalanceDialog, setShowWithdrawBalanceDialog] =
     useState(false);
-  console.log(dashboardData);
 
   return (
     <div
@@ -48,7 +47,7 @@ export default function Wallet() {
         <div className={styles.WalletBalance}>
           <div>موجودی کیف پول:</div>
           <div>
-            <span>{formatNumber(dashboardData.data?.walletBalance || 0)}</span>{" "}
+            <span>{formatNumber(-55000 || 0)}</span>{" "}
             تومان
           </div>
         </div>
