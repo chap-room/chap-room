@@ -318,7 +318,7 @@ function CountDown({ date }: CountDownProps) {
       {remaningTime === 0
         ? "منقضی شده"
         : `${remaningMinutes < 10 ? `0${remaningMinutes}` : remaningMinutes}:${
-            remaningMinutes < 10 ? `0${remaningSeconds}` : remaningSeconds
+            remaningSeconds < 10 ? `0${remaningSeconds}` : remaningSeconds
           }`}
     </>
   );

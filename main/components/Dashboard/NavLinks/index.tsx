@@ -77,6 +77,7 @@ export default function DashboardNavLinks() {
           logout();
           router.push("/login");
         }}
+        style={{ cursor: "pointer" }}
       >
         <LogoutIcon />
         خروج
