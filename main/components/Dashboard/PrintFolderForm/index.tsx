@@ -14,6 +14,7 @@ import {
   validateInt,
   validateNotEmpty,
 } from "@/shared/utils/validation";
+import { formatNumber } from "@/shared/utils/format";
 import DeleteIcon from "@/shared/assets/icons/delete.svg";
 import CloseIcon from "@/shared/assets/icons/close.svg";
 import Button from "@/shared/components/Button";
@@ -245,7 +246,7 @@ export default function PrintFolderForm({
     <DataLoaderView state={printPrice.dataLoaderState} size="small">
       {printPrice.data && (
         <div className={styles.PrintPriceView}>
-          مبلغ: {printPrice.data} تومان
+          مبلغ: {formatNumber(printPrice.data)} تومان
         </div>
       )}
     </DataLoaderView>
@@ -542,7 +543,8 @@ export default function PrintFolderForm({
                             setData={setTariffs}
                             size="small"
                           >
-                            {pagePrice && `قیمت هر برگ: ${pagePrice} تومان`}
+                            {pagePrice &&
+                              `قیمت هر برگ: ${formatNumber(pagePrice)} تومان`}
                           </DataLoader>
                         </div>
                       </div>
@@ -766,7 +768,8 @@ function UploadedPrintFile({ printFile, onDelete }: UploadedPrintFileProps) {
     <div className={styles.UploadedPrintFile}>
       <div>
         {printFile.name}
-        {printFile.countOfPages && ` (${printFile.countOfPages} صفحه)`}
+        {printFile.countOfPages &&
+          ` (${formatNumber(printFile.countOfPages)} صفحه)`}
       </div>
       <div className={styles.DeleteIcon}>
         <IconButton size={36} onClick={() => onDelete()}>
