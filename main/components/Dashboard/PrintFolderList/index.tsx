@@ -60,7 +60,7 @@ export default function PrintFolderList({
                 { singleSided: "یک رو", doubleSided: "دو رو" }[
                   printFolder.printSide
                 ],
-                `${formatNumber(printFolder.countOfPages)} صفحه`,
+                `${formatNumber(printFolder.countOfPages)} برگ`,
                 ...(printFolder.bindingOptions === null
                   ? []
                   : [

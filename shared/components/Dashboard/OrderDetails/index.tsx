@@ -30,7 +30,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                         { singleSided: "یک رو", doubleSided: "دو رو" }[
                           printFolder.printSide
                         ],
-                        `${formatNumber(printFolder.countOfPages)} صفحه`,
+                        `${formatNumber(printFolder.countOfPages)} برگ`,
                         ...(printFolder.bindingOptions === null
                           ? []
                           : [
@@ -92,7 +92,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                                 : styles.NotMatch
                             }
                           >
-                            مجموع: {formatNumber(printFolder.countOfPages)} صفحه
+                            مجموع: {formatNumber(uploadedPages)} صفحه
                           </span>
                         </div>
                       )}
