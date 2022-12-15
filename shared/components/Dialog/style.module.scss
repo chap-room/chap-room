@@ -73,6 +73,12 @@
     }
   }
 
+  &[data-varient="wide"] {
+    .Dialog {
+      max-width: 832px;
+    }
+  }
+
   .Dialog {
     width: 100%;
     max-width: 512px;

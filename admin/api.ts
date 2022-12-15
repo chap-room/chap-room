@@ -507,14 +507,20 @@ export function confirmOrder(orderId: number) {
   }).then(({ data }) => data.message);
 }
 
-export function markOrderSent(orderId: number, trackingNumber: string) {
+export function markOrderSent(
+  orderId: number,
+  data: {
+    postageMethod: string;
+    trackingCode?: string;
+  }
+) {
   return request({
     method: "PUT",
     url: `/admins/orders/id/${orderId}`,
     needAuth: true,
     data: {
       status: "sent",
-      trackingNumber,
+      ...data,
     },
   }).then(({ data }) => data.message);
 }

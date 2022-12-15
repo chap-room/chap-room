@@ -1,12 +1,42 @@
 .DialogContent {
-  display: grid;
-  grid-template-columns: 30% 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
-  align-items: center;
+  padding: 0 20px;
 
-  .Input {
+  @media (max-width: 640px) {
+    max-width: unset;
+    padding: 0;
+  }
+
+  > div {
     display: flex;
     flex-direction: column;
     gap: 10px;
+
+    > div:first-child {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+      min-height: 40px;
+      font-size: 13px;
+      color: #9c9c9c;
+
+      > div:last-child {
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        align-items: center;
+
+        > div:last-child {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+      }
+    }
   }
 }
