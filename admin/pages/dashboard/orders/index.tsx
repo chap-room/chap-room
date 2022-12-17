@@ -217,8 +217,8 @@ export default function DashboardOrderList() {
           {pendingMarkOrderSentRequest !== null && (
             <OrderSentDialog
               onClose={() => setPendingMarkOrderSentRequest(null)}
-              onMarkOrderSent={(trackingCode) =>
-                markOrderSent(pendingMarkOrderSentRequest!, trackingCode)
+              onMarkOrderSent={(markOrderSentData) =>
+                markOrderSent(pendingMarkOrderSentRequest!, markOrderSentData)
                   .then((message) => {
                     toast.success(message);
                     setPendingMarkOrderSentRequest(null);
@@ -227,6 +227,7 @@ export default function DashboardOrderList() {
                   })
                   .catch(toast.error)
               }
+              orderId={pendingMarkOrderSentRequest || 0}
             />
           )}
         </DataLoader>

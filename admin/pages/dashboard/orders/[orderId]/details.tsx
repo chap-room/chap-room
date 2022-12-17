@@ -156,8 +156,8 @@ export default function DashboardOrderDetails() {
           {showMarkSentDialog && (
             <OrderSentDialog
               onClose={() => setShowMarkSentDialog(false)}
-              onMarkOrderSent={(trackingCode) =>
-                markOrderSent(orderId, trackingCode)
+              onMarkOrderSent={(markOrderSentData) =>
+                markOrderSent(orderId, markOrderSentData)
                   .then((message) => {
                     toast.success(message);
                     setShowMarkSentDialog(false);
@@ -166,6 +166,7 @@ export default function DashboardOrderDetails() {
                   })
                   .catch(toast.error)
               }
+              orderId={orderId}
             />
           )}
         </DataLoader>

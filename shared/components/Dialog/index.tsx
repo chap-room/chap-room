@@ -18,6 +18,7 @@ interface DialogProps {
   subTitle?: string;
   fullScreenInMobile?: boolean;
   hideTitleInMobile?: boolean;
+  varient?: "medium" | "wide";
 }
 
 export default function Dialog({
@@ -28,6 +29,7 @@ export default function Dialog({
   children,
   fullScreenInMobile = false,
   hideTitleInMobile = false,
+  varient = "medium",
 }: PropsWithChildren<DialogProps>) {
   const { floating, context } = useFloating({
     open,
@@ -53,6 +55,7 @@ export default function Dialog({
               className={styles.Container}
               data-full-screen-in-mobile={fullScreenInMobile}
               data-hide-title-in-mobile={hideTitleInMobile}
+              data-varient={varient}
             >
               <div
                 className={styles.Dialog}

@@ -73,7 +73,12 @@ export default function FinancialRecordTable({
             </td>
             <td>
               <span className={styles.MobileLabel}>نوع:</span>
-              {financialRecord.type}
+              {financialRecord.type.split("\n").map((line, index) => (
+                <>
+                  {index !== 0 && <br />}
+                  {line}
+                </>
+              ))}
             </td>
             <td>
               <span className={styles.MobileLabel}>وضعیت:</span>

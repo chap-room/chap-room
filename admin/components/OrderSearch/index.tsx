@@ -315,8 +315,8 @@ export default function OrderSearch() {
             setPendingMarkOrderSentRequest(null);
             setOpen(true);
           }}
-          onMarkOrderSent={(trackingCode) =>
-            markOrderSent(pendingMarkOrderSentRequest!, trackingCode)
+          onMarkOrderSent={(markOrderSentData) =>
+            markOrderSent(pendingMarkOrderSentRequest!, markOrderSentData)
               .then((message) => {
                 toast.success(message);
                 setPendingMarkOrderSentRequest(null);
@@ -326,6 +326,7 @@ export default function OrderSearch() {
               })
               .catch(toast.error)
           }
+          orderId={pendingMarkOrderSentRequest || 0}
         />
       )}
     </>
