@@ -28,7 +28,7 @@ export function logout() {
 }
 
 const api = axios.create({
-  baseURL: "http://78.157.34.146:3000/v1",
+  baseURL: "http://localhost:3000/v1",
   headers: {
     "Content-Type": "application/json",
   },
