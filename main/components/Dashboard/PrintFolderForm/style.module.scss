@@ -70,14 +70,37 @@
           .UploadedPrintFile {
             display: flex;
             flex-direction: row;
-            align-items: center;
             border: 1px solid #cccccc;
             border-radius: 10px;
             padding: 5px;
 
             > div:first-child {
-              flex: 1;
-              padding: 0 10px;
+              width: 100%;
+              height: 36px;
+              position: relative;
+              z-index: 0;
+
+              > div:first-child {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 0;
+                width: 100%;
+                height: 100%;
+                box-sizing: border-box;
+                padding: 0 10px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 5px;
+                white-space: nowrap;
+
+                > span:first-child {
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                }
+              }
             }
 
             .DeleteIcon {
@@ -116,6 +139,8 @@
               > div:first-child {
                 flex: 1;
                 padding: 0 10px;
+                overflow: hidden;
+                text-overflow: ellipsis;
               }
 
               .CencelIcon {
