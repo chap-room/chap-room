@@ -76,7 +76,7 @@ export default function FrequentlyAskedQuestions() {
               <div>
                 <CaillIcon />
                 <div>تلفن شعبه اصفهان</div>
-                <div>021-91090414</div>
+                <div>031-91090414</div>
               </div>
             </div>
           </div>

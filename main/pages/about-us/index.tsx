@@ -12,7 +12,7 @@ export default function AboutUs() {
   return (
     <div className={styles.Container}>
       <Head>
-        <title>صفحه اصلی</title>
+        <title>درباره ما</title>
       </Head>
       <div className={styles.Introduction}>
         <div>

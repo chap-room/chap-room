@@ -22,7 +22,7 @@ export default function TariffsPage() {
   return (
     <DataLoader load={() => getTariffs()} setData={setData}>
       <Head>
-        <title>تماس با ما</title>
+        <title>تعرفه و سفارش پرینت</title>
       </Head>
       <div className={styles.Container}>
         <div>

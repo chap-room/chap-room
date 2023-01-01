@@ -26,7 +26,7 @@ export default function Footer() {
               <CaillIcon /> 021-91090772
             </li>
             <li>
-              <CaillIcon /> 021-91090414
+              <CaillIcon /> 031-91090414
             </li>
             <li>
               <MailIcon /> info@chaproom.com
