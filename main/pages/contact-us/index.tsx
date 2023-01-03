@@ -115,7 +115,7 @@ export default function ContactUs() {
             <ul>
               <li>info@chaproom.com</li>
               <li className={styles.PhoneNumber}>+98 021-91090772</li>
-              <li className={styles.PhoneNumber}>+98 021-91090414</li>
+              <li className={styles.PhoneNumber}>+98 031-91090414</li>
             </ul>
           </div>
           <div>

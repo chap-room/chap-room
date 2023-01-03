@@ -182,8 +182,6 @@ export interface PrintPrice {
 export interface BindingTariffs {
   springNormal: {
     a4: number;
-    a3: number;
-    a5: number;
   };
   springPapco: {
     a4: number;

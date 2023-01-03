@@ -21,7 +21,7 @@ const UserDataContext = createContext<{
 }>({
   loaderState: { isLoading: true, isError: false, reload: () => {} },
   value: null,
-  isLoggedIn: false,
+  isLoggedIn: true,
 });
 
 export function UserDataProvider({ children }: PropsWithChildren<{}>) {

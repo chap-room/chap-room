@@ -18,12 +18,6 @@ export default function BindingTariffsForm({
   const [springNormalA4Price, setSpringNormalA4Price] = useState(
     defaultValues?.springNormal?.a4.toString() || ""
   );
-  const [springNormalA5Price, setSpringNormalA5Price] = useState(
-    defaultValues?.springNormal?.a5.toString() || ""
-  );
-  const [springNormalA3Price, setSpringNormalA3Price] = useState(
-    defaultValues?.springNormal?.a3.toString() || ""
-  );
   const [springPapcoA4Price, setSpringPapcoA4Price] = useState(
     defaultValues?.springPapco?.a4.toString() || ""
   );
@@ -42,8 +36,6 @@ export default function BindingTariffsForm({
   const formValidation = useValidation(
     {
       springNormalA4Price: [validateInt({ unsigned: true, min: 1 })],
-      springNormalA3Price: [validateInt({ unsigned: true, min: 1 })],
-      springNormalA5Price: [validateInt({ unsigned: true, min: 1 })],
       springPapcoA4Price: [validateInt({ unsigned: true, min: 1 })],
       springPapcoA3Price: [validateInt({ unsigned: true, min: 1 })],
       springPapcoA5Price: [validateInt({ unsigned: true, min: 1 })],
@@ -51,8 +43,6 @@ export default function BindingTariffsForm({
     },
     {
       springNormalA4Price,
-      springNormalA3Price,
-      springNormalA5Price,
       springPapcoA4Price,
       springPapcoA3Price,
       springPapcoA5Price,
@@ -70,24 +60,6 @@ export default function BindingTariffsForm({
             suffix="تومان"
             value={springNormalA4Price}
             onChange={setSpringNormalA4Price}
-          />
-        </div>
-        <div className={styles.Label}>فنر با طلق معمولی A5:</div>
-        <div className={styles.Input}>
-          <TextInput
-            inputProps={{ type: "number" }}
-            suffix="تومان"
-            value={springNormalA5Price}
-            onChange={setSpringNormalA5Price}
-          />
-        </div>
-        <div className={styles.Label}>فنر با طلق معمولی A3:</div>
-        <div className={styles.Input}>
-          <TextInput
-            inputProps={{ type: "number" }}
-            suffix="تومان"
-            value={springNormalA3Price}
-            onChange={setSpringNormalA3Price}
           />
         </div>
         <div className={styles.Label}>فنر با طلق پاپکو A4:</div>
@@ -136,8 +108,6 @@ export default function BindingTariffsForm({
             onSave({
               springNormal: {
                 a4: parseInt(springNormalA4Price),
-                a3: parseInt(springNormalA3Price),
-                a5: parseInt(springNormalA5Price),
               },
               springPapco: {
                 a4: parseInt(springPapcoA4Price),

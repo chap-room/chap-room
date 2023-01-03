@@ -109,9 +109,7 @@ export default function UserMarketingDetailsDialog({
               {data!.discount.data.map((item) => (
                 <div key={item.value}>
                   <span>کد تخفیف {item.value}٪</span>
-                  <CopyableText text="HGVFCD">
-                    <div style={{ color: "#7d00ff" }}>{item.code}</div>
-                  </CopyableText>
+                  <CopyableText text={item.code}>{item.code}</CopyableText>
                 </div>
               ))}
             </div>

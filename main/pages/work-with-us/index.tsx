@@ -14,7 +14,7 @@ export default function WorkWithUs() {
   return (
     <div className={styles.Container}>
       <Head>
-        <title>صفحه اصلی</title>
+        <title>همکاری با ما</title>
       </Head>
       <div className={styles.Introduction}>
         <div>

@@ -315,7 +315,7 @@ function BreakpointInput({
           }}
           value={breakpoint.singleSided}
           onChange={(newValue) => onChange("singleSided", newValue)}
-          prefix={<div className={styles.Label}>دو رو:</div>}
+          prefix={<div className={styles.Label}>یک رو:</div>}
           suffix={<div className={styles.Label}>تومان</div>}
         />
         <ErrorList errors={formValidation.errors.singleSided} />
