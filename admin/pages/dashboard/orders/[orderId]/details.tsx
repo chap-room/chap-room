@@ -81,7 +81,7 @@ export default function DashboardOrderDetails() {
           load={() => {
             if (router.isReady) return getOrder(orderId);
           }}
-          deps={[router.isReady]}
+          deps={[router.isReady, orderId]}
           setData={setData}
           reloadRef={reloadRef}
         >
