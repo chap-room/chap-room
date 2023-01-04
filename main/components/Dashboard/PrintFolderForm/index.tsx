@@ -560,9 +560,9 @@ export default function PrintFolderForm({
                       onClick={() => {
                         if (
                           filesManuallySent &&
-                          bindingMethod === "allFilesTogether"
+                          bindingMethod === "eachFileSeparated"
                         )
-                          setBindingMethod("eachFileSeparated");
+                          setBindingMethod("allFilesTogether");
                         if (
                           printSize !== "a4" &&
                           bindingType === "springNormal"
@@ -622,30 +622,32 @@ export default function PrintFolderForm({
                         <div className={styles.Label}>طریقه صحافی:</div>
                         <div>
                           <div className={styles.RadioList}>
-                            <div>
-                              <Radio
-                                checked={bindingMethod === "eachFileSeparated"}
-                                onChecked={() =>
-                                  setBindingMethod("eachFileSeparated")
-                                }
-                              />
-                              هر فایل جدا
-                            </div>
                             {!filesManuallySent && (
                               <div>
                                 <Radio
-                                  checked={bindingMethod === "allFilesTogether"}
+                                  checked={
+                                    bindingMethod === "eachFileSeparated"
+                                  }
                                   onChecked={() =>
-                                    setBindingMethod("allFilesTogether")
+                                    setBindingMethod("eachFileSeparated")
                                   }
                                 />
-                                همه فایل ها با هم
-                                <InfoTooltip
-                                  message="برگه ها به ترتیب نام گذاری فایل ها مرتب شده و در یک جلد صحافی میشود"
-                                  iconSize={20}
-                                />
+                                هر فایل جدا
                               </div>
                             )}
+                            <div>
+                              <Radio
+                                checked={bindingMethod === "allFilesTogether"}
+                                onChecked={() =>
+                                  setBindingMethod("allFilesTogether")
+                                }
+                              />
+                              همه فایل ها با هم
+                              <InfoTooltip
+                                message="برگه ها به ترتیب نام گذاری فایل ها مرتب شده و در یک جلد صحافی میشود"
+                                iconSize={20}
+                              />
+                            </div>
                             <div>
                               <Radio
                                 checked={bindingMethod === "countOfFiles"}
