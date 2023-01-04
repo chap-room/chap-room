@@ -73,8 +73,8 @@ export default function PrintFolderList({
                       printFolder.bindingOptions.bindingMethod !==
                       "countOfFiles"
                         ? {
-                            allFilesTogether: "هر فایل جدا",
-                            eachFileSeparated: "همه فایل ها با هم",
+                            allFilesTogether: "همه فایل ها با هم",
+                            eachFileSeparated: "هر فایل جدا",
                           }[printFolder.bindingOptions.bindingMethod]
                         : `${formatNumber(
                             printFolder.bindingOptions.countOfFiles || 0

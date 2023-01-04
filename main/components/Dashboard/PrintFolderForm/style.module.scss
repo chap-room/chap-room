@@ -395,6 +395,18 @@
             .NumberOfFiles {
               width: 100px;
             }
+
+            &:nth-child(1) {
+              min-width: 150px;
+            }
+
+            &:nth-child(2) {
+              min-width: 150px;
+            }
+
+            &:nth-child(3) {
+              min-width: 250px;
+            }
           }
         }
 

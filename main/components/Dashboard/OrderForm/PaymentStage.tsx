@@ -12,6 +12,7 @@ import CheckBox from "@/shared/components/CheckBox";
 import TextInput from "@/shared/components/TextInput";
 
 interface PaymentStageProps {
+  addressId: number;
   actions: {
     back: () => void;
     finish: (
@@ -21,7 +22,7 @@ interface PaymentStageProps {
   };
 }
 
-export default function PaymentStage({ actions }: PaymentStageProps) {
+export default function PaymentStage({ addressId, actions }: PaymentStageProps) {
   const [data, setData] = useState<{
     discountAmount: number;
     userBalance: number;
@@ -67,7 +68,7 @@ export default function PaymentStage({ actions }: PaymentStageProps) {
 
   return (
     <DataLoader
-      load={() => calculateOrderPrice(discountCode)}
+      load={() => calculateOrderPrice(addressId, null)}
       setData={setData}
     >
       <div className={styles.Payment}>
@@ -96,7 +97,7 @@ export default function PaymentStage({ actions }: PaymentStageProps) {
               onClick={() => {
                 if (discountCode === null) {
                   setIsCheckingDiscountCode(true);
-                  calculateOrderPrice(discountCodeInputText)
+                  calculateOrderPrice(addressId, discountCodeInputText)
                     .then((data) => {
                       setData(data);
                       setDiscountCode(discountCodeInputText);

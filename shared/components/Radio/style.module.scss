@@ -27,6 +27,7 @@
 
   &:not([data-checked="true"]) {
     background: transparent;
+    cursor: pointer;
 
     &::before {
       display: none;

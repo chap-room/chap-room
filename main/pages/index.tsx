@@ -14,6 +14,7 @@ import { formatNumber } from "@/shared/utils/format";
 import { useUserData } from "@/main/context/userData";
 import ExpandMoreIcon from "@/shared/assets/icons/expandMore.svg";
 import GiftImage from "@/main/assets/images/gift.svg";
+import GetDiscountCodeDialog from "@/main/components/GetDiscountCodeDialog";
 import CalculatorImage from "@/main/assets/images/calculator.svg";
 import DataLoader from "@/shared/components/DataLoader";
 import PrintPriceCalculator from "@/main/components/PrintPriceCalculator";
@@ -45,6 +46,9 @@ export default function Home() {
       }
     }
   }, [router.isReady]);
+
+  const [showGetDiscountCodeDialog, setShowGetDiscountCodeDialog] =
+    useState(false);
 
   const [tariffs, setTariffs] = useState<Tariffs>({
     print: {},
@@ -150,9 +154,18 @@ export default function Home() {
             <span className={styles.Highlight}>30 صفحه پرینت رایگان</span> در
             اولین سفارش هدیه بگیرید.
           </p>
-          <Button varient="gradient">دریافت کد هدیه</Button>
+          <Button
+            varient="gradient"
+            onClick={() => setShowGetDiscountCodeDialog(true)}
+          >
+            دریافت کد هدیه
+          </Button>
         </div>
       </div>
+      <GetDiscountCodeDialog
+        open={showGetDiscountCodeDialog}
+        onClose={() => setShowGetDiscountCodeDialog(false)}
+      />
       <div className={styles.Calculator}>
         <h1>سفارش پرینت</h1>
         <div>

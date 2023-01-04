@@ -557,7 +557,19 @@ export default function PrintFolderForm({
                     <Button
                       varient="gradient"
                       style={{ minWidth: 150 }}
-                      onClick={() => setCurrentStep("2")}
+                      onClick={() => {
+                        if (
+                          filesManuallySent &&
+                          bindingMethod === "eachFileSeparated"
+                        )
+                          setBindingMethod("allFilesTogether");
+                        if (
+                          printSize !== "a4" &&
+                          bindingType === "springNormal"
+                        )
+                          setBindingType("springPapco");
+                        setCurrentStep("2");
+                      }}
                       disabled={!step1FormValidation.isValid}
                     >
                       مرحله بعد
@@ -581,21 +593,23 @@ export default function PrintFolderForm({
                       <div>
                         <div className={styles.Label}>نوع صحافی:</div>
                         <div className={styles.RadioList}>
-                          <div style={{ width: 150 }}>
-                            <Radio
-                              checked={bindingType === "springNormal"}
-                              onChecked={() => setBindingType("springNormal")}
-                            />
-                            فنر با طلق معمولی
-                          </div>
-                          <div style={{ width: 180 }}>
+                          {printSize === "a4" && (
+                            <div>
+                              <Radio
+                                checked={bindingType === "springNormal"}
+                                onChecked={() => setBindingType("springNormal")}
+                              />
+                              فنر با طلق معمولی
+                            </div>
+                          )}
+                          <div>
                             <Radio
                               checked={bindingType === "springPapco"}
                               onChecked={() => setBindingType("springPapco")}
                             />
                             فنر با طلق پاپکو
                           </div>
-                          <div style={{ width: 250 }}>
+                          <div>
                             <Radio
                               checked={bindingType === "stapler"}
                               onChecked={() => setBindingType("stapler")}
@@ -608,16 +622,20 @@ export default function PrintFolderForm({
                         <div className={styles.Label}>طریقه صحافی:</div>
                         <div>
                           <div className={styles.RadioList}>
-                            <div style={{ width: 150 }}>
-                              <Radio
-                                checked={bindingMethod === "eachFileSeparated"}
-                                onChecked={() =>
-                                  setBindingMethod("eachFileSeparated")
-                                }
-                              />
-                              هر فایل جدا
-                            </div>
-                            <div style={{ width: 180 }}>
+                            {!filesManuallySent && (
+                              <div>
+                                <Radio
+                                  checked={
+                                    bindingMethod === "eachFileSeparated"
+                                  }
+                                  onChecked={() =>
+                                    setBindingMethod("eachFileSeparated")
+                                  }
+                                />
+                                هر فایل جدا
+                              </div>
+                            )}
+                            <div>
                               <Radio
                                 checked={bindingMethod === "allFilesTogether"}
                                 onChecked={() =>
@@ -630,12 +648,13 @@ export default function PrintFolderForm({
                                 iconSize={20}
                               />
                             </div>
-                            <div style={{ width: 250 }}>
+                            <div>
                               <Radio
                                 checked={bindingMethod === "countOfFiles"}
-                                onChecked={() =>
-                                  setBindingMethod("countOfFiles")
-                                }
+                                onChecked={() => {
+                                  setBindingMethod("countOfFiles");
+                                  setNeedSpecialDescription(true);
+                                }}
                               />
                               تعدادی از فایل ها
                               <div className={styles.Spacer} />
@@ -666,14 +685,14 @@ export default function PrintFolderForm({
                       <div>
                         <div className={styles.Label}>رنگ جلد:</div>
                         <div className={styles.RadioList}>
-                          <div style={{ width: 150 }}>
+                          <div>
                             <Radio
                               checked={coverColor === "blackAndWhite"}
                               onChecked={() => setCoverColor("blackAndWhite")}
                             />
                             سیاه و سفید
                           </div>
-                          <div style={{ width: 180 }}>
+                          <div>
                             <Radio
                               checked={coverColor === "colorful"}
                               onChecked={() => setCoverColor("colorful")}
@@ -688,6 +707,7 @@ export default function PrintFolderForm({
                   <div className={styles.CheckBoxWithLabel}>
                     <CheckBox
                       checked={needSpecialDescription}
+                      readonly={bindingMethod === "countOfFiles"}
                       onChange={setNeedSpecialDescription}
                     />
                     سفارش من نیاز به توضیح خاصی دارد.

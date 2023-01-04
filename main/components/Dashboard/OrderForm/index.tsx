@@ -260,6 +260,7 @@ export default function OrderForm() {
       )}
       {currentStage === OrderFormStages.payment && (
         <PaymentStage
+          addressId={addressId!}
           actions={{
             back: () => setCurrentStage(OrderFormStages.address),
             finish: (discountCode, paidWithWallet) =>

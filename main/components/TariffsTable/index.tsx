@@ -64,7 +64,13 @@ export default function TariffsTable({ tariffs, section }: TariffsTableProps) {
             </tr>
           </thead>
           <tbody>
-            {bindingType !== "stapler" ? (
+            {bindingType === "springNormal" && (
+              <tr>
+                <td>A4</td>
+                <td>{tariffs.binding[bindingType].a4} تومان</td>
+              </tr>
+            )}
+            {bindingType === "springPapco" && (
               <>
                 <tr>
                   <td>A4</td>
@@ -79,7 +85,8 @@ export default function TariffsTable({ tariffs, section }: TariffsTableProps) {
                   <td>{tariffs.binding[bindingType].a3} تومان</td>
                 </tr>
               </>
-            ) : (
+            )}
+            {bindingType === "stapler" && (
               <tr>
                 <td>تمام سایز ها</td>
                 <td>{tariffs.binding[bindingType]} تومان</td>

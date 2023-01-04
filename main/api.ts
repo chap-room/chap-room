@@ -525,12 +525,16 @@ export function deletePrintFolder(printFolderId: number) {
   }).then(({ data }) => data.message);
 }
 
-export function calculateOrderPrice(discountCode: string | null) {
+export function calculateOrderPrice(
+  addressId: number,
+  discountCode: string | null
+) {
   return request({
     method: "POST",
     url: "/users/orders/price-calculator",
     needAuth: true,
     data: {
+      addressId,
       discountCode,
     },
   }).then(({ data }) => ({

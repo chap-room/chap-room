@@ -21,7 +21,17 @@
     }
   }
 
-  &:hover {
-    outline: 1px solid #9c9c9c;
+  &:not(:disabled) {
+    cursor: pointer;
+
+    &:hover {
+      outline: 1px solid #9c9c9c;
+    }
+  }
+
+  &:disabled {
+    > svg {
+      fill: #464646;
+    }
   }
 }

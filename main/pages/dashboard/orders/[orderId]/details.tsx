@@ -25,11 +25,6 @@ export default function DashboardOrderDetails() {
   const title = `شماره سفارش: ${orderId}`;
   const orderDetailsContainerRef = useRef<HTMLDivElement>(null);
 
-  function print() {
-    if (!orderDetailsContainerRef.current) return;
-    const orderDetailsContainer = orderDetailsContainerRef.current;
-  }
-
   return (
     <>
       <Head>
