@@ -33,7 +33,7 @@ export function logout() {
 }
 
 const api = axios.create({
-  baseURL: "http://localhost:3000/v1",
+  baseURL: "https://api.chaproom.com/v1",
   headers: {
     "Content-Type": "application/json",
   },

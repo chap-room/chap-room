@@ -452,7 +452,7 @@ export default function PrintFolderForm({
                           <div className={styles.Accounts}>
                             <div className={styles.TelegramAccount}>
                               <TelegramIcon />
-                              <div>chaproom_order</div>
+                              <div>chaproom_admin</div>
                             </div>
                             <div className={styles.EitaaAccount}>
                               <EitaaIcon />
