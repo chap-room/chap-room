@@ -844,7 +844,7 @@ function UploadPrintFile({
         </div>
       </div>
       <div>
-        {progress * 100}٪
+        {Math.floor(progress * 100)}٪
         <ProgressBar progress={progress} />
       </div>
     </div>

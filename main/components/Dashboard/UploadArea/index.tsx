@@ -2,6 +2,7 @@ import styles from "./style.module.scss";
 import UploadImage from "@/shared/assets/images/upload.svg";
 import { useRef, useState } from "react";
 import { formatList, formatNumber } from "@/shared/utils/format";
+import { toast } from "react-hot-toast";
 
 interface UploadAreaProps {
   onSelectFile: (file: File) => void;
@@ -23,6 +24,24 @@ export default function UploadArea({
 
   const [dragActive, setDragActive] = useState(false);
 
+  function handleFileSelect(file: File) {
+    if (file.size / 1024 / 1024 > maxSizeInMB) {
+      toast.error("اندازه فایل بزرگتر از حداکثر مجاز است");
+      return;
+    }
+
+    if (
+      !([] as string[])
+        .concat(...Object.values(acceptedTypes))
+        .includes(file.type)
+    ) {
+      toast.error("نوع فایل مجاز نیست");
+      return;
+    }
+
+    onSelectFile(file);
+  }
+
   return (
     <div className={styles.UploadArea} data-drag-active={dragActive}>
       <input
@@ -35,7 +54,7 @@ export default function UploadArea({
         onChange={() => {
           const input = inputRef.current;
           if (!input || !input.files) return;
-          Array.from(input.files).forEach(onSelectFile);
+          Array.from(input.files).forEach(handleFileSelect);
           input.value = "";
         }}
         multiple={multiple}
@@ -50,7 +69,7 @@ export default function UploadArea({
           event.preventDefault();
 
           const dataTransfer = event.dataTransfer;
-          Array.from(dataTransfer.files).forEach(onSelectFile);
+          Array.from(dataTransfer.files).forEach(handleFileSelect);
           setDragActive(false);
         }}
       />
