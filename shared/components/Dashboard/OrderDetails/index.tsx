@@ -27,9 +27,12 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                           fullColor: "تمام رنگی",
                         }[printFolder.printColor],
                         { a4: "A4", a5: "A5", a3: "A3" }[printFolder.printSize],
-                        { singleSided: "یک رو", doubleSided: "دو رو" }[
-                          printFolder.printSide
-                        ],
+                        {
+                          singleSided: "یک رو",
+                          doubleSided: "دو رو",
+                          singleSidedGlossy: "یک رو گلاسه",
+                          doubleSidedGlossy: "دو رو گلاسه",
+                        }[printFolder.printSide],
                         `${formatNumber(printFolder.countOfPages)} برگ`,
                         ...(printFolder.bindingOptions === null
                           ? []
@@ -175,7 +178,11 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                 {order.postageFee && (
                   <div>
                     <span>ارسال:</span>
-                    <span>{formatNumber(order.postageFee)} تومان</span>
+                    <span>
+                      {order.postageFee === 0
+                        ? "رایگان"
+                        : `${formatNumber(order.postageFee)} تومان`}
+                    </span>
                   </div>
                 )}
               </div>

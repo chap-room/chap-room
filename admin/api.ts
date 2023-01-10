@@ -7,6 +7,7 @@ import {
   BindingTariffs,
   PrintTariffs,
   Order,
+  BookTariffs,
 } from "@/shared/types";
 import { convert } from "@/shared/utils/convert";
 
@@ -752,7 +753,7 @@ export function getWithdrawalRequests(
   );
 }
 
-export function doWithdrawalRequests(
+export function doWithdrawalRequest(
   cooperationRequestId: number,
   trackingNumber: string
 ) {
@@ -767,7 +768,7 @@ export function doWithdrawalRequests(
   }).then(({ data }) => data.message);
 }
 
-export function rejectWithdrawalRequests(
+export function rejectWithdrawalRequest(
   cooperationRequestId: number,
   description: string
 ) {
@@ -790,7 +791,7 @@ export function getPrintTariffs() {
   }).then(({ data }) => data);
 }
 
-export function updatePrintPrice(data: PrintTariffs) {
+export function updatePrintTariffs(data: PrintTariffs) {
   return request({
     method: "PUT",
     url: "/admins/tariffs/print",
@@ -811,6 +812,23 @@ export function updateBindingTariffs(data: BindingTariffs) {
   return request({
     method: "PUT",
     url: "/admins/tariffs/binding",
+    needAuth: true,
+    data,
+  }).then(({ data }) => data.message);
+}
+
+export function getBookTariffs() {
+  return request({
+    method: "GET",
+    url: "/admins/tariffs/book",
+    needAuth: true,
+  }).then(({ data }) => data);
+}
+
+export function updateBookTariffs(data: BookTariffs) {
+  return request({
+    method: "PUT",
+    url: "/admins/tariffs/book",
     needAuth: true,
     data,
   }).then(({ data }) => data.message);
@@ -996,7 +1014,12 @@ export function getCustomerReports(
   search: string,
   paperSize: "a4" | "a5" | "a3" | null,
   paperColor: "blackAndWhite" | "fullColor" | "normalColor" | null,
-  paperSide: "singleSided" | "doubleSided" | null,
+  paperSide:
+    | "singleSided"
+    | "doubleSided"
+    | "singleSidedGlossy"
+    | "doubleSidedGlossy"
+    | null,
   sortOrder:
     | "withoutOrder"
     | "oneOrder"
@@ -1031,6 +1054,8 @@ export function getCustomerReports(
             ? {
                 singleSided: "single_sided",
                 doubleSided: "double_sided",
+                singleSidedGlossy: "single_sided_glossy",
+                doubleSidedGlossy: "double_sided_glossy",
               }[paperSide]
             : undefined,
         sortOrder: {
@@ -1063,7 +1088,12 @@ export function getCustomerReportsExcel(
   search: string,
   paperSize: "a4" | "a5" | "a3" | null,
   paperColor: "blackAndWhite" | "fullColor" | "normalColor" | null,
-  paperSide: "singleSided" | "doubleSided" | null,
+  paperSide:
+    | "singleSided"
+    | "doubleSided"
+    | "singleSidedGlossy"
+    | "doubleSidedGlossy"
+    | null,
   sortOrder:
     | "withoutOrder"
     | "oneOrder"
@@ -1096,6 +1126,8 @@ export function getCustomerReportsExcel(
           ? {
               singleSided: "single_sided",
               doubleSided: "double_sided",
+              singleSidedGlossy: "single_sided_glossy",
+              doubleSidedGlossy: "double_sided_glossy",
             }[paperSide]
           : undefined,
       sortOrder: {
@@ -1112,6 +1144,41 @@ export function getCustomerReportsExcel(
       }[sortOrder],
     },
   }).then(({ data }) => data.url);
+}
+
+export function getContactUsRequests(
+  search: string,
+  page: number,
+  checked: boolean
+) {
+  return cancelableRequest((signal) =>
+    request({
+      method: "GET",
+      url: "/admins/contact-us",
+      needAuth: true,
+      params: {
+        search,
+        page,
+        checked,
+      },
+      signal,
+    }).then(({ data }) => ({
+      totalCount: data.totalCount,
+      pageSize: data.pageSize,
+      contactUs: data.contactUs,
+    }))
+  );
+}
+
+export function doContactUsRequest(contactUsRequestId: number) {
+  return request({
+    method: "PUT",
+    url: `/admins/contact-us/id/${contactUsRequestId}`,
+    needAuth: true,
+    data: {
+      checked: true,
+    },
+  }).then(({ data }) => data.message);
 }
 
 export function getProfile() {

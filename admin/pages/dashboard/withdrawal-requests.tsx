@@ -4,9 +4,9 @@ import toast from "react-hot-toast";
 import Head from "next/head";
 import { WithdrawalRequest } from "@/shared/types";
 import {
-  doWithdrawalRequests,
+  doWithdrawalRequest,
   getWithdrawalRequests,
-  rejectWithdrawalRequests,
+  rejectWithdrawalRequest,
 } from "@/admin/api";
 import { formatNumber } from "@/shared/utils/format";
 import { useDashboardData } from "@/admin/context/dashboardData";
@@ -76,8 +76,8 @@ export default function DashboardWithdrawalRequests() {
   }, [router.isReady, itemsStatus, search, page]);
 
   const [
-    pendingWithdrawalRequestDoneRequest,
-    setPendingWithdrawalRequestDoneRequest,
+    pendingWithdrawalRequestDoRequest,
+    setPendingWithdrawalRequestDoRequest,
   ] = useState<number | null>(null);
   const [
     pendingWithdrawalRequestRejectRequest,
@@ -160,7 +160,7 @@ export default function DashboardWithdrawalRequests() {
         >
           <WithdrawalRequestTable
             withdrawalRequests={data.withdrawals}
-            onDoneWithdrawalRequest={setPendingWithdrawalRequestDoneRequest}
+            onDoWithdrawalRequest={setPendingWithdrawalRequestDoRequest}
             onRejectWithdrawalRequest={setPendingWithdrawalRequestRejectRequest}
             itemsStatus={itemsStatus === null ? "pending" : itemsStatus}
           />
@@ -173,17 +173,17 @@ export default function DashboardWithdrawalRequests() {
             pageSize={data.pageSize}
             onPageChange={setPage}
           />
-          {pendingWithdrawalRequestDoneRequest !== null && (
+          {pendingWithdrawalRequestDoRequest !== null && (
             <WithdrawalRequestDoneDialog
-              onClose={() => setPendingWithdrawalRequestDoneRequest(null)}
+              onClose={() => setPendingWithdrawalRequestDoRequest(null)}
               onDoneWithdrawalRequest={(transactionDate, trackingCode) =>
-                doWithdrawalRequests(
-                  pendingWithdrawalRequestDoneRequest!,
+                doWithdrawalRequest(
+                  pendingWithdrawalRequestDoRequest!,
                   trackingCode
                 )
                   .then((message) => {
                     toast.success(message);
-                    setPendingWithdrawalRequestDoneRequest(null);
+                    setPendingWithdrawalRequestDoRequest(null);
                     if (reloadRef.current) reloadRef.current();
                     dashboardData.loaderState.reload();
                   })
@@ -195,7 +195,7 @@ export default function DashboardWithdrawalRequests() {
             <WithdrawalRequestRejectDialog
               onClose={() => setPendingWithdrawalRequestRejectRequest(null)}
               onRejectWithdrawalRequest={(reason) =>
-                rejectWithdrawalRequests(
+                rejectWithdrawalRequest(
                   pendingWithdrawalRequestRejectRequest!,
                   reason
                 )

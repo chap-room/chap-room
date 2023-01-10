@@ -23,21 +23,21 @@ export default function DashboardBindingPrices() {
         <title>داشبورد - تعرفه های صحافی</title>
       </Head>
       <AdminSectionHeader
-        title="تعرفه ها"
+        title="تعرفه های پرینت"
         description="ــ تعرفه های پرینت را از این قسمت مدیریت کنید"
       />
       <SectionContent>
         <ContentHeader
           title="صحافی"
           end={
-            <Link href="/dashboard/tariffs">
+            <Link href="/dashboard/print-tariffs">
               <Button varient="none" style={{ padding: 0 }}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
             </Link>
           }
         />
-        <MobileContentHeader backTo="/dashboard/tariffs" title="صحافی" />
+        <MobileContentHeader backTo="/dashboard/print-tariffs" title="صحافی" />
         <DataLoader load={() => getBindingTariffs()} setData={setData}>
           <BindingTariffsForm
             defaultValues={data}

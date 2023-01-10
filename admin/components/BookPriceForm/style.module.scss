@@ -3,7 +3,7 @@
   grid-template-columns: minmax(100px, 180px) 1fr;
   gap: 20px;
 
-  @media (max-width: 512px) {
+  @media (max-width: 640px) {
     grid-template-columns: 1fr;
   }
 
@@ -19,7 +19,7 @@
       width: 100%;
       max-width: 300px;
 
-      @media (max-width: 512px) {
+      @media (max-width: 640px) {
         max-width: unset;
       }
     }

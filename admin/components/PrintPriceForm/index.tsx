@@ -15,7 +15,7 @@ import BottomActions from "@/shared/components/Dashboard/BottomActions";
 interface PrintPricesFormProps {
   printSize: "a4" | "a5" | "a3";
   printColor: "blackAndWhite" | "normalColor" | "fullColor";
-  defaultValues?: Partial<PrintPrice>;
+  defaultValues: PrintPrice;
   onSave: (data: PrintPrice) => Promise<any>;
 }
 

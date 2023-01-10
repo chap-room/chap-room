@@ -28,7 +28,11 @@ export default function PrintPriceCalculator({
   >(null);
   const [printSize, setPrintSize] = useState<"a4" | "a5" | "a3" | null>(null);
   const [printSide, setPrintSide] = useState<
-    "singleSided" | "doubleSided" | null
+    | "singleSided"
+    | "doubleSided"
+    | "singleSidedGlossy"
+    | "doubleSidedGlossy"
+    | null
   >(null);
   const [countOfPages, setCountOfPages] = useState("");
 
@@ -113,6 +117,8 @@ export default function PrintPriceCalculator({
           options={{
             singleSided: "یک رو",
             doubleSided: "دو رو",
+            singleSidedGlossy: "یک رو گلاسه",
+            doubleSidedGlossy: "دو رو گلاسه",
           }}
           value={printSide}
           onChange={setPrintSide}

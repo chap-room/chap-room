@@ -45,7 +45,11 @@ export interface PrintFolder {
   amount: number;
   printColor: "blackAndWhite" | "normalColor" | "fullColor";
   printSize: "a4" | "a5" | "a3";
-  printSide: "singleSided" | "doubleSided";
+  printSide:
+    | "singleSided"
+    | "doubleSided"
+    | "singleSidedGlossy"
+    | "doubleSidedGlossy";
   countOfPages: number;
   bindingOptions: BindingOptions | null;
   description: string | null;
@@ -145,6 +149,7 @@ export interface WithdrawalRequest {
 export interface Tariffs {
   print: PrintTariffs;
   binding: BindingTariffs;
+  book: BookTariffs;
 }
 
 export interface PrintTariffs {
@@ -189,6 +194,24 @@ export interface BindingTariffs {
     a5: number;
   };
   stapler: number;
+}
+
+export interface BookTariffs {
+  rahli: {
+    writing80Grams: {
+      hotGlue: number;
+    };
+  };
+  raqai: {
+    writing80Grams: {
+      hotGlue: number;
+    };
+  };
+  vaziri: {
+    writing80Grams: {
+      hotGlue: number;
+    };
+  };
 }
 
 export interface Post {
@@ -250,4 +273,13 @@ export interface CustomerReport {
   createdAt: string;
   firstOrderAt: string | null;
   lastOrderAt: string | null;
+}
+
+export interface ContactUsRequest {
+  id: number;
+  createdAt: string;
+  name: string;
+  phoneNumber: string;
+  message: string;
+  checked: boolean;
 }

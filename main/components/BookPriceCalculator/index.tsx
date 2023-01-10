@@ -1,47 +1,70 @@
 import styles from "./style.module.scss";
 import { useState } from "react";
-// import { PrintTariffs } from "@/shared/types";
-// import {
-//   useValidation,
-//   validateNotEmpty,
-//   validateInt,
-// } from "@/shared/utils/validation";
+import { BookTariffs } from "@/shared/types";
+import {
+  useValidation,
+  validateNotEmpty,
+  validateInt,
+} from "@/shared/utils/validation";
 import { formatNumber } from "@/shared/utils/format";
 import Button from "@/shared/components/Button";
 import Select from "@/shared/components/Select";
 import TextInput from "@/shared/components/TextInput";
-// import ErrorList from "@/shared/components/ErrorList";
+import ErrorList from "@/shared/components/ErrorList";
 
 interface BookPriceCalculatorProps {
-  // printTariffs: PrintTariffs;
+  bookTariffs: BookTariffs;
 }
 
-export default function BookPriceCalculator({}: // printTariffs,
-BookPriceCalculatorProps) {
-  // const [printColor, setPrintColor] = useState<
-  //   "blackAndWhite" | "normalColor" | "fullColor" | null
-  // >(null);
-  // const [printSize, setPrintSize] = useState<"a4" | "a5" | "a3" | null>(null);
-  // const [printSide, setPrintSide] = useState<
-  //   "singleSided" | "doubleSided" | null
-  // >(null);
+export default function BookPriceCalculator({
+  bookTariffs,
+}: BookPriceCalculatorProps) {
+  const [bookSize, setBookSize] = useState<"rahli" | "raqai" | "vaziri" | null>(
+    null
+  );
+  const [bookPaperType, setBookPaperType] = useState<"writing80Grams" | null>(
+    null
+  );
+  const [bookBindingType, setBookBindingType] = useState<"hotGlue" | null>(
+    null
+  );
   const [countOfPages, setCountOfPages] = useState("");
   const [countOfCopies, setCountOfCopies] = useState("");
 
-  // const formValidation = useValidation(
-  //   {
-  //     printColor: [validateNotEmpty()],
-  //     printSize: [validateNotEmpty()],
-  //     printSide: [validateNotEmpty()],
-  //     countOfPages: [validateInt({ unsigned: true, min: 1 })],
-  //   },
-  //   {
-  //     printColor,
-  //     printSize,
-  //     printSide,
-  //     countOfPages,
-  //   }
-  // );
+  const formValidation = useValidation(
+    {
+      bookSize: [validateNotEmpty()],
+      bookPaperType: [validateNotEmpty()],
+      bookBindingType: [validateNotEmpty()],
+      countOfPages: [validateInt({ unsigned: true, min: 1 })],
+    },
+    {
+      bookSize,
+      bookPaperType,
+      bookBindingType,
+      countOfPages,
+    }
+  );
+
+  const countOfCopiesValidation = useValidation(
+    {
+      countOfCopies: [validateInt({ unsigned: true, min: 50 })],
+    },
+    {
+      countOfCopies,
+    }
+  );
+
+  let bookPrice = null;
+  let totalPrice = null;
+  if (formValidation.isValid) {
+    const pagePrice = bookTariffs[bookSize!][bookPaperType!][bookBindingType!];
+    bookPrice = (parseInt(countOfPages) || 0) * pagePrice;
+
+    if (countOfCopiesValidation.isValid) {
+      totalPrice = (parseInt(countOfCopies) || 0) * bookPrice;
+    }
+  }
 
   return (
     <div className={styles.Calculator}>
@@ -50,36 +73,40 @@ BookPriceCalculatorProps) {
       </div>
       <div className={styles.Input}>
         <Select
-          value={null}
-          onChange={() => {}}
-          options={{}}
+          value={bookSize}
+          onChange={setBookSize}
+          options={{ rahli: "رحلی", raqai: "رقعی", vaziri: "وزیری" }}
           varient="shadow-without-bg"
           placeholder="قطع کتاب"
-          readOnly
           height={48}
         />
+        <ErrorList errors={formValidation.errors.bookSize} />
       </div>
       <div className={styles.Input}>
         <Select
-          value={null}
-          onChange={() => {}}
-          options={{}}
+          value={bookPaperType}
+          onChange={setBookPaperType}
+          options={{
+            writing80Grams: "تحریر 80 گرمی",
+          }}
           varient="shadow-without-bg"
           placeholder="جنس کاغذ"
-          readOnly
           height={48}
         />
+        <ErrorList errors={formValidation.errors.bookPaperType} />
       </div>
       <div className={styles.Input}>
         <Select
-          value={null}
-          onChange={() => {}}
-          options={{}}
+          value={bookBindingType}
+          onChange={setBookBindingType}
+          options={{
+            hotGlue: "چسب گرم",
+          }}
           varient="shadow-without-bg"
           placeholder="نوع صحافی"
-          readOnly
           height={48}
         />
+        <ErrorList errors={formValidation.errors.bookBindingType} />
       </div>
       <div className={styles.Row}>
         <div className={styles.Input}>
@@ -90,6 +117,13 @@ BookPriceCalculatorProps) {
             value={countOfPages}
             onChange={setCountOfPages}
           />
+          <ErrorList errors={formValidation.errors.countOfPages} />
+          {bookPrice && (
+            <div className={styles.BookPrice}>
+              <span>قیمت هر کتاب: </span>
+              <span>{formatNumber(bookPrice)} تومان</span>
+            </div>
+          )}
         </div>
         <div className={styles.Input}>
           <TextInput
@@ -102,16 +136,13 @@ BookPriceCalculatorProps) {
             value={countOfCopies}
             onChange={setCountOfCopies}
           />
-        </div>
-      </div>
-      <div className={styles.Row}>
-        <div>
-          <span>قیمت هر کتاب: </span>
-          <span>{formatNumber(56000)} تومان</span>
-        </div>
-        <div>
-          <span>قیمت کل: </span>
-          <span>{formatNumber(560000)} تومان</span>
+          <ErrorList errors={countOfCopiesValidation.errors.countOfCopies} />
+          {totalPrice && (
+            <div className={styles.TotalPrice}>
+              <span>قیمت کل: </span>
+              <span>{formatNumber(totalPrice)} تومان</span>
+            </div>
+          )}
         </div>
       </div>
       <div className={styles.Bottom}>

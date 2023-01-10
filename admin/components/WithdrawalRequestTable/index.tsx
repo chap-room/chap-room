@@ -5,14 +5,14 @@ import { FormattedDate, FormattedTime } from "@/shared/components/Formatted";
 
 interface WithdrawalRequestTableProps {
   withdrawalRequests: WithdrawalRequest[];
-  onDoneWithdrawalRequest: (withdrawalRequestId: number) => void;
+  onDoWithdrawalRequest: (withdrawalRequestId: number) => void;
   onRejectWithdrawalRequest: (withdrawalRequestId: number) => void;
   itemsStatus: "done" | "rejected" | "pending";
 }
 
 export default function WithdrawalRequestTable({
   withdrawalRequests,
-  onDoneWithdrawalRequest,
+  onDoWithdrawalRequest,
   onRejectWithdrawalRequest,
   itemsStatus,
 }: WithdrawalRequestTableProps) {
@@ -83,9 +83,9 @@ export default function WithdrawalRequestTable({
                     رد کردن
                   </button>
                   <button
-                    className={styles.DoneButton}
+                    className={styles.DoButton}
                     onClick={() =>
-                      onDoneWithdrawalRequest(withdrawalRequest.id)
+                      onDoWithdrawalRequest(withdrawalRequest.id)
                     }
                   >
                     انجام دادن
@@ -100,7 +100,7 @@ export default function WithdrawalRequestTable({
               )}
             </td>
             <td>
-              <span className={styles.MobileLabel}>کد پیگیری:</span>
+              <span className={styles.MobileLabel}>توضیحات:</span>
               <div>
                 {withdrawalRequest.transactionDate && (
                   <div>{withdrawalRequest.transactionDate}</div>

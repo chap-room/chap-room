@@ -21,17 +21,17 @@ export default function DashboardPrintPricesList() {
   return (
     <>
       <Head>
-        <title>داشبورد - تعرفه ها</title>
+        <title>داشبورد - تعرفه های پرینت</title>
       </Head>
       <AdminSectionHeader
-        title="تعرفه ها"
+        title="تعرفه های پرینت"
         description="ــ تعرفه های پرینت را از این قسمت مدیریت کنید"
       />
       <SectionContent>
         <ContentHeader
           title="لیست تعرفه ها"
           end={
-            <Link href="/dashboard/tariffs/binding">
+            <Link href="/dashboard/print-tariffs/binding">
               <Button varient="content-title-none">صحافی</Button>
             </Link>
           }
@@ -42,7 +42,7 @@ export default function DashboardPrintPricesList() {
             printTariffs={data!}
             onEditPrintPrices={(size, color) =>
               router.push(
-                `/dashboard/tariffs/${size}/${
+                `/dashboard/print-tariffs/${size}/${
                   {
                     blackAndWhite: "black-and-white",
                     normalColor: "normal-color",

@@ -458,7 +458,11 @@ export function getPrintFolder(printFolderId: number) {
 export function newPrintFolder(data: {
   printColor: "blackAndWhite" | "normalColor" | "fullColor";
   printSize: "a4" | "a5" | "a3";
-  printSide: "singleSided" | "doubleSided";
+  printSide:
+    | "singleSided"
+    | "doubleSided"
+    | "singleSidedGlossy"
+    | "doubleSidedGlossy";
   countOfPages: number;
   bindingOptions: BindingOptions | null;
   description: string | null;
@@ -479,7 +483,11 @@ export function updatePrintFolder(
   data: {
     printColor: "blackAndWhite" | "normalColor" | "fullColor";
     printSize: "a4" | "a5" | "a3";
-    printSide: "singleSided" | "doubleSided";
+    printSide:
+      | "singleSided"
+      | "doubleSided"
+      | "singleSidedGlossy"
+      | "doubleSidedGlossy";
     countOfPages: number;
     bindingOptions: BindingOptions | null;
     description: string | null;
@@ -501,7 +509,11 @@ export function calculatePrintFolderPrice(data: {
   filesManuallySent: boolean;
   printColor: "blackAndWhite" | "normalColor" | "fullColor";
   printSize: "a4" | "a5" | "a3";
-  printSide: "singleSided" | "doubleSided";
+  printSide:
+    | "singleSided"
+    | "doubleSided"
+    | "singleSidedGlossy"
+    | "doubleSidedGlossy";
   countOfPages: number;
   bindingOptions: BindingOptions | null;
   countOfCopies: number | null;

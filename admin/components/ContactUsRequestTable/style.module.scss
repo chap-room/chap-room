@@ -1,4 +1,4 @@
-.WithdrawalRequestTable {
+.ContactUsRequestTable {
   width: 100%;
   border-spacing: 0;
 
@@ -14,13 +14,8 @@
     }
   }
 
-  &[data-items-status="done"] > thead > tr > th {
+  &[data-items-status="checked"] > thead > tr > th {
     background-color: #14cc9c;
-    color: #ffffff;
-  }
-
-  &[data-items-status="rejected"] > thead > tr > th {
-    background-color: #f20f4b;
     color: #ffffff;
   }
 
@@ -84,49 +79,28 @@
           }
         }
 
-        .UserName {
-          color: #464646;
-          font-weight: bold;
-          font-size: 14px;
+        .Done {
+          color: #14cc9c;
         }
 
-        .ButtonList {
-          display: flex;
+        .DoButton {
+          display: inline-flex;
+          height: 30px;
           flex-direction: row;
-          gap: 5px;
-          white-space: nowrap;
-          flex: 1;
           justify-content: center;
           align-items: center;
+          border-radius: 20px;
+          box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
+          padding: 0 20px;
+          font-size: 12px;
+          user-select: none;
+          cursor: pointer;
+          border: none;
+          background-color: #14cc9c;
+          color: #ffffff;
 
-          .DoButton,
-          .RejectButton {
-            display: inline-flex;
-            height: 30px;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            border-radius: 20px;
-            box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
-            padding: 0 20px;
-            font-size: 12px;
-            user-select: none;
-            cursor: pointer;
-            border: none;
-
-            @media (max-width: 800px) {
-              flex: 1;
-            }
-          }
-
-          .DoButton {
-            background-color: #14cc9c;
-            color: #ffffff;
-          }
-
-          .RejectButton {
-            background-color: #f20f4b;
-            color: #ffffff;
+          @media (max-width: 800px) {
+            flex: 1;
           }
         }
       }
@@ -138,27 +112,6 @@
           }
         }
       }
-    }
-  }
-
-  &:not([data-items-status="pending"]) {
-    > thead > tr > th:nth-child(6),
-    > tbody > tr > td:nth-child(6) {
-      display: none;
-    }
-  }
-
-  &:not([data-items-status="rejected"]) {
-    > thead > tr > th:nth-child(7),
-    > tbody > tr > td:nth-child(7) {
-      display: none;
-    }
-  }
-
-  &:not([data-items-status="done"]) {
-    > thead > tr > th:nth-child(8),
-    > tbody > tr > td:nth-child(8) {
-      display: none;
     }
   }
 }

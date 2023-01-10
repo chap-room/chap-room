@@ -15,6 +15,8 @@ export const printFoldersConvertMap: ConvertMap = [
     {
       single_sided: "singleSided",
       double_sided: "doubleSided",
+      single_sided_glossy: "singleSidedGlossy",
+      double_sided_glossy: "doubleSidedGlossy",
     },
   ],
   [

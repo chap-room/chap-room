@@ -39,10 +39,7 @@ export default function PrintTariffsTable({
             ["a3", "blackAndWhite"],
             ["a3", "normalColor"],
             ["a3", "fullColor"],
-          ] as [
-            "a4" | "a5" | "a3",
-            "blackAndWhite" | "normalColor" | "fullColor"
-          ][]
+          ] as const
         ).map(([size, color]) => (
           <tr key={`${size}-${color}`}>
             <td>

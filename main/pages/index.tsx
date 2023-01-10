@@ -16,7 +16,7 @@ import ExpandMoreIcon from "@/shared/assets/icons/expandMore.svg";
 import GiftImage from "@/main/assets/images/gift.svg";
 import GetDiscountCodeDialog from "@/main/components/GetDiscountCodeDialog";
 import CalculatorImage from "@/main/assets/images/calculator.svg";
-import DataLoader from "@/shared/components/DataLoader";
+import { DataLoaderView, useDataLoader } from "@/shared/components/DataLoader";
 import PrintPriceCalculator from "@/main/components/PrintPriceCalculator";
 import BookPriceCalculator from "@/main/components/BookPriceCalculator";
 import BookPrintingImage from "@/main/assets/images/bookPrinting.svg";
@@ -54,6 +54,10 @@ export default function Home() {
     print: {},
     binding: {},
   } as Tariffs);
+  const tariffsLoaderState = useDataLoader({
+    load: () => getTariffs(),
+    setData: setTariffs,
+  });
 
   const videoGalleryList = {
     "معرفی چاپ روم":
@@ -170,9 +174,9 @@ export default function Home() {
         <h1>سفارش پرینت</h1>
         <div>
           <div>
-            <DataLoader load={() => getTariffs()} setData={setTariffs}>
+            <DataLoaderView state={tariffsLoaderState}>
               <PrintPriceCalculator printTariffs={tariffs.print} />
-            </DataLoader>
+            </DataLoaderView>
           </div>
           <div>
             <CalculatorImage />
@@ -186,9 +190,9 @@ export default function Home() {
             <BookPrintingImage />
           </div>
           <div>
-            {/* <DataLoader load={() => getTariffs()} setData={setTariffs}> */}
-            <BookPriceCalculator /* printTariffs={tariffs.print} */ />
-            {/* </DataLoader> */}
+            <DataLoaderView state={tariffsLoaderState}>
+              <BookPriceCalculator bookTariffs={tariffs.book} />
+            </DataLoaderView>
           </div>
         </div>
       </div>

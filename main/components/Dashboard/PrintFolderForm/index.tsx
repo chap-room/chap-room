@@ -43,10 +43,15 @@ interface PrintFolderFormData {
   printFiles: PrintFile[];
   filesManuallySent: boolean;
   folderCode: string;
-  phoneNumberToSendFile: string;
+  eitaa: { account: string; url: string };
+  telegram: { account: string; url: string };
   printColor: "blackAndWhite" | "normalColor" | "fullColor";
   printSize: "a4" | "a5" | "a3";
-  printSide: "singleSided" | "doubleSided";
+  printSide:
+    | "singleSided"
+    | "doubleSided"
+    | "singleSidedGlossy"
+    | "doubleSidedGlossy";
   countOfPages: number;
   bindingOptions: BindingOptions | null;
   description: string | null;
@@ -57,7 +62,9 @@ interface PrintFolderFormProps {
   index: number;
   defaultValues?: Partial<PrintFolderFormData>;
   onCancel: () => void;
-  onFinish: (data: PrintFolderFormData) => Promise<any>;
+  onFinish: (
+    data: Omit<PrintFolderFormData, "folderCode" | "eitaa" | "telegram">
+  ) => Promise<any>;
 }
 
 export default function PrintFolderForm({
@@ -122,12 +129,14 @@ export default function PrintFolderForm({
 
   const [socialMediaFileSendData, setSocialMediaFileSendData] = useState<{
     folderCode: string;
-    phoneNumberToSendFile: string;
+    eitaa: { account: string; url: string };
+    telegram: { account: string; url: string };
   } | null>(
-    defaultValues?.folderCode && defaultValues?.phoneNumberToSendFile
+    defaultValues?.folderCode && defaultValues?.eitaa && defaultValues?.telegram
       ? {
           folderCode: defaultValues.folderCode,
-          phoneNumberToSendFile: defaultValues.phoneNumberToSendFile,
+          eitaa: defaultValues.eitaa,
+          telegram: defaultValues.telegram,
         }
       : null
   );
@@ -286,8 +295,6 @@ export default function PrintFolderForm({
           countOfCopies: toBePrintedInSeveralCopies
             ? parseInt(countOfCopies)
             : null,
-          folderCode: "",
-          phoneNumberToSendFile: "",
         }).finally(() => setIsSubmitting(false));
       }}
       loading={isSubmitting}
@@ -450,16 +457,26 @@ export default function PrintFolderForm({
                             ارسال کنید.
                           </div>
                           <div className={styles.Accounts}>
-                            <div className={styles.TelegramAccount}>
+                            <a
+                              className={styles.TelegramAccount}
+                              href={socialMediaFileSendData?.telegram?.url}
+                              target="_blank"
+                            >
                               <TelegramIcon />
-                              <div>chaproom_order</div>
-                            </div>
-                            <div className={styles.EitaaAccount}>
+                              <div>
+                                {socialMediaFileSendData?.telegram?.account}
+                              </div>
+                            </a>
+                            <a
+                              className={styles.EitaaAccount}
+                              href={socialMediaFileSendData?.eitaa?.url}
+                              target="_blank"
+                            >
                               <EitaaIcon />
                               <div>
-                                {socialMediaFileSendData?.phoneNumberToSendFile}
+                                {socialMediaFileSendData?.eitaa?.account}
                               </div>
-                            </div>
+                            </a>
                           </div>
                         </div>
                       </DataLoader>
@@ -512,6 +529,8 @@ export default function PrintFolderForm({
                           options={{
                             singleSided: "یک رو",
                             doubleSided: "دو رو",
+                            singleSidedGlossy: "یک رو گلاسه",
+                            doubleSidedGlossy: "دو رو گلاسه",
                           }}
                           value={printSide}
                           onChange={setPrintSide}
@@ -867,7 +886,11 @@ function usePrintFolderPrice({
   filesManuallySent: boolean;
   printColor: "blackAndWhite" | "normalColor" | "fullColor";
   printSize: "a4" | "a5" | "a3";
-  printSide: "singleSided" | "doubleSided";
+  printSide:
+    | "singleSided"
+    | "doubleSided"
+    | "singleSidedGlossy"
+    | "doubleSidedGlossy";
   countOfPages: number;
   bindingOptions: BindingOptions | null;
   countOfCopies: number;

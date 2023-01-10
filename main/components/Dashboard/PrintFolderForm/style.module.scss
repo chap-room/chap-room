@@ -237,7 +237,7 @@
           flex-wrap: wrap;
           justify-content: center;
 
-          > div {
+          > a {
             display: flex;
             flex-direction: row;
             gap: 5px;
@@ -250,6 +250,7 @@
             color: #ffffff;
             fill: #ffffff;
             box-shadow: -3px -3px 6px #ffffffdb, 3px 3px 6px #00000029;
+            text-decoration: none;
 
             @media (max-width: 448px) {
               width: 100%;

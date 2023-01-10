@@ -48,7 +48,11 @@ export default function DashboardCustomerReport() {
     "blackAndWhite" | "fullColor" | "normalColor" | null
   >(null);
   const [paperSide, setPaperSide] = useState<
-    "singleSided" | "doubleSided" | null
+    | "singleSided"
+    | "doubleSided"
+    | "singleSidedGlossy"
+    | "doubleSidedGlossy"
+    | null
   >(null);
   const [sortOrder, setSortOrder] = useState<
     | "withoutOrder"
@@ -86,7 +90,9 @@ export default function DashboardCustomerReport() {
         }
         if (
           router.query.paperSide === "singleSided" ||
-          router.query.paperSide === "doubleSided"
+          router.query.paperSide === "doubleSided" ||
+          router.query.paperSide === "singleSidedGlossy" ||
+          router.query.paperSide === "doubleSidedGlossy"
         ) {
           setPaperSide(router.query.paperSide);
         }
@@ -266,6 +272,8 @@ export default function DashboardCustomerReport() {
                     options={{
                       singleSided: "یک رو",
                       doubleSided: "دو رو",
+                      singleSidedGlossy: "یک رو گلاسه",
+                      doubleSidedGlossy: "دو رو گلاسه",
                     }}
                     value={paperSide}
                     onChange={(newValue) => {

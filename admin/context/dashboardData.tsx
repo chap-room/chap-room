@@ -14,6 +14,7 @@ export interface DashboardData {
     countOfInProgressOrders: number;
     countOfPendingCooperations: number;
     countOfPendingWithdrawals: number;
+    countOfPendingContactUs: number;
   };
   sales: {
     totalSales: number;

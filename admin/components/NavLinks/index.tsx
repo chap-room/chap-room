@@ -15,6 +15,7 @@ import PricesIcon from "@/shared/assets/icons/money.svg";
 import BlogIcon from "@/admin/assets/icons/blog.svg";
 import MarketingReportIcon from "@/admin/assets/icons/marketingReport.svg";
 import CustomerReportIcon from "@/admin/assets/icons/customerReport.svg";
+import ContactUsIcon from "@/admin/assets/icons/contactUs.svg";
 import ProfileIcon from "@/shared/assets/icons/profile.svg";
 import LogoutIcon from "@/shared/assets/icons/logout.svg";
 
@@ -23,6 +24,7 @@ interface DashboardNavLinksProps {
     countOfInProgressOrders: number;
     countOfPendingCooperations: number;
     countOfPendingWithdrawals: number;
+    countOfPendingContactUs: number;
   };
 }
 
@@ -111,10 +113,19 @@ export default function DashboardNavLinks({
           </div>
         </a>
       </NavLink>
-      <NavLink href="/dashboard/tariffs">
+      <NavLink href="/dashboard/print-tariffs">
         <a className={styles.NavLink}>
           <PricesIcon />
-          <div className={styles.Text}>تعرفه ها</div>
+          <div className={styles.Text}>تعرفه های پرینت</div>
+          <div className={styles.Arrow}>
+            <NavigateBeforeIcon />
+          </div>
+        </a>
+      </NavLink>
+      <NavLink href="/dashboard/book-tariffs">
+        <a className={styles.NavLink}>
+          <PricesIcon />
+          <div className={styles.Text}>تعرفه های کتاب</div>
           <div className={styles.Arrow}>
             <NavigateBeforeIcon />
           </div>
@@ -142,6 +153,20 @@ export default function DashboardNavLinks({
         <a className={styles.NavLink}>
           <CustomerReportIcon />
           <div className={styles.Text}>گزارش مشتریان</div>
+          <div className={styles.Arrow}>
+            <NavigateBeforeIcon />
+          </div>
+        </a>
+      </NavLink>
+      <NavLink href="/dashboard/contact-us">
+        <a className={styles.NavLink}>
+          <ContactUsIcon />
+          <div className={styles.Text}>تماس با ما</div>
+          {sidebarData.countOfPendingContactUs > 0 && (
+            <div className={styles.Count}>
+              {formatNumber(sidebarData.countOfPendingContactUs)}
+            </div>
+          )}
           <div className={styles.Arrow}>
             <NavigateBeforeIcon />
           </div>

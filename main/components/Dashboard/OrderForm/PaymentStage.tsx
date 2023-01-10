@@ -22,7 +22,10 @@ interface PaymentStageProps {
   };
 }
 
-export default function PaymentStage({ addressId, actions }: PaymentStageProps) {
+export default function PaymentStage({
+  addressId,
+  actions,
+}: PaymentStageProps) {
   const [data, setData] = useState<{
     discountAmount: number;
     userBalance: number;
@@ -117,7 +120,11 @@ export default function PaymentStage({ addressId, actions }: PaymentStageProps) 
           <div className={styles.Amounts}>
             <div className={styles.Amount}>
               <div>هزینه ارسال:</div>
-              <div>{formatNumber(data.postageFee)} تومان</div>
+              <div>
+                {data.postageFee === 0
+                  ? "رایگان"
+                  : `${formatNumber(data.postageFee)} تومان`}
+              </div>
             </div>
             <div className={styles.Amount}>
               <div>مجموع:</div>

@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import Head from "next/head";
 import Link from "next/link";
 import { PrintTariffs } from "@/shared/types";
-import { getPrintTariffs, updatePrintPrice } from "@/admin/api";
+import { getPrintTariffs, updatePrintTariffs } from "@/admin/api";
 import ArrowBackIcon from "@/shared/assets/icons/arrowBack.svg";
 import DashboardLayout from "@/admin/components/Layout";
 import AdminSectionHeader from "@/admin/components/AdminSectionHeader";
@@ -19,16 +19,14 @@ export default function DashboardEditPrintPrices() {
   const router = useRouter();
   const printSize = router.query.printSize as "a4" | "a5" | "a3";
   const printColor = {
-    "black-and-white": "blackAndWhite",
-    "normal-color": "normalColor",
-    "full-color": "fullColor",
-  }[router.query.printColor as string] as
-    | "blackAndWhite"
-    | "normalColor"
-    | "fullColor";
+    "black-and-white": "blackAndWhite" as const,
+    "normal-color": "normalColor" as const,
+    "full-color": "fullColor" as const,
+  }[router.query.printColor as string];
 
   if (!["a4", "a5", "a3"].includes(printSize) || !printColor) {
     /* TODO 404 */
+    return <></>;
   }
 
   const [data, setData] = useState<PrintTariffs>();
@@ -41,14 +39,14 @@ export default function DashboardEditPrintPrices() {
         <title>داشبورد - ویرایش تعرفه ها</title>
       </Head>
       <AdminSectionHeader
-        title="تعرفه ها"
+        title="تعرفه های پرینت"
         description="ــ تعرفه های پرینت را از این قسمت مدیریت کنید"
       />
       <SectionContent>
         <ContentHeader
           title="ویرایش کردن تعرفه ها"
           end={
-            <Link href="/dashboard/tariffs">
+            <Link href="/dashboard/print-tariffs">
               <Button varient="none" style={{ padding: 0 }}>
                 انصراف و بازگشت <ArrowBackIcon />
               </Button>
@@ -56,16 +54,16 @@ export default function DashboardEditPrintPrices() {
           }
         />
         <MobileContentHeader
-          backTo="/dashboard/tariffs"
+          backTo="/dashboard/print-tariffs"
           title="ویرایش کردن تعرفه ها"
         />
         <DataLoader load={() => getPrintTariffs()} setData={setData}>
           <PrintPriceForm
             printSize={printSize}
             printColor={printColor}
-            defaultValues={printPrice}
+            defaultValues={printPrice!}
             onSave={(printPriceData) =>
-              updatePrintPrice({
+              updatePrintTariffs({
                 ...data!,
                 [printSize]: {
                   ...data![printSize],
@@ -74,7 +72,7 @@ export default function DashboardEditPrintPrices() {
               })
                 .then((message) => {
                   toast.success(message);
-                  router.push("/dashboard/tariffs");
+                  router.push("/dashboard/print-tariffs");
                 })
                 .catch(toast.error)
             }
