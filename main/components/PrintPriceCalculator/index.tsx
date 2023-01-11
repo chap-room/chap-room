@@ -34,20 +34,20 @@ export default function PrintPriceCalculator({
     | "doubleSidedGlossy"
     | null
   >(null);
-  const [countOfPages, setCountOfPages] = useState("");
+  const [countOfPapers, setCountOfPapers] = useState("");
 
   const formValidation = useValidation(
     {
       printColor: [validateNotEmpty()],
       printSize: [validateNotEmpty()],
       printSide: [validateNotEmpty()],
-      countOfPages: [validateInt({ unsigned: true, min: 1 })],
+      countOfPapers: [validateInt({ unsigned: true, min: 1 })],
     },
     {
       printColor,
       printSize,
       printSide,
-      countOfPages,
+      countOfPapers,
     }
   );
 
@@ -67,12 +67,12 @@ export default function PrintPriceCalculator({
     ];
     let breakpoint = breakpoints[0];
     for (let item of breakpoints) {
-      if (parseInt(countOfPages) >= item.at) {
+      if (parseInt(countOfPapers) >= item.at) {
         breakpoint = item;
       }
     }
     pagePrice = breakpoint[printSide!];
-    calculatedPrice = (parseInt(countOfPages) || 0) * pagePrice;
+    calculatedPrice = (parseInt(countOfPapers) || 0) * pagePrice;
   }
 
   return (
@@ -129,13 +129,14 @@ export default function PrintPriceCalculator({
       <div className={styles.Row}>
         <div className={styles.Input}>
           <TextInput
-            inputProps={{ type: "number", placeholder: "تعداد برگ" }}
+            inputProps={{ type: "number", placeholder: "تعداد" }}
             varient="shadow-without-bg"
-            value={countOfPages}
-            onChange={setCountOfPages}
+            suffix="برگ"
+            value={countOfPapers}
+            onChange={setCountOfPapers}
             height={48}
           />
-          <ErrorList errors={formValidation.errors.countOfPages} />
+          <ErrorList errors={formValidation.errors.countOfPapers} />
         </div>
         <div>
           {pagePrice && (
@@ -146,6 +147,34 @@ export default function PrintPriceCalculator({
           )}
         </div>
       </div>
+      {((printSide &&
+        parseInt(countOfPapers) &&
+        !isNaN(parseInt(countOfPapers))) ||
+        false) && (
+        <div>
+          <span style={{ color: "#0077b5" }}>
+            {countOfPapers} برگ{" "}
+            {
+              {
+                singleSided: "یک رو",
+                doubleSided: "دو رو",
+                singleSidedGlossy: "یک رو",
+                doubleSidedGlossy: "دو رو",
+              }[printSide]
+            }{" "}
+            معادل{" "}
+            <u>
+              {parseInt(countOfPapers) *
+                (printSide === "singleSided" ||
+                printSide === "singleSidedGlossy"
+                  ? 1
+                  : 2)}{" "}
+              صفحه
+            </u>{" "}
+            می باشد
+          </span>
+        </div>
+      )}
       <div className={styles.Bottom}>
         {calculatedPrice && (
           <div>

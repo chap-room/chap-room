@@ -1,4 +1,4 @@
-import { convert, convertDate, ConvertMap } from "@/shared/utils/convert";
+import { convert, ConvertMap } from "@/shared/utils/convert";
 
 export const printFoldersConvertMap: ConvertMap = [
   [
@@ -19,6 +19,7 @@ export const printFoldersConvertMap: ConvertMap = [
       double_sided_glossy: "doubleSidedGlossy",
     },
   ],
+  [["countOfPages", "countOfPapers"], null],
   [
     ["binding", "bindingOptions"],
     [

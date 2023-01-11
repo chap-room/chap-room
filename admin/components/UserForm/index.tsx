@@ -85,7 +85,7 @@ export default function UserForm({
         <div className={styles.Label}>شماره موبایل:</div>
         <div className={styles.Input}>
           <TextInput
-            inputProps={{ placeholder: "شماره موبایل" }}
+            inputProps={{ type: "number", placeholder: "شماره موبایل" }}
             value={phoneNumber}
             onChange={(newValue) => setPhoneNumber(newValue.substring(0, 11))}
           />

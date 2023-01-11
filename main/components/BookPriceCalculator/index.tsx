@@ -1,6 +1,8 @@
 import styles from "./style.module.scss";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { BookTariffs } from "@/shared/types";
+import { submitBookPublishingRequest } from "@/main/api";
 import {
   useValidation,
   validateNotEmpty,
@@ -11,6 +13,7 @@ import Button from "@/shared/components/Button";
 import Select from "@/shared/components/Select";
 import TextInput from "@/shared/components/TextInput";
 import ErrorList from "@/shared/components/ErrorList";
+import BookPublishingDialog from "@/main/components/Dashboard/BookPublishingDialog";
 
 interface BookPriceCalculatorProps {
   bookTariffs: BookTariffs;
@@ -66,90 +69,108 @@ export default function BookPriceCalculator({
     }
   }
 
+  const [showBookPublishingDialog, setShowBookPublishingDialog] =
+    useState(false);
+
   return (
-    <div className={styles.Calculator}>
-      <div className={styles.Title}>
-        از منوی زیر خدمات مورد نظر خود را انتخاب کنید
-      </div>
-      <div className={styles.Input}>
-        <Select
-          value={bookSize}
-          onChange={setBookSize}
-          options={{ rahli: "رحلی", raqai: "رقعی", vaziri: "وزیری" }}
-          varient="shadow-without-bg"
-          placeholder="قطع کتاب"
-          height={48}
-        />
-        <ErrorList errors={formValidation.errors.bookSize} />
-      </div>
-      <div className={styles.Input}>
-        <Select
-          value={bookPaperType}
-          onChange={setBookPaperType}
-          options={{
-            writing80Grams: "تحریر 80 گرمی",
-          }}
-          varient="shadow-without-bg"
-          placeholder="جنس کاغذ"
-          height={48}
-        />
-        <ErrorList errors={formValidation.errors.bookPaperType} />
-      </div>
-      <div className={styles.Input}>
-        <Select
-          value={bookBindingType}
-          onChange={setBookBindingType}
-          options={{
-            hotGlue: "چسب گرم",
-          }}
-          varient="shadow-without-bg"
-          placeholder="نوع صحافی"
-          height={48}
-        />
-        <ErrorList errors={formValidation.errors.bookBindingType} />
-      </div>
-      <div className={styles.Row}>
-        <div className={styles.Input}>
-          <TextInput
-            inputProps={{ type: "number", placeholder: "تعداد صفحه" }}
-            varient="shadow-without-bg"
-            height={48}
-            value={countOfPages}
-            onChange={setCountOfPages}
-          />
-          <ErrorList errors={formValidation.errors.countOfPages} />
-          {bookPrice && (
-            <div className={styles.BookPrice}>
-              <span>قیمت هر کتاب: </span>
-              <span>{formatNumber(bookPrice)} تومان</span>
-            </div>
-          )}
+    <>
+      <div className={styles.Calculator}>
+        <div className={styles.Title}>
+          از منوی زیر خدمات مورد نظر خود را انتخاب کنید
         </div>
         <div className={styles.Input}>
-          <TextInput
-            inputProps={{
-              type: "number",
-              placeholder: "تیراژ (حداقل 50 نسخه)",
+          <Select
+            value={bookSize}
+            onChange={setBookSize}
+            options={{ rahli: "رحلی", raqai: "رقعی", vaziri: "وزیری" }}
+            varient="shadow-without-bg"
+            placeholder="قطع کتاب"
+            height={48}
+          />
+          <ErrorList errors={formValidation.errors.bookSize} />
+        </div>
+        <div className={styles.Input}>
+          <Select
+            value={bookPaperType}
+            onChange={setBookPaperType}
+            options={{
+              writing80Grams: "تحریر 80 گرمی",
             }}
             varient="shadow-without-bg"
+            placeholder="جنس کاغذ"
             height={48}
-            value={countOfCopies}
-            onChange={setCountOfCopies}
           />
-          <ErrorList errors={countOfCopiesValidation.errors.countOfCopies} />
-          {totalPrice && (
-            <div className={styles.TotalPrice}>
-              <span>قیمت کل: </span>
-              <span>{formatNumber(totalPrice)} تومان</span>
-            </div>
-          )}
+          <ErrorList errors={formValidation.errors.bookPaperType} />
+        </div>
+        <div className={styles.Input}>
+          <Select
+            value={bookBindingType}
+            onChange={setBookBindingType}
+            options={{
+              hotGlue: "چسب گرم",
+            }}
+            varient="shadow-without-bg"
+            placeholder="نوع صحافی"
+            height={48}
+          />
+          <ErrorList errors={formValidation.errors.bookBindingType} />
+        </div>
+        <div className={styles.Row}>
+          <div className={styles.Input}>
+            <TextInput
+              inputProps={{ type: "number", placeholder: "تعداد صفحه" }}
+              varient="shadow-without-bg"
+              height={48}
+              value={countOfPages}
+              onChange={setCountOfPages}
+            />
+            <ErrorList errors={formValidation.errors.countOfPages} />
+            {bookPrice && (
+              <div className={styles.BookPrice}>
+                <span>قیمت هر کتاب: </span>
+                <span>{formatNumber(bookPrice)} تومان</span>
+              </div>
+            )}
+          </div>
+          <div className={styles.Input}>
+            <TextInput
+              inputProps={{
+                type: "number",
+                placeholder: "تیراژ (حداقل 50 نسخه)",
+              }}
+              varient="shadow-without-bg"
+              height={48}
+              value={countOfCopies}
+              onChange={setCountOfCopies}
+            />
+            <ErrorList errors={countOfCopiesValidation.errors.countOfCopies} />
+            {totalPrice && (
+              <div className={styles.TotalPrice}>
+                <span>قیمت کل: </span>
+                <span>{formatNumber(totalPrice)} تومان</span>
+              </div>
+            )}
+          </div>
+        </div>
+        <div className={styles.Bottom}>
+          <Button
+            varient="gradient"
+            onClick={() => setShowBookPublishingDialog(true)}
+            style={{ padding: "0 30px" }}
+          >
+            مشاوره رایگان
+          </Button>
         </div>
       </div>
-      <div className={styles.Bottom}>
-        <Button varient="gradient" style={{ padding: "0 30px" }}>
-          مشاوره رایگان
-        </Button>
-      </div>
-    </div>
+      <BookPublishingDialog
+        open={showBookPublishingDialog}
+        onClose={() => setShowBookPublishingDialog(false)}
+        onSubmit={(phoneNumber) =>
+          submitBookPublishingRequest(phoneNumber)
+            .then(toast.success)
+            .catch(toast.error)
+        }
+      />
+    </>
   );
 }

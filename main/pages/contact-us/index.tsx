@@ -56,7 +56,7 @@ export default function ContactUs() {
           </div>
           <div className={styles.PhoneNumberInputContainer}>
             <TextInput
-              inputProps={{ placeholder: "شماره موبایل", type: "number" }}
+              inputProps={{ type: "number", placeholder: "شماره موبایل" }}
               varient="shadow"
               value={phoneNumber}
               onChange={(newValue) => setPhoneNumber(newValue.substring(0, 11))}

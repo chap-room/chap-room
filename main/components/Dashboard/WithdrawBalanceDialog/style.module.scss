@@ -7,7 +7,7 @@
     justify-content: center;
   }
 
-  > div:nth-child(1) {
+  .MobileTitle {
     text-align: center;
     font-size: 16px;
     font-weight: 500; // Medium
@@ -66,18 +66,6 @@
   > div:nth-child(3) {
     @media (max-width: 512px) {
       margin-top: 0;
-
-      > div:first-child {
-        display: none;
-      }
-
-      > div:last-child {
-        flex: 1;
-
-        > button {
-          flex: 1;
-        }
-      }
     }
   }
 }

@@ -140,6 +140,16 @@ export function getTariffs() {
   }).then(({ data }) => data as Tariffs);
 }
 
+export function submitBookPublishingRequest(phoneNumber: string) {
+  return request({
+    method: "POST",
+    url: "/public/book-publishing",
+    data: {
+      phoneNumber,
+    },
+  }).then(({ data }) => data.message);
+}
+
 export function submitContactUs(
   name: string,
   phoneNumber: string,
@@ -463,7 +473,7 @@ export function newPrintFolder(data: {
     | "doubleSided"
     | "singleSidedGlossy"
     | "doubleSidedGlossy";
-  countOfPages: number;
+  countOfPapers: number;
   bindingOptions: BindingOptions | null;
   description: string | null;
   countOfCopies: number | null;
@@ -488,7 +498,7 @@ export function updatePrintFolder(
       | "doubleSided"
       | "singleSidedGlossy"
       | "doubleSidedGlossy";
-    countOfPages: number;
+    countOfPapers: number;
     bindingOptions: BindingOptions | null;
     description: string | null;
     countOfCopies: number | null;
@@ -514,7 +524,7 @@ export function calculatePrintFolderPrice(data: {
     | "doubleSided"
     | "singleSidedGlossy"
     | "doubleSidedGlossy";
-  countOfPages: number;
+  countOfPapers: number;
   bindingOptions: BindingOptions | null;
   countOfCopies: number | null;
 }) {

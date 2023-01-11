@@ -35,11 +35,6 @@ export interface Order {
   user: User;
 }
 
-export enum OrderCancelReason {
-  userCancel = "لغو شخصی",
-  countOfPagesMismatch = "تعداد برگ با سفارش همخوانی ندارد",
-}
-
 export interface PrintFolder {
   id: number;
   amount: number;
@@ -50,7 +45,7 @@ export interface PrintFolder {
     | "doubleSided"
     | "singleSidedGlossy"
     | "doubleSidedGlossy";
-  countOfPages: number;
+  countOfPapers: number;
   bindingOptions: BindingOptions | null;
   description: string | null;
   countOfCopies: number | null;

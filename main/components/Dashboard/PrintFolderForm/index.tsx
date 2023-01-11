@@ -27,17 +27,18 @@ import DataLoader, {
   DataLoaderView,
   useDataLoader,
 } from "@/shared/components/DataLoader";
-import TextArea from "@/shared/components/TextArea";
 import BottomActions from "@/shared/components/Dashboard/BottomActions";
+import Radio from "@/shared/components/Radio";
 import UploadArea from "@/main/components/Dashboard/UploadArea";
 import ProgressBar from "@/shared/components/ProgressBar";
-import Radio from "@/shared/components/Radio";
+import CopyToClipboard from "react-copy-to-clipboard";
+import EitaaIcon from "@/main/assets/icons/eitaa.svg";
+import TelegramIcon from "@/main/assets/icons/telegram.svg";
+import CopyIcon from "@/shared/assets/icons/copy.svg";
+import WarningIcon from "@/admin/assets/icons/info.svg";
+import TextArea from "@/shared/components/TextArea";
 import InfoTooltip from "@/shared/components/InfoTooltip";
 import IconButton from "@/shared/components/IconButton";
-import TelegramIcon from "@/main/assets/icons/telegram.svg";
-import EitaaIcon from "@/main/assets/icons/eitaa.svg";
-import CopyIcon from "@/shared/assets/icons/copy.svg";
-import CopyToClipboard from "react-copy-to-clipboard";
 
 interface PrintFolderFormData {
   printFiles: PrintFile[];
@@ -52,7 +53,7 @@ interface PrintFolderFormData {
     | "doubleSided"
     | "singleSidedGlossy"
     | "doubleSidedGlossy";
-  countOfPages: number;
+  countOfPapers: number;
   bindingOptions: BindingOptions | null;
   description: string | null;
   countOfCopies: number | null;
@@ -86,8 +87,8 @@ export default function PrintFolderForm({
   );
   const [printSize, setPrintSize] = useState(defaultValues?.printSize || null);
   const [printSide, setPrintSide] = useState(defaultValues?.printSide || null);
-  const [countOfPages, setCountOfPages] = useState(
-    defaultValues?.countOfPages?.toString() || ""
+  const [countOfPapers, setCountOfPapers] = useState(
+    defaultValues?.countOfPapers?.toString() || ""
   );
   const [needBinding, setNeedBinding] = useState(
     defaultValues ? defaultValues.bindingOptions !== null : false
@@ -152,14 +153,14 @@ export default function PrintFolderForm({
       printColor: [validateNotEmpty()],
       printSize: [validateNotEmpty()],
       printSide: [validateNotEmpty()],
-      countOfPages: [validateInt({ unsigned: true, min: 1 })],
+      countOfPapers: [validateInt({ unsigned: true, min: 1 })],
     },
     {
       printFiles,
       printColor,
       printSize,
       printSide,
-      countOfPages,
+      countOfPapers,
     }
   );
 
@@ -196,9 +197,8 @@ export default function PrintFolderForm({
     printColor &&
     printSize &&
     printSide &&
-    parseInt(countOfPages) &&
-    !isNaN(parseInt(countOfPages)) &&
-    parseInt(countOfPages) > 0 &&
+    parseInt(countOfPapers) &&
+    !isNaN(parseInt(countOfPapers)) &&
     tariffs
   ) {
     const printPrice = tariffs!.print[printSize!][printColor!];
@@ -214,12 +214,17 @@ export default function PrintFolderForm({
     ];
     let breakpoint = breakpoints[0];
     for (let item of breakpoints) {
-      if (parseInt(countOfPages) >= item.at) {
+      if (parseInt(countOfPapers) >= item.at) {
         breakpoint = item;
       }
     }
     pagePrice = breakpoint[printSide!];
   }
+
+  const uploadedPages = printFiles.reduce(
+    (result, item) => result + (item.countOfPages || 0),
+    0
+  );
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -230,7 +235,7 @@ export default function PrintFolderForm({
     printColor: printColor!,
     printSize: printSize!,
     printSide: printSide!,
-    countOfPages: parseInt(countOfPages),
+    countOfPapers: parseInt(countOfPapers),
     bindingOptions:
       currentStep === "1"
         ? null
@@ -279,7 +284,7 @@ export default function PrintFolderForm({
           printColor: printColor!,
           printSize: printSize!,
           printSide: printSide!,
-          countOfPages: parseInt(countOfPages),
+          countOfPapers: parseInt(countOfPapers),
           bindingOptions: needBinding
             ? {
                 bindingType,
@@ -346,8 +351,8 @@ export default function PrintFolderForm({
                     {!filesManuallySent && (
                       <div className={styles.ManualUploadFiles}>
                         <UploadArea
-                          onSelectFile={(file) =>
-                            setInUploadPrintFiles([...inUploadPrintFiles, file])
+                          onSelectFiles={(files) =>
+                            setInUploadPrintFiles([...inUploadPrintFiles, ...files])
                           }
                           acceptedTypes={{
                             Word: [
@@ -545,15 +550,16 @@ export default function PrintFolderForm({
                           <TextInput
                             inputProps={{
                               type: "number",
-                              placeholder: "تعداد برگ",
+                              placeholder: "تعداد",
                             }}
                             varient="shadow-without-bg"
-                            value={countOfPages}
-                            onChange={setCountOfPages}
+                            suffix="برگ"
+                            value={countOfPapers}
+                            onChange={setCountOfPapers}
                             height={48}
                           />
                           <ErrorList
-                            errors={step1FormValidation.errors.countOfPages}
+                            errors={step1FormValidation.errors.countOfPapers}
                           />
                         </div>
                         <div>
@@ -567,6 +573,46 @@ export default function PrintFolderForm({
                           </DataLoader>
                         </div>
                       </div>
+                      {((printSide &&
+                        parseInt(countOfPapers) &&
+                        !isNaN(parseInt(countOfPapers))) ||
+                        false) && (
+                        <div>
+                          <div style={{ color: "#0077b5" }}>
+                            {parseInt(countOfPapers)} برگ{" "}
+                            {
+                              {
+                                singleSided: "یک رو",
+                                doubleSided: "دو رو",
+                                singleSidedGlossy: "یک رو",
+                                doubleSidedGlossy: "دو رو",
+                              }[printSide]
+                            }{" "}
+                            معادل{" "}
+                            <u>
+                              {parseInt(countOfPapers) *
+                                (printSide === "singleSided" ||
+                                printSide === "singleSidedGlossy"
+                                  ? 1
+                                  : 2)}{" "}
+                              صفحه
+                            </u>{" "}
+                            می باشد
+                          </div>
+                          {uploadedPages >
+                            parseInt(countOfPapers) *
+                              (printSide === "singleSided" ||
+                              printSide === "singleSidedGlossy"
+                                ? 1
+                                : 2) && (
+                            <div className={styles.PageCountMismatch}>
+                              <WarningIcon />
+                              تعداد صفحات فایلهای شما بیشتر از تعداد برگ انتخابی
+                              می باشد!
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -877,7 +923,7 @@ function usePrintFolderPrice({
   printColor,
   printSize,
   printSide,
-  countOfPages,
+  countOfPapers,
   bindingOptions,
   countOfCopies,
 }: {
@@ -891,7 +937,7 @@ function usePrintFolderPrice({
     | "doubleSided"
     | "singleSidedGlossy"
     | "doubleSidedGlossy";
-  countOfPages: number;
+  countOfPapers: number;
   bindingOptions: BindingOptions | null;
   countOfCopies: number;
 }) {
@@ -905,7 +951,7 @@ function usePrintFolderPrice({
             printColor,
             printSize,
             printSide,
-            countOfPages,
+            countOfPapers,
             bindingOptions,
             countOfCopies,
           })
@@ -918,7 +964,7 @@ function usePrintFolderPrice({
       printColor,
       printSize,
       printSide,
-      countOfPages,
+      countOfPapers,
       bindingOptions
         ? [
             bindingOptions.bindingMethod,

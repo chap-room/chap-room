@@ -5,7 +5,7 @@ import { formatList, formatNumber } from "@/shared/utils/format";
 import { toast } from "react-hot-toast";
 
 interface UploadAreaProps {
-  onSelectFile: (file: File) => void;
+  onSelectFiles: (files: File[]) => void;
   // key is display name and value is A valid case-insensitive filename extension,
   // starting with a period (".") character. For example: .jpg, .pdf, or .doc.
   // Or a valid MIME type string, with no extensions.
@@ -15,7 +15,7 @@ interface UploadAreaProps {
 }
 
 export default function UploadArea({
-  onSelectFile,
+  onSelectFiles,
   acceptedTypes,
   maxSizeInMB,
   multiple,
@@ -24,22 +24,26 @@ export default function UploadArea({
 
   const [dragActive, setDragActive] = useState(false);
 
-  function handleFileSelect(file: File) {
-    if (file.size / 1024 / 1024 > maxSizeInMB) {
-      toast.error("اندازه فایل بزرگتر از حداکثر مجاز است");
-      return;
-    }
+  function handleFilesSelect(files: File[]) {
+    onSelectFiles(
+      files.filter((file) => {
+        if (file.size / 1024 / 1024 > maxSizeInMB) {
+          toast.error("اندازه فایل بزرگتر از حداکثر مجاز است");
+          return false;
+        }
 
-    if (
-      !([] as string[])
-        .concat(...Object.values(acceptedTypes))
-        .includes(file.type)
-    ) {
-      toast.error("نوع فایل مجاز نیست");
-      return;
-    }
+        if (
+          !([] as string[])
+            .concat(...Object.values(acceptedTypes))
+            .includes(file.type)
+        ) {
+          toast.error("نوع فایل مجاز نیست");
+          return false;
+        }
 
-    onSelectFile(file);
+        return true;
+      })
+    );
   }
 
   return (
@@ -54,7 +58,7 @@ export default function UploadArea({
         onChange={() => {
           const input = inputRef.current;
           if (!input || !input.files) return;
-          Array.from(input.files).forEach(handleFileSelect);
+          handleFilesSelect(Array.from(input.files));
           input.value = "";
         }}
         multiple={multiple}
@@ -69,7 +73,7 @@ export default function UploadArea({
           event.preventDefault();
 
           const dataTransfer = event.dataTransfer;
-          Array.from(dataTransfer.files).forEach(handleFileSelect);
+          handleFilesSelect(Array.from(dataTransfer.files));
           setDragActive(false);
         }}
       />

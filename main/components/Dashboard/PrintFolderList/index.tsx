@@ -63,7 +63,7 @@ export default function PrintFolderList({
                   singleSidedGlossy: "یک رو گلاسه",
                   doubleSidedGlossy: "دو رو گلاسه",
                 }[printFolder.printSide],
-                `${formatNumber(printFolder.countOfPages)} برگ`,
+                `${formatNumber(printFolder.countOfPapers)} برگ`,
                 ...(printFolder.bindingOptions === null
                   ? []
                   : [

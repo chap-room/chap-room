@@ -33,7 +33,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                           singleSidedGlossy: "یک رو گلاسه",
                           doubleSidedGlossy: "دو رو گلاسه",
                         }[printFolder.printSide],
-                        `${formatNumber(printFolder.countOfPages)} برگ`,
+                        `${formatNumber(printFolder.countOfPapers)} برگ`,
                         ...(printFolder.bindingOptions === null
                           ? []
                           : [
@@ -90,7 +90,12 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                           </a>
                           <span
                             className={
-                              uploadedPages === printFolder.countOfPages
+                              uploadedPages ===
+                              printFolder.countOfPapers *
+                                (printFolder.printSide === "singleSided" ||
+                                printFolder.printSide === "singleSidedGlossy"
+                                  ? 1
+                                  : 2)
                                 ? styles.Match
                                 : styles.NotMatch
                             }
