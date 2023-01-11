@@ -28,4 +28,16 @@ body {
     flex-direction: column;
     overflow-x: hidden;
   }
+
+  #raychatFrame {
+    z-index: 500 !important;
+  }
+
+  #raychat_automessage_preview_container {
+    z-index: 600 !important;
+  }
+
+  #raychatBtn {
+    z-index: 700 !important;
+  }
 }

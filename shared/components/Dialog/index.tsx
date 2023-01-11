@@ -49,43 +49,42 @@ export default function Dialog({
   return (
     <FloatingPortal>
       {open && (
-        <FloatingOverlay lockScroll={true}>
+        <FloatingOverlay
+          lockScroll={true}
+          className={styles.Container}
+          data-full-screen-in-mobile={fullScreenInMobile}
+          data-hide-title-in-mobile={hideTitleInMobile}
+          data-varient={varient}
+        >
           <FloatingFocusManager context={context}>
             <div
-              className={styles.Container}
-              data-full-screen-in-mobile={fullScreenInMobile}
-              data-hide-title-in-mobile={hideTitleInMobile}
-              data-varient={varient}
+              className={styles.Dialog}
+              ref={floating}
+              aria-labelledby={labelId}
+              {...getFloatingProps()}
             >
-              <div
-                className={styles.Dialog}
-                ref={floating}
-                aria-labelledby={labelId}
-                {...getFloatingProps()}
-              >
-                {title && (
-                  <div className={styles.Header}>
-                    <div className={styles.Start} />
-                    <div className={styles.Center}>
-                      <div className={styles.TitleContainer}>
-                        <div className={styles.Title} id={labelId}>
-                          {title}
-                        </div>
-                        <div className={styles.SubTitle}>{subTitle}</div>
+              {title && (
+                <div className={styles.Header}>
+                  <div className={styles.Start} />
+                  <div className={styles.Center}>
+                    <div className={styles.TitleContainer}>
+                      <div className={styles.Title} id={labelId}>
+                        {title}
                       </div>
-                    </div>
-                    <div className={styles.End}>
-                      <button
-                        className={styles.CloseButton}
-                        onClick={() => onClose()}
-                      >
-                        <CloseIcon />
-                      </button>
+                      <div className={styles.SubTitle}>{subTitle}</div>
                     </div>
                   </div>
-                )}
-                <div className={styles.Content}>{children}</div>
-              </div>
+                  <div className={styles.End}>
+                    <button
+                      className={styles.CloseButton}
+                      onClick={() => onClose()}
+                    >
+                      <CloseIcon />
+                    </button>
+                  </div>
+                </div>
+              )}
+              <div className={styles.Content}>{children}</div>
             </div>
           </FloatingFocusManager>
         </FloatingOverlay>
